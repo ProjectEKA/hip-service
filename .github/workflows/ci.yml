@@ -13,5 +13,5 @@ jobs:
           dotnet-version: 2.2.105
       - name: Build with dotnet
         run: dotnet build
-      - name: Build with dotnet
+      - name: Run unit tests
         run: dotnet test
