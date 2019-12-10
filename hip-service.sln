@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hip-service", "hip-service\hip-service.csproj", "{F3A183D4-0689-4F0D-931C-5CC4FBEF6EE8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hip-service-test", "hip-service-test\hip-service-test.csproj", "{2DDA6D93-49DA-4076-868A-55CE573BF665}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F3A183D4-0689-4F0D-931C-5CC4FBEF6EE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3A183D4-0689-4F0D-931C-5CC4FBEF6EE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3A183D4-0689-4F0D-931C-5CC4FBEF6EE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3A183D4-0689-4F0D-931C-5CC4FBEF6EE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DDA6D93-49DA-4076-868A-55CE573BF665}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DDA6D93-49DA-4076-868A-55CE573BF665}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DDA6D93-49DA-4076-868A-55CE573BF665}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DDA6D93-49DA-4076-868A-55CE573BF665}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

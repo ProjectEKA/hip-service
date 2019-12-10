@@ -1,3 +1,5 @@
 .idea/
 [Oo]bj/
 bin/
+.DS_Store
+Nuget.Config

@@ -1,0 +1,80 @@
+[
+  {
+    "phoneNumber": "9999999999",
+    "firstName": "John",
+    "lastName": "Doe",
+    "caseId": "123456",
+    "Gender": "male",
+    "birthDate": "2019-12-06",
+    "address": {
+      "line": "2, 3rd Cross, Jayanagar",
+      "city": "Bengaluru",
+      "district": "Bengaluru",
+      "state": "Karnataka",
+      "postalCode": "560013"
+    },
+    "contact": {
+      "name": "Jim",
+      "phoneNumber": "7658765423"
+    }
+  },
+  {
+    "phoneNumber": "8888888888",
+    "firstName": "Jane",
+    "lastName": "Doe",
+    "caseId": "789123",
+    "Gender": "male",
+    "birthDate": "05/12/2019",
+    "address": {
+      "line": "3, 4rd Cross, Jayanagar",
+      "city": "Bengaluru",
+      "district": "Bengaluru",
+      "state": "Karnataka",
+      "postalCode": "560014"
+    },
+    "contact": {
+      "name": "Jade",
+      "phoneNumber": "7658765424"
+    }
+
+  },
+  {
+    "phoneNumber": "77777777777",
+    "firstName": "Olivia",
+    "lastName": "Doe",
+    "caseId": "281234",
+    "Gender": "female",
+    "birthDate": "04/12/2019",
+    "address": {
+      "line": "5, 6rd Cross, Jayanagar",
+      "city": "Bengaluru",
+      "district": "Bengaluru",
+      "state": "Karnataka",
+      "postalCode": "560015"
+    },
+    "contact": {
+      "name": "Johnson",
+      "phoneNumber": "7658765456"
+    }
+
+  },
+  {
+    "phoneNumber": "666666666666",
+    "firstName": "Ron",
+    "lastName": "Doe",
+    "caseId": "341909",
+    "Gender": "male",
+    "birthDate": "03/12/2019",
+    "address": {
+      "line": "6, 7rd Cross, Jayanagar",
+      "city": "Bengaluru",
+      "district": "Bengaluru",
+      "state": "Karnataka",
+      "postalCode": "560018"
+    },
+    "contact": {
+      "name": "Jackson",
+      "phoneNumber": "7658765487"
+    }
+  }
+]
