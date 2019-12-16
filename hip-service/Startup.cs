@@ -1,4 +1,5 @@
-﻿using hip_service.Services;
+﻿using hip_library.Patient;
+using hip_service.Discovery.Patients;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -20,7 +21,8 @@ namespace hip_service
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddSingleton(new PatientDiscoveryService("Resources/patients.json"));
+            services.AddSingleton<IPatientRepository>(new PatientRepository("Resources/patients.json"));
+            services.AddTransient<IDiscovery, PatientDiscovery>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
