@@ -1,0 +1,172 @@
+openapi: 3.0.0
+info:
+  version: 0.0.1
+  title: Health Information Provider
+  description: >
+    Clinical establishments which generate or store customer data in digital form. 
+    These include hospitals, primary or secondary health care centres, nursing homes, 
+    diagnostic centres, clinics, medical device companies and other such entities 
+    as may be identified by regulatory authorities from time to time.
+
+servers:
+  - url: https://localhost:8001
+    description: Dev
+
+tags:
+  - name: discovery
+
+paths:
+  /patients/discover/:
+    post:
+      tags:
+      - discovery
+      summary: Discover patient's accounts
+      description: >
+        Return only one patient record with (potentially masked) associated care contexts
+          1. **At least one of the verified identifier matches.**
+          2. **Filter out records using unverified, firstName, secondName, gender and dob
+          if there are more than one patient records found from step 1.**
+      consumes:
+      - application/json
+      - application/xml
+      produces:
+      - application/json
+      - application/xml
+      requestBody:
+        content:
+          application/json:
+            required: true
+            schema:
+              $ref: '#/components/requestBodies/PatientDiscoveryRequest'
+          application/xml:
+            required: true
+            schema:
+              $ref: '#/components/requestBodies/PatientDiscoveryRequest'
+      responses:
+        '200':
+          description: A patient record with one or more care contexts
+          schema:
+            $ref: '#/components/responses/PatientDiscoveryResponse'
+        '400':
+          description: >
+            **Causes:**
+              * Empty verified identifiers.
+              * Format mismatch of any of attributes.
+                | type   | Format/Allowed Values|
+                | ------- | ----------------    |
+                | dateOfBirth     | dd-mm-yyyy          |
+                | gender  | male/female/unknown |
+                | phone-number| 10 digits       |
+
+          schema:
+            $ref: '#/components/responses/PatientDiscoveryErrResponse'
+        '404':
+          description: >
+            **Causes:**
+              * No matching patient record found for the given identifiers.
+              * There are more than one definitive match for a given request.
+          schema:
+            $ref: '#/components/responses/PatientDiscoveryErrResponse'
+        '500':
+          description: >
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+          schema:
+            $ref: '#/components/responses/PatientDiscoveryErrResponse'
+
+components:
+  requestBodies:
+    PatientDiscoveryRequest:
+      type: object
+      properties:
+        verifiedIdentifiers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Identifier'
+          xml:
+            name: verifiedIdentifiers
+            wrapped: true
+        unverifiedIdentifiers:
+          type: array
+          items:
+            $ref: '#/components/schemas/Identifier'
+          xml:
+            name: unverifiedIdentifiers
+            wrapped: true
+        firstName:
+          type: string
+          example: "chandler"
+        lastName:
+          type: string
+          example: "bing"
+        gender:
+          type: gender
+          enum: [male, female, unknown]
+        dateOfBirth:
+          type: string
+          format: date
+      xml:
+        name: PatientDiscoveryRequest
+
+  responses:
+    PatientDiscoveryResponse:
+      type: object
+      properties:
+        patient:
+            $ref: '#/components/schemas/Patient'
+      xml:
+        name: PatientDiscoveryResponse
+
+    PatientDiscoveryErrResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Error'
+
+  schemas:
+    Identifier:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [phone-number, case-id]
+        value:
+          type: string
+          example: "9800083232"
+      xml:
+        name: Identifier
+
+    Patient:
+      type: object
+      properties:
+        referenceNumber:
+          type: string
+        display:
+          type: string
+        careContexts:
+          type: array
+          items: 
+            $ref: '#/components/schemas/CareContext'
+      xml:
+        name: Patient
+
+    CareContext:
+      type: object
+      properties:
+        referenceNumber:
+          type: string
+        display:
+          type: string
+      xml:
+        name: Tag
+
+    Error:
+      type: object
+      properties:
+        statusCode:
+          type: integer
+        errorMessage:
+          type: string
+      xml:
+        name: Error
