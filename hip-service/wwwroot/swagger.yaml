@@ -14,6 +14,7 @@ servers:
 
 tags:
   - name: discovery
+  - name: link
 
 paths:
   /patients/discover/:
@@ -75,6 +76,58 @@ paths:
           schema:
             $ref: '#/components/responses/PatientDiscoveryErrResponse'
 
+  /patients/link/:
+    post:
+      tags:
+      - link
+      summary: Link patient's care contexts
+      description: >
+        Links care contexts associated with only one patient
+          1. **Validate account reference number and care context reference number**
+          2. **Before linking, HIP needs to authenticate the request with the patient(Ex: OTP verification)**
+          3. **Communicate the mode of authentication of a successful request with HDAF**
+      consumes:
+      - application/json
+      - application/xml
+      produces:
+      - application/json
+      - application/xml
+      requestBody:
+        content:
+          application/json:
+            required: true
+            schema:
+              $ref: '#/components/requestBodies/PatientLinkRequest'
+          application/xml:
+            required: true
+            schema:
+              $ref: '#/components/requestBodies/PatientLinkRequest'
+      responses:
+        '200':
+          description: A successful link request
+          schema:
+            $ref: '#/components/responses/PatientLinkResponse'
+        '400':
+          description: >
+            **Causes:**
+              * Account reference number is invalid
+              * Care context reference numbers are invalid
+          schema:
+            $ref: '#/components/responses/PatientLinkErrResponse'
+        '401':
+          description: >
+            **Causes:**
+              * Unauthorized request
+          schema:
+            $ref: '#/components/responses/PatientLinkErrResponse'
+        '500':
+          description: >
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+          schema:
+            $ref: '#/components/responses/PatientLinkErrResponse'
+
 components:
   requestBodies:
     PatientDiscoveryRequest:
@@ -108,6 +161,20 @@ components:
           format: date
       xml:
         name: PatientDiscoveryRequest
+    PatientLinkRequest:
+      type: object
+      properties:
+        patientReferenceNumber:
+          type: string
+        careContexts:
+          type: array
+          items:
+            $ref: '#/components/schemas/CareContext'
+          xml:
+            name: careContexts
+            wrapped: true
+      xml:
+        name: PatientLinkRequest
 
   responses:
     PatientDiscoveryResponse:
@@ -119,6 +186,20 @@ components:
         name: PatientDiscoveryResponse
 
     PatientDiscoveryErrResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Error'
+
+    PatientLinkResponse:
+      type: object
+      properties:
+        patient:
+            $ref: '#/components/schemas/LinkReferenceResponse'
+      xml:
+        name: PatientLinkResponse
+
+    PatientLinkErrResponse:
       type: object
       properties:
         error:
@@ -147,11 +228,11 @@ components:
         careContexts:
           type: array
           items: 
-            $ref: '#/components/schemas/CareContext'
+            $ref: '#/components/schemas/CareContextRepresentation'
       xml:
         name: Patient
 
-    CareContext:
+    CareContextRepresentation:
       type: object
       properties:
         referenceNumber:
@@ -170,3 +251,18 @@ components:
           type: string
       xml:
         name: Error
+
+    LinkReferenceResponse:
+      type: object
+      properties:
+        referenceNumber:
+          type: string
+        authenticationType:
+          type: string
+          enum: ['Direct', 'Mediated']
+
+    CareContext:
+      type: object
+      properties:
+        referenceNumber:
+          type: string
