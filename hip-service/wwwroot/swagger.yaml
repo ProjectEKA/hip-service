@@ -272,6 +272,9 @@ components:
   schemas:
     Identifier:
       type: object
+      required:
+      - type
+      - value
       properties:
         type:
           type: string
@@ -284,6 +287,10 @@ components:
 
     PatientRepresentation:
       type: object
+      required:
+      - referenceNumber
+      - display
+      - careContexts
       properties:
         referenceNumber:
           type: string
@@ -298,6 +305,9 @@ components:
 
     CareContextRepresentation:
       type: object
+      required:
+      - referenceNumber
+      - display
       properties:
         referenceNumber:
           type: string
@@ -308,6 +318,9 @@ components:
 
     Error:
       type: object
+      required:
+      - statusCode
+      - errorMessage
       properties:
         statusCode:
           type: integer
@@ -318,21 +331,52 @@ components:
 
     LinkReference:
       type: object
+      required:
+      - referenceNumber
+      - authenticationType
       properties:
         referenceNumber:
           type: string
         authenticationType:
           type: string
-          enum: ['Direct', 'Mediated']
+          enum: ['DIRECT', 'MEDIATED']
+        meta:
+          type: object
+          $ref: '#/components/schemas/meta'
+      xml:
+        name: LinkReference
+
+
+    meta:
+      type: object
+      required:
+      - mode
+      - value
+      properties:
+        mode :
+          type: string
+          enum: ['M0BILE', 'EMAIL']
+        value:
+          type: string
+      xml:
+        name: meta
 
     CareContext:
       type: object
+      required:
+      - referenceNumber
       properties:
         referenceNumber:
           type: string
+      xml:
+        name: CareContext
+
 
     Patient:
       type: object
+      required:
+      - referenceNumber
+      - careContexts
       properties:
         referenceNumber:
           type: string
