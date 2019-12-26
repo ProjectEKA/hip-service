@@ -128,8 +128,8 @@ paths:
           schema:
             $ref: '#/components/responses/Error'
 
-  /patients/link/{linkRefNumber}/{token}:
-    get:
+  /patients/link/{linkRefNumber}:
+    post:
       tags:
       - link
       summary: Authenticates the token submitted by HDAF and links the account if authentication is successful.
@@ -145,6 +145,16 @@ paths:
       produces:
       - application/json
       - application/xml
+      requestBody:
+        content:
+          application/json:
+            required: true
+            schema:
+              $ref: '#/components/requestBodies/PatientLink'
+          application/xml:
+            required: true
+            schema:
+              $ref: '#/components/requestBodies/PatientLink'
       responses:
         '200':
           description: List of linked care contexts of a patient with patient reference number
@@ -219,6 +229,14 @@ components:
             wrapped: true
       xml:
         name: PatientLinkRequest
+
+    PatientLink:
+      type: object
+      properties:
+        token:
+          type: string
+      xml:
+        name: PatientLink
 
   responses:
     PatientDiscovery:
