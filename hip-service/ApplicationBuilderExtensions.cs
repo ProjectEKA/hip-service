@@ -26,10 +26,11 @@ namespace hip_service
             predicate ? action(application) : application;
 
         public static IApplicationBuilder UseCustomOpenAPI(this IApplicationBuilder application) =>
-            application.UseReDoc(options =>
+            application.UseSwaggerUI(options =>
             {
-                options.DocumentPath = "/swagger.yaml";
-                options.Path = "/openapi";
+                options.SwaggerEndpoint("/swagger.yaml", "hip");
+            }).UseReDoc(options => {
+                options.SpecUrl("/swagger.yaml");
             });
     }
 }
