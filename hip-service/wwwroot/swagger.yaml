@@ -130,7 +130,7 @@ components:
       properties:
         type:
           type: string
-          enum: [phone-number, case-id]
+          enum: [MR, MOBILE]
         value:
           type: string
           example: "9800083232"
