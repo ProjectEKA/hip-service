@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.IO;
-using hip_service.Models.dto;
+using hip_service.Discovery.Patient.models;
 using Newtonsoft.Json;
 
-namespace hip_service.Discovery.Patients.Helpers
+namespace hip_service.Discovery.Patient.Helpers
 {
     public static class FileReader
     {

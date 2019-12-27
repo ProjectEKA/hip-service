@@ -1,80 +1,90 @@
 [
   {
     "phoneNumber": "9999999999",
+    "identifier": "1",
     "firstName": "John",
     "lastName": "Doee",
-    "caseId": "123456",
     "Gender": "male",
-    "birthDate": "2019-12-06",
-    "address": {
-      "line": "2, 3rd Cross, Jayanagar",
-      "city": "Bengaluru",
-      "district": "Bengaluru",
-      "state": "Karnataka",
-      "postalCode": "560013"
-    },
-    "contact": {
-      "name": "Jim",
-      "phoneNumber": "7658765423"
-    }
+    "dateOfBirth": "2019-12-06",
+    "email": "abc@def.com",
+    "programs": [
+      {
+        "referenceNumber": "123",
+        "name": "Cancer",
+        "description": "National Cancer program"
+      },
+      {
+        "referenceNumber": "124",
+        "name": "TB",
+        "description": "National TB program"
+      }
+    ]
   },
   {
     "phoneNumber": "8888888888",
+    "identifier": "2",
+    "email": "ijk@def.com",
     "firstName": "Jane",
     "lastName": "Doe",
-    "caseId": "789123",
+    "caseReferenceNumber": "789123",
     "Gender": "male",
-    "birthDate": "05/12/2019",
-    "address": {
-      "line": "3, 4rd Cross, Jayanagar",
-      "city": "Bengaluru",
-      "district": "Bengaluru",
-      "state": "Karnataka",
-      "postalCode": "560014"
-    },
-    "contact": {
-      "name": "Jade",
-      "phoneNumber": "7658765424"
-    }
-
+    "dateOfBirth": "2019-12-05",
+    "programs": [
+      {
+        "referenceNumber": "125",
+        "name": "Cancer",
+        "description": "National Cancer program"
+      },
+      {
+        "referenceNumber": "126",
+        "name": "TB",
+        "description": "National TB program"
+      }
+    ]
   },
   {
     "phoneNumber": "77777777777",
+    "identifier": "3",
+    "email": "def@def.com",
     "firstName": "Olivia",
     "lastName": "Doe",
-    "caseId": "281234",
+    "caseReferenceNumber": "281234",
     "Gender": "female",
-    "birthDate": "04/12/2019",
-    "address": {
-      "line": "5, 6rd Cross, Jayanagar",
-      "city": "Bengaluru",
-      "district": "Bengaluru",
-      "state": "Karnataka",
-      "postalCode": "560015"
-    },
-    "contact": {
-      "name": "Johnson",
-      "phoneNumber": "7658765456"
-    }
-
+    "dateOfBirth": "2019-12-04",
+    "programs": [
+      {
+        "referenceNumber": "127",
+        "name": "Cancer",
+        "description": "National Cancer program"
+      },
+      {
+        "referenceNumber": "128",
+        "name": "TB",
+        "description": "National TB program"
+      }
+    ]
   },
   {
     "phoneNumber": "666666666666",
+    "identifier": "4",
+    "email": "ghi@def.com",
     "firstName": "Ron",
     "lastName": "Doe",
-    "caseId": "341909",
+    "caseReferenceNumber": "341909",
     "Gender": "male",
-    "birthDate": "03/12/2019",
-    "address": {
-      "line": "6, 7rd Cross, Jayanagar",
-      "city": "Bengaluru",
-      "district": "Bengaluru",
-      "state": "Karnataka",
-      "postalCode": "560018"
-    },
-    "contact": {
-      "name": "Jackson",
-      "phoneNumber": "7658765487"
-    }
+    "dateOfBirth": "2019-12-03",
+    "programs": [
+      {
+        "referenceNumber": "129",
+        "name": "Cancer",
+        "description": "National Cancer program"
+      },
+      {
+        "referenceNumber": "130",
+        "name": "TB",
+        "description": "National TB program"
+      }
+    ]
+
   }
 ]
