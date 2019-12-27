@@ -166,7 +166,6 @@ components:
       properties:
         statusCode:
           type: integer
-          
         errorMessage:
           type: string
       xml:

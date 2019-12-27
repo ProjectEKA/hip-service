@@ -12,7 +12,6 @@
         <PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="5.0.0-rc5" />
         <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="5.0.0-rc5" />
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="5.0.0-rc5" />
-        <PackageReference Include="NSwag.AspNetCore" Version="13.2.0" />
         <PackageReference Include="health-information-provider-library" Version="0.0.0" />
     </ItemGroup>
 
