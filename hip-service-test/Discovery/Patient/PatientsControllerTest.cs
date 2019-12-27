@@ -30,9 +30,9 @@ namespace hip_service_test.Discovery.Patient
                 Gender.Male, new DateTime(2019, 01, 01));
 
             var mockDiscovery = new Mock<IDiscovery>();
-            var expectedPatient = new hip_library.Patient.models.Patient("p1", "J K", new List<CareContext>()
+            var expectedPatient = new hip_library.Patient.models.Patient("p1", "J K", new List<CareContextRepresentation>()
             {
-                new CareContext("1", "display")
+                new CareContextRepresentation("1", "display")
             }, new List<string>());
             mockDiscovery.Setup(x => x.PatientFor(discoveryRequest)).ReturnsAsync(
                 new Tuple<hip_library.Patient.models.Patient, Error>(expectedPatient, null));
