@@ -18,9 +18,9 @@ namespace hip_service_test.Discovery.Patient
             var mockPatientRepository = new Mock<IPatientRepository>();
             var patientDiscovery = new PatientDiscovery(mockPatientRepository.Object, new DiscoveryUseCase());
 
-            var patient1 = new hip_library.Patient.models.Patient("123", "xyz abc", new List<CareContext>
+            var patient1 = new hip_library.Patient.models.Patient("123", "xyz abc", new List<CareContextRepresentation>
             {
-                new CareContext("321", "display")
+                new CareContextRepresentation("321", "display")
             }, new List<string>
             {
                 "name"
@@ -57,16 +57,16 @@ namespace hip_service_test.Discovery.Patient
             var mockPatientRepository = new Mock<IPatientRepository>();
             var patientDiscovery = new PatientDiscovery(mockPatientRepository.Object, new DiscoveryUseCase());
 
-            var patient1 = new hip_library.Patient.models.Patient("123", "xyz abc", new List<CareContext>
+            var patient1 = new hip_library.Patient.models.Patient("123", "xyz abc", new List<CareContextRepresentation>
             {
-                new CareContext("321", "display")
+                new CareContextRepresentation("321", "display")
             }, new List<string>
             {
                 "name"
             });
-            var patient2 = new hip_library.Patient.models.Patient("124", "xyz eee", new List<CareContext>
+            var patient2 = new hip_library.Patient.models.Patient("124", "xyz eee", new List<CareContextRepresentation>
             {
-                new CareContext("322", "display")
+                new CareContextRepresentation("322", "display")
             }, new List<string>
             {
                 "name"
