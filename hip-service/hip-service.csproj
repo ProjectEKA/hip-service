@@ -13,8 +13,7 @@
         <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="5.0.0-rc5" />
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="5.0.0-rc5" />
         <PackageReference Include="NSwag.AspNetCore" Version="13.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
-        <PackageReference Include="hip-library" Version="0.0.4" />
+        <PackageReference Include="health-information-provider-library" Version="0.0.0" />
     </ItemGroup>
 
 </Project>
