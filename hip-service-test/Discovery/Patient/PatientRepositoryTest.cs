@@ -12,10 +12,10 @@ namespace hip_service_test.Discovery.Patient
         [Fact]
         private async void ShouldGetPatientsBasedOnPhoneNumber()
         {
-            var expectedPatient = new hip_library.Patient.models.Patient("1", "John Doee", new List<CareContext>()
+            var expectedPatient = new hip_library.Patient.models.Patient("1", "John Doee", new List<CareContextRepresentation>()
             {
-                new CareContext("123", "National Cancer program"),
-                new CareContext("124", "National TB program")
+                new CareContextRepresentation("123", "National Cancer program"),
+                new CareContextRepresentation("124", "National TB program")
             }, new List<string>() {""});
 
             var patientRepository = new PatientRepository("patients.json");
@@ -52,9 +52,9 @@ namespace hip_service_test.Discovery.Patient
         [Fact]
         private async void ShouldGetPatientsBasedOnCaseId()
         {
-            var expectedPatient = new hip_library.Patient.models.Patient("1", "John Doee", new List<CareContext>()
+            var expectedPatient = new hip_library.Patient.models.Patient("1", "John Doee", new List<CareContextRepresentation>()
             {
-                new CareContext("123", "National Cancer program"),
+                new CareContextRepresentation("123", "National Cancer program"),
             }, new List<string>() {""});
 
             var patientRepository = new PatientRepository("patients.json");
@@ -69,10 +69,10 @@ namespace hip_service_test.Discovery.Patient
         [Fact]
         private async void ShouldGetPatientsBasedOnFirstName()
         {
-            var expectedPatient = new hip_library.Patient.models.Patient("1", "John Doee", new List<CareContext>()
+            var expectedPatient = new hip_library.Patient.models.Patient("1", "John Doee", new List<CareContextRepresentation>()
             {
-                new CareContext("123", "National Cancer program"),
-                new CareContext("124", "National TB program")
+                new CareContextRepresentation("123", "National Cancer program"),
+                new CareContextRepresentation("124", "National TB program")
             }, new List<string>() {""});
 
             var patientRepository = new PatientRepository("patients.json");
@@ -87,10 +87,10 @@ namespace hip_service_test.Discovery.Patient
         [Fact]
         private async void ShouldGetPatientsBasedOnLastName()
         {
-            var expectedPatient = new hip_library.Patient.models.Patient("1", "John Doee", new List<CareContext>()
+            var expectedPatient = new hip_library.Patient.models.Patient("1", "John Doee", new List<CareContextRepresentation>()
             {
-                new CareContext("123", "National Cancer program"),
-                new CareContext("124", "National TB program")
+                new CareContextRepresentation("123", "National Cancer program"),
+                new CareContextRepresentation("124", "National TB program")
             }, new List<string>() {""});
 
             var patientRepository = new PatientRepository("patients.json");

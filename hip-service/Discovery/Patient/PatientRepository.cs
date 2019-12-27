@@ -29,7 +29,7 @@ namespace hip_service.Discovery.Patient
                     var careContexts = patient.Programs
                         .Where(program =>
                             caseReferenceNumber == null || program.ReferenceNumber == caseReferenceNumber)
-                        .Select(program => new CareContext(
+                        .Select(program => new CareContextRepresentation(
                             program.ReferenceNumber,
                             program.Description))
                         .ToList();

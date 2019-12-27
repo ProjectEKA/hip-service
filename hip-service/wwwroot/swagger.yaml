@@ -55,9 +55,9 @@ paths:
               * Format mismatch of any of attributes.
                 | type   | Format/Allowed Values|
                 | ------- | ----------------    |
-                | dateOfBirth     | dd-mm-yyyy          |
-                | gender  | male/female/unknown |
-                | phone-number| 10 digits       |
+                | dateOfBirth     | dd-mm-yyyy  |
+                | gender  | M/F/O |
+                | MOBILE  | valid mobile number with proper country code |
 
           schema:
             $ref: '#/components/responses/Error'
@@ -208,7 +208,7 @@ components:
           example: "bing"
         gender:
           type: gender
-          enum: [male, female, unknown]
+          enum: [M, F, O]
         dateOfBirth:
           type: string
           format: date
@@ -278,10 +278,10 @@ components:
       properties:
         type:
           type: string
-          enum: [MR, MOBILE]
+          enum: [MOBILE, MR]
         value:
           type: string
-          example: "9800083232"
+          example: "+919800083232"
       xml:
         name: Identifier
 
@@ -322,9 +322,10 @@ components:
       - statusCode
       - errorMessage
       properties:
-        statusCode:
+        code:
           type: integer
-        errorMessage:
+          enum: []
+        message:
           type: string
       xml:
         name: Error
