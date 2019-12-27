@@ -1,4 +1,5 @@
 ﻿using hip_library.Patient;
+using hip_service.Discovery.Patient;
 using hip_service.Discovery.Patients;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -20,6 +21,7 @@ namespace hip_service
         public void ConfigureServices(IServiceCollection services) =>
             services
                 .AddSingleton<IPatientRepository>(new PatientRepository("Resources/patients.json"))
+                .AddSingleton<DiscoveryUseCase>()
                 .AddTransient<IDiscovery, PatientDiscovery>()
                 .AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
