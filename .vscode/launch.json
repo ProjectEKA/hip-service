@@ -5,14 +5,16 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Development Environment",
+      "name": "HIP development environment",
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/bin/Debug/netcoreapp3.1/hip-service.dll",
+      // If you have changed target frameworks, make sure to update the program path.
+      "program": "${workspaceFolder}/hip-service/bin/Debug/netcoreapp3.1/hip-service.dll",
       "args": [],
-      "cwd": "${workspaceFolder}",
+      "cwd": "${workspaceFolder}/hip-service",
       "stopAtEntry": false,
+      // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
       "serverReadyAction": {
         "action": "openExternally",
         "pattern": "^\\s*Now listening on:\\s+(https?://\\S+)"
