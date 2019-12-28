@@ -8,7 +8,7 @@ namespace hip_service.Discovery.Patient
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PatientController : ControllerBase
+    public class PatientController : Controller
     {
         private readonly IDiscovery patientDiscovery;
 
