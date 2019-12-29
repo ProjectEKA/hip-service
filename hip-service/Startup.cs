@@ -10,11 +10,11 @@ namespace hip_service
 {
     public class Startup
     {
-
         public void ConfigureServices(IServiceCollection services) =>
             services
                 .AddSingleton<IPatientRepository>(new PatientRepository("Resources/patients.json"))
                 .AddSingleton<DiscoveryUseCase>()
+                .AddSingleton<PatientsDiscovery>(new PatientsDiscovery(new PatientMatchingRepository("Resources/patients.json"), new DiscoveryUseCase()))
                 .AddTransient<IDiscovery, PatientDiscovery>()
                 .AddRouting(options => options.LowercaseUrls = true)
                 .AddControllers()
