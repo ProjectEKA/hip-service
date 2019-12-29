@@ -12,13 +12,13 @@ namespace hip_service.Discovery.Patients
 
         public PatientsDiscovery(Discovery.Patient.IMatchingRepository patientRepository, Discovery.Patient.DiscoveryUseCase discoveryUseCase)
         {
-            this.filter = new Discovery.Patient.Filter(patientRepository);
+            filter = new Discovery.Patient.Filter(patientRepository);
             this.discoveryUseCase = discoveryUseCase;
         }
 
-        public async Task<Tuple<hip_library.Patient.models.Patient, Error>> PatientFor(DiscoveryRequest request)
+        public async Task<Tuple<Patient, Error>> PatientFor(DiscoveryRequest request)
         {
-            var patients = await filter.doFilter(request);
+            var patients = await filter.DoFilter(request);
 
             return discoveryUseCase.DiscoverPatient(patients);
         }
