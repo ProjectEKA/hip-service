@@ -1,17 +1,27 @@
 namespace hip_service.Discovery.Patient
 {
-    using System.Linq;
-    using hip_library.Patient.models;
-    using System.Threading.Tasks;
-    using System.Collections.Generic;
     using static StrongMatcherFactory;
-    using static hip_service.Discovery.Patient.RankBuilder;
-    using static hip_service.Discovery.Patient.MetaBuilder;
-    using hip_service.Discovery.Patient.models;
+    using static RankBuilder;
+    using static PatientWithRankBuilder;
+    using static MetaBuilder;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using hip_library.Patient.models;
+    using models;
 
     public class Filter
     {
-        readonly IMatchingRepository matchingRepository;
+        private enum IdentifierTypeExt
+        {
+            Mobile,
+            FirstName,
+            LastName,
+            Mr,
+            Empty
+        }
+
+        private readonly IMatchingRepository matchingRepository;
 
         public Filter(IMatchingRepository matchingRepository)
         {
@@ -21,87 +31,159 @@ namespace hip_service.Discovery.Patient
         private PatientWithRank<PatientInfo> RankPatient(PatientInfo patientInfo,
             DiscoveryRequest request)
         {
-            static PatientWithRank<PatientInfo> rankMobile(PatientInfo patientInfo, string value)
-            {
-                return patientInfo.PhoneNumber == value ?
-                    new PatientWithRank<PatientInfo>(patientInfo, StrongMatchRank, FullMatchMeta("MOBILE")) :
-                    new PatientWithRank<PatientInfo>(patientInfo, EmptyRank, EmptyMeta);
-            }
-
-            static PatientWithRank<PatientInfo> rankName(PatientInfo patientInfo, string value)
-            {
-                return patientInfo.FirstName == value ?
-                    new PatientWithRank<PatientInfo>(patientInfo, WeakMatchRank, FullMatchMeta("FirstName")) :
-                    new PatientWithRank<PatientInfo>(patientInfo, EmptyRank, EmptyMeta);
-            }
-            return rankMobile(patientInfo,
-                request.VerifiedIdentifiers.SingleOrDefault(
-                    (Identifier arg) => arg.Type == IdentifierType.Mobile).Value)
-                +
-                rankName(patientInfo, request.FirstName);
+            return RanksFor(request, patientInfo)
+                .Aggregate(EmptyRankWith(patientInfo),
+                    (rank, withRank) => rank + withRank);
         }
 
-        public async Task<IQueryable<Patient>> DoFilter(DiscoveryRequest request)
+        private IEnumerable<PatientWithRank<PatientInfo>> RanksFor(DiscoveryRequest request, PatientInfo patientInfo)
+        {
+            var ranks = new Dictionary<IdentifierTypeExt, IRanker<PatientInfo>>
+            {
+                {IdentifierTypeExt.Mobile, new MobileRanker()},
+                {IdentifierTypeExt.FirstName, new FirstNameRanker()},
+                {IdentifierTypeExt.LastName, new LastNameRanker()},
+                {IdentifierTypeExt.Empty, new EmptyRanker()}
+            };
+            return from(request).Select(identifier =>
+                ranks.GetValueOrDefault(identifier.Type, new EmptyRanker())
+                    .Rank(patientInfo, identifier.Value));
+        }
+
+        private static IEnumerable<IdentifierExt> from(DiscoveryRequest request)
+        {
+            var identifierTypeExts = new Dictionary<IdentifierType, IdentifierTypeExt>
+            {
+                {IdentifierType.Mobile, IdentifierTypeExt.Mobile},
+                {IdentifierType.Mr, IdentifierTypeExt.Mr}
+            };
+            return request.VerifiedIdentifiers
+                .Select(identifier => new IdentifierExt(identifierTypeExts.GetValueOrDefault(identifier.Type,
+                    IdentifierTypeExt.Empty), identifier.Value))
+                .Concat(request.UnverifiedIdentifiers
+                    .Select(identifier => new IdentifierExt(identifierTypeExts.GetValueOrDefault(identifier.Type,
+                        IdentifierTypeExt.Empty), identifier.Value)))
+                .Append(new IdentifierExt(IdentifierTypeExt.FirstName, request.FirstName))
+                .Append(new IdentifierExt(IdentifierTypeExt.LastName, request.LastName));
+        }
+
+        public async Task<IQueryable<hip_library.Patient.models.Patient>> Do(DiscoveryRequest request)
         {
             var expression = GetExpression(request.VerifiedIdentifiers);
             return (await matchingRepository.Where(expression))
-                    .AsEnumerable()
-                    .Select(patientInfo => RankPatient(patientInfo, request))
-                    .GroupBy(rankedPatient => rankedPatient.Rank.Score)
-                    .OrderByDescending(rankedPatient => rankedPatient.Key)
-                    .Take(1)
-                    .SelectMany(group => {
-                       return group.Select(rankedPatient => {
-                           var careContexts = rankedPatient.Patient.Programs
-                                .Select(program =>
-                                new CareContextRepresentation(
-                                    program.ReferenceNumber,
-                                    program.Description))
-                                .ToList();
+                .AsEnumerable()
+                .Select(patientInfo => RankPatient(patientInfo, request))
+                .GroupBy(rankedPatient => rankedPatient.Rank.Score)
+                .OrderByDescending(rankedPatient => rankedPatient.Key)
+                .Take(1)
+                .SelectMany(group => group.Select(rankedPatient =>
+                {
+                    var careContexts = rankedPatient.Patient.Programs
+                        .Select(program =>
+                            new CareContextRepresentation(
+                                program.ReferenceNumber,
+                                program.Description))
+                        .ToList();
 
-                        return new Patient(
-                            rankedPatient.Patient.Identifier,
-                            $"{rankedPatient.Patient.FirstName} {rankedPatient.Patient.LastName}",
-                            careContexts, rankedPatient.Meta.Select(meta => meta.Field));
-                       });
-                    }).AsQueryable();
+                    return new hip_library.Patient.models.Patient(
+                        rankedPatient.Patient.Identifier,
+                        $"{rankedPatient.Patient.FirstName} {rankedPatient.Patient.LastName}",
+                        careContexts, rankedPatient.Meta.Select(meta => meta.Field));
+                })).AsQueryable();
+        }
+
+        private class IdentifierExt
+        {
+            public IdentifierExt(IdentifierTypeExt type, string value)
+            {
+                Type = type;
+                Value = value;
+            }
+
+            public IdentifierTypeExt Type { get; }
+            public string Value { get; }
+        }
+
+        private interface IRanker<T>
+        {
+            PatientWithRank<T> Rank(T element, string by);
+        }
+
+        private class FirstNameRanker : IRanker<PatientInfo>
+        {
+            public PatientWithRank<PatientInfo> Rank(PatientInfo patientInfo, string firstName)
+            {
+                return patientInfo.FirstName == firstName
+                    ? new PatientWithRank<PatientInfo>(patientInfo, WeakMatchRank, FullMatchMeta("FirstName"))
+                    : new PatientWithRank<PatientInfo>(patientInfo, EmptyRank, EmptyMeta);
+            }
+        }
+
+        private class MobileRanker : IRanker<PatientInfo>
+        {
+            public PatientWithRank<PatientInfo> Rank(PatientInfo patientInfo, string mobile)
+            {
+                return patientInfo.PhoneNumber == mobile
+                    ? new PatientWithRank<PatientInfo>(patientInfo, StrongMatchRank, FullMatchMeta("MOBILE"))
+                    : new PatientWithRank<PatientInfo>(patientInfo, EmptyRank, EmptyMeta);
+            }
+        }
+
+        private class EmptyRanker : IRanker<PatientInfo>
+        {
+            public PatientWithRank<PatientInfo> Rank(PatientInfo patientInfo, string _)
+            {
+                return EmptyRankWith(patientInfo);
+            }
+        }
+
+        private class LastNameRanker : IRanker<PatientInfo>
+        {
+            public PatientWithRank<PatientInfo> Rank(PatientInfo patientInfo, string lastName)
+            {
+                return patientInfo.LastName == lastName
+                    ? new PatientWithRank<PatientInfo>(patientInfo, WeakMatchRank, FullMatchMeta("LastName"))
+                    : new PatientWithRank<PatientInfo>(patientInfo, EmptyRank, EmptyMeta);
+            }
         }
     }
 
     internal class PatientWithRank<T>
     {
-        public Rank Rank { get; }
-
-        public ISet<Meta> Meta { get; }
-
-        public T Patient { get; }
-
         public PatientWithRank(T patientInfo, Rank rank, Meta meta)
         {
             Patient = patientInfo;
             Rank = rank;
-            Meta = new HashSet<Meta> { meta };
+            Meta = new HashSet<Meta> {meta};
         }
 
-        public PatientWithRank(T patientInfo, Rank rank, ISet<Meta> meta)
+        private PatientWithRank(T patientInfo, Rank rank, ISet<Meta> meta)
         {
             Patient = patientInfo;
             Rank = rank;
             Meta = meta;
         }
 
+        public Rank Rank { get; }
+
+        public ISet<Meta> Meta { get; }
+
+        public T Patient { get; }
+
         public static PatientWithRank<T> operator +(PatientWithRank<T> left,
-                                               PatientWithRank<T> right) =>
-            new PatientWithRank<T>(left.Patient,
+            PatientWithRank<T> right)
+        {
+            return new PatientWithRank<T>(left.Patient,
                 Rank(left.Rank.Score + right.Rank.Score),
-                left.Meta.Union(right.Meta).ToHashSet());
+                left.Meta.Union(right.Meta).Where(meta => !meta.Equals(EmptyMeta)).ToHashSet());
+        }
     }
 
     public struct Meta
     {
         public string Field { get; }
 
-        public MatchLevel MatchLevel { get;  }
+        private MatchLevel MatchLevel;
 
         public Meta(string field, MatchLevel matchLevel)
         {
@@ -117,11 +199,11 @@ namespace hip_service.Discovery.Patient
 
     public struct Rank
     {
-        public int Score { get;  }
+        public int Score { get; }
 
         public Rank(int score)
         {
-           Score = score;
+            Score = score;
         }
     }
 }

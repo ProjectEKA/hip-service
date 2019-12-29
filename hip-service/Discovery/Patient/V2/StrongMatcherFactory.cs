@@ -9,16 +9,17 @@
 
     public static class StrongMatcherFactory
     {
-        private static Dictionary<IdentifierType, IIdentifierMatcher> matchers =
+        private static readonly Dictionary<IdentifierType, IIdentifierMatcher> Matchers =
         new Dictionary<IdentifierType, IIdentifierMatcher>() {
             { IdentifierType.Mobile, new PhoneNumberMatcher() }
         };
 
-        private static Expression<Func<PatientInfo, bool>> toExpression(Identifier identifier) =>
-            matchers.GetValueOrDefault(identifier.Type, new EmptyMatcher()).of(identifier.Value);
+        private static Expression<Func<PatientInfo, bool>> ToExpression(Identifier identifier) =>
+            Matchers.GetValueOrDefault(identifier.Type, new EmptyMatcher()).of(identifier.Value);
         public static Expression<Func<PatientInfo, bool>> GetExpression(IEnumerable<Identifier> identifiers) =>
             identifiers
-                .Select(toExpression)
-                .Aggregate(ExpressionBuilder.False<PatientInfo>(), (accumalate, next) => accumalate.Or(next));
+                .Select(ToExpression)
+                .Aggregate(ExpressionBuilder.False<PatientInfo>(),
+                    (accumulate, next) => accumulate.Or(next));
     }
 }

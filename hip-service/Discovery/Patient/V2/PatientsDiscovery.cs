@@ -18,7 +18,7 @@ namespace hip_service.Discovery.Patients
 
         public async Task<Tuple<Patient, Error>> PatientFor(DiscoveryRequest request)
         {
-            var patients = await filter.DoFilter(request);
+            var patients = await filter.Do(request);
 
             return discoveryUseCase.DiscoverPatient(patients);
         }

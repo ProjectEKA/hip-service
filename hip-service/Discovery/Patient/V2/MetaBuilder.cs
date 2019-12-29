@@ -2,8 +2,7 @@
 {
     public static class MetaBuilder
     {
-
-        public static Meta Meta(string field, MatchLevel matchLevel) =>
+        private static Meta Meta(string field, MatchLevel matchLevel) =>
             new Meta(field, matchLevel);
 
         public static Meta FullMatchMeta(string field) =>
