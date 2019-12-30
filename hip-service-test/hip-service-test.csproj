@@ -10,7 +10,6 @@
 
     <ItemGroup>
         <PackageReference Include="health-information-provider-library" Version="0.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.App" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.1.1" />
         <PackageReference Include="FluentAssertions" Version="5.6.0" />
         <PackageReference Include="xunit" Version="2.4.1" />
@@ -22,7 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\hip-service\hip-service.csproj" />
+        <ProjectReference Include="..\hip-service\hip-service.csproj" />
     </ItemGroup>
     <ItemGroup>
         <Content Include="..\hip-service\Resources\**">
@@ -30,6 +29,6 @@
         </Content>
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="Controllers" />
+        <Folder Include="Controllers" />
     </ItemGroup>
 </Project>
