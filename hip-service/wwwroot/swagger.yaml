@@ -213,7 +213,7 @@ components:
           type: string
           format: date
       xml:
-        name: PatientDiscovery
+        name: PatientDiscoveryRequest
 
     PatientLinkReference:
       type: object
@@ -228,7 +228,7 @@ components:
             name: careContexts
             wrapped: true
       xml:
-        name: PatientLinkRequest
+        name: PatientLinkReferenceRequest
 
     PatientLink:
       type: object
@@ -236,7 +236,7 @@ components:
         token:
           type: string
       xml:
-        name: PatientLink
+        name: PatientLinkRequest
 
   responses:
     PatientDiscovery:
@@ -245,7 +245,7 @@ components:
         patient:
             $ref: '#/components/schemas/PatientRepresentation'
       xml:
-        name: PatientDiscovery
+        name: PatientDiscoveryResponse
 
     Error:
       type: object
@@ -259,7 +259,7 @@ components:
         linkReference:
             $ref: '#/components/schemas/LinkReference'
       xml:
-        name: PatientLinkReference
+        name: PatientLinkReferenceResponse
 
     PatientLink:
       type: object
@@ -267,7 +267,7 @@ components:
         patient:
             $ref: '#/components/schemas/Patient'
       xml:
-        name: PatientLink
+        name: PatientLinkResponse
 
   schemas:
     Identifier:
@@ -343,24 +343,27 @@ components:
           enum: ['DIRECT', 'MEDIATED']
         meta:
           type: object
-          $ref: '#/components/schemas/meta'
+          $ref: '#/components/schemas/Meta'
       xml:
         name: LinkReference
 
 
-    meta:
+    Meta:
       type: object
       required:
       - mode
       - value
       properties:
-        mode :
+        communicationMedium:
           type: string
           enum: ['M0BILE', 'EMAIL']
-        value:
+        communicationValue:
           type: string
+        communicationExpiry:
+          type: string
+          example: "2019-12-30T12:01:55Z"
       xml:
-        name: meta
+        name: Meta
 
     CareContext:
       type: object
