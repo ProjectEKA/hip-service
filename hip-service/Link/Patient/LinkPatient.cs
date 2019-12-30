@@ -22,10 +22,10 @@ namespace hip_service.Link.Patient
             return linkPatientRepository.LinkPatient(request.PatientReferenceNumber,
                 request.CareContexts.Select(context => context.ReferenceNumber).ToArray());
         }
-
         public Task<Tuple<PatientLinkResponse, Error>> VerifyAndLinkCareContext(PatientLinkRequest request)
         {
             throw new NotImplementedException();
         }
+
     }
 }

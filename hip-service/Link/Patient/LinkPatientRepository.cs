@@ -46,8 +46,8 @@ namespace hip_service.Link.Patient
                 string otp = "123456";
 
                 String linkRefNumber = Guid.NewGuid().ToString();
-                var expiry = new DateTime (DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 
-                    DateTime.Now.Hour, DateTime.Now.Minute+1, DateTime.Now.Second).ToUniversalTime().
+                var expiry = new DateTime (DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day,
+                        DateTime.Now.Hour, DateTime.Now.Minute+1, DateTime.Now.Second).ToUniversalTime().
                     ToString("yyyy-MM-ddTHH:mm:ssZ"); 
                 //Convert to utc and time expiry should come from config
                 var meta = new LinkReferenceMeta(nameof(LinkReferenceMode.Mobile).ToUpper(), patient.PhoneNumber, expiry);
