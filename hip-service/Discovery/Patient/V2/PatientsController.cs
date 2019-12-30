@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace hip_service.Discovery.Patient
 {
+    using System;
+
     [Route("api/[controller]")]
     [ApiController]
     public class PatientsController : Controller
@@ -18,9 +20,7 @@ namespace hip_service.Discovery.Patient
         [HttpPost]
         public async Task<ActionResult> Discover(DiscoveryRequest request)
         {
-            var result = await patientDiscovery.PatientFor(request);
-            var patient = result.Item1;
-            var error = result.Item2;
+            var (patient, error) = await patientDiscovery.PatientFor(request);
 
             if (error != null) return NotFound(error);
 

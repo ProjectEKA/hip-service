@@ -1,12 +1,10 @@
 namespace hip_service.Discovery.Patient
 {
-    using static StrongMatcherFactory;
     using static RankBuilder;
     using static PatientWithRankBuilder;
     using static MetaBuilder;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
     using hip_library.Patient.models;
     using models;
 
@@ -19,13 +17,6 @@ namespace hip_service.Discovery.Patient
             LastName,
             Mr,
             Empty
-        }
-
-        private readonly IMatchingRepository matchingRepository;
-
-        public Filter(IMatchingRepository matchingRepository)
-        {
-            this.matchingRepository = matchingRepository;
         }
 
         private PatientWithRank<PatientInfo> RankPatient(PatientInfo patientInfo,
@@ -45,12 +36,12 @@ namespace hip_service.Discovery.Patient
                 {IdentifierTypeExt.LastName, new LastNameRanker()},
                 {IdentifierTypeExt.Empty, new EmptyRanker()}
             };
-            return from(request).Select(identifier =>
+            return From(request).Select(identifier =>
                 ranks.GetValueOrDefault(identifier.Type, new EmptyRanker())
                     .Rank(patientInfo, identifier.Value));
         }
 
-        private static IEnumerable<IdentifierExt> from(DiscoveryRequest request)
+        private static IEnumerable<IdentifierExt> From(DiscoveryRequest request)
         {
             var identifierTypeExts = new Dictionary<IdentifierType, IdentifierTypeExt>
             {
@@ -67,10 +58,9 @@ namespace hip_service.Discovery.Patient
                 .Append(new IdentifierExt(IdentifierTypeExt.LastName, request.LastName));
         }
 
-        public async Task<IQueryable<hip_library.Patient.models.Patient>> Do(DiscoveryRequest request)
+        public IEnumerable<Patient> Do(IEnumerable<PatientInfo> patients, DiscoveryRequest request)
         {
-            var expression = GetExpression(request.VerifiedIdentifiers);
-            return (await matchingRepository.Where(expression))
+            return patients
                 .AsEnumerable()
                 .Select(patientInfo => RankPatient(patientInfo, request))
                 .GroupBy(rankedPatient => rankedPatient.Rank.Score)
@@ -85,11 +75,11 @@ namespace hip_service.Discovery.Patient
                                 program.Description))
                         .ToList();
 
-                    return new hip_library.Patient.models.Patient(
+                    return new Patient(
                         rankedPatient.Patient.Identifier,
                         $"{rankedPatient.Patient.FirstName} {rankedPatient.Patient.LastName}",
                         careContexts, rankedPatient.Meta.Select(meta => meta.Field));
-                })).AsQueryable();
+                }));
         }
 
         private class IdentifierExt
