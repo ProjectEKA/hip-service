@@ -148,6 +148,11 @@ components:
           type: array
           items: 
             $ref: '#/components/schemas/CareContext'
+        matchedBy:
+          type: array
+          items:
+            type: string
+            enum: [MOBILE, MR]
       xml:
         name: Patient
 
