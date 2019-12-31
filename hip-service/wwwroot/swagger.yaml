@@ -7,7 +7,6 @@ info:
     These include hospitals, primary or secondary health care centres, nursing homes, 
     diagnostic centres, clinics, medical device companies and other such entities 
     as may be identified by regulatory authorities from time to time.
-
 servers:
   - url: https://localhost:8001
     description: Dev
@@ -17,37 +16,34 @@ tags:
   - name: link
 
 paths:
-  /patients/discover/:
+  /patients/discover:
     post:
       tags:
-      - discovery
+        - discovery
       summary: Discover patient's accounts
       description: >
         Return only one patient record with (potentially masked) associated care contexts
           1. **At least one of the verified identifier matches.**
           2. **Filter out records using unverified, firstName, secondName, gender and dob
           if there are more than one patient records found from step 1.**
-      consumes:
-      - application/json
-      - application/xml
-      produces:
-      - application/json
-      - application/xml
       requestBody:
         content:
           application/json:
-            required: true
             schema:
-              $ref: '#/components/requestBodies/PatientDiscovery'
+              $ref: '#/components/schemas/PatientDiscoveryRequest'
           application/xml:
-            required: true
             schema:
-              $ref: '#/components/requestBodies/PatientDiscovery'
+              $ref: '#/components/schemas/PatientDiscoveryRequest'
       responses:
         '200':
           description: A patient record with one or more care contexts
-          schema:
-            $ref: '#/components/responses/PatientDiscovery'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatientDiscoveryResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/PatientDiscoveryResponse'
         '400':
           description: >
             **Causes:**
@@ -58,163 +54,269 @@ paths:
                 | dateOfBirth     | dd-mm-yyyy  |
                 | gender  | M/F/O |
                 | MOBILE  | valid mobile number with proper country code |
-
-          schema:
-            $ref: '#/components/responses/Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatientDiscoveryErrResponse'
         '404':
           description: >
             **Causes:**
               * No matching patient record found for the given identifiers.
               * There are more than one definitive match for a given request.
-          schema:
-            $ref: '#/components/responses/Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatientDiscoveryErrResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/PatientDiscoveryErrResponse'
         '500':
           description: >
             **Causes:**
               * Downstream system(s) is down.
               * Unhandled exceptions.
-          schema:
-            $ref: '#/components/responses/Error'
-
-  /patients/link/:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatientDiscoveryErrResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/PatientDiscoveryErrResponse'
+                
+  /patients/link:
     post:
       tags:
-      - link
+        - link
       summary: Link patient's care contexts
       description: >
         Links care contexts associated with only one patient
           1. **Validate account reference number and care context reference number**
           2. **Before linking, HIP needs to authenticate the request with the patient(Ex: OTP verification)**
-          3. **Communicate the mode of authentication of a successful request with HDAF**
-      consumes:
-      - application/json
-      - application/xml
-      produces:
-      - application/json
-      - application/xml
+          3. **Communicate the mode of authentication of a successful request with Consent Manager**
       requestBody:
         content:
           application/json:
-            required: true
             schema:
-              $ref: '#/components/requestBodies/PatientLinkReference'
+              $ref: '#/components/schemas/PatientLinkReference'
           application/xml:
-            required: true
             schema:
-              $ref: '#/components/requestBodies/PatientLinkReference'
+              $ref: '#/components/schemas/PatientLinkReference'
       responses:
         '200':
           description: A successful link request
-          schema:
-            $ref: '#/components/responses/PatientLinkReference'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatientLinkReferenceResponse'
         '400':
           description: >
             **Causes:**
               * Account reference number is invalid
               * Care context reference numbers are invalid
-          schema:
-            $ref: '#/components/responses/Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
           description: >
             **Causes:**
               * Unauthorized request
-          schema:
-            $ref: '#/components/responses/Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
           description: >
             **Causes:**
               * Downstream system(s) is down.
               * Unhandled exceptions.
-          schema:
-            $ref: '#/components/responses/Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /patients/link/{linkRefNumber}:
     post:
       tags:
-      - link
-      summary: Authenticates the token submitted by HDAF and links the account if authentication is successful.
+        - link
+      summary: Authenticates the token submitted by Consent Manager and links the account if authentication is successful.
       description: >
         Returns a list of linked care contexts with patient reference number.
           1. **Validate linked account reference number**
-          2. **Validate if the token sent from HDAF is same as the one generated by HIP**
-          3. **Verify whether same HDAF which made the link request is sending the token**
+          2. **Validate if the token sent from Consent Manager is same as the one generated by HIP**
+          3. **Verify whether same Consent Manager which made the link request is sending the token**
           4. **Returns a list of unmasked linked care contexts with patient reference number**
-      consumes:
-      - application/json
-      - application/xml
-      produces:
-      - application/json
-      - application/xml
       requestBody:
         content:
           application/json:
-            required: true
             schema:
-              $ref: '#/components/requestBodies/PatientLink'
+              $ref: '#/components/schemas/PatientLinkRequest'
           application/xml:
-            required: true
             schema:
-              $ref: '#/components/requestBodies/PatientLink'
+              $ref: '#/components/schemas/PatientLinkRequest'
       responses:
         '200':
           description: List of linked care contexts of a patient with patient reference number
-          schema:
-            $ref: '#/components/responses/PatientLink'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatientLinkResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/PatientLinkResponse'
         '400':
           description: >
             **Causes:**
               * Link reference number is invalid
               * Token is invalid
-          schema:
-            $ref: '#/components/responses/Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
         '401':
           description: >
             **Causes:**
               * Unauthorized request
-          schema:
-            $ref: '#/components/responses/Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
         '500':
           description: >
             **Causes:**
               * Downstream system(s) is down.
               * Unhandled exceptions.
-          schema:
-            $ref: '#/components/responses/Error'
-
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Error'
 components:
-  requestBodies:
-    PatientDiscovery:
+  schemas:
+    PatientDiscoveryRequest:
       type: object
       properties:
-        verifiedIdentifiers:
-          type: array
-          items:
-            $ref: '#/components/schemas/Identifier'
-          xml:
-            name: verifiedIdentifiers
-            wrapped: true
-        unverifiedIdentifiers:
-          type: array
-          items:
-            $ref: '#/components/schemas/Identifier'
-          xml:
-            name: unverifiedIdentifiers
-            wrapped: true
-        firstName:
-          type: string
-          example: "chandler"
-        lastName:
-          type: string
-          example: "bing"
-        gender:
-          type: gender
-          enum: [M, F, O]
-        dateOfBirth:
-          type: string
-          format: date
+        patient:
+          type: object
+          properties:
+            id:
+              type: string
+              example: <patient-id>@<consent-manager-id>
+              description: Identifier of patient at consent manager
+            verifiedIdentifiers:
+              type: array
+              items:
+                $ref: '#/components/schemas/Identifier'
+              xml:
+                name: verifiedIdentifiers
+                wrapped: true
+            unverifiedIdentifiers:
+              type: array
+              items:
+                $ref: '#/components/schemas/Identifier'
+              xml:
+                name: unverifiedIdentifiers
+                wrapped: true
+            firstName:
+              type: string
+              example: "chandler"
+            lastName:
+              type: string
+              example: "bing"
+            gender:
+              type: string
+              enum: [M, F, O]
+            dateOfBirth:
+              type: string
+              format: date
       xml:
         name: PatientDiscoveryRequest
 
+    PatientDiscoveryErrResponse:
+      type: object
+      properties:
+        error:
+          $ref: '#/components/schemas/Error'
+
+    Identifier:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/IdentifierType'
+        value:
+          type: string
+          example: "+919800083232"
+      xml:
+        name: Identifier
+
+    IdentifierType:
+      type: string
+      enum: [MOBILE, MR]
+
+    PatientDiscoveryResponse:
+      type: object
+      properties:
+        patient:
+          $ref: '#/components/schemas/PatientRepresentation'
+      xml:
+        name: PatientDiscoveryResponse
+
+    PatientRepresentation:
+      type: object
+      properties:
+        referenceNumber:
+          type: string
+        display:
+          type: string
+        careContexts:
+          type: array
+          items:
+            $ref: '#/components/schemas/CareContextRepresentation'
+        matchedBy:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdentifierType'
+      xml:
+        name: Patient
+
+    CareContext:
+      type: object
+      properties:
+        referenceNumber:
+          type: string
+      xml:
+        name: Tag
+
+    CareContextRepresentation:
+      type: object
+      required:
+        - referenceNumber
+        - display
+      properties:
+        referenceNumber:
+          type: string
+        display:
+          type: string
+      xml:
+        name: Tag
+        
     PatientLinkReference:
       type: object
       properties:
@@ -232,118 +334,17 @@ components:
       xml:
         name: PatientLinkReferenceRequest
 
-    PatientLink:
+    PatientLinkRequest:
       type: object
       properties:
         token:
           type: string
-      xml:
-        name: PatientLinkRequest
-
-  responses:
-    PatientDiscovery:
-      type: object
-      properties:
-        patient:
-            $ref: '#/components/schemas/PatientRepresentation'
-      xml:
-        name: PatientDiscoveryResponse
-
-    Error:
-      type: object
-      properties:
-        error:
-          $ref: '#/components/schemas/Error'
-
-    PatientLinkReference:
-      type: object
-      properties:
-        linkReference:
-            $ref: '#/components/schemas/LinkReference'
-      xml:
-        name: PatientLinkReferenceResponse
-
-    PatientLink:
-      type: object
-      properties:
-        patient:
-            $ref: '#/components/schemas/Patient'
-      xml:
-        name: PatientLinkResponse
-
-  schemas:
-    Identifier:
+          
+    PatientLinkReferenceResponse:
       type: object
       required:
-      - type
-      - value
-      properties:
-        type:
-          $ref: '#/components/schemas/IdentifierType'
-        value:
-          type: string
-          example: "+919800083232"
-      xml:
-        name: Identifier
-
-    IdentifierType:
-      type: string
-      enum: [MOBILE, MR]
-
-    PatientRepresentation:
-      type: object
-      required:
-      - referenceNumber
-      - display
-      - careContexts
-      properties:
-        referenceNumber:
-          type: string
-        display:
-          type: string
-        careContexts:
-          type: array
-          items: 
-            $ref: '#/components/schemas/CareContextRepresentation'
-        matchedBy:
-          type: array
-          items:
-            $ref: '#/components/schemas/IdentifierType'
-      xml:
-        name: PatientRepresentation
-
-    CareContextRepresentation:
-      type: object
-      required:
-      - referenceNumber
-      - display
-      properties:
-        referenceNumber:
-          type: string
-        display:
-          type: string
-      xml:
-        name: Tag
-
-    Error:
-      type: object
-      required:
-      - statusCode
-      - errorMessage
-      properties:
-        code:
-          type: integer
-          enum: []
-        message:
-          type: string
-      xml:
-        name: Error
-
-    LinkReference:
-      type: object
-      required:
-      - referenceNumber
-      - authenticationType
+        - referenceNumber
+        - authenticationType
       properties:
         referenceNumber:
           type: string
@@ -351,17 +352,13 @@ components:
           type: string
           enum: ['DIRECT', 'MEDIATED']
         meta:
-          type: object
           $ref: '#/components/schemas/Meta'
-      xml:
-        name: LinkReference
-
-
+        
     Meta:
       type: object
       required:
-      - mode
-      - value
+        - mode
+        - value
       properties:
         communicationMedium:
           type: string
@@ -374,22 +371,25 @@ components:
       xml:
         name: Meta
 
-    CareContext:
+    Error:
       type: object
-      required:
-      - referenceNumber
       properties:
-        referenceNumber:
+        code:
+          type: integer
+          enum: [1000, 10001]
+          description: >
+            1. Error code 1000 : No patient found
+            2. Error code 1001: Multiple patients found
+        message:
           type: string
       xml:
-        name: CareContext
-
-
-    Patient:
+        name: Error
+        
+    PatientLinkResponse:
       type: object
       required:
-      - referenceNumber
-      - careContexts
+        - referenceNumber
+        - careContexts
       properties:
         referenceNumber:
           type: string
@@ -397,5 +397,3 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CareContextRepresentation'
-      xml:
-        name: Patient
