@@ -2,6 +2,7 @@
 using hip_service.Discovery.Patient;
 using hip_service.Discovery.Patients;
 using hip_service.Link.Patient;
+using hip_service.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,13 +25,15 @@ namespace hip_service
                 .AddNewtonsoftJson(options =>{});
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env) =>
+            
             app.UseStaticFilesWithYaml()
-            .UseRouting()
-            .UseIf(!env.IsDevelopment(), x => x.UseHsts())
-            .UseIf(env.IsDevelopment(), x => x.UseDeveloperExceptionPage())
-            .UseCustomOpenAPI()
-            .UseEndpoints(endpoints => {
-                endpoints.MapControllers();
-            });
+                .UseRouting()
+                .UseIf(!env.IsDevelopment(), x => x.UseHsts())
+                .UseIf(env.IsDevelopment(), x => x.UseDeveloperExceptionPage())
+                .UseCustomOpenAPI()
+                .UseSecurityHeadersMiddleware()
+                .UseEndpoints(endpoints => { endpoints.MapControllers(); });
+        
+        
     }
 }
