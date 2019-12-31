@@ -170,7 +170,7 @@ paths:
         '401':
           description: >
             **Causes:**
-              * Token is expired
+              * Unauthorized request
           schema:
             $ref: '#/components/responses/Error'
         '500':
@@ -359,7 +359,7 @@ components:
         communicationMedium:
           type: string
           enum: ['M0BILE', 'EMAIL']
-        communicationValue:
+        communicationHint:
           type: string
         communicationExpiry:
           type: string
