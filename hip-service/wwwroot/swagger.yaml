@@ -279,13 +279,16 @@ components:
       - value
       properties:
         type:
-          type: string
-          enum: [MOBILE, MR]
+          $ref: '#/components/schemas/IdentifierType'
         value:
           type: string
           example: "+919800083232"
       xml:
         name: Identifier
+
+    IdentifierType:
+      type: string
+      enum: [MOBILE, MR]
 
     PatientRepresentation:
       type: object
@@ -302,6 +305,10 @@ components:
           type: array
           items: 
             $ref: '#/components/schemas/CareContextRepresentation'
+        matchedBy:
+          type: array
+          items:
+            $ref: '#/components/schemas/IdentifierType'
       xml:
         name: PatientRepresentation
 
