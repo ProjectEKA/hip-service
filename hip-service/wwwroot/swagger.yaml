@@ -129,13 +129,16 @@ components:
       type: object
       properties:
         type:
-          type: string
-          enum: [MOBILE, MR]
+          $ref: '#/components/schemas/IdentifierType'
         value:
           type: string
           example: "+919800083232"
       xml:
         name: Identifier
+
+    IdentifierType:
+      type: string
+      enum: [MOBILE, MR]
 
     Patient:
       type: object
@@ -151,8 +154,7 @@ components:
         matchedBy:
           type: array
           items:
-            type: string
-            enum: [MOBILE, MR]
+            $ref: '#/components/schemas/IdentifierType'
       xml:
         name: Patient
 
