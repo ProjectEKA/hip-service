@@ -218,6 +218,8 @@ components:
     PatientLinkReference:
       type: object
       properties:
+        careManagerUserID:
+          type: string
         patientReferenceNumber:
           type: string
         careContexts:
