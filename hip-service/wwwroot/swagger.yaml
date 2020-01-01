@@ -27,6 +27,7 @@ paths:
           2. **Filter out records using unverified, firstName, secondName, gender and dob
           if there are more than one patient records found from step 1.**
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -94,18 +95,22 @@ paths:
           2. **Before linking, HIP needs to authenticate the request with the patient(Ex: OTP verification)**
           3. **Communicate the mode of authentication of a successful request with Consent Manager**
       requestBody:
+        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PatientLinkReference'
+              $ref: '#/components/schemas/PatientLinkReferenceRequest'
           application/xml:
             schema:
-              $ref: '#/components/schemas/PatientLinkReference'
+              $ref: '#/components/schemas/PatientLinkReferenceRequest'
       responses:
         '200':
           description: A successful link request
           content:
             application/json:
+              schema:
+                $ref: '#/components/schemas/PatientLinkReferenceResponse'
+            application/xml:
               schema:
                 $ref: '#/components/schemas/PatientLinkReferenceResponse'
         '400':
@@ -156,6 +161,7 @@ paths:
           3. **Verify whether same Consent Manager which made the link request is sending the token**
           4. **Returns a list of unmasked linked care contexts with patient reference number**
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -317,7 +323,7 @@ components:
       xml:
         name: Tag
         
-    PatientLinkReference:
+    PatientLinkReferenceRequest:
       type: object
       properties:
         careManagerUserID:
