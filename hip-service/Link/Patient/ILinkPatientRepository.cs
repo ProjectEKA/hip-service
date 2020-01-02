@@ -9,7 +9,8 @@ namespace hip_service.Link.Patient
     public interface ILinkPatientRepository
     {
         
-        public Task<Tuple<PatientLinkReferenceResponse, Error>> LinkPatient(string patientReferenceNumber,
-            string[] careContextReferenceNumbers);
+        public Task<Tuple<PatientLinkReferenceResponse, Error>> LinkPatient(string consentManagerId, 
+            string consentManagerUserId, string patientReferenceNumber, string[] careContextReferenceNumbers);
+        
     }
 }

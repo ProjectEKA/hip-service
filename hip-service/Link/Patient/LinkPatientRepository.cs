@@ -17,8 +17,8 @@ namespace hip_service.Link.Patient
         {
             this.patientFilePath = patientFilePath;
         }
-        public Task<Tuple<PatientLinkReferenceResponse, Error>> LinkPatient(string patientReferenceNumber,
-            string[] careContextReferenceNumbers)
+        public Task<Tuple<PatientLinkReferenceResponse, Error>> LinkPatient(string consentManagerId, 
+            string consentManagerUserId, string patientReferenceNumber, string[] careContextReferenceNumbers)
         {
             var patientsInfo = FileReader.ReadJson(patientFilePath);
             var patients = patientsInfo
@@ -39,7 +39,7 @@ namespace hip_service.Link.Patient
                 if (!isEqual)
                 {
                     return Task.FromResult(new Tuple<PatientLinkReferenceResponse, Error>
-                        (null, new Error(ErrorCode.NoPatientFound, "No Care context found for given patient")));
+                        (null, new Error(ErrorCode.CareContextNotFound, "No Care context found for given patient")));
                 }
 
                 // send OTP to mobile
@@ -50,7 +50,7 @@ namespace hip_service.Link.Patient
                 var expiry = new DateTime (DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 
                     DateTime.Now.Hour, DateTime.Now.Minute+1, DateTime.Now.Second).ToUniversalTime().
                     ToString("yyyy-MM-ddTHH:mm:ssZ"); 
-                //Convert to utc and time expiry should come from config
+
                 var meta = new LinkReferenceMeta(nameof(LinkReferenceMode.Mobile).ToUpper(), patient.PhoneNumber, expiry);
                 var patientLinkReferenceResponse = new PatientLinkReferenceResponse(linkRefNumber, 
                     nameof(AuthenticationType.Mediated).ToUpper(), meta);

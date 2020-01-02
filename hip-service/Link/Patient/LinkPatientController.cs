@@ -19,9 +19,12 @@ namespace hip_service.Link.Patient
 
         [HttpPost]
         public async Task<ActionResult> LinkPatientCareContexts([FromHeader(Name = "X-ConsentManagerID")]string consentManagerId,
-            [FromBody]PatientLinkReferenceRequest request)
+            [FromBody]LinkReference request)
         {
-            var (linkReferenceResponse, error) = await linkPatient.LinkPatients(request);
+            PatientLinkReferenceRequest patientReferenceRequest = new PatientLinkReferenceRequest(consentManagerId,
+                request.ConsentManagerUserId, request.PatientReferenceNumber, request.CareContexts);
+            
+            var (linkReferenceResponse, error) = await linkPatient.LinkPatients(patientReferenceRequest);
 
             if (error != null) return NotFound(error);
 

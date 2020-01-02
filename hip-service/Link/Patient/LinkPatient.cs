@@ -19,8 +19,9 @@ namespace hip_service.Link.Patient
 
         public Task<Tuple<PatientLinkReferenceResponse, Error>> LinkPatients(PatientLinkReferenceRequest request)
         {
-            return linkPatientRepository.LinkPatient(request.PatientReferenceNumber,
-                request.CareContexts.Select(context => context.ReferenceNumber).ToArray());
+            return linkPatientRepository.LinkPatient(request.ConsentManagerId, request.ConsentManagerUserId,
+                request.PatientReferenceNumber, request.CareContexts
+                    .Select(context => context.ReferenceNumber).ToArray());
         }
 
         public Task<Tuple<PatientLinkResponse, Error>> VerifyAndLinkCareContext(PatientLinkRequest request)
