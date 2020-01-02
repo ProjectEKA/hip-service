@@ -15,7 +15,7 @@
 
 ## Build Status
 
-[![Build](https://github.com/ProjectEKA/hip-service/workflows/GitHub%20Actions/badge.svg)](https://github.com/ProjectEKA/hip-service/actions)
+[![Build](https://github.com/ProjectEKA/hip-service/workflows/ci/badge.svg)](https://github.com/ProjectEKA/hip-service/actions)
 
 ## :+1: Code Style
 
