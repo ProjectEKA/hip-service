@@ -12,7 +12,7 @@ namespace hip_service.Discovery.Patient.Matcher
         private static readonly Dictionary<IdentifierType, IIdentifierMatcher> Matchers =
         new Dictionary<IdentifierType, IIdentifierMatcher>
         {
-            { IdentifierType.MOBILE, new PhoneNumberMatcher() }
+            { IdentifierType.Mobile, new PhoneNumberMatcher() }
         };
 
         private static Expression<Func<models.Patient, bool>> ToExpression(Identifier identifier) =>

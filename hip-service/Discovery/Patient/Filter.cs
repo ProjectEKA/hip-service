@@ -46,8 +46,8 @@ namespace hip_service.Discovery.Patient
         {
             var identifierTypeExts = new Dictionary<IdentifierType, IdentifierTypeExt>
             {
-                {IdentifierType.MOBILE, IdentifierTypeExt.Mobile},
-                {IdentifierType.MR, IdentifierTypeExt.Mr}
+                {IdentifierType.Mobile, IdentifierTypeExt.Mobile},
+                {IdentifierType.Mr, IdentifierTypeExt.Mr}
             };
             return request.VerifiedIdentifiers
                 .Select(identifier => new IdentifierExt(identifierTypeExts.GetValueOrDefault(identifier.Type,

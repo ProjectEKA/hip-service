@@ -18,12 +18,12 @@ namespace hip_service_test.Discovery.Patient
             
             var verifiedIdentifiers = new List<Identifier>
             {
-                new Identifier(IdentifierType.MOBILE, "9999999999")
+                new Identifier(IdentifierType.Mobile, "9999999999")
             };
 
             var unverifiedIdentifiers = new List<Identifier>
             {
-                new Identifier(IdentifierType.MR, "123")
+                new Identifier(IdentifierType.Mr, "123")
             };
 
             var discoveryRequest = new DiscoveryRequest(verifiedIdentifiers, unverifiedIdentifiers, "John", null,
@@ -43,7 +43,7 @@ namespace hip_service_test.Discovery.Patient
             
             var verifiedIdentifiers = new List<Identifier>
             {
-                new Identifier(IdentifierType.MOBILE, "9999999999")
+                new Identifier(IdentifierType.Mobile, "9999999999")
             };
 
             var discoveryRequest = new DiscoveryRequest(verifiedIdentifiers, new List<Identifier>(), null, null,
@@ -63,7 +63,7 @@ namespace hip_service_test.Discovery.Patient
             
             var verifiedIdentifiers = new List<Identifier>
             {
-                new Identifier(IdentifierType.MOBILE, "9999999999")
+                new Identifier(IdentifierType.Mobile, "9999999999")
             };
 
             var discoveryRequest = new DiscoveryRequest(verifiedIdentifiers, new List<Identifier>(), null, null,
