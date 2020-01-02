@@ -11,10 +11,10 @@ namespace hip_service.Discovery.Patient
     {
         private enum IdentifierTypeExt
         {
-            MOBILE,
+            Mobile,
             FirstName,
             LastName,
-            MR,
+            Mr,
             Gender,
             Empty
         }
@@ -31,7 +31,7 @@ namespace hip_service.Discovery.Patient
         {
             var ranks = new Dictionary<IdentifierTypeExt, IRanker<models.Patient>>
             {
-                {IdentifierTypeExt.MOBILE, new MobileRanker()},
+                {IdentifierTypeExt.Mobile, new MobileRanker()},
                 {IdentifierTypeExt.FirstName, new FirstNameRanker()},
                 {IdentifierTypeExt.LastName, new LastNameRanker()},
                 {IdentifierTypeExt.Gender, new GenderRanker()},
@@ -46,8 +46,8 @@ namespace hip_service.Discovery.Patient
         {
             var identifierTypeExts = new Dictionary<IdentifierType, IdentifierTypeExt>
             {
-                {IdentifierType.MOBILE, IdentifierTypeExt.MOBILE},
-                {IdentifierType.MR, IdentifierTypeExt.MR}
+                {IdentifierType.MOBILE, IdentifierTypeExt.Mobile},
+                {IdentifierType.MR, IdentifierTypeExt.Mr}
             };
             return request.VerifiedIdentifiers
                 .Select(identifier => new IdentifierExt(identifierTypeExts.GetValueOrDefault(identifier.Type,
