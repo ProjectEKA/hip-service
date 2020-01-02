@@ -1,8 +1,8 @@
-namespace hip_service.Discovery.Patient
-{
-    using System;
-    using System.Linq.Expressions;
+using System;
+using System.Linq.Expressions;
 
+namespace hip_service.Discovery.Patient.Helper
+{
     public static class ExpressionBuilder
     {
         public static Expression<Func<T, bool>> True<T>() { return f => true; }

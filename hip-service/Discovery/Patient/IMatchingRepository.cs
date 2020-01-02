@@ -8,7 +8,7 @@ namespace hip_service.Discovery.Patient
 {
     public interface IMatchingRepository
     {
-        Task<IQueryable<PatientInfo>> Where(Expression<Func<PatientInfo, bool>> predicate);
+        Task<IQueryable<models.Patient>> Where(Expression<Func<models.Patient, bool>> predicate);
     }
 
 }

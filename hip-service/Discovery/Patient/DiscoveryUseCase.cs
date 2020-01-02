@@ -4,12 +4,10 @@ using hip_library.Patient.models;
 
 namespace hip_service.Discovery.Patient
 {
-    using System.Collections.Generic;
-
-    public class DiscoveryUseCase
+    public static class DiscoveryUseCase
     {
-        public Tuple<hip_library.Patient.models.Patient, Error> DiscoverPatient(
-            IEnumerable<hip_library.Patient.models.Patient> patients)
+        public static Tuple<hip_library.Patient.models.Patient, Error> DiscoverPatient(
+            IQueryable<hip_library.Patient.models.Patient> patients)
         {
             if (!patients.Any())
             {

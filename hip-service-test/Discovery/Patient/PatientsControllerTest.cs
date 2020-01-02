@@ -18,12 +18,12 @@ namespace hip_service_test.Discovery.Patient
         {
             var verifiedIdentifiers = new List<Identifier>()
             {
-                new Identifier(IdentifierType.Mobile, "9999999999")
+                new Identifier(IdentifierType.MOBILE, "9999999999")
             };
 
             var unverifiedIdentifiers = new List<Identifier>()
             {
-                new Identifier(IdentifierType.Mr, "1")
+                new Identifier(IdentifierType.MR, "1")
             };
 
             var discoveryRequest = new DiscoveryRequest(verifiedIdentifiers, unverifiedIdentifiers, "J", "K",
@@ -37,7 +37,7 @@ namespace hip_service_test.Discovery.Patient
             mockDiscovery.Setup(x => x.PatientFor(discoveryRequest)).ReturnsAsync(
                 new Tuple<hip_library.Patient.models.Patient, Error>(expectedPatient, null));
 
-            var accountsController = new PatientController(mockDiscovery.Object);
+            var accountsController = new PatientsController(mockDiscovery.Object);
             var response = accountsController.Discover(discoveryRequest).Result as OkObjectResult;
 
             mockDiscovery.Verify();
@@ -50,12 +50,12 @@ namespace hip_service_test.Discovery.Patient
         {
             var verifiedIdentifiers = new List<Identifier>()
             {
-                new Identifier(IdentifierType.Mobile, "9999999999")
+                new Identifier(IdentifierType.MOBILE, "9999999999")
             };
 
             var unverifiedIdentifiers = new List<Identifier>()
             {
-                new Identifier(IdentifierType.Mr, "1")
+                new Identifier(IdentifierType.MR, "1")
             };
 
             var discoveryRequest = new DiscoveryRequest(verifiedIdentifiers, unverifiedIdentifiers, "J", "K",
@@ -67,7 +67,7 @@ namespace hip_service_test.Discovery.Patient
                 new Tuple<hip_library.Patient.models.Patient, Error>(null,
                     error));
 
-            var accountsController = new PatientController(mockDiscovery.Object);
+            var accountsController = new PatientsController(mockDiscovery.Object);
             var response = accountsController.Discover(discoveryRequest).Result as NotFoundObjectResult;
 
             mockDiscovery.Verify();

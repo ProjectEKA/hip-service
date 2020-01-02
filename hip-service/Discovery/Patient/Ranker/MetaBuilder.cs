@@ -1,4 +1,4 @@
-﻿namespace hip_service.Discovery.Patient
+﻿namespace hip_service.Discovery.Patient.Ranker
 {
     public static class MetaBuilder
     {

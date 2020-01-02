@@ -1,6 +1,6 @@
-namespace hip_service.Discovery.Patient
+namespace hip_service.Discovery.Patient.Ranker
 {
-    internal static class PatientWithRankBuilder
+    public static class PatientWithRankBuilder
     {
         public static PatientWithRank<TPatient> EmptyRankWith<TPatient>(TPatient patient)
         {

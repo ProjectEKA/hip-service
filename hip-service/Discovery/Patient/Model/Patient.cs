@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace hip_service.Discovery.Patient.models
 {
-    public class PatientInfo
+    public class Patient
     {
         public string Identifier { get; set; }
         public string Gender { get; set; }
@@ -12,6 +12,6 @@ namespace hip_service.Discovery.Patient.models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public DateTime DateOfBirth { get; set; }
-        public IEnumerable<ProgramInfo> Programs { get; set; }
+        public IEnumerable<CareContext> CareContexts { get; set; }
     }
 }

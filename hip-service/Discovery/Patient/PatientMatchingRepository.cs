@@ -1,12 +1,11 @@
+using System;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+using hip_service.Discovery.Patient.Helpers;
+
 namespace hip_service.Discovery.Patient
 {
-    using System;
-    using System.Linq;
-    using System.Linq.Expressions;
-    using models;
-    using System.Threading.Tasks;
-    using Helpers;
-
     public class PatientMatchingRepository : IMatchingRepository
     {
         private readonly string patientFilePath;
@@ -16,7 +15,7 @@ namespace hip_service.Discovery.Patient
             this.patientFilePath = patientFilePath;
         }
 
-        public async Task<IQueryable<PatientInfo>> Where(Expression<Func<PatientInfo, bool>> predicate)
+        public async Task<IQueryable<models.Patient>> Where(Expression<Func<models.Patient, bool>> predicate)
         {
             var patientsInfo = await FileReader.ReadJsonAsync(patientFilePath);
             return patientsInfo.Where(predicate.Compile()).AsQueryable();
