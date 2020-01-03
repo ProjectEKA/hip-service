@@ -108,6 +108,9 @@ TestResults
 *.Cache
 ClientBin
 [Ss]tyle[Cc]op.*
+node_modules/
+package.json
+package-lock.json
 ~$*
 *.dbmdl
 Generated_Code #added for RIA/Silverlight projects
