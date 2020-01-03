@@ -12,13 +12,13 @@ namespace hip_service.Link.Patient.Models
         public string ConsentManagerId { get; set; }
         public string ConsentManagerUserId { get; set; }
         public string DateTimeStamp { get; set; }
-        public IEnumerable<LinkedCareContext> CareContexts { get; set; }
+        public ICollection<LinkedCareContext> CareContexts { get; set; }
 
         public LinkRequest()
         {
         }
 
-        public LinkRequest(string patientReferenceNumber, string linkReferenceNumber, string consentManagerId, string consentManagerUserId, string dateTimeStamp, IEnumerable<LinkedCareContext> careContexts)
+        public LinkRequest(string patientReferenceNumber, string linkReferenceNumber, string consentManagerId, string consentManagerUserId, string dateTimeStamp, ICollection<LinkedCareContext> careContexts)
         {
             PatientReferenceNumber = patientReferenceNumber;
             LinkReferenceNumber = linkReferenceNumber;

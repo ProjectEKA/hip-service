@@ -1,3 +1,4 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -8,7 +9,8 @@ namespace hip_service.Link.Patient.Models
         public string CareContextNumber { get; set; }
         
         [ForeignKey("LinkReferenceNumber")]
-        public virtual LinkRequest LinkRequest { get; set; }
+        public string LinkReferenceNumber { get; set; }
+        public LinkRequest LinkRequest { get; set; }
 
         public LinkedCareContext()
         {

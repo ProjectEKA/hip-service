@@ -33,17 +33,17 @@ namespace hip_service.OTP
             }
         }
 
-        public async Task<Tuple<string, Exception>> GetOtp(string linkReferenceNumber)
+        public async Task<Tuple<OtpRequest, Exception>> GetOtp(string linkReferenceNumber)
         {
             try
             {
-                var value = await _linkPatientContext.FindAsync<string>(linkReferenceNumber);
-                return new Tuple<string, Exception>(value, null);
+                var otpRequest = await _linkPatientContext.FindAsync<OtpRequest>(linkReferenceNumber);
+                return new Tuple<OtpRequest, Exception>(otpRequest, null);
             }
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-                return new Tuple<string, Exception>(null, exception);
+                return new Tuple<OtpRequest, Exception>(null, exception);
                 
             }
             

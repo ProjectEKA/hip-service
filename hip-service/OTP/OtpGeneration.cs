@@ -23,7 +23,7 @@ namespace hip_service.OTP
         public async Task<Error> CheckOtpValue(string linkReferenceNumber, string value)
         {
             var (otpValue, exception) = await _otpRepository.GetOtp(linkReferenceNumber);
-            return otpValue == value ? null : new Error(ErrorCode.OtpInValid, "OTP not valid");
+            return otpValue.OtpToken == value ? null : new Error(ErrorCode.OtpInValid, "OTP not valid");
         }
     }
 }

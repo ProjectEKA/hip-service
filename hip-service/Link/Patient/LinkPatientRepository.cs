@@ -42,5 +42,20 @@ namespace hip_service.Link.Patient
                 
             }
         }
+
+        public async Task<Tuple<LinkRequest, Exception>> GetPatientReferenceNumber(string linkReferenceNumber)
+        {
+            try
+            {
+                var linkRequest = await _linkPatientContext.FindAsync<LinkRequest>(linkReferenceNumber);
+                return new Tuple<LinkRequest, Exception>(linkRequest, null);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                return new Tuple<LinkRequest, Exception>(null, exception);
+                
+            }
+        }
     }
 }

@@ -78,9 +78,37 @@ namespace hip_service.Link.Patient
             return new Tuple<PatientLinkReferenceResponse, Error>(patientLinkReferenceResponse, null);
         }
 
-        public Task<Tuple<PatientLinkResponse, Error>> VerifyAndLinkCareContext(PatientLinkRequest request)
+        public async Task<Tuple<PatientLinkResponse, Error>> VerifyAndLinkCareContext(PatientLinkRequest request)
         {
-            throw new NotImplementedException();
+            var error = await _otpGeneration.CheckOtpValue(request.LinkReferenceNumber, request.Token);
+            if (error != null)
+            {
+                return new Tuple<PatientLinkResponse, Error>
+                    (null, new Error(ErrorCode.OtpInValid, "Otp Invalid"));   
+            }
+
+            var (linkRequest, exception) =
+                await linkPatientRepository.GetPatientReferenceNumber(request.LinkReferenceNumber);
+            if (exception != null)
+            {
+                return new Tuple<PatientLinkResponse, Error>
+                    (null, new Error(ErrorCode.NoPatientFound, "No request found"));
+            }
+
+            var patientInfo = _patientRepository.GetPatientInfoWithReferenceNumber(linkRequest.PatientReferenceNumber);
+            
+            var representations = linkRequest.CareContexts
+                .Where(careContext =>
+                    patientInfo.Programs.Any(info => info.ReferenceNumber == careContext.CareContextNumber))
+                .Select( context => new CareContextRepresentation(context.CareContextNumber, 
+                    patientInfo.Programs.First(info => info.ReferenceNumber == context.CareContextNumber).Description));
+            
+            var patientLinkResponse = new PatientLinkResponse(linkRequest.PatientReferenceNumber,
+                representations);
+             
+            return new Tuple<PatientLinkResponse, Error>
+                (patientLinkResponse, null);
+            
         }
 
     }

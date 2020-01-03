@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using health_information_provider_library.Patient.models;
 using hip_library.Patient;
 using hip_library.Patient.models.dto;
 using Microsoft.AspNetCore.Mvc;
@@ -29,6 +30,17 @@ namespace hip_service.Link.Patient
             if (error != null) return NotFound(error);
 
             return Ok(linkReferenceResponse);
+        }
+
+        [HttpPost("{linkReferenceNumber}")]
+        public async Task<ActionResult> LinkPatient([FromRoute] string linkReferenceNumber, [FromBody]LinkToken linkToken)
+        {
+            var (patientLinkResponse, error) = await linkPatient
+                .VerifyAndLinkCareContext(new PatientLinkRequest(linkToken.Token, linkReferenceNumber));
+
+            if (error != null) return NotFound(error);
+
+            return Ok(patientLinkResponse);
         }
     }
 }
