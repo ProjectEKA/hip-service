@@ -1,6 +1,5 @@
 ﻿using hip_library.Patient;
 using hip_service.Discovery.Patient;
-using hip_service.Discovery.Patients;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,11 +9,10 @@ namespace hip_service
 {
     public class Startup
     {
-
         public void ConfigureServices(IServiceCollection services) =>
             services
-                .AddSingleton<IPatientRepository>(new PatientRepository("Resources/patients.json"))
-                .AddSingleton<DiscoveryUseCase>()
+                .AddSingleton<IMatchingRepository>(new PatientMatchingRepository("Resources/patients.json"))
+                .AddSingleton<PatientDiscovery>()
                 .AddTransient<IDiscovery, PatientDiscovery>()
                 .AddRouting(options => options.LowercaseUrls = true)
                 .AddControllers()

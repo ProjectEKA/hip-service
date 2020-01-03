@@ -3,39 +3,28 @@ using System.Linq;
 using System.Threading.Tasks;
 using hip_library.Patient;
 using hip_library.Patient.models;
+using hip_service.Discovery.Patient.Matcher;
 
-namespace hip_service.Discovery.Patients
+namespace hip_service.Discovery.Patient
 {
+    using static StrongMatcherFactory;
+
     public class PatientDiscovery : IDiscovery
     {
-        private readonly Patient.IPatientRepository patientRepository;
-        private readonly Patient.DiscoveryUseCase discoveryUseCase;
+        private readonly Filter filter;
+        private readonly IMatchingRepository repo;
 
-        public PatientDiscovery(Patient.IPatientRepository patientRepository, Patient.DiscoveryUseCase discoveryUseCase)
+        public PatientDiscovery(IMatchingRepository patientRepository)
         {
-            this.patientRepository = patientRepository;
-            this.discoveryUseCase = discoveryUseCase;
+            repo = patientRepository;
+            filter = new Filter();
         }
 
         public async Task<Tuple<hip_library.Patient.models.Patient, Error>> PatientFor(DiscoveryRequest request)
         {
-            var patients = await patientRepository.SearchPatients(GetPhoneNumberFrom(request),
-                GetCaseReferenceNumberFrom(request), request.FirstName, request.LastName);
-            
-            return discoveryUseCase.DiscoverPatient(patients);
+            var expression = GetExpression(request.VerifiedIdentifiers);
+            var patientInfos = await repo.Where(expression);
+            return DiscoveryUseCase.DiscoverPatient(filter.Do(patientInfos, request).AsQueryable());
         }
-
-        private static string GetPhoneNumberFrom(DiscoveryRequest request)
-        {
-            return request.VerifiedIdentifiers.FirstOrDefault(identifier => identifier.Type == IdentifierType.Mobile)
-                ?.Value;
-        }
-
-        private static string GetCaseReferenceNumberFrom(DiscoveryRequest request)
-        {
-            return request.UnverifiedIdentifiers.FirstOrDefault(identifier => identifier.Type == IdentifierType.Mr)
-                ?.Value;
-        }
-
     }
 }
