@@ -28,6 +28,6 @@ namespace hip_service.Link.Patient
         {
             throw new NotImplementedException();
         }
-        
+
     }
 }
