@@ -39,7 +39,11 @@ namespace hip_service_test.Discovery.Patient
         private void ShouldReturnAPatient()
         {
             var patient1 = new hip_library.Patient.models.Patient("123", "Jack", new List<CareContextRepresentation>(), new List<string>());
+            var (patient, error) =
+                DiscoveryUseCase.DiscoverPatient(new List<hip_library.Patient.models.Patient> { patient1 }.AsQueryable());
 
+            error.Should().BeNull();
+            patient.Should().BeEquivalentTo(patient1);
         }
     }
 }

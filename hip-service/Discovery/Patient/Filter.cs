@@ -27,7 +27,7 @@ namespace hip_service.Discovery.Patient
                     (rank, withRank) => rank + withRank);
         }
 
-        private IEnumerable<PatientWithRank<models.Patient>> RanksFor(DiscoveryRequest request, models.Patient patient)
+        private static IEnumerable<PatientWithRank<models.Patient>> RanksFor(DiscoveryRequest request, models.Patient patient)
         {
             var ranks = new Dictionary<IdentifierTypeExt, IRanker<models.Patient>>
             {
