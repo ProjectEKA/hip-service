@@ -9,7 +9,7 @@ using hip_service.Link.Patient.Models;
 namespace hip_service.Migrations
 {
     [DbContext(typeof(LinkPatientContext))]
-    [Migration("20200102131311_intial")]
+    [Migration("20200103061119_intial")]
     partial class intial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,13 +50,10 @@ namespace hip_service.Migrations
                     b.Property<string>("LinkReferenceNumber")
                         .HasColumnType("text");
 
-                    b.Property<string>("LinkRequestLinkReferenceNumber")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.HasKey("CareContextNumber", "LinkReferenceNumber")
+                        .HasName("Id");
 
-                    b.HasKey("CareContextNumber");
-
-                    b.HasIndex("LinkRequestLinkReferenceNumber");
+                    b.HasIndex("LinkReferenceNumber");
 
                     b.ToTable("LinkedCareContext");
                 });
@@ -65,7 +62,7 @@ namespace hip_service.Migrations
                 {
                     b.HasOne("hip_service.Link.Patient.Models.LinkRequest", "LinkRequest")
                         .WithMany("CareContexts")
-                        .HasForeignKey("LinkRequestLinkReferenceNumber")
+                        .HasForeignKey("LinkReferenceNumber")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

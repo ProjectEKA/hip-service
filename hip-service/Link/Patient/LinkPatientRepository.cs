@@ -13,16 +13,20 @@ namespace hip_service.Link.Patient
 {
     public class LinkPatientRepository: ILinkPatientRepository
     {
-        private readonly string patientFilePath;
         private readonly LinkPatientContext _linkPatientContext;
         public LinkPatientRepository(LinkPatientContext linkPatientContext)
         {
             _linkPatientContext = linkPatientContext;
-            this.patientFilePath = "Resources/patients.json";
         }
+        
+        // Method to get all the patients
+        // Method to get careconrtexts
+        // Method to save to database 
+        /*
         public Task<Tuple<PatientLinkReferenceResponse, Error>> LinkPatient(string consentManagerId, 
             string consentManagerUserId, string patientReferenceNumber, string[] careContextReferenceNumbers)
         {
+            /*
             var patientsInfo = FileReader.ReadJson(patientFilePath);
             var patients = patientsInfo
                 .Where(patient => patient.Identifier == patientReferenceNumber).ToList();
@@ -47,6 +51,7 @@ namespace hip_service.Link.Patient
 
                 // send OTP to mobile
                 string otp = "123456";
+                
 
                 String linkRefNumber = Guid.NewGuid().ToString();
 
@@ -80,8 +85,35 @@ namespace hip_service.Link.Patient
                 return Task.FromResult(
                     new Tuple<PatientLinkReferenceResponse, Error>(patientLinkReferenceResponse, null));
 
+//            }
+        }
+        
+                        */
+
+    
+
+        public async Task<Tuple<LinkRequest, Exception>> SaveLinkPatientDetails(string linkReferenceNumber, string consentManagerId, string consentManagerUserId,
+            string patientReferenceNumber, string[] careContextReferenceNumbers)
+        {
+            var dateTimeStamp = new DateTime (DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 
+                    DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second).ToUniversalTime().
+                ToString("yyyy-MM-ddTHH:mm:ssZ");
+            var linkedCareContexts = careContextReferenceNumbers.Select(referenceNumber => new LinkedCareContext(referenceNumber)).ToList();
+            var linkRequest = new LinkRequest(patientReferenceNumber, linkReferenceNumber, consentManagerId,
+                consentManagerUserId, dateTimeStamp, linkedCareContexts);
+
+            _linkPatientContext.LinkRequest.Add(linkRequest);
+            try
+            {
+                await _linkPatientContext.SaveChangesAsync();
+                return new Tuple<LinkRequest, Exception>(linkRequest, null);
             }
-            
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception);
+                return new Tuple<LinkRequest, Exception>(null, exception);
+                
+            }
         }
     }
 }

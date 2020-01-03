@@ -26,24 +26,23 @@ namespace hip_service.Migrations
                 columns: table => new
                 {
                     CareContextNumber = table.Column<string>(nullable: false),
-                    LinkReferenceNumber = table.Column<string>(nullable: true),
-                    LinkRequestLinkReferenceNumber = table.Column<string>(nullable: false)
+                    LinkReferenceNumber = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_LinkedCareContext", x => x.CareContextNumber);
+                    table.PrimaryKey("Id", x => new { x.CareContextNumber, x.LinkReferenceNumber });
                     table.ForeignKey(
-                        name: "FK_LinkedCareContext_LinkRequest_LinkRequestLinkReferenceNumber",
-                        column: x => x.LinkRequestLinkReferenceNumber,
+                        name: "FK_LinkedCareContext_LinkRequest_LinkReferenceNumber",
+                        column: x => x.LinkReferenceNumber,
                         principalTable: "LinkRequest",
                         principalColumn: "LinkReferenceNumber",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_LinkedCareContext_LinkRequestLinkReferenceNumber",
+                name: "IX_LinkedCareContext_LinkReferenceNumber",
                 table: "LinkedCareContext",
-                column: "LinkRequestLinkReferenceNumber");
+                column: "LinkReferenceNumber");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

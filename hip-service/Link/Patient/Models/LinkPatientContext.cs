@@ -14,6 +14,11 @@ namespace hip_service.Link.Patient.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<LinkedCareContext>()
+                .HasKey("CareContextNumber", "LinkReferenceNumber")
+                .HasName("Id");
+                
+            
             modelBuilder.Entity<LinkRequest>()
                 .HasMany(l => l.CareContexts)
                 .WithOne(c => c.LinkRequest)
