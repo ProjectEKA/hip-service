@@ -5,6 +5,8 @@ using hip_service.Discovery.Patients;
 using hip_service.Link.Patient;
 using hip_service.Link.Patient.Models;
 using hip_service.Middleware;
+using hip_service.OTP;
+using hip_service.OTP.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -35,6 +37,8 @@ namespace hip_service
                 .AddSingleton<DiscoveryUseCase>()
                 .AddTransient<IDiscovery, PatientDiscovery>()
                 .AddTransient<ILink, LinkPatient>()
+                .AddScoped<IOtpRepository, OtpRepository>()
+                .AddScoped<OtpGeneration>()
                 .AddRouting(options => options.LowercaseUrls = true)
                 .AddControllers()
                 .AddNewtonsoftJson(options =>{});

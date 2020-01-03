@@ -15,7 +15,7 @@ namespace hip_service.Link.Patient
             _filePath = filePath;
         }
 
-        public IEnumerable<PatientInfo> GetAllPatientFromJson()
+        IEnumerable<PatientInfo> GetAllPatientFromJson()
         {
             var patientsInfo = FileReader.ReadJson(_filePath);
             return patientsInfo;

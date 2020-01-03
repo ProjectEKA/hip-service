@@ -7,18 +7,22 @@ using hip_library.Patient;
 using hip_library.Patient.models;
 using hip_library.Patient.models.dto;
 using hip_service.Discovery.Patient.models;
+using hip_service.OTP;
 
 namespace hip_service.Link.Patient
 {
     public class LinkPatient: ILink
     {
-        private readonly Patient.ILinkPatientRepository linkPatientRepository;
+        private readonly ILinkPatientRepository linkPatientRepository;
         private readonly PatientRepository _patientRepository;
+        private readonly OtpGeneration _otpGeneration;
 
-        public LinkPatient(ILinkPatientRepository linkPatientRepository, PatientRepository patientRepository)
+        public LinkPatient(ILinkPatientRepository linkPatientRepository, PatientRepository patientRepository,
+            OtpGeneration otpGeneration)
         {
             this.linkPatientRepository = linkPatientRepository;
             _patientRepository = patientRepository;
+            _otpGeneration = otpGeneration;
         }
 
         public async Task<Tuple<PatientLinkReferenceResponse, Error>> LinkPatients(PatientLinkReferenceRequest request)
@@ -45,7 +49,13 @@ namespace hip_service.Link.Patient
             var linkRefNumber = Guid.NewGuid().ToString();
             
             // method call for generating the OTP
-
+            var isGenerated = await _otpGeneration.GenerateOtp(linkRefNumber);
+            if (isGenerated != null)
+            {
+                return new Tuple<PatientLinkReferenceResponse, Error>
+                    (null, isGenerated);
+            }
+            
             var (_, exception) = await linkPatientRepository.SaveLinkPatientDetails(linkRefNumber, request.ConsentManagerId,
                 request.ConsentManagerUserId, request.PatientReferenceNumber, request.CareContexts
                     .Select(context => context.ReferenceNumber).ToArray());
