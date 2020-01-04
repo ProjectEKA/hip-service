@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using hip_service.Link.Patient.Models;
 using hip_service.OTP.Models;
@@ -37,7 +38,7 @@ namespace hip_service.OTP
         {
             try
             {
-                var otpRequest = await _linkPatientContext.FindAsync<OtpRequest>(sessionId);
+                var otpRequest =  _linkPatientContext.OtpRequests.First(o => o.SessionId == sessionId);
                 return new Tuple<OtpRequest, Exception>(otpRequest, null);
             }
             catch (Exception exception)

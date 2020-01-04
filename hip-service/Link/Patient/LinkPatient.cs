@@ -81,7 +81,7 @@ namespace hip_service.Link.Patient
 
         public async Task<Tuple<PatientLinkResponse, Error>> VerifyAndLinkCareContext(PatientLinkRequest request)
         {
-            if (_patientVerification.AuthenticateVerificationToken(request.LinkReferenceNumber, request.Token) != null)
+            if (await _patientVerification.AuthenticateVerificationToken(request.LinkReferenceNumber, request.Token) != null)
             {
                 return new Tuple<PatientLinkResponse, Error>
                     (null, new Error(ErrorCode.OtpInValid, "Otp Invalid"));   
