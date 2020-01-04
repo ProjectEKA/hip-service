@@ -1,0 +1,6 @@
+version: '3'
+services:
+  hip:
+    image: "ganesan92/health-information-provider:${IMAGE_TAG}"
+    ports:
+      - "9052:80"

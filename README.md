@@ -44,6 +44,23 @@ To run the image
 docker run -d -p 8000:80 hip-service
 ```
 
+To use docker compose locally
+
+```
+docker-compose up -d
+```
+
+To use docker compose to run pre-existing image from docker-hub
+
+```
+export {ENVIRONMENT_VARIABLE}={ENVIRONMENT_VALUE}
+docker-compose -f docker-compose.yml -f docker-compose.{environment}.yml up -d
+
+Example:
+export IMAGE_TAG=13f9004
+docker-compose -f docker-compose.yml -f docker-compose.development.yml up -d
+```
+
 ## :rocket: Running From Source
 To run 
 
