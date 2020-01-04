@@ -5,7 +5,7 @@ namespace hip_service.OTP.Models
     public class OtpRequest
     {
         [Key]
-        public string LinkReferenceNumber { get; set; }
+        public string SessionId { get; set; }
 
         public string DateTimeStamp { get; set; }
         
@@ -15,9 +15,9 @@ namespace hip_service.OTP.Models
         {
         }
 
-        public OtpRequest(string linkReferenceNumber, string dateTimeStamp, string otpToken)
+        public OtpRequest(string sessionId, string dateTimeStamp, string otpToken)
         {
-            LinkReferenceNumber = linkReferenceNumber;
+            SessionId = sessionId;
             DateTimeStamp = dateTimeStamp;
             OtpToken = otpToken;
         }

@@ -38,7 +38,8 @@ namespace hip_service
                 .AddTransient<IDiscovery, PatientDiscovery>()
                 .AddTransient<ILink, LinkPatient>()
                 .AddScoped<IOtpRepository, OtpRepository>()
-                .AddScoped<OtpGeneration>()
+                .AddScoped<IPatientVerification, PatientVerification>()
+                .AddScoped<OtpVerification>()
                 .AddRouting(options => options.LowercaseUrls = true)
                 .AddControllers()
                 .AddNewtonsoftJson(options =>{});

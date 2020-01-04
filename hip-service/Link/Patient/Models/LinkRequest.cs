@@ -12,7 +12,7 @@ namespace hip_service.Link.Patient.Models
         public string ConsentManagerId { get; set; }
         public string ConsentManagerUserId { get; set; }
         public string DateTimeStamp { get; set; }
-        public ICollection<LinkedCareContext> CareContexts { get; set; }
+        public virtual ICollection<LinkedCareContext> CareContexts { get; set; }
 
         public LinkRequest()
         {

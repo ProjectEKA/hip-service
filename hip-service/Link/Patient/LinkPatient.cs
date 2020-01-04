@@ -15,14 +15,14 @@ namespace hip_service.Link.Patient
     {
         private readonly ILinkPatientRepository linkPatientRepository;
         private readonly PatientRepository _patientRepository;
-        private readonly OtpGeneration _otpGeneration;
+        private readonly IPatientVerification _patientVerification;
 
         public LinkPatient(ILinkPatientRepository linkPatientRepository, PatientRepository patientRepository,
-            OtpGeneration otpGeneration)
+            IPatientVerification patientVerification)
         {
             this.linkPatientRepository = linkPatientRepository;
             _patientRepository = patientRepository;
-            _otpGeneration = otpGeneration;
+            _patientVerification = patientVerification;
         }
 
         public async Task<Tuple<PatientLinkReferenceResponse, Error>> LinkPatients(PatientLinkReferenceRequest request)
@@ -49,11 +49,12 @@ namespace hip_service.Link.Patient
             var linkRefNumber = Guid.NewGuid().ToString();
             
             // method call for generating the OTP
-            var isGenerated = await _otpGeneration.GenerateOtp(linkRefNumber);
-            if (isGenerated != null)
+            var session = new Session(linkRefNumber, new Communication(LinkReferenceMode.Mobile, ""));
+
+            if (await _patientVerification.GenerateVerificationToken(session) != null)
             {
                 return new Tuple<PatientLinkReferenceResponse, Error>
-                    (null, isGenerated);
+                    (null, new Error(ErrorCode.OtpInValid, "Unable to create token"));
             }
             
             var (_, exception) = await linkPatientRepository.SaveLinkPatientDetails(linkRefNumber, request.ConsentManagerId,
@@ -80,8 +81,7 @@ namespace hip_service.Link.Patient
 
         public async Task<Tuple<PatientLinkResponse, Error>> VerifyAndLinkCareContext(PatientLinkRequest request)
         {
-            var error = await _otpGeneration.CheckOtpValue(request.LinkReferenceNumber, request.Token);
-            if (error != null)
+            if (_patientVerification.AuthenticateVerificationToken(request.LinkReferenceNumber, request.Token) != null)
             {
                 return new Tuple<PatientLinkResponse, Error>
                     (null, new Error(ErrorCode.OtpInValid, "Otp Invalid"));   

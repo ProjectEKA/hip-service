@@ -8,6 +8,7 @@ using hip_library.Patient.models.dto;
 using hip_service.Discovery.Patient.Helpers;
 using hip_service.Discovery.Patient.models;
 using hip_service.Link.Patient.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace hip_service.Link.Patient
 {
@@ -47,7 +48,9 @@ namespace hip_service.Link.Patient
         {
             try
             {
-                var linkRequest = await _linkPatientContext.FindAsync<LinkRequest>(linkReferenceNumber);
+                var linkRequest = _linkPatientContext.LinkRequest.Include("CareContexts").First(linkRequest =>
+                    linkRequest.LinkReferenceNumber == linkReferenceNumber);
+               // var linkRequest = await _linkPatientContext.FindAsync<LinkRequest>(linkReferenceNumber);
                 return new Tuple<LinkRequest, Exception>(linkRequest, null);
             }
             catch (Exception exception)

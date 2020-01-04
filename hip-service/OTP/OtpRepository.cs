@@ -12,13 +12,13 @@ namespace hip_service.OTP
         {
             _linkPatientContext = linkPatientContext;
         }
-        public async Task<Tuple<OtpRequest, Exception>> SaveOtpRequest(string otp, string linkReferenceNumber)
+        public async Task<Tuple<OtpRequest, Exception>> SaveOtpRequest(string otp, string sessionId)
         {
             var dateTimeStamp = new DateTime (DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 
                     DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second).ToUniversalTime().
                 ToString("yyyy-MM-ddTHH:mm:ssZ");
 
-            var otpRequest = new OtpRequest(linkReferenceNumber, dateTimeStamp, otp);
+            var otpRequest = new OtpRequest(sessionId, dateTimeStamp, otp);
             _linkPatientContext.OtpRequests.Add(otpRequest);
             try
             {
@@ -33,11 +33,11 @@ namespace hip_service.OTP
             }
         }
 
-        public async Task<Tuple<OtpRequest, Exception>> GetOtp(string linkReferenceNumber)
+        public async Task<Tuple<OtpRequest, Exception>> GetOtp(string sessionId)
         {
             try
             {
-                var otpRequest = await _linkPatientContext.FindAsync<OtpRequest>(linkReferenceNumber);
+                var otpRequest = await _linkPatientContext.FindAsync<OtpRequest>(sessionId);
                 return new Tuple<OtpRequest, Exception>(otpRequest, null);
             }
             catch (Exception exception)
