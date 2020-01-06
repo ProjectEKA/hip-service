@@ -43,7 +43,7 @@ namespace hip_service_test.Discovery.Patient
             var expectedResponse = new DiscoveryResponse(expectedPatient);
 
             mockDiscovery.Setup(x => x.PatientFor(discoveryRequest)).ReturnsAsync(
-                new Tuple<DiscoveryResponse, Error>(expectedResponse, null));
+                new Tuple<DiscoveryResponse, ErrorResponse>(expectedResponse, null));
 
             var accountsController = new PatientsController(mockDiscovery.Object);
             var response = accountsController.Discover(discoveryRequest).Result as OkObjectResult;
@@ -72,9 +72,9 @@ namespace hip_service_test.Discovery.Patient
             var discoveryRequest = new DiscoveryRequest(patient);
 
             var mockDiscovery = new Mock<IDiscovery>();
-            var error = new Error(ErrorCode.MultiplePatientsFound, "Multiple patients found");
+            var error = new ErrorResponse(new Error(ErrorCode.MultiplePatientsFound, "Multiple patients found"));
             mockDiscovery.Setup(x => x.PatientFor(discoveryRequest)).ReturnsAsync(
-                new Tuple<DiscoveryResponse, Error>(null, error));
+                new Tuple<DiscoveryResponse, ErrorResponse>(null, error));
 
             var accountsController = new PatientsController(mockDiscovery.Object);
             var response = accountsController.Discover(discoveryRequest).Result as NotFoundObjectResult;
