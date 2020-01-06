@@ -78,7 +78,7 @@ namespace hip_service.Link.Patient
                     DateTime.Now.Hour, DateTime.Now.Minute+1, DateTime.Now.Second).ToUniversalTime().
                 ToString(dateTimeFormat); 
 
-            var meta = new LinkReferenceMeta(nameof(IdentifierType.MOBILE).ToUpper(), 
+            var meta = new LinkReferenceMeta(nameof(IdentifierType.MOBILE), 
                 _patientRepository.GetPatientInfoWithReferenceNumber(requestPatient.ReferenceNumber).PhoneNumber, expiry);
             var patientLinkReferenceResponse = new PatientLinkReferenceResponse(new LinkReference(linkRefNumber,"MEDIATED",meta));
 

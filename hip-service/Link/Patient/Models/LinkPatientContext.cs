@@ -11,7 +11,6 @@ namespace hip_service.Link.Patient.Models
 
         public LinkPatientContext(DbContextOptions<LinkPatientContext> options): base(options) 
         {
-            
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -25,7 +24,6 @@ namespace hip_service.Link.Patient.Models
                 .WithOne(c => c.LinkRequest)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
-            
         }
     }
 }

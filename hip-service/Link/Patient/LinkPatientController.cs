@@ -42,7 +42,10 @@ namespace hip_service.Link.Patient
             var (patientLinkResponse, error) = await linkPatient
                 .VerifyAndLinkCareContext(new PatientLinkRequest(linkToken.Token, linkReferenceNumber));
 
-            if (error != null) return NotFound(error);
+            if (error != null)
+            {
+                return NotFound(error);
+            }
 
             return Ok(patientLinkResponse);
         }

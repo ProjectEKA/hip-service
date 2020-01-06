@@ -15,9 +15,10 @@ namespace hip_service.OTP
         }
         public async Task<Tuple<OtpRequest, Exception>> SaveOtpRequest(string otp, string sessionId)
         {
+            const string dateTimeFormat = "yyyy-MM-ddTHH:mm:ssZ";
             var dateTimeStamp = new DateTime (DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 
                     DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second).ToUniversalTime().
-                ToString("yyyy-MM-ddTHH:mm:ssZ");
+                ToString(dateTimeFormat);
 
             var otpRequest = new OtpRequest(sessionId, dateTimeStamp, otp);
             _linkPatientContext.OtpRequests.Add(otpRequest);

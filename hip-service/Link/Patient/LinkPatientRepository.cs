@@ -17,9 +17,10 @@ namespace hip_service.Link.Patient
         public async Task<Tuple<LinkRequest, Exception>> SaveLinkPatientDetails(string linkReferenceNumber, string consentManagerId, string consentManagerUserId,
             string patientReferenceNumber, string[] careContextReferenceNumbers)
         {
+            const string dateTimeFormat = "yyyy-MM-ddTHH:mm:ssZ";
             var dateTimeStamp = new DateTime (DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 
                     DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second).ToUniversalTime().
-                ToString("yyyy-MM-ddTHH:mm:ssZ");
+                ToString(dateTimeFormat);
             var linkedCareContexts = careContextReferenceNumbers.Select(referenceNumber => new LinkedCareContext(referenceNumber)).ToList();
             var linkRequest = new LinkRequest(patientReferenceNumber, linkReferenceNumber, consentManagerId,
                 consentManagerUserId, dateTimeStamp, linkedCareContexts);
@@ -46,9 +47,7 @@ namespace hip_service.Link.Patient
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception);
                 return new Tuple<LinkRequest, Exception>(null, exception);
-                
             }
         }
     }
