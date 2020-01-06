@@ -30,5 +30,6 @@
     </ItemGroup>
     <ItemGroup>
         <Folder Include="Controllers" />
+        <Folder Include="Discovery\Patient\Matcher" />
     </ItemGroup>
 </Project>

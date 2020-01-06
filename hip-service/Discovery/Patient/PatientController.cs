@@ -6,13 +6,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace hip_service.Discovery.Patient
 {
-    [Route("api/[controller]")]
+    [Route("patients/discover/")]
     [ApiController]
-    public class PatientController : Controller
+    public class PatientsController : Controller
     {
         private readonly IDiscovery patientDiscovery;
 
-        public PatientController(IDiscovery patientDiscovery)
+        public PatientsController(IDiscovery patientDiscovery)
         {
             this.patientDiscovery = patientDiscovery;
         }

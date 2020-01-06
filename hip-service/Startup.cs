@@ -1,12 +1,9 @@
-﻿using System;
-using hip_library.Patient;
+﻿using hip_library.Patient;
 using hip_service.Discovery.Patient;
-using hip_service.Discovery.Patients;
 using hip_service.Link.Patient;
 using hip_service.Link.Patient.Models;
 using hip_service.Middleware;
 using hip_service.OTP;
-using hip_service.OTP.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -25,16 +22,15 @@ namespace hip_service
         {
             Configuration = configuration;
         }
-        
         public void ConfigureServices(IServiceCollection services) =>
             
             services
                 .AddDbContext<LinkPatientContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")))
-                .AddSingleton<IPatientRepository>(new Discovery.Patient.PatientRepository("Resources/patients.json"))
-                .AddSingleton(new Link.Patient.PatientRepository("Resources/patients.json"))
+                .AddSingleton(new PatientRepository("Resources/patients.json"))
                 .AddScoped<ILinkPatientRepository, LinkPatientRepository>()
-                .AddSingleton<DiscoveryUseCase>()
+                .AddSingleton<IMatchingRepository>(new PatientMatchingRepository("Resources/patients.json"))
+                .AddSingleton<PatientDiscovery>()
                 .AddTransient<IDiscovery, PatientDiscovery>()
                 .AddTransient<ILink, LinkPatient>()
                 .AddScoped<IOtpRepository, OtpRepository>()
@@ -53,7 +49,5 @@ namespace hip_service
                 .UseCustomOpenAPI()
                 .UseSecurityHeadersMiddleware()
                 .UseEndpoints(endpoints => { endpoints.MapControllers(); });
-        
-        
     }
 }
