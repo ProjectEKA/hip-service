@@ -353,9 +353,9 @@ components:
         patient:
           type: object
           properties:
-            careManagerUserID:
+            consentManagerUserID:
               type: string
-            patientReferenceNumber:
+            referenceNumber:
               type: string
             careContexts:
               type: array
