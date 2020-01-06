@@ -350,7 +350,7 @@ components:
         transactionId:
           type: string
           format: uuid
-        link:
+        patient:
           type: object
           properties:
             careManagerUserID:
@@ -375,17 +375,17 @@ components:
           
     PatientLinkReferenceResponse:
       type: object
-      required:
-        - referenceNumber
-        - authenticationType
       properties:
-        referenceNumber:
-          type: string
-        authenticationType:
-          type: string
-          enum: ['DIRECT', 'MEDIATED']
-        meta:
-          $ref: '#/components/schemas/Meta'
+        link:
+          type: object
+          properties:
+            referenceNumber:
+              type: string
+            authenticationType:
+              type: string
+              enum: ['DIRECT', 'MEDIATED']
+            meta:
+              $ref: '#/components/schemas/Meta'
         
     Meta:
       type: object
@@ -420,13 +420,15 @@ components:
         
     PatientLinkResponse:
       type: object
-      required:
-        - referenceNumber
-        - careContexts
       properties:
-        referenceNumber:
-          type: string
-        careContexts:
-          type: array
-          items:
-            $ref: '#/components/schemas/CareContextRepresentation'
+        patient:
+          type: object
+          properties:
+            referenceNumber:
+              type: string
+            display:
+              type: string
+            careContexts:
+              type: array
+              items:
+                $ref: '#/components/schemas/CareContextRepresentation'
