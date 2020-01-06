@@ -1,27 +1,27 @@
 using System;
 using System.Linq;
-using hip_library.Patient.models;
+using HipLibrary.Patient.Models.Response;
 
 namespace hip_service.Discovery.Patient
 {
     public static class DiscoveryUseCase
     {
-        public static Tuple<hip_library.Patient.models.Patient, Error> DiscoverPatient(
-            IQueryable<hip_library.Patient.models.Patient> patients)
+        public static Tuple<HipLibrary.Patient.Models.Response.Patient, Error> DiscoverPatient(
+            IQueryable<HipLibrary.Patient.Models.Response.Patient> patients)
         {
             if (!patients.Any())
             {
-                return new Tuple<hip_library.Patient.models.Patient, Error>(null,
+                return new Tuple<HipLibrary.Patient.Models.Response.Patient, Error>(null,
                     new Error(ErrorCode.NoPatientFound, "No patient found"));
             }
 
             if (patients.Count() > 1)
             {
-                return new Tuple<hip_library.Patient.models.Patient, Error>(null,
+                return new Tuple<HipLibrary.Patient.Models.Response.Patient, Error>(null,
                     new Error(ErrorCode.MultiplePatientsFound, "Multiple patients found"));
             }
 
-            return new Tuple<hip_library.Patient.models.Patient, Error>(patients.First(), null);
+            return new Tuple<HipLibrary.Patient.Models.Response.Patient, Error>(patients.First(), null);
         }
     }
 }

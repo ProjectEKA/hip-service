@@ -1,14 +1,15 @@
 using System;
+using HipLibrary.Patient.Models.Response;
 
 namespace hip_service.Discovery.Patient.Ranker
 {
     public struct Meta: IEquatable<Meta>
     {
-        public string Field { get; }
+        public Match Field { get; }
 
         private readonly MatchLevel MatchLevel;
 
-        public Meta(string field, MatchLevel matchLevel)
+        public Meta(Match field, MatchLevel matchLevel)
         {
             Field = field;
             MatchLevel = matchLevel;
@@ -16,19 +17,14 @@ namespace hip_service.Discovery.Patient.Ranker
 
         public bool Equals(Meta other)
         {
-            return MatchLevel == other.MatchLevel && string.Equals(Field, other.Field);
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is Meta other && Equals(other);
+            return MatchLevel.Equals(other.MatchLevel) && Field.Equals(other.Field);
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((int) MatchLevel * 397) ^ (Field != null ? Field.GetHashCode() : 0);
+                return ((int) MatchLevel * 397) ^ (Field.GetHashCode());
             }
         }
     }

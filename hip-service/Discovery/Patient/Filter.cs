@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using hip_library.Patient.models;
+using HipLibrary.Patient.Models;
 using hip_service.Discovery.Patient.Ranker;
+using HipLibrary.Patient.Models.Request;
 
 namespace hip_service.Discovery.Patient
 {
@@ -11,56 +12,57 @@ namespace hip_service.Discovery.Patient
     {
         private enum IdentifierTypeExt
         {
-            Mobile,
-            FirstName,
-            LastName,
-            Mr,
-            Gender,
-            Empty
+            MOBILE,
+            FIRST_NAME,
+            LAST_NAME,
+            MR,
+            GENDER,
+            EMPTY
         }
 
-        private PatientWithRank<models.Patient> RankPatient(models.Patient patient,
+        private PatientWithRank<Model.Patient> RankPatient(Model.Patient patient,
             DiscoveryRequest request)
         {
             return RanksFor(request, patient)
                 .Aggregate(EmptyRankWith(patient),
                     (rank, withRank) => rank + withRank);
         }
-
-        private static IEnumerable<PatientWithRank<models.Patient>> RanksFor(DiscoveryRequest request, models.Patient patient)
+        private static readonly Dictionary<IdentifierTypeExt, IRanker<Model.Patient>> Ranks = new Dictionary<IdentifierTypeExt, IRanker<Model.Patient>>
         {
-            var ranks = new Dictionary<IdentifierTypeExt, IRanker<models.Patient>>
-            {
-                {IdentifierTypeExt.Mobile, new MobileRanker()},
-                {IdentifierTypeExt.FirstName, new FirstNameRanker()},
-                {IdentifierTypeExt.LastName, new LastNameRanker()},
-                {IdentifierTypeExt.Gender, new GenderRanker()},
-                {IdentifierTypeExt.Empty, new EmptyRanker()}
-            };
+            {IdentifierTypeExt.MOBILE, new MobileRanker()},
+            {IdentifierTypeExt.FIRST_NAME, new FirstNameRanker()},
+            {IdentifierTypeExt.LAST_NAME, new LastNameRanker()},
+            {IdentifierTypeExt.GENDER, new GenderRanker()},
+            {IdentifierTypeExt.EMPTY, new EmptyRanker()}
+        };
+
+        private static readonly Dictionary<IdentifierType, IdentifierTypeExt> IdentifierTypeExts = new Dictionary<IdentifierType, IdentifierTypeExt>
+        {
+            {IdentifierType.MOBILE, IdentifierTypeExt.MOBILE},
+            {IdentifierType.MR, IdentifierTypeExt.MR}
+        };
+
+        private static IEnumerable<PatientWithRank<Model.Patient>> RanksFor(DiscoveryRequest request, Model.Patient patient)
+        {
             return From(request).Select(identifier =>
-                ranks.GetValueOrDefault(identifier.Type, new EmptyRanker())
+                Ranks.GetValueOrDefault(identifier.Type, new EmptyRanker())
                     .Rank(patient, identifier.Value));
         }
 
         private static IEnumerable<IdentifierExt> From(DiscoveryRequest request)
         {
-            var identifierTypeExts = new Dictionary<IdentifierType, IdentifierTypeExt>
-            {
-                {IdentifierType.Mobile, IdentifierTypeExt.Mobile},
-                {IdentifierType.Mr, IdentifierTypeExt.Mr}
-            };
-            return request.VerifiedIdentifiers
-                .Select(identifier => new IdentifierExt(identifierTypeExts.GetValueOrDefault(identifier.Type,
-                    IdentifierTypeExt.Empty), identifier.Value))
-                .Concat(request.UnverifiedIdentifiers
-                    .Select(identifier => new IdentifierExt(identifierTypeExts.GetValueOrDefault(identifier.Type,
-                        IdentifierTypeExt.Empty), identifier.Value)))
-                .Append(new IdentifierExt(IdentifierTypeExt.FirstName, request.FirstName))
-                .Append(new IdentifierExt(IdentifierTypeExt.LastName, request.LastName))
-                .Append(new IdentifierExt(IdentifierTypeExt.Gender, request.Gender.ToString()));
+            return request.Patient.VerifiedIdentifiers
+                .Select(identifier => new IdentifierExt(IdentifierTypeExts.GetValueOrDefault(identifier.Type,
+                    IdentifierTypeExt.EMPTY), identifier.Value))
+                .Concat(request.Patient.UnverifiedIdentifiers
+                    .Select(identifier => new IdentifierExt(IdentifierTypeExts.GetValueOrDefault(identifier.Type,
+                        IdentifierTypeExt.EMPTY), identifier.Value)))
+                .Append(new IdentifierExt(IdentifierTypeExt.FIRST_NAME, request.Patient.FirstName))
+                .Append(new IdentifierExt(IdentifierTypeExt.LAST_NAME, request.Patient.LastName))
+                .Append(new IdentifierExt(IdentifierTypeExt.GENDER, request.Patient.Gender.ToString()));
         }
 
-        public IEnumerable<hip_library.Patient.models.Patient> Do(IEnumerable<models.Patient> patients,
+        public IEnumerable<HipLibrary.Patient.Models.Response.Patient> Do(IEnumerable<Model.Patient> patients,
             DiscoveryRequest request)
         {
             return patients
@@ -83,7 +85,7 @@ namespace hip_service.Discovery.Patient
                             .ToList()
                         : new List<CareContextRepresentation>();
 
-                    return new hip_library.Patient.models.Patient(
+                    return new HipLibrary.Patient.Models.Response.Patient(
                         rankedPatient.Patient.Identifier,
                         $"{rankedPatient.Patient.FirstName} {rankedPatient.Patient.LastName}",
                         careContexts, rankedPatient.Meta.Select(meta => meta.Field));
