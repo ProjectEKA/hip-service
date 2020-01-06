@@ -1,3 +1,5 @@
+#nullable enable
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using hip_service.Discovery.Patient.Helpers;
@@ -21,16 +23,35 @@ namespace hip_service.Link.Patient
             return patientsInfo;
         }
 
-        public Discovery.Patient.Model.Patient GetPatientInfoWithReferenceNumber(string referenceNumber)
+        public Discovery.Patient.Model.Patient? GetPatientInfoWithReferenceNumber(string referenceNumber)
         {
-            var patientsInfo = GetAllPatientFromJson();
-            return patientsInfo.First(patient => patient.Identifier == referenceNumber);
+            try
+            {
+                var patientsInfo = GetAllPatientFromJson();
+                var patient = patientsInfo.First(patient => patient.Identifier == referenceNumber);
+                return patient;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+
         }
 
         public CareContext GetProgramInfo(string patientReferenceNumber, string programReferenceNumber)
         {
-            var patientInfo = GetPatientInfoWithReferenceNumber(patientReferenceNumber);
-            return patientInfo.CareContexts.First(program => program.ReferenceNumber == programReferenceNumber);
+            try
+            {
+                var patientInfo = GetPatientInfoWithReferenceNumber(patientReferenceNumber);
+                var careContext = patientInfo.CareContexts.First(program => program.ReferenceNumber == programReferenceNumber);
+                return careContext;
+            }
+            catch (Exception e)
+            { 
+                return null;
+            }
+            
+
         }
         
     }

@@ -11,12 +11,12 @@ namespace hip_service.Link.Patient.Dto
 
         [JsonPropertyName("patient")]
         [XmlElement("patient")]
-        public LinkReference LinkReference { get; }
+        public LinkReference Patient { get; }
 
-        public LinkPatientReference(string transactionId, LinkReference linkReference)
+        public LinkPatientReference(string transactionId, LinkReference patient)
         {
             TransactionId = transactionId;
-            LinkReference = linkReference;
+            Patient = patient;
         }
     }
 }

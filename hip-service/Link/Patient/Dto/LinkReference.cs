@@ -11,18 +11,18 @@ namespace hip_service.Link.Patient.Dto
         [XmlElement("consentManagerUserId")]
         public string ConsentManagerUserId { get; }
 
-        [JsonPropertyName("patientReferenceNumber")]
-        [XmlElement("patientReferenceNumber")]
-        public string PatientReferenceNumber { get; }
+        [JsonPropertyName("referenceNumber")]
+        [XmlElement("referenceNumber")]
+        public string ReferenceNumber { get; }
 
         [JsonPropertyName("careContexts")]
         [XmlElement("careContexts")]
         public IEnumerable<CareContext> CareContexts { get; }
 
-        public LinkReference(string consentManagerUserId, string patientReferenceNumber, IEnumerable<CareContext> careContexts)
+        public LinkReference(string consentManagerUserId, string referenceNumber, IEnumerable<CareContext> careContexts)
         {
             ConsentManagerUserId = consentManagerUserId;
-            PatientReferenceNumber = patientReferenceNumber;
+            ReferenceNumber = referenceNumber;
             CareContexts = careContexts;
         }
     }

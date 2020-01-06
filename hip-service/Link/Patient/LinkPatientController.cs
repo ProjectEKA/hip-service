@@ -24,11 +24,14 @@ namespace hip_service.Link.Patient
             [FromBody]LinkPatientReference request)
         {
             var patient = new HipLibrary.Patient.Models.Request.Link(consentManagerId
-                , request.LinkReference.ConsentManagerUserId, request.LinkReference.PatientReferenceNumber, request.LinkReference.CareContexts);
+                , request.Patient.ConsentManagerUserId, request.Patient.ReferenceNumber, request.Patient.CareContexts);
             var patientReferenceRequest = new PatientLinkReferenceRequest(request.TransactionId,patient);
             var (linkReferenceResponse, error) = await linkPatient.LinkPatients(patientReferenceRequest);
 
-            if (error != null) return NotFound(error);
+            if (error != null)
+            {
+                return NotFound(error);
+            }
 
             return Ok(linkReferenceResponse);
         }

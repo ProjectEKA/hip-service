@@ -28,7 +28,6 @@ namespace hip_service.OTP
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception);
                 return new Tuple<OtpRequest, Exception>(null, exception);
                 
             }
@@ -43,7 +42,6 @@ namespace hip_service.OTP
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception);
                 return new Tuple<OtpRequest, Exception>(null, exception);
                 
             }

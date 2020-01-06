@@ -32,9 +32,7 @@ namespace hip_service.Link.Patient
             }
             catch (Exception exception)
             {
-                Console.WriteLine(exception);
                 return new Tuple<LinkRequest, Exception>(null, exception);
-                
             }
         }
 
@@ -44,7 +42,6 @@ namespace hip_service.Link.Patient
             {
                 var linkRequest = _linkPatientContext.LinkRequest.Include("CareContexts").First(linkRequest =>
                     linkRequest.LinkReferenceNumber == linkReferenceNumber);
-               // var linkRequest = await _linkPatientContext.FindAsync<LinkRequest>(linkReferenceNumber);
                 return new Tuple<LinkRequest, Exception>(linkRequest, null);
             }
             catch (Exception exception)
