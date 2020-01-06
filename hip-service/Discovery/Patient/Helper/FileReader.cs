@@ -8,16 +8,16 @@ namespace hip_service.Discovery.Patient.Helpers
 {
     public static class FileReader
     {
-        public static IEnumerable<models.Patient> ReadJson(string patientFilePath)
+        public static IEnumerable<Model.Patient> ReadJson(string patientFilePath)
         {
             var jsonData = File.ReadAllText(patientFilePath);
-            return JsonConvert.DeserializeObject<List<models.Patient>>(jsonData);
+            return JsonConvert.DeserializeObject<List<Model.Patient>>(jsonData);
         }
 
-        public static async Task<IEnumerable<models.Patient>> ReadJsonAsync(string patientFilePath)
+        public static async Task<IEnumerable<Model.Patient>> ReadJsonAsync(string patientFilePath)
         {
             var jsonData = await File.ReadAllTextAsync(patientFilePath);
-            return JsonConvert.DeserializeObject<List<models.Patient>>(jsonData);
+            return JsonConvert.DeserializeObject<List<Model.Patient>>(jsonData);
         }
     }
 }

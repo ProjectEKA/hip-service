@@ -6,7 +6,7 @@ namespace hip_service.Discovery.Patient
 {
     public class EmptyMatcher : IIdentifierMatcher
     {
-        public Expression<Func<models.Patient, bool>> Of(string value) =>
+        public Expression<Func<Model.Patient, bool>> Of(string value) =>
             p => false;
     }
 }

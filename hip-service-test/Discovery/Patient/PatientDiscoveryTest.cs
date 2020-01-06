@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using FluentAssertions;
-using hip_library.Patient.models;
 using hip_service.Discovery.Patient;
+using HipLibrary.Patient.Models;
+using HipLibrary.Patient.Models.Request;
+using HipLibrary.Patient.Models.Response;
 using Xunit;
 
 namespace hip_service_test.Discovery.Patient
@@ -15,35 +17,37 @@ namespace hip_service_test.Discovery.Patient
             var patientMatchingRepository = new PatientMatchingRepository("patients.json");
             var patientDiscovery = new PatientDiscovery(patientMatchingRepository);
 
-            var expectedPatient = new hip_library.Patient.models.Patient("1", "John Doee",
+            var expectedPatient = new HipLibrary.Patient.Models.Response.Patient("1", "John Doee",
                 new List<CareContextRepresentation>
                 {
                     new CareContextRepresentation("123", "National Cancer program"),
                     new CareContextRepresentation("124", "National TB program")
-                }, new List<string>
+                }, new List<Match>
                 {
-                    "MOBILE",
-                    "FirstName",
-                    "Gender"
+                    Match.MOBILE,
+                    Match.FIRST_NAME,
+                    Match.GENDER
                 });
 
             var verifiedIdentifiers = new List<Identifier>
             {
-                new Identifier(IdentifierType.Mobile, "9999999999")
+                new Identifier(IdentifierType.MOBILE, "9999999999")
             };
 
             var unverifiedIdentifiers = new List<Identifier>
             {
-                new Identifier(IdentifierType.Mr, "123")
+                new Identifier(IdentifierType.MR, "123")
             };
 
-            var discoveryRequest = new DiscoveryRequest(verifiedIdentifiers, unverifiedIdentifiers, "John", null,
-                Gender.Male, new DateTime(2019, 01, 01));
+            var patientRequest = new HipLibrary.Patient.Models.Request.Patient("cm-1", verifiedIdentifiers,
+                unverifiedIdentifiers, "John", null, Gender.M, new DateTime(2019, 01, 01));
 
-            var (patient, error) = await patientDiscovery.PatientFor(discoveryRequest);
+            var discoveryRequest = new DiscoveryRequest(patientRequest);
+
+            var (discoveryResponse, error) = await patientDiscovery.PatientFor(discoveryRequest);
 
 
-            patient.Should().BeEquivalentTo(expectedPatient);
+            discoveryResponse.Patient.Should().BeEquivalentTo(expectedPatient);
             error.Should().BeNull();
         }
 
@@ -57,15 +61,16 @@ namespace hip_service_test.Discovery.Patient
 
             var verifiedIdentifiers = new List<Identifier>
             {
-                new Identifier(IdentifierType.Mobile, "9999999999")
+                new Identifier(IdentifierType.MOBILE, "9999999999")
             };
 
-            var discoveryRequest = new DiscoveryRequest(verifiedIdentifiers, new List<Identifier>(), null, null,
-                Gender.Male, new DateTime(2019, 01, 01));
+            var patientRequest = new HipLibrary.Patient.Models.Request.Patient("cm-1", verifiedIdentifiers,
+                new List<Identifier>(), null, null, Gender.M, new DateTime(2019, 01, 01));
+            var discoveryRequest = new DiscoveryRequest(patientRequest);
 
-            var (patient, error) = await patientDiscovery.PatientFor(discoveryRequest);
+            var (discoveryResponse, error) = await patientDiscovery.PatientFor(discoveryRequest);
 
-            patient.Should().BeNull();
+            discoveryResponse.Patient.Should().BeNull();
             error.Should().BeEquivalentTo(expectedError);
         }
 
@@ -79,15 +84,18 @@ namespace hip_service_test.Discovery.Patient
 
             var verifiedIdentifiers = new List<Identifier>
             {
-                new Identifier(IdentifierType.Mr, "311231231231")
+                new Identifier(IdentifierType.MR, "311231231231")
             };
 
-            var discoveryRequest = new DiscoveryRequest(verifiedIdentifiers, new List<Identifier>(), null, null,
-                Gender.Male, new DateTime(2019, 01, 01));
+            var patientRequest = new HipLibrary.Patient.Models.Request.Patient("cm-1", verifiedIdentifiers,
+                new List<Identifier>(), null, null,
+                Gender.M, new DateTime(2019, 01, 01));
 
-            var (patient, error) = await patientDiscovery.PatientFor(discoveryRequest);
+            var discoveryRequest = new DiscoveryRequest(patientRequest);
 
-            patient.Should().BeNull();
+            var (discoveryResponse, error) = await patientDiscovery.PatientFor(discoveryRequest);
+
+            discoveryResponse.Patient.Should().BeNull();
             error.Should().BeEquivalentTo(expectedError);
         }
     }

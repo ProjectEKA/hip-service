@@ -1,7 +1,8 @@
 using System;
 using System.Collections.Generic;
+using hip_service.Discovery.Patient.models;
 
-namespace hip_service.Discovery.Patient.models
+namespace hip_service.Discovery.Patient.Model
 {
     public class Patient
     {

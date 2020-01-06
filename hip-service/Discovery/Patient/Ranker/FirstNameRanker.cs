@@ -1,13 +1,15 @@
+using HipLibrary.Patient.Models.Response;
+
 namespace hip_service.Discovery.Patient.Ranker
 {
-    public class FirstNameRanker : IRanker<models.Patient>
+    public class FirstNameRanker : IRanker<Model.Patient>
     {
-        public PatientWithRank<models.Patient> Rank(models.Patient patient, string firstName)
+        public PatientWithRank<Model.Patient> Rank(Model.Patient patient, string firstName)
         {
             return patient.FirstName == firstName
-                ? new PatientWithRank<models.Patient>(patient, RankBuilder.WeakMatchRank,
-                    MetaBuilder.FullMatchMeta("FirstName"))
-                : new PatientWithRank<models.Patient>(patient, RankBuilder.EmptyRank, MetaBuilder.EmptyMeta);
+                ? new PatientWithRank<Model.Patient>(patient, RankBuilder.WeakMatchRank,
+                    MetaBuilder.FullMatchMeta(Match.FIRST_NAME))
+                : new PatientWithRank<Model.Patient>(patient, RankBuilder.EmptyRank, MetaBuilder.EmptyMeta);
         }
     }
 }

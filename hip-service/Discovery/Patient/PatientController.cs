@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
-using hip_library.Patient;
-using hip_library.Patient.models;
+using HipLibrary.Patient;
+using HipLibrary.Patient.Models.Request;
 using Microsoft.AspNetCore.Mvc;
 
 namespace hip_service.Discovery.Patient
@@ -20,11 +20,11 @@ namespace hip_service.Discovery.Patient
         [HttpPost]
         public async Task<ActionResult> Discover(DiscoveryRequest request)
         {
-            var (patient, error) = await patientDiscovery.PatientFor(request);
+            var (discoveryResponse, error) = await patientDiscovery.PatientFor(request);
 
             if (error != null) return NotFound(error);
 
-            return Ok(patient);
+            return Ok(discoveryResponse);
         }
     }
 }

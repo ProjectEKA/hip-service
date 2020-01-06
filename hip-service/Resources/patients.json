@@ -4,7 +4,7 @@
     "identifier": "1",
     "firstName": "John",
     "lastName": "Doee",
-    "Gender": "Male",
+    "Gender": "M",
     "dateOfBirth": "2019-12-06",
     "email": "abc@def.com",
     "careContexts": [
@@ -25,7 +25,7 @@
     "identifier": "10",
     "firstName": "Jack",
     "lastName": "Doee",
-    "Gender": "Male",
+    "Gender": "M",
     "dateOfBirth": "2019-12-06",
     "email": "zzz@def.com"
   },
@@ -34,7 +34,7 @@
     "identifier": "11",
     "firstName": "Jill",
     "lastName": "Doee",
-    "Gender": "Female",
+    "Gender": "F",
     "dateOfBirth": "2019-12-06",
     "email": "zzy@def.com"
   },
@@ -45,7 +45,7 @@
     "firstName": "Jane",
     "lastName": "Doe",
     "caseReferenceNumber": "789123",
-    "Gender": "Male",
+    "Gender": "M",
     "dateOfBirth": "2019-12-05",
     "careContexts": [
       {
@@ -67,7 +67,7 @@
     "firstName": "Olivia",
     "lastName": "Doe",
     "caseReferenceNumber": "281234",
-    "Gender": "Female",
+    "Gender": "F",
     "dateOfBirth": "2019-12-04",
     "careContexts": [
       {
@@ -89,7 +89,7 @@
     "firstName": "Ron",
     "lastName": "Doe",
     "caseReferenceNumber": "341909",
-    "Gender": "Male",
+    "Gender": "M",
     "dateOfBirth": "2019-12-03",
     "careContexts": [
       {
