@@ -25,11 +25,11 @@ namespace hip_service_test.Discovery.Patient
         [Fact]
         private void ShouldReturnMultiplePatientsFoundError()
         {
-            var patient1 = new HipLibrary.Patient.Models.Response.Patient("123", "Jack", new List<CareContextRepresentation>(), new List<Match>()
+            var patient1 = new HipLibrary.Patient.Models.Response.Patient("123", "Jack", new List<CareContextRepresentation>(), new List<Match>
             {
                 Match.FIRST_NAME
             });
-            var patient2 = new HipLibrary.Patient.Models.Response.Patient("123", "Jack", new List<CareContextRepresentation>(), new List<Match>()
+            var patient2 = new HipLibrary.Patient.Models.Response.Patient("123", "Jack", new List<CareContextRepresentation>(), new List<Match>
             {
                 Match.FIRST_NAME
             });
@@ -45,7 +45,7 @@ namespace hip_service_test.Discovery.Patient
         [Fact]
         private void ShouldReturnAPatient()
         {
-            var patient1 = new HipLibrary.Patient.Models.Response.Patient("123", "Jack", new List<CareContextRepresentation>(), new List<Match>()
+            var patient1 = new HipLibrary.Patient.Models.Response.Patient("123", "Jack", new List<CareContextRepresentation>(), new List<Match>
             {
                 Match.FIRST_NAME
             });
