@@ -6,6 +6,6 @@ namespace hip_service.Discovery.Patient
 {
     public interface IIdentifierMatcher
     {
-        Expression<Func<models.Patient, bool>> Of(string value);
+        Expression<Func<Model.Patient, bool>> Of(string value);
     }
 }

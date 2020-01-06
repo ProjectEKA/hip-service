@@ -15,7 +15,7 @@ namespace hip_service.Discovery.Patient
             this.patientFilePath = patientFilePath;
         }
 
-        public async Task<IQueryable<models.Patient>> Where(Expression<Func<models.Patient, bool>> predicate)
+        public async Task<IQueryable<Model.Patient>> Where(Expression<Func<Model.Patient, bool>> predicate)
         {
             var patientsInfo = await FileReader.ReadJsonAsync(patientFilePath);
             return patientsInfo.Where(predicate.Compile()).AsQueryable();

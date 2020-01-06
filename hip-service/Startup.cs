@@ -1,5 +1,5 @@
-﻿using hip_library.Patient;
-using hip_service.Discovery.Patient;
+﻿using hip_service.Discovery.Patient;
+using HipLibrary.Patient;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;

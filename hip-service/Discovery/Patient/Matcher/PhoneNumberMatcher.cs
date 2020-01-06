@@ -6,7 +6,7 @@ namespace hip_service.Discovery.Patient
 {
     public class PhoneNumberMatcher : IIdentifierMatcher
     {
-        public Expression<Func<models.Patient, bool>> Of(string value) =>
+        public Expression<Func<Model.Patient, bool>> Of(string value) =>
             patientInfo => patientInfo.PhoneNumber == value;
     }
 }
