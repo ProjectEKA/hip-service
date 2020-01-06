@@ -16,29 +16,30 @@ namespace hip_service_test.Discovery.Patient
     public class PatientsControllerTest
     {
         [Fact]
-        public async void ShouldGetAPatient()
+        public void ShouldGetAPatient()
         {
-            var verifiedIdentifiers = new List<Identifier>()
+            var verifiedIdentifiers = new List<Identifier>
             {
                 new Identifier(IdentifierType.MOBILE, "9999999999")
             };
 
-            var unverifiedIdentifiers = new List<Identifier>()
+            var unverifiedIdentifiers = new List<Identifier>
             {
                 new Identifier(IdentifierType.MR, "1")
             };
 
-            var patientRequest = new HipLibrary.Patient.Models.Request.Patient("cm-1",verifiedIdentifiers,
+            var patientRequest = new HipLibrary.Patient.Models.Request.Patient("cm-1", verifiedIdentifiers,
                 unverifiedIdentifiers, "J", "K",
                 Gender.M, new DateTime(2019, 01, 01));
 
             var discoveryRequest = new DiscoveryRequest(patientRequest);
 
             var mockDiscovery = new Mock<IDiscovery>();
-            var expectedPatient = new HipLibrary.Patient.Models.Response.Patient("p1", "J K", new List<CareContextRepresentation>()
-            {
-                new CareContextRepresentation("1", "display")
-            }, new List<HipLibrary.Patient.Models.Response.Match>());
+            var expectedPatient = new HipLibrary.Patient.Models.Response.Patient("p1", "J K",
+                new List<CareContextRepresentation>
+                {
+                    new CareContextRepresentation("1", "display")
+                }, new List<HipLibrary.Patient.Models.Response.Match>());
             var expectedResponse = new DiscoveryResponse(expectedPatient);
 
             mockDiscovery.Setup(x => x.PatientFor(discoveryRequest)).ReturnsAsync(
@@ -55,16 +56,17 @@ namespace hip_service_test.Discovery.Patient
         [Fact]
         public void ShouldGetNotFound()
         {
-            var verifiedIdentifiers = new List<Identifier>()
+            var verifiedIdentifiers = new List<Identifier>
             {
                 new Identifier(IdentifierType.MOBILE, "9999999999")
             };
 
-            var unverifiedIdentifiers = new List<Identifier>()
+            var unverifiedIdentifiers = new List<Identifier>
             {
                 new Identifier(IdentifierType.MR, "1")
             };
-            var patient = new HipLibrary.Patient.Models.Request.Patient("cm-1", verifiedIdentifiers, unverifiedIdentifiers, "J", "K",
+            var patient = new HipLibrary.Patient.Models.Request.Patient("cm-1", verifiedIdentifiers,
+                unverifiedIdentifiers, "J", "K",
                 Gender.M, new DateTime(2019, 01, 01));
 
             var discoveryRequest = new DiscoveryRequest(patient);
