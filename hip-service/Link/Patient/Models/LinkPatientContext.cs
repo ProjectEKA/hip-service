@@ -1,4 +1,3 @@
-using hip_library.Patient.models.dto;
 using hip_service.OTP.Models;
 using Microsoft.EntityFrameworkCore;
 

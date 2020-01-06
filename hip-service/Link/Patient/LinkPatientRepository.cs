@@ -1,12 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using hip_library.Patient.models;
-using hip_library.Patient.models.dto;
-using hip_service.Discovery.Patient.Helpers;
-using hip_service.Discovery.Patient.models;
 using hip_service.Link.Patient.Models;
 using Microsoft.EntityFrameworkCore;
 

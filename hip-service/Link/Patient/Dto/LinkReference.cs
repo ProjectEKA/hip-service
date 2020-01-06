@@ -1,10 +1,9 @@
-using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 using System.Xml.Serialization;
-using hip_library.Patient.models;
+using HipLibrary.Patient.Models.Request;
 
-namespace hip_service.Link.Patient
+namespace hip_service.Link.Patient.Dto
 {
     public class LinkReference
     {

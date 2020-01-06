@@ -1,10 +1,9 @@
-
-﻿using hip_service.Discovery.Patient;
- using hip_service.Link.Patient;
- using hip_service.Link.Patient.Models;
- using hip_service.Middleware;
- using hip_service.OTP;
- using HipLibrary.Patient;
+using hip_service.Discovery.Patient;
+using hip_service.Link.Patient;
+using hip_service.Link.Patient.Models;
+using hip_service.Middleware;
+using hip_service.OTP;
+using HipLibrary.Patient;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;

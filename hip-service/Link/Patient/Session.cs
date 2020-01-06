@@ -1,4 +1,3 @@
-using hip_library.Patient.models.dto;
 
 namespace hip_service.OTP
 {

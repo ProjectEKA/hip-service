@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using hip_library.Patient.models;
+using HipLibrary.Patient.Models.Response;
 
 namespace hip_service.OTP
 {

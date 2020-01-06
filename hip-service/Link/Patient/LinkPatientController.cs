@@ -1,9 +1,10 @@
 using System;
 using System.Threading.Tasks;
-using health_information_provider_library.Patient.models;
-using hip_library.Patient;
-using hip_library.Patient.models.dto;
+using hip_service.Link.Patient.Dto;
+using HipLibrary.Patient;
+using HipLibrary.Patient.Models.Request;
 using Microsoft.AspNetCore.Mvc;
+using HipLibrary.Patient.Models.Request;
 
 namespace hip_service.Link.Patient
 {
@@ -20,11 +21,11 @@ namespace hip_service.Link.Patient
 
         [HttpPost]
         public async Task<ActionResult> LinkPatientCareContexts([FromHeader(Name = "X-ConsentManagerID")]string consentManagerId,
-            [FromBody]LinkReference request)
+            [FromBody]LinkPatientReference request)
         {
-            PatientLinkReferenceRequest patientReferenceRequest = new PatientLinkReferenceRequest(consentManagerId,
-                request.ConsentManagerUserId, request.PatientReferenceNumber, request.CareContexts);
-            
+            var patient = new HipLibrary.Patient.Models.Request.Link(consentManagerId
+                , request.LinkReference.ConsentManagerUserId, request.LinkReference.PatientReferenceNumber, request.LinkReference.CareContexts);
+            var patientReferenceRequest = new PatientLinkReferenceRequest(request.TransactionId,patient);
             var (linkReferenceResponse, error) = await linkPatient.LinkPatients(patientReferenceRequest);
 
             if (error != null) return NotFound(error);

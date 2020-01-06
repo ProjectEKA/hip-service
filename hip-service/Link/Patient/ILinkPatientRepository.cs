@@ -1,9 +1,5 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
-using hip_library.Patient.models;
-using hip_library.Patient.models.dto;
-using hip_service.Discovery.Patient.models;
 using hip_service.Link.Patient.Models;
 
 namespace hip_service.Link.Patient
