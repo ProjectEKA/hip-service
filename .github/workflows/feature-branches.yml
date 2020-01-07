@@ -14,6 +14,6 @@ jobs:
         with:
           dotnet-version: '3.1.100'
       - name: Build with dotnet
-        run: dotnet clean build
+        run: dotnet build
       - name: Run unit tests
-        run: dotnet clean test
+        run: dotnet test

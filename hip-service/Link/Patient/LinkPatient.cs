@@ -128,7 +128,7 @@ namespace hip_service.Link.Patient
                     linkRequest.PatientReferenceNumber
                     , patient.FirstName + " " + patient.LastName, representations));
                 
-                return new Tuple<PatientLinkResponse, ErrorResponse>(patientLinkResponse, null);;
+                return new Tuple<PatientLinkResponse, ErrorResponse>(patientLinkResponse, null);
             }).ValueOr(new Tuple<PatientLinkResponse, ErrorResponse>(null,
                 new ErrorResponse(new Error(ErrorCode.CareContextNotFound, "Care Context Not Found"))));
             
