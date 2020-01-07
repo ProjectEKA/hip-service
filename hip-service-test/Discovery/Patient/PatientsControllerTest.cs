@@ -40,7 +40,7 @@ namespace hip_service_test.Discovery.Patient
                 {
                     new CareContextRepresentation("1", "display")
                 }, new List<HipLibrary.Patient.Models.Response.Match>());
-            var expectedResponse = new DiscoveryResponse(expectedPatient, "transaction-id-1");
+            var expectedResponse = new DiscoveryResponse(expectedPatient);
 
             mockDiscovery.Setup(x => x.PatientFor(discoveryRequest)).ReturnsAsync(
                 new Tuple<DiscoveryResponse, ErrorResponse>(expectedResponse, null));
