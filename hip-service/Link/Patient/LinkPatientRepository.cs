@@ -8,27 +8,26 @@ namespace hip_service.Link.Patient
 {
     public class LinkPatientRepository: ILinkPatientRepository
     {
-        private readonly LinkPatientContext _linkPatientContext;
+        private readonly LinkPatientContext linkPatientContext;
         public LinkPatientRepository(LinkPatientContext linkPatientContext)
         {
-            _linkPatientContext = linkPatientContext;
+            this.linkPatientContext = linkPatientContext;
         }
         
         public async Task<Tuple<LinkRequest, Exception>> SaveLinkPatientDetails(string linkReferenceNumber, string consentManagerId, string consentManagerUserId,
             string patientReferenceNumber, string[] careContextReferenceNumbers)
         {
-            const string dateTimeFormat = "yyyy-MM-ddTHH:mm:ssZ";
             var dateTimeStamp = new DateTime (DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 
                     DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second).ToUniversalTime().
-                ToString(dateTimeFormat);
+                ToString(Constants.DateTimeFormat);
             var linkedCareContexts = careContextReferenceNumbers.Select(referenceNumber => new LinkedCareContext(referenceNumber)).ToList();
             var linkRequest = new LinkRequest(patientReferenceNumber, linkReferenceNumber, consentManagerId,
                 consentManagerUserId, dateTimeStamp, linkedCareContexts);
 
-            _linkPatientContext.LinkRequest.Add(linkRequest);
+            linkPatientContext.LinkRequest.Add(linkRequest);
             try
             {
-                await _linkPatientContext.SaveChangesAsync();
+                await linkPatientContext.SaveChangesAsync();
                 return new Tuple<LinkRequest, Exception>(linkRequest, null);
             }
             catch (Exception exception)
@@ -41,7 +40,7 @@ namespace hip_service.Link.Patient
         {
             try
             {
-                var linkRequest = _linkPatientContext.LinkRequest.Include("CareContexts").First(linkRequest =>
+                var linkRequest = linkPatientContext.LinkRequest.Include("CareContexts").First(linkRequest =>
                     linkRequest.LinkReferenceNumber == linkReferenceNumber);
                 return new Tuple<LinkRequest, Exception>(linkRequest, null);
             }

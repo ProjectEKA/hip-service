@@ -13,22 +13,22 @@ namespace hip_service.Link.Patient
     public class LinkPatient: ILink
     {
         private readonly ILinkPatientRepository linkPatientRepository;
-        private readonly PatientRepository _patientRepository;
-        private readonly IPatientVerification _patientVerification;
+        private readonly PatientRepository patientRepository;
+        private readonly IPatientVerification patientVerification;
 
         public LinkPatient(ILinkPatientRepository linkPatientRepository, PatientRepository patientRepository,
             IPatientVerification patientVerification)
         {
             this.linkPatientRepository = linkPatientRepository;
-            _patientRepository = patientRepository;
-            _patientVerification = patientVerification;
+            this.patientRepository = patientRepository;
+            this.patientVerification = patientVerification;
         }
 
         public async Task<Tuple<PatientLinkReferenceResponse, ErrorResponse>> LinkPatients(PatientLinkReferenceRequest request)
         {
 
             var requestPatient = request.Patient;
-            var patient = _patientRepository.GetPatientInfoWithReferenceNumber(requestPatient.ReferenceNumber);
+            var patient = patientRepository.GetPatientInfoWithReferenceNumber(requestPatient.ReferenceNumber);
             
             if (patient == null)
             {
@@ -38,10 +38,10 @@ namespace hip_service.Link.Patient
             var programs = new List<hip_service.Discovery.Patient.models.CareContext>();
             foreach (var careContext in requestPatient.CareContexts)
             {
-                if (_patientRepository.GetProgramInfo(requestPatient.ReferenceNumber,
+                if (patientRepository.GetProgramInfo(requestPatient.ReferenceNumber,
                         careContext.ReferenceNumber) != null)
                 {
-                    programs.Add(_patientRepository.GetProgramInfo(requestPatient.ReferenceNumber,
+                    programs.Add(patientRepository.GetProgramInfo(requestPatient.ReferenceNumber,
                         careContext.ReferenceNumber));
                 }
             }
@@ -55,9 +55,9 @@ namespace hip_service.Link.Patient
             var linkRefNumber = Guid.NewGuid().ToString();
             
             // method call for generating the OTP
-            var session = new Session(linkRefNumber, new Communication(IdentifierType.MOBILE,patient.PhoneNumber));
+            var session = new Session(linkRefNumber, new Communication(CommunicationMode.MOBILE,patient.PhoneNumber));
 
-            if (await _patientVerification.GenerateVerificationToken(session) != null)
+            if (await patientVerification.SendTokenFor(session) != null)
             {
                 return new Tuple<PatientLinkReferenceResponse, ErrorResponse>
                     (null, new ErrorResponse(new Error(ErrorCode.OtpInValid, "Unable to create token")));
@@ -73,21 +73,20 @@ namespace hip_service.Link.Patient
                     (null, new ErrorResponse(new Error(ErrorCode.CareContextNotFound, "Unable to store data to Database")));
             }
 
-            const string dateTimeFormat = "yyyy-MM-ddTHH:mm:ssZ";
             var expiry = new DateTime (DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 
                     DateTime.Now.Hour, DateTime.Now.Minute+1, DateTime.Now.Second).ToUniversalTime().
-                ToString(dateTimeFormat); 
+                ToString(Constants.DateTimeFormat); 
 
-            var meta = new LinkReferenceMeta(nameof(IdentifierType.MOBILE), 
-                _patientRepository.GetPatientInfoWithReferenceNumber(requestPatient.ReferenceNumber).PhoneNumber, expiry);
+            var meta = new LinkReferenceMeta(nameof(CommunicationMode.MOBILE), 
+                patientRepository.GetPatientInfoWithReferenceNumber(requestPatient.ReferenceNumber).PhoneNumber, expiry);
             var patientLinkReferenceResponse = new PatientLinkReferenceResponse(new LinkReference(linkRefNumber,"MEDIATED",meta));
 
             return new Tuple<PatientLinkReferenceResponse, ErrorResponse>(patientLinkReferenceResponse, null);
         }
 
-        public async Task<Tuple<PatientLinkResponse, ErrorResponse>> VerifyAndLinkCareContext(PatientLinkRequest request)
+        public async Task<Tuple<PatientLinkResponse, ErrorResponse>> VerifyAndLinkCareContext(HipLibrary.Patient.Models.Request.PatientLinkRequest request)
         {
-            if (await _patientVerification.AuthenticateVerificationToken(request.LinkReferenceNumber, request.Token) != null)
+            if (await patientVerification.Verify(request.LinkReferenceNumber, request.Token) != null)
             {
                 return new Tuple<PatientLinkResponse, ErrorResponse>
                     (null, new ErrorResponse(new  Error(ErrorCode.OtpInValid, "Otp Invalid")));   
@@ -102,7 +101,7 @@ namespace hip_service.Link.Patient
                     (null, new ErrorResponse(new Error(ErrorCode.NoPatientFound, "No request found")));
             }
 
-            var patientInfo = _patientRepository.GetPatientInfoWithReferenceNumber(linkRequest.PatientReferenceNumber);
+            var patientInfo = patientRepository.GetPatientInfoWithReferenceNumber(linkRequest.PatientReferenceNumber);
 
             var representations = linkRequest.CareContexts
                 .Where(careContext =>
@@ -115,8 +114,6 @@ namespace hip_service.Link.Patient
 
             return new Tuple<PatientLinkResponse, ErrorResponse>
                 (patientLinkResponse, null);
-            
         }
-
     }
 }

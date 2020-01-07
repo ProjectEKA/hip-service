@@ -6,22 +6,22 @@ namespace hip_service.OTP
 {
     public class OtpVerification
     {
-        private readonly IOtpRepository _otpRepository;
+        private readonly IOtpRepository otpRepository;
 
         public OtpVerification(IOtpRepository otpRepository)
         {
-            _otpRepository = otpRepository;
+            this.otpRepository = otpRepository;
         }
 
         public async Task<Error> GenerateOtp(Session session)
         {
-            var (_, exception) = await _otpRepository.SaveOtpRequest("1234",session.SessionId);
+            var (_, exception) = await otpRepository.Save("1234",session.SessionId);
             return exception != null ? new Error(ErrorCode.OtpInValid,"OTP not generated") : null;
         }
 
         public async Task<Error> CheckOtpValue(string sessionId, string value)
         {
-            var (otpValue, exception) = await _otpRepository.GetOtp(sessionId);
+            var (otpValue, exception) = await otpRepository.GetOtp(sessionId);
             return otpValue.OtpToken == value ? null : new Error(ErrorCode.OtpInValid, "OTP not valid");
         }
     }

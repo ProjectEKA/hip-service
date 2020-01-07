@@ -5,6 +5,7 @@ using HipLibrary.Patient;
 using HipLibrary.Patient.Models.Request;
 using Microsoft.AspNetCore.Mvc;
 using HipLibrary.Patient.Models.Request;
+using PatientLinkReferenceRequest = hip_service.Link.Patient.Dto.PatientLinkReferenceRequest;
 
 namespace hip_service.Link.Patient
 {
@@ -21,11 +22,12 @@ namespace hip_service.Link.Patient
 
         [HttpPost]
         public async Task<ActionResult> LinkPatientCareContexts([FromHeader(Name = "X-ConsentManagerID")]string consentManagerId,
-            [FromBody]LinkPatientReference request)
+            [FromBody]PatientLinkReferenceRequest request)
         {
             var patient = new HipLibrary.Patient.Models.Request.Link(consentManagerId
                 , request.Patient.ConsentManagerUserId, request.Patient.ReferenceNumber, request.Patient.CareContexts);
-            var patientReferenceRequest = new PatientLinkReferenceRequest(request.TransactionId,patient);
+            
+            var patientReferenceRequest = new HipLibrary.Patient.Models.Request.PatientLinkReferenceRequest(request.TransactionId,patient);
             var (linkReferenceResponse, error) = await linkPatient.LinkPatients(patientReferenceRequest);
 
             if (error != null)
@@ -37,10 +39,10 @@ namespace hip_service.Link.Patient
         }
 
         [HttpPost("{linkReferenceNumber}")]
-        public async Task<ActionResult> LinkPatient([FromRoute] string linkReferenceNumber, [FromBody]LinkToken linkToken)
+        public async Task<ActionResult> LinkPatient([FromRoute] string linkReferenceNumber, [FromBody]PatientLinkRequest patientLinkRequest)
         {
             var (patientLinkResponse, error) = await linkPatient
-                .VerifyAndLinkCareContext(new PatientLinkRequest(linkToken.Token, linkReferenceNumber));
+                .VerifyAndLinkCareContext(new HipLibrary.Patient.Models.Request.PatientLinkRequest(patientLinkRequest.Token, linkReferenceNumber));
 
             if (error != null)
             {

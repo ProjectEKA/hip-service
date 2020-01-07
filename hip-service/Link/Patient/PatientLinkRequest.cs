@@ -1,15 +1,14 @@
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using System.Xml.Serialization;
 
 namespace hip_service.Link.Patient
 {
-    public class LinkToken
+    public class PatientLinkRequest
     {
-        [JsonPropertyName("token")]
-        [XmlElement("token")]
         public string Token { get; }
 
-        public LinkToken(string token)
+        public PatientLinkRequest(string token)
         {
             Token = token;
         }

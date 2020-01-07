@@ -7,21 +7,21 @@ namespace hip_service.Link.Patient
 {
     public class PatientVerification: IPatientVerification
     {
-        private readonly OtpVerification _otpVerification;
+        private readonly OtpVerification otpVerification;
 
         public PatientVerification(OtpVerification otpVerification)
         {
-            _otpVerification = otpVerification;
+            this.otpVerification = otpVerification;
         }
 
-        public async Task<Error?> GenerateVerificationToken(Session session)
+        public async Task<Error?> SendTokenFor(Session session)
         {
-            return await _otpVerification.GenerateOtp(session);
+            return await otpVerification.GenerateOtp(session);
         }
         
-        public async Task<Error?> AuthenticateVerificationToken(string sessionId, string value)
+        public async Task<Error?> Verify(string sessionId, string value)
         {
-            return await _otpVerification.CheckOtpValue(sessionId, value);
+            return await otpVerification.CheckOtpValue(sessionId, value);
         }
     }
 }

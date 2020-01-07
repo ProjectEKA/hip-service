@@ -9,17 +9,17 @@ namespace hip_service.Link.Patient
 {
     public class PatientRepository
     {
-        private readonly string _filePath;
+        private readonly string filePath;
 
         public PatientRepository(string filePath)
         {
-            _filePath = filePath;
+            this.filePath = filePath;
         }
 
         
         IEnumerable<Discovery.Patient.Model.Patient> GetAllPatientFromJson()
         {
-            var patientsInfo = FileReader.ReadJson(_filePath);
+            var patientsInfo = FileReader.ReadJson(filePath);
             return patientsInfo;
         }
 

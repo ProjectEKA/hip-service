@@ -7,7 +7,7 @@ namespace hip_service.Link.Patient
 {
     public interface IPatientVerification
     {
-        public Task<Error?> GenerateVerificationToken(Session session);
-        public Task<Error?> AuthenticateVerificationToken(string sessionId, string value);
+        public Task<Error?> SendTokenFor(Session session);
+        public Task<Error?> Verify(string sessionId, string value);
     }
 }

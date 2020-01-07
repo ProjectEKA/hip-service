@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using hip_service.Link.Patient;
 using hip_service.Link.Patient.Models;
 using hip_service.OTP.Models;
 
@@ -8,23 +9,22 @@ namespace hip_service.OTP
 {
     public class OtpRepository: IOtpRepository
     {
-        private readonly LinkPatientContext _linkPatientContext;
+        private readonly LinkPatientContext linkPatientContext;
         public OtpRepository(LinkPatientContext linkPatientContext)
         {
-            _linkPatientContext = linkPatientContext;
+            this.linkPatientContext = linkPatientContext;
         }
-        public async Task<Tuple<OtpRequest, Exception>> SaveOtpRequest(string otp, string sessionId)
+        public async Task<Tuple<OtpRequest, Exception>> Save(string otp, string sessionId)
         {
-            const string dateTimeFormat = "yyyy-MM-ddTHH:mm:ssZ";
             var dateTimeStamp = new DateTime (DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 
                     DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second).ToUniversalTime().
-                ToString(dateTimeFormat);
+                ToString(Constants.DateTimeFormat);
 
             var otpRequest = new OtpRequest(sessionId, dateTimeStamp, otp);
-            _linkPatientContext.OtpRequests.Add(otpRequest);
+            linkPatientContext.OtpRequests.Add(otpRequest);
             try
             {
-                await _linkPatientContext.SaveChangesAsync();
+                await linkPatientContext.SaveChangesAsync();
                 return new Tuple<OtpRequest, Exception>(otpRequest, null);
             }
             catch (Exception exception)
@@ -38,7 +38,7 @@ namespace hip_service.OTP
         {
             try
             {
-                var otpRequest =  _linkPatientContext.OtpRequests.First(o => o.SessionId == sessionId);
+                var otpRequest =  linkPatientContext.OtpRequests.First(o => o.SessionId == sessionId);
                 return new Tuple<OtpRequest, Exception>(otpRequest, null);
             }
             catch (Exception exception)

@@ -1,3 +1,4 @@
+using System.Text.Json;
 using hip_service.Discovery.Patient;
 using hip_service.Link.Patient;
 using hip_service.Link.Patient.Models;
@@ -22,11 +23,10 @@ namespace hip_service
         {
             Configuration = configuration;
         }
-        public void ConfigureServices(IServiceCollection services) =>
-            
+        public void ConfigureServices(IServiceCollection services) {
             services
                 .AddDbContext<LinkPatientContext>(options =>
-                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")))
+                    options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")))
                 .AddSingleton(new PatientRepository("Resources/patients.json"))
                 .AddScoped<ILinkPatientRepository, LinkPatientRepository>()
                 .AddSingleton<IMatchingRepository>(new PatientMatchingRepository("Resources/patients.json"))
@@ -39,6 +39,9 @@ namespace hip_service
                 .AddRouting(options => options.LowercaseUrls = true)
                 .AddControllers()
                 .AddNewtonsoftJson(options =>{});
+            services.AddControllers().AddJsonOptions(options =>
+                options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase);
+        }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env) =>
             
@@ -47,7 +50,7 @@ namespace hip_service
                 .UseIf(!env.IsDevelopment(), x => x.UseHsts())
                 .UseIf(env.IsDevelopment(), x => x.UseDeveloperExceptionPage())
                 .UseCustomOpenAPI()
-                .UseSecurityHeadersMiddleware()
+                .UseConsentManagerIdentifierMiddleware()
                 .UseEndpoints(endpoints => { endpoints.MapControllers(); });
     }
 }
