@@ -1,12 +1,15 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using hip_service.OTP;
 using HipLibrary.Patient;
 using HipLibrary.Patient.Models;
 using HipLibrary.Patient.Models.Request;
 using HipLibrary.Patient.Models.Response;
+using Optional;
+using CareContext = hip_service.Discovery.Patient.models.CareContext;
 
 namespace hip_service.Link.Patient
 {
@@ -26,62 +29,71 @@ namespace hip_service.Link.Patient
 
         public async Task<Tuple<PatientLinkReferenceResponse, ErrorResponse>> LinkPatients(PatientLinkReferenceRequest request)
         {
+            var patients = patientRepository.GetPatientInfoWithReferenceNumber(request.Patient.ReferenceNumber);
 
-            var requestPatient = request.Patient;
-            var patient = patientRepository.GetPatientInfoWithReferenceNumber(requestPatient.ReferenceNumber);
-            
-            if (patient == null)
+            return await patients.Map(async (patient) =>
             {
-                return new Tuple<PatientLinkReferenceResponse, ErrorResponse>
-                    (null, new ErrorResponse(new Error(ErrorCode.NoPatientFound, "No patient found")));
-            }
-            var programs = new List<hip_service.Discovery.Patient.models.CareContext>();
-            foreach (var careContext in requestPatient.CareContexts)
-            {
-                if (patientRepository.GetProgramInfo(requestPatient.ReferenceNumber,
-                        careContext.ReferenceNumber) != null)
+                var requestPatient = request.Patient;
+
+                var programs = (from careContext in requestPatient.CareContexts
+                    where patientRepository.GetProgramInfo(requestPatient.ReferenceNumber, careContext.ReferenceNumber)
+                        .HasValue
+                    select patientRepository.GetProgramInfo(requestPatient.ReferenceNumber, careContext.ReferenceNumber)
+                    into careContextPatient
+                    select careContextPatient.Map<CareContext>(context =>
+                    {
+                        var newCareContext = new CareContext
+                            {ReferenceNumber = context.ReferenceNumber, Description = context.Description};
+                        return newCareContext;
+                    })).ToList();
+
+                if (programs.Count != requestPatient.CareContexts.Count())
                 {
-                    programs.Add(patientRepository.GetProgramInfo(requestPatient.ReferenceNumber,
-                        careContext.ReferenceNumber));
+                    return new Tuple<PatientLinkReferenceResponse, ErrorResponse>
+                    (null,
+                        new ErrorResponse(new Error(ErrorCode.CareContextNotFound,
+                            "Care context not found for given patient")));
                 }
-            }
 
-            if (programs.Count != requestPatient.CareContexts.Count())
-            {
-                return new Tuple<PatientLinkReferenceResponse, ErrorResponse>
-                    (null, new ErrorResponse(new Error(ErrorCode.CareContextNotFound, "Care context not found for given patient")));
-            }           
-            
-            var linkRefNumber = Guid.NewGuid().ToString();
-            
-            // method call for generating the OTP
-            var session = new Session(linkRefNumber, new Communication(CommunicationMode.MOBILE,patient.PhoneNumber));
+                var linkRefNumber = Guid.NewGuid().ToString();
 
-            if (await patientVerification.SendTokenFor(session) != null)
-            {
-                return new Tuple<PatientLinkReferenceResponse, ErrorResponse>
-                    (null, new ErrorResponse(new Error(ErrorCode.OtpInValid, "Unable to create token")));
-            }
-            
-            var (_, exception) = await linkPatientRepository.SaveLinkPatientDetails(linkRefNumber, requestPatient.ConsentManagerId,
-                requestPatient.ConsentManagerUserId, requestPatient.ReferenceNumber, requestPatient.CareContexts
-                    .Select(context => context.ReferenceNumber).ToArray());
+                // method call for generating the OTP
+                var session = new Session(linkRefNumber,
+                    new Communication(CommunicationMode.MOBILE, patient.PhoneNumber));
 
-            if (exception != null)
-            {
-                return new Tuple<PatientLinkReferenceResponse, ErrorResponse>
-                    (null, new ErrorResponse(new Error(ErrorCode.CareContextNotFound, "Unable to store data to Database")));
-            }
+                if (await patientVerification.SendTokenFor(session) != null)
+                {
+                    return new Tuple<PatientLinkReferenceResponse, ErrorResponse>
+                        (null, new ErrorResponse(new Error(ErrorCode.OtpInValid, "Unable to create token")));
+                }
 
-            var expiry = new DateTime (DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 
-                    DateTime.Now.Hour, DateTime.Now.Minute+1, DateTime.Now.Second).ToUniversalTime().
-                ToString(Constants.DateTimeFormat); 
+                var (_, exception) = await linkPatientRepository.SaveLinkPatientDetails(linkRefNumber,
+                    requestPatient.ConsentManagerId,
+                    requestPatient.ConsentManagerUserId, requestPatient.ReferenceNumber, requestPatient.CareContexts
+                        .Select(context => context.ReferenceNumber).ToArray());
 
-            var meta = new LinkReferenceMeta(nameof(CommunicationMode.MOBILE), 
-                patientRepository.GetPatientInfoWithReferenceNumber(requestPatient.ReferenceNumber).PhoneNumber, expiry);
-            var patientLinkReferenceResponse = new PatientLinkReferenceResponse(new LinkReference(linkRefNumber,"MEDIATED",meta));
+                if (exception != null)
+                {
+                    return new Tuple<PatientLinkReferenceResponse, ErrorResponse>
+                    (null,
+                        new ErrorResponse(new Error(ErrorCode.CareContextNotFound,
+                            "Unable to store data to Database")));
+                }
 
-            return new Tuple<PatientLinkReferenceResponse, ErrorResponse>(patientLinkReferenceResponse, null);
+                var expiry = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day,
+                        DateTime.Now.Hour, DateTime.Now.Minute + 1, DateTime.Now.Second).ToUniversalTime()
+                    .ToString(Constants.DateTimeFormat);
+
+                var meta = new LinkReferenceMeta(nameof(CommunicationMode.MOBILE),
+                    patient.PhoneNumber, expiry);
+                var patientLinkReferenceResponse = new PatientLinkReferenceResponse(new LinkReference(linkRefNumber,
+                    "MEDIATED", meta));
+
+                return new Tuple<PatientLinkReferenceResponse, ErrorResponse>(patientLinkReferenceResponse, null);
+            }).ValueOr(
+                Task.FromResult(new Tuple<PatientLinkReferenceResponse, ErrorResponse>(null
+                    , new ErrorResponse(new Error(ErrorCode.NoPatientFound,"No patient Found"))))
+            );
         }
 
         public async Task<Tuple<PatientLinkResponse, ErrorResponse>> VerifyAndLinkCareContext(HipLibrary.Patient.Models.Request.PatientLinkRequest request)
@@ -94,26 +106,32 @@ namespace hip_service.Link.Patient
 
             var (linkRequest, exception) =
                 await linkPatientRepository.GetPatientReferenceNumber(request.LinkReferenceNumber);
-       
+            
             if (exception != null)
             {
                 return new Tuple<PatientLinkResponse, ErrorResponse>
                     (null, new ErrorResponse(new Error(ErrorCode.NoPatientFound, "No request found")));
             }
-
+            
             var patientInfo = patientRepository.GetPatientInfoWithReferenceNumber(linkRequest.PatientReferenceNumber);
 
-            var representations = linkRequest.CareContexts
-                .Where(careContext =>
-                    patientInfo.CareContexts.Any(info => info.ReferenceNumber == careContext.CareContextNumber))
-                .Select( context => new CareContextRepresentation(context.CareContextNumber, 
-                    patientInfo.CareContexts.First(info => info.ReferenceNumber == context.CareContextNumber).Description));
-            
-            var patientLinkResponse = new PatientLinkResponse(new HipLibrary.Patient.Models.Response.LinkPatient(linkRequest.PatientReferenceNumber
-                    ,patientInfo.FirstName + " " + patientInfo.LastName,representations));
+            return patientInfo.Map(patient =>
+            {
+                var representations = linkRequest.CareContexts
+                    .Where(careContext =>
+                        patient.CareContexts.Any(info => info.ReferenceNumber == careContext.CareContextNumber))
+                    .Select(context => new CareContextRepresentation(context.CareContextNumber,
+                        patient.CareContexts.First(info => info.ReferenceNumber == context.CareContextNumber)
+                            .Description));
 
-            return new Tuple<PatientLinkResponse, ErrorResponse>
-                (patientLinkResponse, null);
+                var patientLinkResponse = new PatientLinkResponse(new HipLibrary.Patient.Models.Response.LinkPatient(
+                    linkRequest.PatientReferenceNumber
+                    , patient.FirstName + " " + patient.LastName, representations));
+                
+                return new Tuple<PatientLinkResponse, ErrorResponse>(patientLinkResponse, null);;
+            }).ValueOr(new Tuple<PatientLinkResponse, ErrorResponse>(null,
+                new ErrorResponse(new Error(ErrorCode.CareContextNotFound, "Care Context Not Found"))));
+            
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using hip_service.Discovery.Patient.Helpers;
 using hip_service.Discovery.Patient.models;
+using Optional;
 
 namespace hip_service.Link.Patient
 {
@@ -23,36 +24,33 @@ namespace hip_service.Link.Patient
             return patientsInfo;
         }
 
-        public Discovery.Patient.Model.Patient? GetPatientInfoWithReferenceNumber(string referenceNumber)
+        public Option<Discovery.Patient.Model.Patient> GetPatientInfoWithReferenceNumber(string referenceNumber)
         {
             try
             {
                 var patientsInfo = GetAllPatientFromJson();
-                var patient = patientsInfo.First(patient => patient.Identifier == referenceNumber);
-                return patient;
+                var patient = patientsInfo.First(p => p.Identifier == referenceNumber);
+                return Option.Some(patient); 
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                return null;
+                return Option.None<Discovery.Patient.Model.Patient>();
             }
 
         }
 
-        public CareContext GetProgramInfo(string patientReferenceNumber, string programReferenceNumber)
+        public Option<CareContext> GetProgramInfo(string patientReferenceNumber, string programReferenceNumber)
         {
             try
             {
-                var patientInfo = GetPatientInfoWithReferenceNumber(patientReferenceNumber);
-                var careContext = patientInfo.CareContexts.First(program => program.ReferenceNumber == programReferenceNumber);
-                return careContext;
+                return GetPatientInfoWithReferenceNumber(patientReferenceNumber)
+                    .Map(patient => patient.CareContexts.First(program =>
+                        program.ReferenceNumber == programReferenceNumber));
             }
-            catch (Exception e)
-            { 
-                return null;
+            catch (Exception)
+            {
+                return Option.None<CareContext>();
             }
-            
-
         }
-        
     }
 }

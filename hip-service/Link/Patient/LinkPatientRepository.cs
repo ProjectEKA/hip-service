@@ -3,6 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using hip_service.Link.Patient.Models;
 using Microsoft.EntityFrameworkCore;
+using Optional;
+using static Optional.Option;
 
 namespace hip_service.Link.Patient
 {
@@ -28,7 +30,7 @@ namespace hip_service.Link.Patient
             try
             {
                 await linkPatientContext.SaveChangesAsync();
-                return new Tuple<LinkRequest, Exception>(linkRequest, null);
+                return new Tuple<LinkRequest, Exception>(linkRequest,null);
             }
             catch (Exception exception)
             {
@@ -36,7 +38,7 @@ namespace hip_service.Link.Patient
             }
         }
 
-        public async Task<Tuple<LinkRequest, Exception>> GetPatientReferenceNumber(string linkReferenceNumber)
+        public async Task<Tuple<LinkRequest, Exception>>GetPatientReferenceNumber(string linkReferenceNumber)
         {
             try
             {
