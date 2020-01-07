@@ -21,13 +21,13 @@ namespace hip_service.Discovery.Patient
             filter = new Filter();
         }
 
-        public async Task<Tuple<DiscoveryResponse, Error>> PatientFor(DiscoveryRequest request)
+        public async Task<Tuple<DiscoveryResponse, ErrorResponse>> PatientFor(DiscoveryRequest request)
         {
             var expression = GetExpression(request.Patient.VerifiedIdentifiers);
             var patientInfos = await repo.Where(expression);
             var (patient, error) = DiscoveryUseCase.DiscoverPatient(filter.Do(patientInfos, request).AsQueryable());
 
-            return new Tuple<DiscoveryResponse, Error>(new DiscoveryResponse(patient), error);
+            return new Tuple<DiscoveryResponse, ErrorResponse>(new DiscoveryResponse(patient), error);
         }
     }
 }
