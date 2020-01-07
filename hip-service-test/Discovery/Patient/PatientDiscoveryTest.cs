@@ -42,7 +42,7 @@ namespace hip_service_test.Discovery.Patient
             var patientRequest = new HipLibrary.Patient.Models.Request.Patient("cm-1", verifiedIdentifiers,
                 unverifiedIdentifiers, "John", null, Gender.M, new DateTime(2019, 01, 01));
 
-            var discoveryRequest = new DiscoveryRequest(patientRequest);
+            var discoveryRequest = new DiscoveryRequest(patientRequest, "transaction-id-1");
 
             var (discoveryResponse, error) = await patientDiscovery.PatientFor(discoveryRequest);
 
@@ -57,7 +57,8 @@ namespace hip_service_test.Discovery.Patient
             var patientMatchingRepository = new PatientMatchingRepository("patients.json");
             var patientDiscovery = new PatientDiscovery(patientMatchingRepository);
 
-            var expectedError = new ErrorResponse(new Error(ErrorCode.MultiplePatientsFound, "Multiple patients found"));
+            var expectedError =
+                new ErrorResponse(new Error(ErrorCode.MultiplePatientsFound, "Multiple patients found"));
 
             var verifiedIdentifiers = new List<Identifier>
             {
@@ -66,7 +67,7 @@ namespace hip_service_test.Discovery.Patient
 
             var patientRequest = new HipLibrary.Patient.Models.Request.Patient("cm-1", verifiedIdentifiers,
                 new List<Identifier>(), null, null, Gender.M, new DateTime(2019, 01, 01));
-            var discoveryRequest = new DiscoveryRequest(patientRequest);
+            var discoveryRequest = new DiscoveryRequest(patientRequest, "transaction-id-1");
 
             var (discoveryResponse, error) = await patientDiscovery.PatientFor(discoveryRequest);
 
@@ -91,7 +92,7 @@ namespace hip_service_test.Discovery.Patient
                 new List<Identifier>(), null, null,
                 Gender.M, new DateTime(2019, 01, 01));
 
-            var discoveryRequest = new DiscoveryRequest(patientRequest);
+            var discoveryRequest = new DiscoveryRequest(patientRequest, "transaction-id-1");
 
             var (discoveryResponse, error) = await patientDiscovery.PatientFor(discoveryRequest);
 

@@ -30,7 +30,7 @@ namespace hip_service_test.Discovery.Patient
             var patient = new HipLibrary.Patient.Models.Request.Patient("cm-123", verifiedIdentifiers,
                 unverifiedIdentifiers, "John", null, Gender.M, new DateTime(2019, 01, 01));
 
-            var discoveryRequest = new DiscoveryRequest(patient);
+            var discoveryRequest = new DiscoveryRequest(patient, "transaction-id-1");
 
             var patients = FileReader.ReadJson("patients.json");
 
@@ -53,7 +53,7 @@ namespace hip_service_test.Discovery.Patient
                 new List<Identifier>(), null, null,
                 Gender.M, new DateTime(2019, 01, 01));
 
-            var discoveryRequest = new DiscoveryRequest(patient);
+            var discoveryRequest = new DiscoveryRequest(patient, "transaction-id-1");
 
             var patients = FileReader.ReadJson("patients.json");
 
@@ -75,7 +75,7 @@ namespace hip_service_test.Discovery.Patient
             var patient = new HipLibrary.Patient.Models.Request.Patient("cm-1", verifiedIdentifiers,
                 new List<Identifier>(), null, null, Gender.F, new DateTime(2019, 01, 01));
 
-            var discoveryRequest = new DiscoveryRequest(patient);
+            var discoveryRequest = new DiscoveryRequest(patient, "transaction-id-1");
 
             var patients = FileReader.ReadJson("patients.json");
 

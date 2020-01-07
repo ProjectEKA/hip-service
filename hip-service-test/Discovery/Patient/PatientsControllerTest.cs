@@ -32,7 +32,7 @@ namespace hip_service_test.Discovery.Patient
                 unverifiedIdentifiers, "J", "K",
                 Gender.M, new DateTime(2019, 01, 01));
 
-            var discoveryRequest = new DiscoveryRequest(patientRequest);
+            var discoveryRequest = new DiscoveryRequest(patientRequest, "transaction-id-1");
 
             var mockDiscovery = new Mock<IDiscovery>();
             var expectedPatient = new HipLibrary.Patient.Models.Response.Patient("p1", "J K",
@@ -40,7 +40,7 @@ namespace hip_service_test.Discovery.Patient
                 {
                     new CareContextRepresentation("1", "display")
                 }, new List<HipLibrary.Patient.Models.Response.Match>());
-            var expectedResponse = new DiscoveryResponse(expectedPatient);
+            var expectedResponse = new DiscoveryResponse(expectedPatient, "transaction-id-1");
 
             mockDiscovery.Setup(x => x.PatientFor(discoveryRequest)).ReturnsAsync(
                 new Tuple<DiscoveryResponse, ErrorResponse>(expectedResponse, null));
@@ -69,7 +69,7 @@ namespace hip_service_test.Discovery.Patient
                 unverifiedIdentifiers, "J", "K",
                 Gender.M, new DateTime(2019, 01, 01));
 
-            var discoveryRequest = new DiscoveryRequest(patient);
+            var discoveryRequest = new DiscoveryRequest(patient, "transaction-id-1");
 
             var mockDiscovery = new Mock<IDiscovery>();
             var error = new ErrorResponse(new Error(ErrorCode.MultiplePatientsFound, "Multiple patients found"));
