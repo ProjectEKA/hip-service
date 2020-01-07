@@ -6,22 +6,23 @@ namespace hip_service.Discovery.Patient
 {
     public static class DiscoveryUseCase
     {
-        public static Tuple<HipLibrary.Patient.Models.Response.Patient, Error> DiscoverPatient(
+        public static Tuple<HipLibrary.Patient.Models.Response.Patient, ErrorResponse> DiscoverPatient(
             IQueryable<HipLibrary.Patient.Models.Response.Patient> patients)
         {
             if (!patients.Any())
             {
-                return new Tuple<HipLibrary.Patient.Models.Response.Patient, Error>(null,
-                    new Error(ErrorCode.NoPatientFound, "No patient found"));
+                var errorResponse = new ErrorResponse(new Error(ErrorCode.NoPatientFound, "No patient found"));
+                return new Tuple<HipLibrary.Patient.Models.Response.Patient, ErrorResponse>(null, errorResponse);
             }
 
             if (patients.Count() > 1)
             {
-                return new Tuple<HipLibrary.Patient.Models.Response.Patient, Error>(null,
-                    new Error(ErrorCode.MultiplePatientsFound, "Multiple patients found"));
+                var errorResponse =
+                    new ErrorResponse(new Error(ErrorCode.MultiplePatientsFound, "Multiple patients found"));
+                return new Tuple<HipLibrary.Patient.Models.Response.Patient, ErrorResponse>(null, errorResponse);
             }
 
-            return new Tuple<HipLibrary.Patient.Models.Response.Patient, Error>(patients.First(), null);
+            return new Tuple<HipLibrary.Patient.Models.Response.Patient, ErrorResponse>(patients.First(), null);
         }
     }
 }

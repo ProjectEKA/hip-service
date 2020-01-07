@@ -57,7 +57,7 @@ namespace hip_service_test.Discovery.Patient
             var patientMatchingRepository = new PatientMatchingRepository("patients.json");
             var patientDiscovery = new PatientDiscovery(patientMatchingRepository);
 
-            var expectedError = new Error(ErrorCode.MultiplePatientsFound, "Multiple patients found");
+            var expectedError = new ErrorResponse(new Error(ErrorCode.MultiplePatientsFound, "Multiple patients found"));
 
             var verifiedIdentifiers = new List<Identifier>
             {
@@ -80,7 +80,7 @@ namespace hip_service_test.Discovery.Patient
             var patientMatchingRepository = new PatientMatchingRepository("patients.json");
             var patientDiscovery = new PatientDiscovery(patientMatchingRepository);
 
-            var expectedError = new Error(ErrorCode.NoPatientFound, "No patient found");
+            var expectedError = new ErrorResponse(new Error(ErrorCode.NoPatientFound, "No patient found"));
 
             var verifiedIdentifiers = new List<Identifier>
             {

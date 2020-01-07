@@ -16,7 +16,7 @@ namespace hip_service_test.Discovery.Patient
         {
             var (patient, error) =
                 DiscoveryUseCase.DiscoverPatient(new List<HipLibrary.Patient.Models.Response.Patient>().AsQueryable());
-            var expectedError = new Error(ErrorCode.NoPatientFound, "No patient found");
+            var expectedError = new ErrorResponse(new Error(ErrorCode.NoPatientFound, "No patient found"));
 
             patient.Should().BeNull();
             error.Should().BeEquivalentTo(expectedError);
@@ -36,7 +36,7 @@ namespace hip_service_test.Discovery.Patient
 
             var (patient, error) =
                 DiscoveryUseCase.DiscoverPatient(new List<HipLibrary.Patient.Models.Response.Patient> { patient1, patient2}.AsQueryable());
-            var expectedError = new Error(ErrorCode.MultiplePatientsFound, "Multiple patients found");
+            var expectedError = new ErrorResponse(new Error(ErrorCode.MultiplePatientsFound, "Multiple patients found"));
 
             patient.Should().BeNull();
             error.Should().BeEquivalentTo(expectedError);
