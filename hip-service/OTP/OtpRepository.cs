@@ -36,7 +36,6 @@ namespace hip_service.OTP
         {
             try
             {
-                
                 var otpRequest = await linkPatientContext.OtpRequests.FirstAsync(o =>
                     o.SessionId == sessionId);
                 return new Tuple<OtpRequest, Exception>(otpRequest, null);
@@ -46,7 +45,6 @@ namespace hip_service.OTP
                 return new Tuple<OtpRequest, Exception>(null, exception);
                 
             }
-            
         }
     }
 }

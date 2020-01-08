@@ -1,15 +1,12 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
 using System.Threading.Tasks;
 using hip_service.OTP;
 using HipLibrary.Patient;
 using HipLibrary.Patient.Models;
 using HipLibrary.Patient.Models.Request;
 using HipLibrary.Patient.Models.Response;
-using Optional;
-using CareContext = hip_service.Discovery.Patient.models.CareContext;
+using CareContext = hip_service.Discovery.Patient.Model.CareContext;
 
 namespace hip_service.Link.Patient
 {
@@ -132,7 +129,6 @@ namespace hip_service.Link.Patient
                 return new Tuple<PatientLinkResponse, ErrorResponse>(patientLinkResponse, null);
             }).ValueOr(new Tuple<PatientLinkResponse, ErrorResponse>(null,
                 new ErrorResponse(new Error(ErrorCode.CareContextNotFound, "Care Context Not Found"))));
-            
         }
     }
 }

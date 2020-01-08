@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using hip_service.Discovery.Patient.Helpers;
-using hip_service.Discovery.Patient.models;
+using hip_service.Discovery.Patient.Helper;
+using hip_service.Discovery.Patient.Model;
 using Optional;
 
 namespace hip_service.Link.Patient
