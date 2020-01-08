@@ -2,10 +2,11 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
-using hip_service.Discovery.Patient.Helpers;
 
 namespace hip_service.Discovery.Patient
 {
+    using Helper;
+
     public class PatientMatchingRepository : IMatchingRepository
     {
         private readonly string patientFilePath;

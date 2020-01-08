@@ -18,6 +18,7 @@
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
         <PackageReference Include="Moq" Version="4.13.1" />
+        <PackageReference Include="Bogus" Version="28.4.4" />
     </ItemGroup>
 
     <ItemGroup>
@@ -27,8 +28,5 @@
         <Content Include="..\hip-service\Resources\**">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
-    </ItemGroup>
-    <ItemGroup>
-        <Folder Include="Discovery\Patient\Matcher" />
     </ItemGroup>
 </Project>
