@@ -5,6 +5,7 @@ using Xunit;
 
 namespace hip_service_test.Discovery.Patient
 {
+    [Collection("Patient Repository Tests")]
     public class PatientMatchingRepositoryTest
     {
         [Fact]
