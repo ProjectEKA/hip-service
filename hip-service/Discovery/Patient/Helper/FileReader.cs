@@ -1,11 +1,10 @@
-using System.Collections.Generic;
-using System.IO;
-using System.Threading.Tasks;
-using hip_service.Discovery.Patient.models;
-using Newtonsoft.Json;
-
-namespace hip_service.Discovery.Patient.Helpers
+namespace hip_service.Discovery.Patient.Helper
 {
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Threading.Tasks;
+    using Newtonsoft.Json;
+
     public static class FileReader
     {
         public static IEnumerable<Model.Patient> ReadJson(string patientFilePath)
