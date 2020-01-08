@@ -1,4 +1,3 @@
-#nullable enable
 using System.Threading.Tasks;
 using hip_service.OTP;
 using HipLibrary.Patient.Models.Response;

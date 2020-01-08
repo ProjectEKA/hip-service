@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using hip_service.Link.Patient;
 using hip_service.Link.Patient.Models;
 using hip_service.OTP.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace hip_service.OTP
 {
@@ -16,10 +17,7 @@ namespace hip_service.OTP
         }
         public async Task<Tuple<OtpRequest, Exception>> Save(string otp, string sessionId)
         {
-            var dateTimeStamp = new DateTime (DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 
-                    DateTime.Now.Hour, DateTime.Now.Minute, DateTime.Now.Second).ToUniversalTime().
-                ToString(Constants.DateTimeFormat);
-
+            var dateTimeStamp = DateTime.Now.ToUniversalTime().ToString(Constants.DateTimeFormat);
             var otpRequest = new OtpRequest(sessionId, dateTimeStamp, otp);
             linkPatientContext.OtpRequests.Add(otpRequest);
             try
@@ -38,7 +36,9 @@ namespace hip_service.OTP
         {
             try
             {
-                var otpRequest =  linkPatientContext.OtpRequests.First(o => o.SessionId == sessionId);
+                
+                var otpRequest = await linkPatientContext.OtpRequests.FirstAsync(o =>
+                    o.SessionId == sessionId);
                 return new Tuple<OtpRequest, Exception>(otpRequest, null);
             }
             catch (Exception exception)
