@@ -27,7 +27,8 @@ namespace hip_service.Discovery.Patient
             var patientInfos = await repo.Where(expression);
             var (patient, error) = DiscoveryUseCase.DiscoverPatient(filter.Do(patientInfos, request).AsQueryable());
 
-            return new Tuple<DiscoveryResponse, ErrorResponse>(new DiscoveryResponse(patient),
+            return new Tuple<DiscoveryResponse, ErrorResponse>(
+            new DiscoveryResponse(patient),
                 error);
         }
     }
