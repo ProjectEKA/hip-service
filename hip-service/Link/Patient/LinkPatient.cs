@@ -64,7 +64,7 @@ namespace hip_service.Link.Patient
                 if (await patientVerification.SendTokenFor(session) != null)
                 {
                     return new Tuple<PatientLinkReferenceResponse, ErrorResponse>
-                        (null, new ErrorResponse(new Error(ErrorCode.OtpInValid, "Unable to create token")));
+                        (null, new ErrorResponse(new Error(ErrorCode.OtpGenerationFailed, "Unable to create token")));
                 }
 
                 var (_, exception) = await linkPatientRepository.SaveLinkPatientDetails(linkRefNumber,
@@ -76,7 +76,7 @@ namespace hip_service.Link.Patient
                 {
                     return new Tuple<PatientLinkReferenceResponse, ErrorResponse>
                     (null,
-                        new ErrorResponse(new Error(ErrorCode.CareContextNotFound,
+                        new ErrorResponse(new Error(ErrorCode.ServerInternalError,
                             "Unable to store data to Database")));
                 }
 
@@ -110,7 +110,7 @@ namespace hip_service.Link.Patient
             if (exception != null)
             {
                 return new Tuple<PatientLinkResponse, ErrorResponse>
-                    (null, new ErrorResponse(new Error(ErrorCode.NoPatientFound, "No request found")));
+                    (null, new ErrorResponse(new Error(ErrorCode.NoLinkRequestFound, "No request found")));
             }
             
             var patientInfo = patientRepository.GetPatientInfoWithReferenceNumber(linkRequest.PatientReferenceNumber);
