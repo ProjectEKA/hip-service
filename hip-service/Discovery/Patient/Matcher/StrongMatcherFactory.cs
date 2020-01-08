@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using hip_service.Discovery.Patient.Helper;
-using HipLibrary.Patient.Models;
+using HipLibrary.Patient.Model;
 
 namespace hip_service.Discovery.Patient.Matcher
 {

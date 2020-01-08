@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using FluentAssertions;
 using hip_service.Discovery.Patient;
-using HipLibrary.Patient.Models;
-using HipLibrary.Patient.Models.Request;
-using HipLibrary.Patient.Models.Response;
+using HipLibrary.Patient.Model;
+using HipLibrary.Patient.Model.Request;
+using HipLibrary.Patient.Model.Response;
 using Xunit;
 
 namespace hip_service_test.Discovery.Patient
@@ -17,7 +17,7 @@ namespace hip_service_test.Discovery.Patient
             var patientMatchingRepository = new PatientMatchingRepository("patients.json");
             var patientDiscovery = new PatientDiscovery(patientMatchingRepository);
 
-            var expectedPatient = new HipLibrary.Patient.Models.Response.Patient("1", "John Doee",
+            var expectedPatient = new HipLibrary.Patient.Model.Response.Patient("1", "John Doee",
                 new List<CareContextRepresentation>
                 {
                     new CareContextRepresentation("123", "National Cancer program"),
@@ -39,7 +39,7 @@ namespace hip_service_test.Discovery.Patient
                 new Identifier(IdentifierType.MR, "123")
             };
 
-            var patientRequest = new HipLibrary.Patient.Models.Request.Patient("cm-1", verifiedIdentifiers,
+            var patientRequest = new HipLibrary.Patient.Model.Request.Patient("cm-1", verifiedIdentifiers,
                 unverifiedIdentifiers, "John", null, Gender.M, new DateTime(2019, 01, 01));
 
             var discoveryRequest = new DiscoveryRequest(patientRequest, "transaction-id-1");
@@ -65,7 +65,7 @@ namespace hip_service_test.Discovery.Patient
                 new Identifier(IdentifierType.MOBILE, "9999999999")
             };
 
-            var patientRequest = new HipLibrary.Patient.Models.Request.Patient("cm-1", verifiedIdentifiers,
+            var patientRequest = new HipLibrary.Patient.Model.Request.Patient("cm-1", verifiedIdentifiers,
                 new List<Identifier>(), null, null, Gender.M, new DateTime(2019, 01, 01));
             var discoveryRequest = new DiscoveryRequest(patientRequest, "transaction-id-1");
 
@@ -88,7 +88,7 @@ namespace hip_service_test.Discovery.Patient
                 new Identifier(IdentifierType.MR, "311231231231")
             };
 
-            var patientRequest = new HipLibrary.Patient.Models.Request.Patient("cm-1", verifiedIdentifiers,
+            var patientRequest = new HipLibrary.Patient.Model.Request.Patient("cm-1", verifiedIdentifiers,
                 new List<Identifier>(), null, null,
                 Gender.M, new DateTime(2019, 01, 01));
 

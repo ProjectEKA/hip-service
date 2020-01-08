@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using FluentAssertions;
 using hip_service.Discovery.Patient;
 using HipLibrary.Patient;
-using HipLibrary.Patient.Models;
-using HipLibrary.Patient.Models.Request;
-using HipLibrary.Patient.Models.Response;
+using HipLibrary.Patient.Model;
+using HipLibrary.Patient.Model.Request;
+using HipLibrary.Patient.Model.Response;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -13,75 +13,91 @@ using Xunit;
 
 namespace hip_service_test.Discovery.Patient
 {
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Patient = HipLibrary.Patient.Model.Request.Patient;
+    using static Builder.TestBuilders;
+
+    [Collection("Patient Controller Tests")]
     public class PatientsControllerTest
     {
-        [Fact]
-        public void ShouldGetAPatient()
+        private readonly PatientsController patientsController;
+
+        private readonly Mock<IDiscovery> discovery;
+
+        public PatientsControllerTest()
         {
-            var verifiedIdentifiers = new List<Identifier>
-            {
-                new Identifier(IdentifierType.MOBILE, "9999999999")
-            };
-
-            var unverifiedIdentifiers = new List<Identifier>
-            {
-                new Identifier(IdentifierType.MR, "1")
-            };
-
-            var patientRequest = new HipLibrary.Patient.Models.Request.Patient("cm-1", verifiedIdentifiers,
-                unverifiedIdentifiers, "J", "K",
-                Gender.M, new DateTime(2019, 01, 01));
-
-            var discoveryRequest = new DiscoveryRequest(patientRequest, "transaction-id-1");
-
-            var mockDiscovery = new Mock<IDiscovery>();
-            var expectedPatient = new HipLibrary.Patient.Models.Response.Patient("p1", "J K",
-                new List<CareContextRepresentation>
-                {
-                    new CareContextRepresentation("1", "display")
-                }, new List<HipLibrary.Patient.Models.Response.Match>());
-            var expectedResponse = new DiscoveryResponse(expectedPatient);
-
-            mockDiscovery.Setup(x => x.PatientFor(discoveryRequest)).ReturnsAsync(
-                new Tuple<DiscoveryResponse, ErrorResponse>(expectedResponse, null));
-
-            var accountsController = new PatientsController(mockDiscovery.Object);
-            var response = accountsController.Discover(discoveryRequest).Result as OkObjectResult;
-
-            mockDiscovery.Verify();
-            response.Should().NotBeNull();
-            response.Value.Should().BeEquivalentTo(expectedResponse);
+            discovery = new Mock<IDiscovery>();
+            patientsController = new PatientsController(discovery.Object);
         }
 
         [Fact]
-        public void ShouldGetNotFound()
+        public async Task ShouldGetAPatient()
         {
-            var verifiedIdentifiers = new List<Identifier>
-            {
-                new Identifier(IdentifierType.MOBILE, "9999999999")
-            };
+            var verifiedIdentifiers = identifier()
+                .GenerateLazy(1)
+                .Select(builder => builder.build());
+            var unverifiedIdentifiers = identifier()
+                .GenerateLazy(1)
+                .Select(builder => builder.build());
+            var discoveryRequest = new DiscoveryRequest(
+                new Patient(Faker().Random.Hash(),
+                    verifiedIdentifiers,
+                    unverifiedIdentifiers,
+                    Faker().Name.FirstName(),
+                    Faker().Name.FirstName(),
+                    Faker().PickRandom<Gender>(),
+                    Faker().Date.Past()), Faker().Random.String());
+            var expectedPatient = new HipLibrary.Patient.Model.Response.Patient("p1", "J K",
+                new List<CareContextRepresentation>
+                {
+                    new CareContextRepresentation("1", "display")
+                }, new List<HipLibrary.Patient.Model.Response.Match>());
+            var expectedResponse = new DiscoveryResponse(expectedPatient);
+            discovery.Setup(x => x.PatientFor(discoveryRequest)).ReturnsAsync(
+                new Tuple<DiscoveryResponse, ErrorResponse>(expectedResponse, null));
 
-            var unverifiedIdentifiers = new List<Identifier>
-            {
-                new Identifier(IdentifierType.MR, "1")
-            };
-            var patient = new HipLibrary.Patient.Models.Request.Patient("cm-1", verifiedIdentifiers,
-                unverifiedIdentifiers, "J", "K",
-                Gender.M, new DateTime(2019, 01, 01));
+            var response = await patientsController.Discover(discoveryRequest);
 
-            var discoveryRequest = new DiscoveryRequest(patient, "transaction-id-1");
+            discovery.Verify();
+            response.Should()
+                .NotBeNull()
+                .And
+                .Subject.As<OkObjectResult>()
+                .Value
+                .Should()
+                .BeEquivalentTo(expectedResponse);
+        }
 
-            var mockDiscovery = new Mock<IDiscovery>();
+        [Fact]
+        public async Task ShouldGetNotFound()
+        {
+            var verifiedIdentifiers = identifier()
+                .GenerateLazy(1)
+                .Select(builder => builder.build());
+            var unverifiedIdentifiers = identifier()
+                .GenerateLazy(1)
+                .Select(builder => builder.build());
+            var discoveryRequest = new DiscoveryRequest(
+                new Patient(Faker().Random.Hash(),
+                    verifiedIdentifiers,
+                    unverifiedIdentifiers,
+                    Faker().Name.FirstName(),
+                    Faker().Name.FirstName(),
+                    Faker().PickRandom<Gender>(),
+                    Faker().Date.Past()), Faker().Random.String());
             var error = new ErrorResponse(new Error(ErrorCode.MultiplePatientsFound, "Multiple patients found"));
-            mockDiscovery.Setup(x => x.PatientFor(discoveryRequest)).ReturnsAsync(
+            discovery.Setup(x => x.PatientFor(discoveryRequest)).ReturnsAsync(
                 new Tuple<DiscoveryResponse, ErrorResponse>(null, error));
 
-            var accountsController = new PatientsController(mockDiscovery.Object);
-            var response = accountsController.Discover(discoveryRequest).Result as NotFoundObjectResult;
+            var response = await patientsController.Discover(discoveryRequest);
 
-            mockDiscovery.Verify();
-            response.Should().NotBeNull();
-            response.StatusCode.Should().Be(StatusCodes.Status404NotFound);
+            discovery.Verify();
+            response.Should().NotBeNull()
+                .And
+                .BeOfType<NotFoundObjectResult>()
+                .Subject.StatusCode.Should()
+                .Be(StatusCodes.Status404NotFound);
         }
     }
 }
