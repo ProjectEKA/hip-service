@@ -3,9 +3,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using hip_service.OTP;
 using HipLibrary.Patient;
-using HipLibrary.Patient.Models;
-using HipLibrary.Patient.Models.Request;
-using HipLibrary.Patient.Models.Response;
+using HipLibrary.Patient.Model;
+using HipLibrary.Patient.Model.Request;
+using HipLibrary.Patient.Model.Response;
 using CareContext = hip_service.Discovery.Patient.Model.CareContext;
 
 namespace hip_service.Link.Patient
@@ -94,7 +94,7 @@ namespace hip_service.Link.Patient
             );
         }
         
-        public async Task<Tuple<PatientLinkResponse, ErrorResponse>> VerifyAndLinkCareContext(HipLibrary.Patient.Models.Request.PatientLinkRequest request)
+        public async Task<Tuple<PatientLinkResponse, ErrorResponse>> VerifyAndLinkCareContext(HipLibrary.Patient.Model.Request.PatientLinkRequest request)
         {
             if (await patientVerification.Verify(request.LinkReferenceNumber, request.Token) != null)
             {
@@ -122,7 +122,7 @@ namespace hip_service.Link.Patient
                         patient.CareContexts.First(info => info.ReferenceNumber == context.CareContextNumber)
                             .Description));
 
-                var patientLinkResponse = new PatientLinkResponse(new HipLibrary.Patient.Models.Response.LinkPatient(
+                var patientLinkResponse = new PatientLinkResponse(new HipLibrary.Patient.Model.Response.LinkPatient(
                     linkRequest.PatientReferenceNumber
                     , patient.FirstName + " " + patient.LastName, representations));
                 

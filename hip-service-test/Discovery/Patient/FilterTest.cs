@@ -1,15 +1,15 @@
 using System.Linq;
 using FluentAssertions;
 using hip_service.Discovery.Patient;
-using HipLibrary.Patient.Models;
-using HipLibrary.Patient.Models.Request;
+using HipLibrary.Patient.Model;
+using HipLibrary.Patient.Model.Request;
 using Xunit;
 using static hip_service_test.Discovery.Builder.TestBuilders;
 using Bogus;
 
 namespace hip_service_test.Discovery.Patient
 {
-    using Patient = HipLibrary.Patient.Models.Request.Patient;
+    using Patient = HipLibrary.Patient.Model.Request.Patient;
 
     [Collection("Patient Filter Tests")]
     public class FilterTest
@@ -38,7 +38,7 @@ namespace hip_service_test.Discovery.Patient
                     patientFirstName,
                     Faker().Name.FirstName(),
                     Faker().PickRandom<Gender>(),
-                    Faker().Date.Past()));
+                    Faker().Date.Past()), Faker().Random.String());
             var patients = patient()
                 .GenerateLazy(10)
                 .Append(patient().Rules((_, patient) =>
@@ -71,7 +71,7 @@ namespace hip_service_test.Discovery.Patient
                     null,
                     null,
                     Faker().PickRandom<Gender>(),
-                    Faker().Date.Past()));
+                    Faker().Date.Past()), Faker().Random.String());
             var patients = patient()
                 .GenerateLazy(10)
                 .Append(patient().Rules((_, patient) => { patient.PhoneNumber = mobileNumber; }).Generate())
@@ -102,7 +102,7 @@ namespace hip_service_test.Discovery.Patient
                     null,
                     null,
                     patientGender,
-                    Faker().Date.Past()));
+                    Faker().Date.Past()), Faker().Random.String());
             var patients = patient()
                 .GenerateLazy(10)
                 .Append(patient().Rules((_, patient) =>

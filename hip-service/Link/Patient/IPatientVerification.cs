@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using hip_service.OTP;
-using HipLibrary.Patient.Models.Response;
+using HipLibrary.Patient.Model.Response;
 
 namespace hip_service.Link.Patient
 {

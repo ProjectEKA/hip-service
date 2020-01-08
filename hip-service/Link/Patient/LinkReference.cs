@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 using System.Xml.Serialization;
-using HipLibrary.Patient.Models.Request;
+using HipLibrary.Patient.Model.Request;
 
 namespace hip_service.Link.Patient.Dto
 {

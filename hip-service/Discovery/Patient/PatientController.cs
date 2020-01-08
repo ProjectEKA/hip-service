@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using HipLibrary.Patient;
-using HipLibrary.Patient.Models.Request;
+using HipLibrary.Patient.Model.Request;
 using Microsoft.AspNetCore.Mvc;
 
 namespace hip_service.Discovery.Patient

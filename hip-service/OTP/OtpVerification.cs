@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using HipLibrary.Patient.Models.Response;
+using HipLibrary.Patient.Model.Response;
 namespace hip_service.OTP
 {
     public class OtpVerification

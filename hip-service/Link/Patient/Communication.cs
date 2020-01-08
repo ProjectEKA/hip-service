@@ -1,5 +1,5 @@
 using hip_service.Link.Patient;
-using HipLibrary.Patient.Models;
+using HipLibrary.Patient.Model;
 
 namespace hip_service.OTP
 {
