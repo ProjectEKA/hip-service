@@ -15,7 +15,7 @@ namespace hip_service_test.Discovery.Patient
 
             var patientInfo = await patientMatchingRepository.Where(patient => patient.PhoneNumber == "9999999999");
 
-            patientInfo.Count().Should().Be(3);
+            patientInfo.Count().Should().Be(4);
         }
     }
 }
