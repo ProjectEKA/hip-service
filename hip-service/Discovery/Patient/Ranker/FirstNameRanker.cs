@@ -6,10 +6,17 @@ namespace hip_service.Discovery.Patient.Ranker
     {
         public PatientWithRank<Model.Patient> Rank(Model.Patient patient, string firstName)
         {
-            return patient.FirstName == firstName
-                ? new PatientWithRank<Model.Patient>(patient, RankBuilder.WeakMatchRank,
-                    MetaBuilder.FullMatchMeta(Match.FIRST_NAME))
-                : new PatientWithRank<Model.Patient>(patient, RankBuilder.EmptyRank, MetaBuilder.EmptyMeta);
+            var diff = Helpers.FuzzyNameMatcher.LevenshteinDistance(patient.FirstName, firstName);
+            if (diff == 0) 
+            {
+                return new PatientWithRank<Model.Patient>(patient, RankBuilder.StrongMatchRank, MetaBuilder.FullMatchMeta(Match.FIRST_NAME));
+            }
+            if (diff <= 2) 
+            {
+                return new PatientWithRank<Model.Patient>(patient, new Rank(8), MetaBuilder.FullMatchMeta(Match.FIRST_NAME));
+            }
+
+            return new PatientWithRank<Model.Patient>(patient, RankBuilder.EmptyRank, MetaBuilder.EmptyMeta);
         }
     }
 }
