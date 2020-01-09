@@ -1,15 +1,14 @@
 using System;
-using HipLibrary.Patient.Model.Response;
 
 namespace hip_service.Discovery.Patient.Ranker
 {
     public struct Meta: IEquatable<Meta>
     {
-        public Match Field { get; }
+        public string Field { get; }
 
         private readonly MatchLevel MatchLevel;
 
-        public Meta(Match field, MatchLevel matchLevel)
+        public Meta(string field, MatchLevel matchLevel)
         {
             Field = field;
             MatchLevel = matchLevel;

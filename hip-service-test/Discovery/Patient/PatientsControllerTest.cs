@@ -52,7 +52,7 @@ namespace hip_service_test.Discovery.Patient
                 new List<CareContextRepresentation>
                 {
                     new CareContextRepresentation("1", "display")
-                }, new List<HipLibrary.Patient.Model.Response.Match>());
+                }, new List<string>());
             var expectedResponse = new DiscoveryResponse(expectedPatient);
             discovery.Setup(x => x.PatientFor(discoveryRequest)).ReturnsAsync(
                 new Tuple<DiscoveryResponse, ErrorResponse>(expectedResponse, null));
