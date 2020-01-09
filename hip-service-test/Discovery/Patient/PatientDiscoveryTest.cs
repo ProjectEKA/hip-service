@@ -22,16 +22,16 @@ namespace hip_service_test.Discovery.Patient
                 {
                     new CareContextRepresentation("123", "National Cancer program"),
                     new CareContextRepresentation("124", "National TB program")
-                }, new List<Match>
+                }, new List<string>
                 {
-                    Match.MOBILE,
-                    Match.FIRST_NAME,
-                    Match.GENDER
+                    Match.MOBILE.ToString(),
+                    Match.FIRST_NAME.ToString(),
+                    Match.GENDER.ToString()
                 });
 
             var verifiedIdentifiers = new List<Identifier>
             {
-                new Identifier(IdentifierType.MOBILE, "9999999999")
+                new Identifier(IdentifierType.MOBILE, "+919999999999")
             };
 
             var unverifiedIdentifiers = new List<Identifier>
@@ -62,7 +62,7 @@ namespace hip_service_test.Discovery.Patient
 
             var verifiedIdentifiers = new List<Identifier>
             {
-                new Identifier(IdentifierType.MOBILE, "9999999999")
+                new Identifier(IdentifierType.MOBILE, "+919999999999")
             };
 
             var patientRequest = new HipLibrary.Patient.Model.Request.Patient("cm-1", verifiedIdentifiers,

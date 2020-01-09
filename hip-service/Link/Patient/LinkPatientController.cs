@@ -1,10 +1,7 @@
 using System;
 using System.Threading.Tasks;
-using hip_service.Link.Patient.Dto;
 using HipLibrary.Patient;
-using HipLibrary.Patient.Model.Request;
 using Microsoft.AspNetCore.Mvc;
-using HipLibrary.Patient.Model.Request;
 using PatientLinkReferenceRequest = hip_service.Link.Patient.Dto.PatientLinkReferenceRequest;
 
 namespace hip_service.Link.Patient
