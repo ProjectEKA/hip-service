@@ -1,5 +1,5 @@
 using System;
-using HipLibrary.Patient.Models.Response;
+using HipLibrary.Patient.Model.Response;
 
 namespace hip_service.Discovery.Patient.Ranker
 {

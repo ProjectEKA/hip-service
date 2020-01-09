@@ -1,6 +1,6 @@
 namespace hip_service_test.Discovery
 {
-    using HipLibrary.Patient.Models;
+    using HipLibrary.Patient.Model;
 
     internal class IdentifierBuilder
     {

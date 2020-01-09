@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using HipLibrary.Patient.Models;
+using HipLibrary.Patient.Model;
 using hip_service.Discovery.Patient.Ranker;
-using HipLibrary.Patient.Models.Request;
+using HipLibrary.Patient.Model.Request;
 
 namespace hip_service.Discovery.Patient
 {
@@ -62,7 +62,7 @@ namespace hip_service.Discovery.Patient
                 .Append(new IdentifierExt(IdentifierTypeExt.GENDER, request.Patient.Gender.ToString()));
         }
 
-        public IEnumerable<HipLibrary.Patient.Models.Response.Patient> Do(IEnumerable<Model.Patient> patients,
+        public IEnumerable<HipLibrary.Patient.Model.Response.Patient> Do(IEnumerable<Model.Patient> patients,
             DiscoveryRequest request)
         {
             return patients
@@ -85,7 +85,7 @@ namespace hip_service.Discovery.Patient
                             .ToList()
                         : new List<CareContextRepresentation>();
 
-                    return new HipLibrary.Patient.Models.Response.Patient(
+                    return new HipLibrary.Patient.Model.Response.Patient(
                         rankedPatient.Patient.Identifier,
                         $"{rankedPatient.Patient.FirstName} {rankedPatient.Patient.LastName}",
                         careContexts, rankedPatient.Meta.Select(meta => meta.Field));

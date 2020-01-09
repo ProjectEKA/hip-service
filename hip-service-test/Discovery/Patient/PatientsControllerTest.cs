@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using FluentAssertions;
 using hip_service.Discovery.Patient;
 using HipLibrary.Patient;
-using HipLibrary.Patient.Models;
-using HipLibrary.Patient.Models.Request;
-using HipLibrary.Patient.Models.Response;
+using HipLibrary.Patient.Model;
+using HipLibrary.Patient.Model.Request;
+using HipLibrary.Patient.Model.Response;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
@@ -15,7 +15,7 @@ namespace hip_service_test.Discovery.Patient
 {
     using System.Linq;
     using System.Threading.Tasks;
-    using Patient = HipLibrary.Patient.Models.Request.Patient;
+    using Patient = HipLibrary.Patient.Model.Request.Patient;
     using static Builder.TestBuilders;
 
     [Collection("Patient Controller Tests")]
@@ -47,12 +47,12 @@ namespace hip_service_test.Discovery.Patient
                     Faker().Name.FirstName(),
                     Faker().Name.FirstName(),
                     Faker().PickRandom<Gender>(),
-                    Faker().Date.Past()));
-            var expectedPatient = new HipLibrary.Patient.Models.Response.Patient("p1", "J K",
+                    Faker().Date.Past()), Faker().Random.String());
+            var expectedPatient = new HipLibrary.Patient.Model.Response.Patient("p1", "J K",
                 new List<CareContextRepresentation>
                 {
                     new CareContextRepresentation("1", "display")
-                }, new List<HipLibrary.Patient.Models.Response.Match>());
+                }, new List<HipLibrary.Patient.Model.Response.Match>());
             var expectedResponse = new DiscoveryResponse(expectedPatient);
             discovery.Setup(x => x.PatientFor(discoveryRequest)).ReturnsAsync(
                 new Tuple<DiscoveryResponse, ErrorResponse>(expectedResponse, null));
@@ -85,7 +85,7 @@ namespace hip_service_test.Discovery.Patient
                     Faker().Name.FirstName(),
                     Faker().Name.FirstName(),
                     Faker().PickRandom<Gender>(),
-                    Faker().Date.Past()));
+                    Faker().Date.Past()), Faker().Random.String());
             var error = new ErrorResponse(new Error(ErrorCode.MultiplePatientsFound, "Multiple patients found"));
             discovery.Setup(x => x.PatientFor(discoveryRequest)).ReturnsAsync(
                 new Tuple<DiscoveryResponse, ErrorResponse>(null, error));

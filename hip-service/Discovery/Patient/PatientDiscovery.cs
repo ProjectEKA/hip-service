@@ -3,8 +3,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using hip_service.Discovery.Patient.Matcher;
 using HipLibrary.Patient;
-using HipLibrary.Patient.Models.Request;
-using HipLibrary.Patient.Models.Response;
+using HipLibrary.Patient.Model.Request;
+using HipLibrary.Patient.Model.Response;
 
 namespace hip_service.Discovery.Patient
 {
@@ -27,7 +27,9 @@ namespace hip_service.Discovery.Patient
             var patientInfos = await repo.Where(expression);
             var (patient, error) = DiscoveryUseCase.DiscoverPatient(filter.Do(patientInfos, request).AsQueryable());
 
-            return new Tuple<DiscoveryResponse, ErrorResponse>(new DiscoveryResponse(patient), error);
+            return new Tuple<DiscoveryResponse, ErrorResponse>(
+            new DiscoveryResponse(patient),
+                error);
         }
     }
 }
