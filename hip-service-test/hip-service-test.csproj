@@ -11,7 +11,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="health-information-provider-library" Version="0.0.9" />
+        <PackageReference Include="health-information-provider-library" Version="0.0.10" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
         <PackageReference Include="FluentAssertions" Version="5.10.0" />
         <PackageReference Include="xunit" Version="2.4.1" />
