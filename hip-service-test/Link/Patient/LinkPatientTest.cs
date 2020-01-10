@@ -17,10 +17,10 @@ namespace hip_service_test.Link.Patient
     public class LinkPatientTest
     {
         private readonly LinkPatient linkPatient;
-        Mock<ILinkPatientRepository> linkRepository = new Mock<ILinkPatientRepository>();
-        PatientRepository patientRepository = new PatientRepository("patients.json");
-        Mock<IPatientVerification> patientVerification = new Mock<IPatientVerification>();
-        Mock<IGuidWrapper> guidWrapper = new Mock<IGuidWrapper>();
+        private readonly Mock<ILinkPatientRepository> linkRepository = new Mock<ILinkPatientRepository>();
+        private readonly PatientRepository patientRepository = new PatientRepository("patients.json");
+        private readonly Mock<IPatientVerification> patientVerification = new Mock<IPatientVerification>();
+        private readonly Mock<IGuidWrapper> guidWrapper = new Mock<IGuidWrapper>();
 
         public LinkPatientTest()
         {
@@ -58,8 +58,6 @@ namespace hip_service_test.Link.Patient
 
             var linkReference = new LinkReference(linkReferenceNumber,"MEDIATED",new LinkReferenceMeta("MOBILE"
                 ,"+91666666666666",response.Link.Meta.CommunicationExpiry));
-            var expectedResponse = new PatientLinkReferenceResponse(
-                linkReference);
 
             response.Link.ReferenceNumber.Should().Be(linkReference.ReferenceNumber);
             response.Link.AuthenticationType.Should().Be(linkReference.AuthenticationType);
