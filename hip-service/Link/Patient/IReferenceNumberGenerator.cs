@@ -1,6 +1,6 @@
 namespace hip_service.Link.Patient
 {
-    public interface IGuidWrapper
+    public interface IReferenceNumberGenerator
     {
         public string NewGuid();
     }

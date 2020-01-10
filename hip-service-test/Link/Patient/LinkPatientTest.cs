@@ -39,7 +39,7 @@ namespace hip_service_test.Link.Patient
         private readonly Mock<ILinkPatientRepository> linkRepository = new Mock<ILinkPatientRepository>();
         private readonly Mock<IPatientRepository> patientRepository = new Mock<IPatientRepository>();
         private readonly Mock<IPatientVerification> patientVerification = new Mock<IPatientVerification>();
-        private readonly Mock<IGuidWrapper> guidWrapper = new Mock<IGuidWrapper>();
+        private readonly Mock<IReferenceNumberGenerator> guidWrapper = new Mock<IReferenceNumberGenerator>();
 
         public LinkPatientTest()
         {
@@ -66,11 +66,11 @@ namespace hip_service_test.Link.Patient
             patientReferenceRequest.Patient.ConsentManagerId, patientReferenceRequest.Patient.ConsentManagerUserId,
             patientReferenceRequest.Patient.ReferenceNumber, new []{programRefNo}))
                 .ReturnsAsync(new Tuple<LinkRequest, Exception>(null,null));
-            patientRepository.Setup(x => x.GetPatientInfoWithReferenceNumber(patientReferenceNumber))
+            patientRepository.Setup(x => x.PatientWith(patientReferenceNumber))
                 .Returns(Option.Some(testPatient));
             var careContext = new CareContextSer {Description = TestBuilder.Faker().Random.Words()
                 , ReferenceNumber = programRefNo};
-            patientRepository.Setup(x => x.GetProgramInfo(patientReferenceNumber, programRefNo))
+            patientRepository.Setup(x => x.ProgramInfoWith(patientReferenceNumber, programRefNo))
                 .Returns(Option.Some(careContext));
             
             var (response, _) = await linkPatient.LinkPatients(patientReferenceRequest);
@@ -106,9 +106,9 @@ namespace hip_service_test.Link.Patient
             var patient = new LinkLib(TestBuilder.Faker().Random.Hash(),
                 TestBuilder.Faker().Random.Hash(), "4", careContexts);
             var patientReferenceRequest = new PatientLinkReferenceRequest(TestBuilder.Faker().Random.Hash(), patient);
-            patientRepository.Setup(e => e.GetPatientInfoWithReferenceNumber(patientReferenceNumber))
+            patientRepository.Setup(e => e.PatientWith(patientReferenceNumber))
                 .Returns(Option.Some<hip_service.Discovery.Patient.Model.Patient>(testPatient));
-            patientRepository.Setup(e => e.GetProgramInfo(patientReferenceNumber
+            patientRepository.Setup(e => e.ProgramInfoWith(patientReferenceNumber
                 , careContexts.First().ReferenceNumber)).Returns(null);
             var expectedError = new ErrorResponse(new Error(ErrorCode.CareContextNotFound,
                 "Care context not found for given patient"));

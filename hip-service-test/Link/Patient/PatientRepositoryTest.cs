@@ -30,7 +30,7 @@ namespace hip_service_test.Link.Patient
             };
             
             var patient = patientRepository
-                .GetPatientInfoWithReferenceNumber(patientReferenceNumber);
+                .PatientWith(patientReferenceNumber);
             
             patient.ValueOr(new hip_service.Discovery.Patient.Model.Patient()).Should()
                 .BeEquivalentTo(testPatient);
@@ -42,7 +42,7 @@ namespace hip_service_test.Link.Patient
             const string patientReferenceNumber = "1234";
             
             var patient = patientRepository
-                .GetPatientInfoWithReferenceNumber(patientReferenceNumber);
+                .PatientWith(patientReferenceNumber);
             
             patient.ValueOr((hip_service.Discovery.Patient.Model.Patient) null)
                 .Should().BeNull();
@@ -59,7 +59,7 @@ namespace hip_service_test.Link.Patient
                 Description = "National Cancer program"
             };
             
-            patientRepository.GetProgramInfo(patientReferenceNumber,
+            patientRepository.ProgramInfoWith(patientReferenceNumber,
                     careContextReferenceNumber).ValueOr(new CareContext())
                 .Should().BeEquivalentTo(careContext);
         }
@@ -70,7 +70,7 @@ namespace hip_service_test.Link.Patient
             const string patientReferenceNumber = "4";
             const string careContextReferenceNumber = "190";
             
-            patientRepository.GetProgramInfo(patientReferenceNumber,
+            patientRepository.ProgramInfoWith(patientReferenceNumber,
                 careContextReferenceNumber).ValueOr((CareContext)null)
                 .Should().BeNull();
         }

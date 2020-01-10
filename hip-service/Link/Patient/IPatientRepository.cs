@@ -6,8 +6,8 @@ namespace hip_service.Link.Patient
 {
     public interface IPatientRepository
     {
-        IEnumerable<Discovery.Patient.Model.Patient> GetAllPatientFromJson();
-        public Option<Discovery.Patient.Model.Patient> GetPatientInfoWithReferenceNumber(string referenceNumber);
-        public Option<CareContext> GetProgramInfo(string patientReferenceNumber, string programReferenceNumber);
+        IEnumerable<Discovery.Patient.Model.Patient> All();
+        public Option<Discovery.Patient.Model.Patient> PatientWith(string referenceNumber);
+        public Option<CareContext> ProgramInfoWith(string patientReferenceNumber, string programReferenceNumber);
     }
 }

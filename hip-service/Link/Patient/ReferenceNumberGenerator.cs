@@ -2,7 +2,7 @@ using System;
 
 namespace hip_service.Link.Patient
 {
-    public class GuidWrapper: IGuidWrapper
+    public class ReferenceNumberGenerator: IReferenceNumberGenerator
     {
         public string NewGuid()
         {
