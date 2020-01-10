@@ -32,6 +32,7 @@ namespace hip_service
                 .AddSingleton<IMatchingRepository>(new PatientMatchingRepository("Resources/patients.json"))
                 .AddSingleton<PatientDiscovery>()
                 .AddTransient<IDiscovery, PatientDiscovery>()
+                .AddScoped<IGuidWrapper, GuidWrapper>()
                 .AddTransient<ILink, LinkPatient>()
                 .AddScoped<IOtpRepository, OtpRepository>()
                 .AddScoped<OtpVerification>()

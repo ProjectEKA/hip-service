@@ -15,13 +15,15 @@ namespace hip_service.Link.Patient
         private readonly ILinkPatientRepository linkPatientRepository;
         private readonly PatientRepository patientRepository;
         private readonly IPatientVerification patientVerification;
+        private readonly IGuidWrapper guidWrapper;
 
         public LinkPatient(ILinkPatientRepository linkPatientRepository, PatientRepository patientRepository,
-            IPatientVerification patientVerification)
+            IPatientVerification patientVerification, IGuidWrapper guidWrapper)
         {
             this.linkPatientRepository = linkPatientRepository;
             this.patientRepository = patientRepository;
             this.patientVerification = patientVerification;
+            this.guidWrapper = guidWrapper;
         }
 
         public async Task<Tuple<PatientLinkReferenceResponse, ErrorResponse>> LinkPatients(PatientLinkReferenceRequest request)
@@ -32,7 +34,7 @@ namespace hip_service.Link.Patient
                 return new Tuple<PatientLinkReferenceResponse, ErrorResponse>(null, error);
             }
             
-            var linkRefNumber = Guid.NewGuid().ToString();
+            var linkRefNumber = guidWrapper.NewGuid();
 
             var session = new Session(linkRefNumber,
                 new Communication(CommunicationMode.MOBILE, patient.PhoneNumber));
