@@ -13,11 +13,11 @@ namespace hip_service.Link.Patient
     public class LinkPatient: ILink
     {
         private readonly ILinkPatientRepository linkPatientRepository;
-        private readonly PatientRepository patientRepository;
+        private readonly IPatientRepository patientRepository;
         private readonly IPatientVerification patientVerification;
         private readonly IGuidWrapper guidWrapper;
 
-        public LinkPatient(ILinkPatientRepository linkPatientRepository, PatientRepository patientRepository,
+        public LinkPatient(ILinkPatientRepository linkPatientRepository, IPatientRepository patientRepository,
             IPatientVerification patientVerification, IGuidWrapper guidWrapper)
         {
             this.linkPatientRepository = linkPatientRepository;

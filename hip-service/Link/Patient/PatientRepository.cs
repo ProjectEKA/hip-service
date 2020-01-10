@@ -7,7 +7,7 @@ using Optional;
 
 namespace hip_service.Link.Patient
 {
-    public class PatientRepository
+    public class PatientRepository: IPatientRepository
     {
         private readonly string filePath;
 
@@ -17,7 +17,7 @@ namespace hip_service.Link.Patient
         }
 
         
-        IEnumerable<Discovery.Patient.Model.Patient> GetAllPatientFromJson()
+        public IEnumerable<Discovery.Patient.Model.Patient> GetAllPatientFromJson()
         {
             var patientsInfo = FileReader.ReadJson(filePath);
             return patientsInfo;

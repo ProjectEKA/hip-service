@@ -27,7 +27,7 @@ namespace hip_service
             services
                 .AddDbContext<LinkPatientContext>(options =>
                     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")))
-                .AddSingleton(new PatientRepository("Resources/patients.json"))
+                .AddSingleton<IPatientRepository>(new PatientRepository("Resources/patients.json"))
                 .AddScoped<ILinkPatientRepository, LinkPatientRepository>()
                 .AddSingleton<IMatchingRepository>(new PatientMatchingRepository("Resources/patients.json"))
                 .AddSingleton<PatientDiscovery>()

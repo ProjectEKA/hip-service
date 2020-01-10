@@ -23,10 +23,9 @@ namespace hip_service.Link.Patient
             var linkedCareContexts = careContextReferenceNumbers.Select(referenceNumber => new LinkedCareContext(referenceNumber)).ToList();
             var linkRequest = new LinkRequest(patientReferenceNumber, linkReferenceNumber, consentManagerId,
                 consentManagerUserId, dateTimeStamp, linkedCareContexts);
-
-            linkPatientContext.LinkRequest.Add(linkRequest);
             try
             {
+                linkPatientContext.LinkRequest.Add(linkRequest);
                 await linkPatientContext.SaveChangesAsync();
                 return new Tuple<LinkRequest, Exception>(linkRequest,null);
             }
