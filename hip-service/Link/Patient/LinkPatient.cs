@@ -45,7 +45,7 @@ namespace hip_service.Link.Patient
                     (null, new ErrorResponse(new Error(ErrorCode.OtpGenerationFailed, "Unable to create token")));
             }
             
-            var (_, exception) = await linkPatientRepository.SaveLinkPatientDetails(linkRefNumber,
+            var (_, exception) = await linkPatientRepository.SaveRequestWith(linkRefNumber,
                 request.Patient.ConsentManagerId,
                 request.Patient.ConsentManagerUserId, request.Patient.ReferenceNumber, request.Patient.CareContexts
                     .Select(context => context.ReferenceNumber).ToArray());
@@ -105,7 +105,7 @@ namespace hip_service.Link.Patient
             }
 
             var (linkRequest, exception) =
-                await linkPatientRepository.GetPatientReferenceNumber(request.LinkReferenceNumber);
+                await linkPatientRepository.GetPatientFor(request.LinkReferenceNumber);
             
             if (exception != null)
             {

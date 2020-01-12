@@ -16,7 +16,7 @@ namespace hip_service.Link.Patient
             this.linkPatientContext = linkPatientContext;
         }
         
-        public async Task<Tuple<LinkRequest, Exception>> SaveLinkPatientDetails(string linkReferenceNumber, string consentManagerId, string consentManagerUserId,
+        public async Task<Tuple<LinkRequest, Exception>> SaveRequestWith(string linkReferenceNumber, string consentManagerId, string consentManagerUserId,
             string patientReferenceNumber, string[] careContextReferenceNumbers)
         {
             var dateTimeStamp = DateTime.Now.ToUniversalTime().ToString(Constants.DateTimeFormat);
@@ -35,7 +35,7 @@ namespace hip_service.Link.Patient
             }
         }
 
-        public async Task<Tuple<LinkRequest, Exception>>GetPatientReferenceNumber(string linkReferenceNumber)
+        public async Task<Tuple<LinkRequest, Exception>>GetPatientFor(string linkReferenceNumber)
         {
             try
             {

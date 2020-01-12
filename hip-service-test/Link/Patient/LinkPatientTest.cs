@@ -20,13 +20,11 @@ namespace hip_service_test.Link.Patient
 {
     public class LinkPatientTest
     {
-        private static readonly string patientReferenceNumber = "4";
-        private static readonly string phoneNumber = "+91666666666666";
         private readonly PatientSer testPatient = 
             new PatientSer
         {
-            PhoneNumber = phoneNumber,
-            Identifier = patientReferenceNumber,
+            PhoneNumber = "+91666666666666",
+            Identifier = "4",
             FirstName = TestBuilder.Faker().Random.Word(),
             LastName = TestBuilder.Faker().Random.Word(),
             Gender = TestBuilder.Faker().Random.Word(),
@@ -39,12 +37,12 @@ namespace hip_service_test.Link.Patient
         private readonly Mock<ILinkPatientRepository> linkRepository = new Mock<ILinkPatientRepository>();
         private readonly Mock<IPatientRepository> patientRepository = new Mock<IPatientRepository>();
         private readonly Mock<IPatientVerification> patientVerification = new Mock<IPatientVerification>();
-        private readonly Mock<IReferenceNumberGenerator> guidWrapper = new Mock<IReferenceNumberGenerator>();
+        private readonly Mock<IReferenceNumberGenerator> guidGenerator = new Mock<IReferenceNumberGenerator>();
 
         public LinkPatientTest()
         {
             linkPatient = new LinkPatient(linkRepository.Object, patientRepository.Object, 
-                patientVerification.Object, guidWrapper.Object);
+                patientVerification.Object, guidGenerator.Object);
         }
         
         [Fact]
@@ -57,30 +55,30 @@ namespace hip_service_test.Link.Patient
             
             IEnumerable<CareContext> careContexts = new[] {new CareContext(programRefNo)};
             var patient = new LinkLib(TestBuilder.Faker().Random.Hash(),
-                TestBuilder.Faker().Random.Hash(), patientReferenceNumber, careContexts);
+                TestBuilder.Faker().Random.Hash(), testPatient.Identifier, careContexts);
             var patientReferenceRequest = new PatientLinkReferenceRequest(TestBuilder.Faker().Random.Hash(), patient);
-            guidWrapper.Setup(x => x.NewGuid()).Returns(linkReferenceNumber);
+            guidGenerator.Setup(x => x.NewGuid()).Returns(linkReferenceNumber);
             patientVerification.Setup(x => x.SendTokenFor(new Session(linkReferenceNumber
-                , new Communication(CommunicationMode.MOBILE, phoneNumber)))).ReturnsAsync((Error)null);
-            linkRepository.Setup(expression: x => x.SaveLinkPatientDetails(linkReferenceNumber,
+                , new Communication(CommunicationMode.MOBILE, testPatient.PhoneNumber)))).ReturnsAsync((Error)null);
+            linkRepository.Setup(expression: x => x.SaveRequestWith(linkReferenceNumber,
             patientReferenceRequest.Patient.ConsentManagerId, patientReferenceRequest.Patient.ConsentManagerUserId,
             patientReferenceRequest.Patient.ReferenceNumber, new []{programRefNo}))
                 .ReturnsAsync(new Tuple<LinkRequest, Exception>(null,null));
-            patientRepository.Setup(x => x.PatientWith(patientReferenceNumber))
+            patientRepository.Setup(x => x.PatientWith(testPatient.Identifier))
                 .Returns(Option.Some(testPatient));
             var careContext = new CareContextSer {Description = TestBuilder.Faker().Random.Words()
                 , ReferenceNumber = programRefNo};
-            patientRepository.Setup(x => x.ProgramInfoWith(patientReferenceNumber, programRefNo))
+            patientRepository.Setup(x => x.ProgramInfoWith(testPatient.Identifier, programRefNo))
                 .Returns(Option.Some(careContext));
             
             var (response, _) = await linkPatient.LinkPatients(patientReferenceRequest);
             
             patientVerification.Verify();
             linkRepository.Verify();
-            guidWrapper.Verify();
+            guidGenerator.Verify();
             response.Link.ReferenceNumber.Should().Be(linkReferenceNumber);
             response.Link.AuthenticationType.Should().Be(authType);
-            response.Link.Meta.CommunicationHint.Should().Be(phoneNumber);
+            response.Link.Meta.CommunicationHint.Should().Be(testPatient.PhoneNumber);
             response.Link.Meta.CommunicationMedium.Should().Be(medium);
             response.Link.Should().NotBeNull();
         }
@@ -106,9 +104,9 @@ namespace hip_service_test.Link.Patient
             var patient = new LinkLib(TestBuilder.Faker().Random.Hash(),
                 TestBuilder.Faker().Random.Hash(), "4", careContexts);
             var patientReferenceRequest = new PatientLinkReferenceRequest(TestBuilder.Faker().Random.Hash(), patient);
-            patientRepository.Setup(e => e.PatientWith(patientReferenceNumber))
+            patientRepository.Setup(e => e.PatientWith(testPatient.Identifier))
                 .Returns(Option.Some<hip_service.Discovery.Patient.Model.Patient>(testPatient));
-            patientRepository.Setup(e => e.ProgramInfoWith(patientReferenceNumber
+            patientRepository.Setup(e => e.ProgramInfoWith(testPatient.Identifier
                 , careContexts.First().ReferenceNumber)).Returns(null);
             var expectedError = new ErrorResponse(new Error(ErrorCode.CareContextNotFound,
                 "Care context not found for given patient"));
