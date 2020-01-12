@@ -24,6 +24,7 @@
 -   [C#](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/)
 -   [ASP.NET Core 3.1](https://docs.microsoft.com/en-us/aspnet/core/?view=aspnetcore-3.1)
 -   [Entity Framework Core](https://docs.microsoft.com/en-us/ef/core/)
+-   [Bogus](https://github.com/bchavez/Bogus)
 
 ## :checkered_flag: Requirements
 
