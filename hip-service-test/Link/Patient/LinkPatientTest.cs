@@ -59,7 +59,7 @@ namespace hip_service_test.Link.Patient
             var patientReferenceRequest = new PatientLinkReferenceRequest(TestBuilder.Faker().Random.Hash(), patient);
             guidGenerator.Setup(x => x.NewGuid()).Returns(linkReferenceNumber);
             patientVerification.Setup(x => x.SendTokenFor(new Session(linkReferenceNumber
-                , new Communication(CommunicationMode.MOBILE, testPatient.PhoneNumber)))).ReturnsAsync((Error)null);
+                , new Communication(CommunicationMode.MOBILE, testPatient.PhoneNumber)))).ReturnsAsync((OtpMessage)null);
             linkRepository.Setup(expression: x => x.SaveRequestWith(linkReferenceNumber,
             patientReferenceRequest.Patient.ConsentManagerId, patientReferenceRequest.Patient.ConsentManagerUserId,
             patientReferenceRequest.Patient.ReferenceNumber, new []{programRefNo}))

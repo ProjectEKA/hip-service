@@ -6,7 +6,7 @@ namespace hip_service.Link.Patient
 {
     public interface IPatientVerification
     {
-        public Task<Error?> SendTokenFor(Session session);
-        public Task<Error?> Verify(string sessionId, string value);
+        public Task<OtpMessage> SendTokenFor(Session session);
+        public Task<OtpMessage> Verify(string sessionId, string value);
     }
 }

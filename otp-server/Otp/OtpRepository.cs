@@ -25,7 +25,7 @@ namespace otp_server.Otp
                 await otpContext.SaveChangesAsync();
                 return new OtpResponse(ResponseType.Success,"Otp Created");
             }
-            catch (Exception exception)
+            catch (Exception)
             {
                 return new OtpResponse(ResponseType.InternalServerError,"OtpGeneration Saving failed");
             }
@@ -35,11 +35,11 @@ namespace otp_server.Otp
         {
             try
             {
-                var otpRequest = await otpContext.OtpRequests.FirstAsync(o =>
+                var otpRequest = await otpContext.OtpRequests.FirstAsync(o => 
                     o.SessionId == sessionId);
-                return Option.Some(otpRequest);;
+                return Option.Some(otpRequest);
             }
-            catch (Exception exception)
+            catch (Exception)
             {
                 return Option.None<OtpRequest>();
             }

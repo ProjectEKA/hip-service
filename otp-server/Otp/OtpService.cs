@@ -41,7 +41,7 @@ namespace otp_server.Otp
             var message = HttpUtility.UrlEncode("Your Otp is: " + otp);
             using var wb = new WebClient();
             var response =  wb.UploadValues("https://api.textlocal.in/send/",
-                new NameValueCollection()
+                new NameValueCollection
             {
                 {"apikey" , "IwCFl4LRc+8-J2PvpYTfQ46hotNN0ztNhPMgOeCWYl"},
                 {"numbers" , value},

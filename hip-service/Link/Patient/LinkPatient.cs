@@ -38,11 +38,12 @@ namespace hip_service.Link.Patient
 
             var session = new Session(linkRefNumber,
                 new Communication(CommunicationMode.MOBILE, patient.PhoneNumber));
-            
-            if (await patientVerification.SendTokenFor(session) != null)
+            var otpGeneration = await patientVerification.SendTokenFor(session);
+
+            if (otpGeneration != null)
             {
                 return new Tuple<PatientLinkReferenceResponse, ErrorResponse>
-                    (null, new ErrorResponse(new Error(ErrorCode.OtpGenerationFailed, "Unable to create token")));
+                    (null, new ErrorResponse(new Error(ErrorCode.OtpGenerationFailed, otpGeneration.Message)));
             }
             
             var (_, exception) = await linkPatientRepository.SaveRequestWith(linkRefNumber,
@@ -98,10 +99,12 @@ namespace hip_service.Link.Patient
         
         public async Task<Tuple<PatientLinkResponse, ErrorResponse>> VerifyAndLinkCareContext(HipLibrary.Patient.Model.Request.PatientLinkRequest request)
         {
-            if (await patientVerification.Verify(request.LinkReferenceNumber, request.Token) != null)
+            var verifyOtp = await patientVerification.Verify(request.LinkReferenceNumber
+                , request.Token);
+            if (verifyOtp != null)
             {
                 return new Tuple<PatientLinkResponse, ErrorResponse>
-                    (null, new ErrorResponse(new  Error(ErrorCode.OtpInValid, "Otp Invalid")));   
+                    (null, new ErrorResponse(new  Error(ErrorCode.OtpInValid, verifyOtp.Message)));   
             }
 
             var (linkRequest, exception) =
