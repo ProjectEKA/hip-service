@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "hip-service-test", "hip-ser
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "otp-server", "otp-server\otp-server.csproj", "{73B0FC76-6D11-45EC-866E-434ABFB8AFCD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "otp-server-test", "otp-server-test\otp-server-test.csproj", "{F4E46D16-03BE-4C3B-848C-D3965DA49E35}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{73B0FC76-6D11-45EC-866E-434ABFB8AFCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73B0FC76-6D11-45EC-866E-434ABFB8AFCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73B0FC76-6D11-45EC-866E-434ABFB8AFCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4E46D16-03BE-4C3B-848C-D3965DA49E35}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4E46D16-03BE-4C3B-848C-D3965DA49E35}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4E46D16-03BE-4C3B-848C-D3965DA49E35}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4E46D16-03BE-4C3B-848C-D3965DA49E35}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -7,9 +7,9 @@ namespace otp_server.Otp
     [ApiController]
     public class OtpController: Controller
     {
-        private readonly OtpService otpService;
+        private readonly IOtpService otpService;
 
-        public OtpController(OtpService otpService)
+        public OtpController(IOtpService otpService)
         {
             this.otpService = otpService;
         }

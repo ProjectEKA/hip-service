@@ -33,7 +33,9 @@ namespace otp_server
                 .AddDbContext<OtpContext>(options =>
                     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")))    
                 .AddScoped<IOtpRepository, OtpRepository>()
-                .AddScoped<OtpService>()
+                .AddScoped<IOtpService,OtpService>()
+                .AddScoped<IOtpGenerator, OtpGenerator>()
+                .AddScoped<IOtpWebHandler, OtpWebHandler>()
                 .AddControllers()
                 .AddNewtonsoftJson(options =>{});
             
