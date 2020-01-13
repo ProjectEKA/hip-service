@@ -13,15 +13,17 @@ namespace hip_service.Link.Patient
     public class LinkPatient: ILink
     {
         private readonly ILinkPatientRepository linkPatientRepository;
-        private readonly PatientRepository patientRepository;
+        private readonly IPatientRepository patientRepository;
         private readonly IPatientVerification patientVerification;
+        private readonly IReferenceNumberGenerator referenceNumberGenerator;
 
-        public LinkPatient(ILinkPatientRepository linkPatientRepository, PatientRepository patientRepository,
-            IPatientVerification patientVerification)
+        public LinkPatient(ILinkPatientRepository linkPatientRepository, IPatientRepository patientRepository,
+            IPatientVerification patientVerification, IReferenceNumberGenerator referenceNumberGenerator)
         {
             this.linkPatientRepository = linkPatientRepository;
             this.patientRepository = patientRepository;
             this.patientVerification = patientVerification;
+            this.referenceNumberGenerator = referenceNumberGenerator;
         }
 
         public async Task<Tuple<PatientLinkReferenceResponse, ErrorResponse>> LinkPatients(PatientLinkReferenceRequest request)
@@ -32,7 +34,7 @@ namespace hip_service.Link.Patient
                 return new Tuple<PatientLinkReferenceResponse, ErrorResponse>(null, error);
             }
             
-            var linkRefNumber = Guid.NewGuid().ToString();
+            var linkRefNumber = referenceNumberGenerator.NewGuid();
 
             var session = new Session(linkRefNumber,
                 new Communication(CommunicationMode.MOBILE, patient.PhoneNumber));
@@ -43,7 +45,7 @@ namespace hip_service.Link.Patient
                     (null, new ErrorResponse(new Error(ErrorCode.OtpGenerationFailed, "Unable to create token")));
             }
             
-            var (_, exception) = await linkPatientRepository.SaveLinkPatientDetails(linkRefNumber,
+            var (_, exception) = await linkPatientRepository.SaveRequestWith(linkRefNumber,
                 request.Patient.ConsentManagerId,
                 request.Patient.ConsentManagerUserId, request.Patient.ReferenceNumber, request.Patient.CareContexts
                     .Select(context => context.ReferenceNumber).ToArray());
@@ -70,13 +72,13 @@ namespace hip_service.Link.Patient
 
         private Tuple<Discovery.Patient.Model.Patient,ErrorResponse> PatientAndCareContextValidation(PatientLinkReferenceRequest request)
         {
-            return patientRepository.GetPatientInfoWithReferenceNumber(request.Patient.ReferenceNumber).Map(
+            return patientRepository.PatientWith(request.Patient.ReferenceNumber).Map(
                  (patient) =>
                 {
                     var programs = (from careContext in request.Patient.CareContexts
-                        where patientRepository.GetProgramInfo(request.Patient.ReferenceNumber, careContext.ReferenceNumber)
+                        where patientRepository.ProgramInfoWith(request.Patient.ReferenceNumber, careContext.ReferenceNumber)
                             .HasValue
-                        select patientRepository.GetProgramInfo(request.Patient.ReferenceNumber, careContext.ReferenceNumber)
+                        select patientRepository.ProgramInfoWith(request.Patient.ReferenceNumber, careContext.ReferenceNumber)
                         into careContextPatient
                         select careContextPatient.Map<CareContext>(context => context)).ToList();
                     if (programs.Count != request.Patient.CareContexts.Count())
@@ -103,7 +105,7 @@ namespace hip_service.Link.Patient
             }
 
             var (linkRequest, exception) =
-                await linkPatientRepository.GetPatientReferenceNumber(request.LinkReferenceNumber);
+                await linkPatientRepository.GetPatientFor(request.LinkReferenceNumber);
             
             if (exception != null)
             {
@@ -111,7 +113,7 @@ namespace hip_service.Link.Patient
                     (null, new ErrorResponse(new Error(ErrorCode.NoLinkRequestFound, "No request found")));
             }
             
-            var patientInfo = patientRepository.GetPatientInfoWithReferenceNumber(linkRequest.PatientReferenceNumber);
+            var patientInfo = patientRepository.PatientWith(linkRequest.PatientReferenceNumber);
 
             return patientInfo.Map(patient =>
             {
