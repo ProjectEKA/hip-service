@@ -40,7 +40,7 @@ namespace otp_server_test.Otp
             var dbContext = GetOtpContext();
             var otpRepository = new OtpRepository(dbContext);
             var sessionId = TestBuilder.Faker().Random.Hash();
-            var _ = await otpRepository.Save(TestBuilder.Faker().Random.Number().ToString()
+            await otpRepository.Save(TestBuilder.Faker().Random.Number().ToString()
                 , sessionId);
             
             var response = await otpRepository.GetOtp(sessionId);
@@ -57,7 +57,7 @@ namespace otp_server_test.Otp
         {
             var dbContext = GetOtpContext();
             var otpRepository = new OtpRepository(dbContext);
-            var _ = await otpRepository.Save(TestBuilder.Faker().Random.Number().ToString()
+            await otpRepository.Save(TestBuilder.Faker().Random.Number().ToString()
                 , TestBuilder.Faker().Random.Hash());
             
             var response = await otpRepository.GetOtp(TestBuilder.Faker().Random.Hash());
@@ -76,7 +76,7 @@ namespace otp_server_test.Otp
             var otpToken = TestBuilder.Faker().Random.Number().ToString();
             var testOtpResponse = new OtpResponse(ResponseType.InternalServerError,"OtpGeneration Saving failed");
 
-            var _ = await otpRepository.Save(otpToken, sessionId);
+            await otpRepository.Save(otpToken, sessionId);
             var response = await otpRepository.Save(otpToken, sessionId);
 
             response.Should().BeEquivalentTo(testOtpResponse);

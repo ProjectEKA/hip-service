@@ -14,7 +14,7 @@ namespace otp_server_test.Otp
     public class OtpControllerTest
     {
         private readonly OtpController otpController;
-        private Mock<IOtpService> otpService;
+        private readonly Mock<IOtpService> otpService;
 
         public OtpControllerTest()
         {
