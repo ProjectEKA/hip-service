@@ -1,15 +1,16 @@
+using hip_service.Link.Patient.Models;
 using hip_service.OTP.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace hip_service.Link.Patient.Models
+namespace hip_service.Database
 {
-    public class LinkPatientContext: DbContext
+    public class DatabaseContext: DbContext
     {
         public DbSet<LinkRequest> LinkRequest { get; set; }
         public DbSet<OtpRequest> OtpRequests { get; set; }
         public DbSet<LinkedCareContext> LinkedCareContexts { get; set; }
 
-        public LinkPatientContext(DbContextOptions<LinkPatientContext> options): base(options) 
+        public DatabaseContext(DbContextOptions options): base(options) 
         {
         }
 

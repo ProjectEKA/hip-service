@@ -1,7 +1,7 @@
 using System.Text.Json;
+using hip_service.Database;
 using hip_service.Discovery.Patient;
 using hip_service.Link.Patient;
-using hip_service.Link.Patient.Models;
 using hip_service.Middleware;
 using hip_service.OTP;
 using HipLibrary.Patient;
@@ -23,9 +23,11 @@ namespace hip_service
         {
             Configuration = configuration;
         }
-        public void ConfigureServices(IServiceCollection services) {
+
+        public void ConfigureServices(IServiceCollection services)
+        {
             services
-                .AddDbContext<LinkPatientContext>(options =>
+                .AddDbContext<DatabaseContext>(options =>
                     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")))
                 .AddSingleton<IPatientRepository>(new PatientRepository("Resources/patients.json"))
                 .AddScoped<ILinkPatientRepository, LinkPatientRepository>()
@@ -39,13 +41,13 @@ namespace hip_service
                 .AddScoped<IPatientVerification, PatientVerification>()
                 .AddRouting(options => options.LowercaseUrls = true)
                 .AddControllers()
-                .AddNewtonsoftJson(options =>{});
+                .AddNewtonsoftJson(options => { });
             services.AddControllers().AddJsonOptions(options =>
                 options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase);
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env) =>
-            
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
             app.UseStaticFilesWithYaml()
                 .UseRouting()
                 .UseIf(!env.IsDevelopment(), x => x.UseHsts())
@@ -53,5 +55,10 @@ namespace hip_service
                 .UseCustomOpenAPI()
                 .UseConsentManagerIdentifierMiddleware()
                 .UseEndpoints(endpoints => { endpoints.MapControllers(); });
+
+            using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
+            var context = serviceScope.ServiceProvider.GetService<DatabaseContext>();
+            context.Database.Migrate();
+        }
     }
 }

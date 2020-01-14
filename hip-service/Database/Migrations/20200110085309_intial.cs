@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace hip_service.Migrations
+namespace hip_service.Database.Migrations
 {
     public partial class intial : Migration
     {

@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using hip_service.Database;
 using hip_service.Link.Patient.Models;
 using Microsoft.EntityFrameworkCore;
 using Optional;
@@ -10,10 +11,10 @@ namespace hip_service.Link.Patient
 {
     public class LinkPatientRepository: ILinkPatientRepository
     {
-        private readonly LinkPatientContext linkPatientContext;
-        public LinkPatientRepository(LinkPatientContext linkPatientContext)
+        private readonly DatabaseContext databaseContext;
+        public LinkPatientRepository(DatabaseContext databaseContext)
         {
-            this.linkPatientContext = linkPatientContext;
+            this.databaseContext = databaseContext;
         }
         
         public async Task<Tuple<LinkRequest, Exception>> SaveRequestWith(string linkReferenceNumber, string consentManagerId, string consentManagerUserId,
@@ -25,8 +26,8 @@ namespace hip_service.Link.Patient
                 consentManagerUserId, dateTimeStamp, linkedCareContexts);
             try
             {
-                linkPatientContext.LinkRequest.Add(linkRequest);
-                await linkPatientContext.SaveChangesAsync();
+                databaseContext.LinkRequest.Add(linkRequest);
+                await databaseContext.SaveChangesAsync();
                 return new Tuple<LinkRequest, Exception>(linkRequest,null);
             }
             catch (Exception exception)
@@ -39,7 +40,7 @@ namespace hip_service.Link.Patient
         {
             try
             {
-                var linkRequest = await linkPatientContext.LinkRequest.Include("CareContexts")
+                var linkRequest = await databaseContext.LinkRequest.Include("CareContexts")
                     .FirstAsync(request => request.LinkReferenceNumber == linkReferenceNumber);
                 return new Tuple<LinkRequest, Exception>(linkRequest, null);
 

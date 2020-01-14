@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Bogus;
 using FluentAssertions;
+using hip_service.Database;
 using hip_service.Link.Patient;
 using hip_service.Link.Patient.Models;
 using hip_service_test.Link.Builder;
@@ -14,12 +15,12 @@ namespace hip_service_test.Link.Patient
     [Collection("Link Patient Repository Tests")]
     public class LinkPatientRepositoryTest
     {
-        public LinkPatientContext GetLinkPatientContext()
+        public DatabaseContext GetLinkPatientContext()
         {
-            var optionsBuilder = new DbContextOptionsBuilder<LinkPatientContext>()
+            var optionsBuilder = new DbContextOptionsBuilder<DatabaseContext>()
                 .UseInMemoryDatabase("hipservice")
                 .Options;
-            return new LinkPatientContext(optionsBuilder);
+            return new DatabaseContext(optionsBuilder);
         }
         
         [Fact]
