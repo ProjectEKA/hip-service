@@ -37,7 +37,6 @@ namespace hip_service
                 .AddTransient<ILink, LinkPatient>()
                 .AddScoped<IOtpRepository, OtpRepository>()
                 .AddScoped<OtpVerification>()
-                .AddScoped<HttpClient>()
                 .AddScoped<IPatientVerification, PatientVerification>()
                 .AddRouting(options => options.LowercaseUrls = true)
                 .AddControllers()

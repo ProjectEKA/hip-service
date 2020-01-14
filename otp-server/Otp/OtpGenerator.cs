@@ -1,6 +1,6 @@
 using System;
 
-namespace otp_server.Otp
+namespace OtpServer.Otp
 {
     public class OtpGenerator: IOtpGenerator
     {

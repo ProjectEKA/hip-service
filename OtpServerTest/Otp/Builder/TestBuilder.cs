@@ -1,7 +1,7 @@
 using Bogus;
-using otp_server.Otp;
+using OtpServer.Otp;
 
-namespace otp_server_test.Otp.Builder
+namespace OtpServerTest.Otp.Builder
 {
     public static class TestBuilder
     {

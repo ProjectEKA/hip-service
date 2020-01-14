@@ -18,14 +18,15 @@ namespace hip_service_test.Link.Patient
     public class PatientVerificationTest
     {
         private readonly IConfiguration configuration;
-        private PatientVerification patientVerification;
+        private readonly PatientVerification patientVerification;
         public PatientVerificationTest()
         {
             configuration = TestBuilder.GetIConfigurationRoot();
+            patientVerification = new PatientVerification(configuration);
         }
 
         [Fact]
-        private async void ShouldReturnSuccessOnOtpCreation()
+        private async void ReturnFailureOnOtpCreation()
         {
             var handlerMock = new Mock<HttpClientHandler>(MockBehavior.Strict);
             handlerMock.Protected()
@@ -34,20 +35,18 @@ namespace hip_service_test.Link.Patient
                     ItExpr.IsAny<HttpRequestMessage>(),
                     ItExpr.IsAny<CancellationToken>()
                 )
-                .ReturnsAsync(new HttpResponseMessage()
+                .ReturnsAsync(new HttpResponseMessage
                 {
                     StatusCode = HttpStatusCode.OK,
                     Content = new StringContent("{'ReferenceType':1001,'value':'Otp created'}"),
                 })
                 .Verifiable();
-
             var httpClient = new HttpClient(handlerMock.Object)
             {
                 BaseAddress = new Uri("http://localhost.com:5000/otp/link")
             };
             var session = new Session(TestBuilder.Faker().Random.Hash()
                 , new Communication(CommunicationMode.MOBILE,"+91666666666666"));
-            patientVerification = new PatientVerification(configuration, httpClient);
             
             var result = await patientVerification.SendTokenFor(session);
             

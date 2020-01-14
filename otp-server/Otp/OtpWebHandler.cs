@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using System.Web;
 using Newtonsoft.Json.Linq;
 
-namespace otp_server.Otp
+namespace OtpServer.Otp
 {
     public class OtpWebHandler: IOtpWebHandler
     {

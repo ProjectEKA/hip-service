@@ -1,14 +1,12 @@
-using System;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
-using otp_server.Otp;
-using otp_server.Otp.Models;
-using otp_server_test.Otp.Builder;
+using OtpServer.Otp;
+using OtpServerTest.Otp.Builder;
 using Xunit;
 
-namespace otp_server_test.Otp
+namespace OtpServerTest.Otp
 {
     [Collection("Otp Controller Tests")]
     public class OtpControllerTest

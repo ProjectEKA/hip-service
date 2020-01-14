@@ -15,12 +15,10 @@ namespace hip_service.Link.Patient
     public class PatientVerification: IPatientVerification
     {
         private readonly IConfiguration configuration;
-        private HttpClient httpClient;
         
-        public PatientVerification(IConfiguration configuration, HttpClient httpClient)
+        public PatientVerification(IConfiguration configuration)
         {
             this.configuration = configuration;
-            this.httpClient = httpClient;
         }
         
         public async Task<OtpMessage> SendTokenFor(Session session)
@@ -36,7 +34,7 @@ namespace hip_service.Link.Patient
             var uri = new Uri(configuration.GetConnectionString("OTPVerificationConnection"));
             var verifyOtpRequest = new OtpVerificationRequest(sessionId, value);
             var verifyMessage = await PostCallToOTPServer(uri
-                , CreateHttpContent(verifyOtpRequest));
+                , CreateHttpContent(verifyOtpRequest)).ConfigureAwait(false);
             return verifyMessage.ValueOr((OtpMessage) null);
         }
         
@@ -52,7 +50,7 @@ namespace hip_service.Link.Patient
             {
                 ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true
             };
-            httpClient = new HttpClient(clientHandler);
+            var httpClient = new HttpClient(clientHandler);
             httpClient.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
             try
@@ -69,7 +67,7 @@ namespace hip_service.Link.Patient
                 {
                     var responseContent = response.Content;
                     using var reader = new StreamReader(await responseContent.ReadAsStreamAsync());
-                    var result = await reader.ReadToEndAsync();
+                    var result = await reader.ReadToEndAsync().ConfigureAwait(false);
                     var otpMessage = JsonConvert.DeserializeObject<OtpMessage>(result);
                     return Option.Some(otpMessage);
                 }

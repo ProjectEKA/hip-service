@@ -1,12 +1,12 @@
 using FluentAssertions;
 using Moq;
 using Optional;
-using otp_server.Otp;
-using otp_server.Otp.Models;
-using otp_server_test.Otp.Builder;
+using OtpServer.Otp;
+using OtpServer.Otp.Model;
+using OtpServerTest.Otp.Builder;
 using Xunit;
 
-namespace otp_server_test.Otp
+namespace OtpServerTest.Otp
 {
     [Collection("Otp Service Tests")]
     public class OtpServiceTest

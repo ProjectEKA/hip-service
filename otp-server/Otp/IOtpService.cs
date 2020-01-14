@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 
-namespace otp_server.Otp
+namespace OtpServer.Otp
 {
     public interface IOtpService
     {
