@@ -26,12 +26,12 @@ namespace otp_server_test.Otp
         private async void ReturnSuccessResponse()
         {
             var sessionId = TestBuilder.Faker().Random.Hash();
-            var otpToken = TestBuilder.Faker().Random.Number().ToString();
+            const string otpToken = "123456";
             var phoneNumber = TestBuilder.Faker().Phone.PhoneNumber();
             var testOtpResponse = new OtpResponse(ResponseType.Success, "Otp Created");
             var otpRequest = new OtpGenerationRequest(sessionId, new Communication("MOBILE"
                 ,phoneNumber));
-            otpGenerator.Setup(e => e.GenerateOtp()).Returns("123456");
+            otpGenerator.Setup(e => e.GenerateOtp()).Returns(otpToken);
             otpWebHandler.Setup(e => e.SendOtp(otpRequest.Communication.Value, otpToken))
                 .Returns(testOtpResponse);
             otpRepository.Setup(e =>  e.Save(otpToken, sessionId))
