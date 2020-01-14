@@ -25,7 +25,7 @@ namespace hip_service.Link.Patient
         {
             var uri = new Uri(configuration.GetConnectionString("OTPGenerationConnection"));
             var verifyMessage = await PostCallToOTPServer(uri
-                , CreateHttpContent(session));
+                , CreateHttpContent(session)).ConfigureAwait(false);
             return verifyMessage.ValueOr((OtpMessage) null);
         }
         
