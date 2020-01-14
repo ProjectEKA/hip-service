@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
-namespace otp_server
+
+namespace OtpServer
 {
     public class Program
     {

@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
-namespace otp_server.Otp
+namespace OtpServer.Otp
 {
     [Route("otp")]
     [ApiController]

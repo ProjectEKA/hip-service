@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
 using Optional;
-using otp_server.Otp.Models;
+using OtpServer.Otp.Model;
 
-namespace otp_server.Otp
+namespace OtpServer.Otp
 {
     public interface IOtpRepository
     {

@@ -2,9 +2,9 @@ using System;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Optional;
-using otp_server.Otp.Models;
+using OtpServer.Otp.Model;
 
-namespace otp_server.Otp
+namespace OtpServer.Otp
 {
     public class OtpRepository: IOtpRepository
     {

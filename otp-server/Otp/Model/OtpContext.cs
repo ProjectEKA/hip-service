@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace otp_server.Otp.Models
+namespace OtpServer.Otp.Model
 {
     public class OtpContext:DbContext
     {

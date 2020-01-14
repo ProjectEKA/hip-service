@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
-        <RootNamespace>otp_server</RootNamespace>
+        <RootNamespace>OtpServer</RootNamespace>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.HttpsPolicy" Version="2.2.0" />

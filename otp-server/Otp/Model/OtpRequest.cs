@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace otp_server.Otp.Models
+namespace OtpServer.Otp.Model
 {
     public class OtpRequest
     {
