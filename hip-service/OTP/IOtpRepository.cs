@@ -6,8 +6,8 @@ namespace hip_service.OTP
 {
     public interface IOtpRepository
     {
-        public Task<Tuple<OtpRequest, Exception>> Save(string otp, string sessionId);
-        public Task<Tuple<OtpRequest, Exception>> GetOtp(string sessionId);
+        Task<Tuple<OtpRequest, Exception>> Save(string otp, string sessionId);
+        Task<Tuple<OtpRequest, Exception>> GetOtp(string sessionId);
 
     }
 }

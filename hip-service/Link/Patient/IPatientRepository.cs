@@ -7,7 +7,7 @@ namespace hip_service.Link.Patient
     public interface IPatientRepository
     {
         IEnumerable<Discovery.Patient.Model.Patient> All();
-        public Option<Discovery.Patient.Model.Patient> PatientWith(string referenceNumber);
-        public Option<CareContext> ProgramInfoWith(string patientReferenceNumber, string programReferenceNumber);
+        Option<Discovery.Patient.Model.Patient> PatientWith(string referenceNumber);
+        Option<CareContext> ProgramInfoWith(string patientReferenceNumber, string programReferenceNumber);
     }
 }
