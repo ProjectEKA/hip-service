@@ -1,3 +1,4 @@
+using System.Net.Http;
 using System.Text.Json;
 using hip_service.Discovery.Patient;
 using hip_service.Link.Patient;
@@ -36,6 +37,7 @@ namespace hip_service
                 .AddTransient<ILink, LinkPatient>()
                 .AddScoped<IOtpRepository, OtpRepository>()
                 .AddScoped<OtpVerification>()
+                .AddScoped<HttpClient>()
                 .AddScoped<IPatientVerification, PatientVerification>()
                 .AddRouting(options => options.LowercaseUrls = true)
                 .AddControllers()

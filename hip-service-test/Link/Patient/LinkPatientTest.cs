@@ -6,6 +6,7 @@ using hip_service.Link.Patient;
 using hip_service.Link.Patient.Models;
 using hip_service.OTP;
 using hip_service_test.Link.Builder;
+using HipLibrary.Patient.Model;
 using HipLibrary.Patient.Model.Request;
 using HipLibrary.Patient.Model.Response;
 using Moq;
@@ -14,6 +15,7 @@ using Xunit;
 using LinkPatient = hip_service.Link.Patient.LinkPatient;
 using LinkLib = HipLibrary.Patient.Model.Request.Link;
 using CareContextSer = hip_service.Discovery.Patient.Model.CareContext;
+using PatientLinkRequest = HipLibrary.Patient.Model.Request.PatientLinkRequest;
 using PatientSer = hip_service.Discovery.Patient.Model.Patient;
 
 namespace hip_service_test.Link.Patient
@@ -115,6 +117,79 @@ namespace hip_service_test.Link.Patient
             
             patientRepository.Verify();
             error.Should().BeEquivalentTo(expectedError);
+        }
+
+        [Fact]
+        private async void ReturnOtpInvalidOnWrongOtp()
+        {
+            var sessionId = TestBuilder.Faker().Random.Hash();
+            var otpToken = TestBuilder.Faker().Random.Number().ToString();
+            var testOtpMessage = new OtpMessage("1001","Invalid Otp");
+            var patientLinkRequest = new PatientLinkRequest(otpToken
+                ,sessionId);
+            var expectedErrorResponse = new ErrorResponse(new Error(ErrorCode.OtpInValid, testOtpMessage.Message));
+            patientVerification.Setup(e => e.Verify(sessionId, otpToken))
+                .ReturnsAsync(testOtpMessage);
+
+            var (_, error) = await linkPatient.VerifyAndLinkCareContext(patientLinkRequest);
+
+            patientVerification.Verify();
+            error.Should().BeEquivalentTo(expectedErrorResponse);
+        }
+        
+        [Fact]
+        private async void ErrorOnInvalidLinkReferenceNumber()
+        {
+            var sessionId = TestBuilder.Faker().Random.Hash();
+            var otpToken = TestBuilder.Faker().Random.Number().ToString();
+            var patientLinkRequest = new PatientLinkRequest(otpToken
+                ,sessionId);
+            var expectedErrorResponse = new ErrorResponse(new Error(ErrorCode.NoLinkRequestFound, "No request found"));
+            patientVerification.Setup(e => e.Verify(sessionId, otpToken))
+                .ReturnsAsync((OtpMessage)null);
+            linkRepository.Setup(e => e.GetPatientFor(sessionId))
+                .ReturnsAsync(new Tuple<LinkRequest, Exception>(null, new Exception()));
+
+            var (_, error) = await linkPatient.VerifyAndLinkCareContext(patientLinkRequest);
+
+            patientVerification.Verify();
+            error.Should().BeEquivalentTo(expectedErrorResponse);
+        }
+
+        [Fact]
+        private async void SuccessLinkPatientForValidOtp()
+        {
+            const string programRefNo = "129";
+            var sessionId = TestBuilder.Faker().Random.Hash();
+            var otpToken = TestBuilder.Faker().Random.Number().ToString();
+            var patientLinkRequest = new PatientLinkRequest(otpToken
+                ,sessionId);
+            ICollection<LinkedCareContext> linkedCareContext = new [] {new LinkedCareContext(programRefNo)}; 
+            var testLinkRequest = new LinkRequest(testPatient.Identifier, sessionId,
+                TestBuilder.Faker().Random.Hash(), TestBuilder.Faker().Random.Hash()
+                ,It.IsAny<string>(),linkedCareContext);
+            patientVerification.Setup(e => e.Verify(sessionId, otpToken))
+                .ReturnsAsync((OtpMessage)null);
+            linkRepository.Setup(e => e.GetPatientFor(sessionId))
+                .ReturnsAsync(new Tuple<LinkRequest, Exception>(testLinkRequest, null));
+            patientRepository.Setup(x => x.PatientWith(testPatient.Identifier))
+                .Returns(Option.Some(testPatient));
+            var careContext = new CareContextSer {Description = TestBuilder.Faker().Random.Words()
+                , ReferenceNumber = programRefNo};
+            patientRepository.Setup(x => x.ProgramInfoWith(testPatient.Identifier, programRefNo))
+                .Returns(Option.Some(careContext));
+            var expectedLinkResponse = new PatientLinkResponse(new HipLibrary.Patient.Model.Response.LinkPatient(
+                testPatient.Identifier
+                , testPatient.FirstName + " " + testPatient.LastName
+                , new []{new CareContextRepresentation("129","National Cancer program")}));
+            
+            var (response, _) = await linkPatient.VerifyAndLinkCareContext(patientLinkRequest);
+            
+            patientVerification.Verify();
+            linkRepository.Verify();
+            guidGenerator.Verify();
+            response.Patient.ReferenceNumber.Should().BeEquivalentTo(expectedLinkResponse.Patient.ReferenceNumber);
+            response.Patient.Display.Should().BeEquivalentTo(expectedLinkResponse.Patient.Display);
         }
     }
 }

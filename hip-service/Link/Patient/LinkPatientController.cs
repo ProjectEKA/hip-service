@@ -1,6 +1,8 @@
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using HipLibrary.Patient;
+using HipLibrary.Patient.Model.Response;
 using Microsoft.AspNetCore.Mvc;
 using PatientLinkReferenceRequest = hip_service.Link.Patient.Dto.PatientLinkReferenceRequest;
 
@@ -41,12 +43,23 @@ namespace hip_service.Link.Patient
             var (patientLinkResponse, error) = await linkPatient
                 .VerifyAndLinkCareContext(new HipLibrary.Patient.Model.Request.PatientLinkRequest(patientLinkRequest.Token, linkReferenceNumber));
 
-            if (error != null)
+            return error != null ? ReturnServerResponse(error) : Ok(patientLinkResponse);
+        }
+        
+        private ActionResult ReturnServerResponse(ErrorResponse errorResponse)
+        {
+            return errorResponse.Error.Code switch
             {
-                return NotFound(error);
-            }
-
-            return Ok(patientLinkResponse);
+                ErrorCode.OtpExpired => (ActionResult) BadRequest(errorResponse),
+                ErrorCode.MultiplePatientsFound => NotFound(errorResponse),
+                ErrorCode.NoPatientFound => NotFound(errorResponse),
+                ErrorCode.OtpGenerationFailed => BadRequest(errorResponse),
+                ErrorCode.OtpInValid => NotFound(errorResponse),
+                ErrorCode.ServerInternalError => BadRequest(errorResponse),
+                ErrorCode.CareContextNotFound => NotFound(errorResponse),
+                ErrorCode.NoLinkRequestFound => NotFound(errorResponse),
+                _ => NotFound(errorResponse)
+            };
         }
     }
 }

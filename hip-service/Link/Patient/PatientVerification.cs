@@ -15,10 +15,12 @@ namespace hip_service.Link.Patient
     public class PatientVerification: IPatientVerification
     {
         private readonly IConfiguration configuration;
+        private HttpClient httpClient;
         
-        public PatientVerification(IConfiguration configuration)
+        public PatientVerification(IConfiguration configuration, HttpClient httpClient)
         {
             this.configuration = configuration;
+            this.httpClient = httpClient;
         }
         
         public async Task<OtpMessage> SendTokenFor(Session session)
@@ -50,27 +52,35 @@ namespace hip_service.Link.Patient
             {
                 ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true
             };
-            var httpClient = new HttpClient(clientHandler);
+            httpClient = new HttpClient(clientHandler);
             httpClient.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
-            var response = await httpClient.PostAsync(serverUrl.ToString()
-                , content);
+            try
+            {
+                var response = await httpClient.PostAsync(serverUrl.ToString()
+                    , content);
             
-            if (response.IsSuccessStatusCode)
-            {
-                return Option.None<OtpMessage>();
-            }
+                if (response.IsSuccessStatusCode)
+                {
+                    return Option.None<OtpMessage>();
+                }
 
-            if (!response.IsSuccessStatusCode)
-            {
-                var responseContent = response.Content;
-                using var reader = new StreamReader(await responseContent.ReadAsStreamAsync());
-                var result = await reader.ReadToEndAsync();
-                var otpMessage = JsonConvert.DeserializeObject<OtpMessage>(result);
-                return Option.Some(otpMessage);
+                if (!response.IsSuccessStatusCode)
+                {
+                    var responseContent = response.Content;
+                    using var reader = new StreamReader(await responseContent.ReadAsStreamAsync());
+                    var result = await reader.ReadToEndAsync();
+                    var otpMessage = JsonConvert.DeserializeObject<OtpMessage>(result);
+                    return Option.Some(otpMessage);
+                }
+                return Option.Some(new OtpMessage(ErrorCode.ServerInternalError.ToString()
+                    , "Internal Server Error"));
             }
-            return Option.Some(new OtpMessage(ErrorCode.ServerInternalError.ToString()
-                , "Internal Server Error"));
+            catch (Exception)
+            {
+                return Option.Some(new OtpMessage(ErrorCode.ServerInternalError.ToString()
+                    , "Internal Server Error"));
+            }
         }
     }
 }
