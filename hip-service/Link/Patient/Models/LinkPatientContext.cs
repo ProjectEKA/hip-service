@@ -7,9 +7,8 @@ namespace hip_service.Link.Patient.Models
     {
         public DbSet<LinkRequest> LinkRequest { get; set; }
         public DbSet<OtpRequest> OtpRequests { get; set; }
-        public DbSet<LinkedCareContext> LinkedCareContexts { get; set; }
 
-        public LinkPatientContext(DbContextOptions<LinkPatientContext> options): base(options) 
+        public LinkPatientContext(DbContextOptions options): base(options)
         {
         }
 
