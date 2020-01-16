@@ -124,10 +124,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/PatientDiscoveryErrResponse'
             application/xml:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/PatientDiscoveryErrResponse'
         '401':
           description: >
             **Causes:**
@@ -135,10 +135,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/PatientDiscoveryErrResponse'
             application/xml:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/PatientDiscoveryErrResponse'
         '500':
           description: >
             **Causes:**
@@ -147,10 +147,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/PatientDiscoveryErrResponse'
             application/xml:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/PatientDiscoveryErrResponse'
 
   /patients/link/{linkRefNumber}:
     post:
@@ -192,10 +192,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/PatientDiscoveryErrResponse'
             application/xml:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/PatientDiscoveryErrResponse'
         '401':
           description: >
             **Causes:**
@@ -203,10 +203,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/PatientDiscoveryErrResponse'
             application/xml:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/PatientDiscoveryErrResponse'
         '500':
           description: >
             **Causes:**
@@ -215,10 +215,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/PatientDiscoveryErrResponse'
             application/xml:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/PatientDiscoveryErrResponse'
 components:
   parameters:
     LinkRefNumber:
