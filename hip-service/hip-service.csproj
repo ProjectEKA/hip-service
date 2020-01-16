@@ -11,7 +11,7 @@
     <ItemGroup>
         <PackageReference Include="health-information-provider-library" Version="0.0.10" />
         <PackageReference Include="Microsoft.AspNetCore.HttpsPolicy" Version="2.2.0" />
-        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.1" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.0">
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
           <PrivateAssets>all</PrivateAssets>
@@ -19,9 +19,9 @@
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.0" />
         <PackageReference Include="NpgSql.EntityFrameworkCore.PostgreSQL.Design" Version="1.1.1" />
         <PackageReference Include="Optional" Version="4.0.0" />
-        <PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="5.0.0-rc5" />
-        <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="5.0.0-rc5" />
-        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="5.0.0-rc5" />
+        <PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="5.0.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="5.0.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="5.0.0" />
     </ItemGroup>
 
 </Project>
