@@ -59,7 +59,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PatientDiscoveryErrResponse'
+                $ref: '#/components/schemas/ErrorResponse'
         '404':
           description: >
             **Causes:**
@@ -68,10 +68,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PatientDiscoveryErrResponse'
+                $ref: '#/components/schemas/ErrorResponse'
             application/xml:
               schema:
-                $ref: '#/components/schemas/PatientDiscoveryErrResponse'
+                $ref: '#/components/schemas/ErrorResponse'
         '500':
           description: >
             **Causes:**
@@ -80,10 +80,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PatientDiscoveryErrResponse'
+                $ref: '#/components/schemas/ErrorResponse'
             application/xml:
               schema:
-                $ref: '#/components/schemas/PatientDiscoveryErrResponse'
+                $ref: '#/components/schemas/ErrorResponse'
                 
   /patients/link:
     post:
@@ -124,10 +124,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/ErrorResponse'
             application/xml:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/ErrorResponse'
         '401':
           description: >
             **Causes:**
@@ -135,10 +135,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/ErrorResponse'
             application/xml:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/ErrorResponse'
         '500':
           description: >
             **Causes:**
@@ -147,10 +147,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/ErrorResponse'
             application/xml:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/ErrorResponse'
 
   /patients/link/{linkRefNumber}:
     post:
@@ -192,10 +192,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/ErrorResponse'
             application/xml:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/ErrorResponse'
         '401':
           description: >
             **Causes:**
@@ -203,10 +203,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/ErrorResponse'
             application/xml:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/ErrorResponse'
         '500':
           description: >
             **Causes:**
@@ -215,10 +215,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/ErrorResponse'
             application/xml:
               schema:
-                $ref: '#/components/schemas/Error'
+                $ref: '#/components/schemas/ErrorResponse'
 components:
   parameters:
     LinkRefNumber:
@@ -273,7 +273,7 @@ components:
       xml:
         name: PatientDiscoveryRequest
 
-    PatientDiscoveryErrResponse:
+    ErrorResponse:
       type: object
       properties:
         error:
