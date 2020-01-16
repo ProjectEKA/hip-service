@@ -12,5 +12,11 @@ namespace hip_service.Discovery.Patient.Model
         [Required, MaxLength(50)] public string TransactionId { get; set; }
         [Required, MaxLength(50)] public string ConsentManagerUserId { get; set; }
         public DateTime Timestamp { get; set; }
+
+        public DiscoveryRequest(string transactionId, string consentManagerUserId)
+        {
+            TransactionId = transactionId;
+            ConsentManagerUserId = consentManagerUserId;
+        }
     }
 }

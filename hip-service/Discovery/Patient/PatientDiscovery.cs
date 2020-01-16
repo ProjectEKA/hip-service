@@ -14,10 +14,13 @@ namespace hip_service.Discovery.Patient
     {
         private readonly Filter filter;
         private readonly IMatchingRepository repo;
+        private readonly IDiscoveryRequestRepository discoveryRequestRepository;
 
-        public PatientDiscovery(IMatchingRepository patientRepository)
+        public PatientDiscovery(IMatchingRepository patientRepository,
+            IDiscoveryRequestRepository discoveryRequestRepository)
         {
             repo = patientRepository;
+            this.discoveryRequestRepository = discoveryRequestRepository;
             filter = new Filter();
         }
 
@@ -27,9 +30,13 @@ namespace hip_service.Discovery.Patient
             var patientInfos = await repo.Where(expression);
             var (patient, error) = DiscoveryUseCase.DiscoverPatient(filter.Do(patientInfos, request).AsQueryable());
 
-            return new Tuple<DiscoveryResponse, ErrorResponse>(
-            new DiscoveryResponse(patient),
-                error);
+            if (patient != null)
+            {
+                await discoveryRequestRepository.Add(new Model.DiscoveryRequest(request.TransactionId,
+                    request.Patient.Id));
+            }
+
+            return new Tuple<DiscoveryResponse, ErrorResponse>(new DiscoveryResponse(patient), error);
         }
     }
 }
