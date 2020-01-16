@@ -1,7 +1,8 @@
 using System.Text.Json;
 using hip_service.Discovery.Patient;
+using hip_service.Discovery.Patient.Database;
 using hip_service.Link.Patient;
-using hip_service.Link.Patient.Models;
+using hip_service.Link.Patient.Database;
 using hip_service.Middleware;
 using hip_service.OTP;
 using HipLibrary.Patient;
@@ -27,6 +28,8 @@ namespace hip_service
             services
                 .AddDbContext<LinkPatientContext>(options =>
                     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")))
+                .AddDbContext<DiscoveryContext>(options =>
+                    options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")))
                 .AddSingleton<IPatientRepository>(new PatientRepository("Resources/patients.json"))
                 .AddScoped<ILinkPatientRepository, LinkPatientRepository>()
                 .AddSingleton<IMatchingRepository>(new PatientMatchingRepository("Resources/patients.json"))
@@ -44,8 +47,8 @@ namespace hip_service
                 options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase);
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env) =>
-            
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
             app.UseStaticFilesWithYaml()
                 .UseRouting()
                 .UseIf(!env.IsDevelopment(), x => x.UseHsts())
@@ -53,5 +56,12 @@ namespace hip_service
                 .UseCustomOpenAPI()
                 .UseConsentManagerIdentifierMiddleware()
                 .UseEndpoints(endpoints => { endpoints.MapControllers(); });
+
+            using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
+            var linkContext = serviceScope.ServiceProvider.GetService<LinkPatientContext>();
+            linkContext.Database.Migrate();
+            var discoveryContext = serviceScope.ServiceProvider.GetService<DiscoveryContext>();
+            discoveryContext.Database.Migrate();
+        }
     }
 }

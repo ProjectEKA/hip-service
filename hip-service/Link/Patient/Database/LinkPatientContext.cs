@@ -1,7 +1,8 @@
+using hip_service.Link.Patient.Models;
 using hip_service.OTP.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace hip_service.Link.Patient.Models
+namespace hip_service.Link.Patient.Database
 {
     public class LinkPatientContext: DbContext
     {

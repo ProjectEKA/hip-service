@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Bogus;
 using FluentAssertions;
 using hip_service.Link.Patient;
+using hip_service.Link.Patient.Database;
 using hip_service.Link.Patient.Models;
 using hip_service_test.Link.Builder;
 using HipLibrary.Patient.Model.Request;

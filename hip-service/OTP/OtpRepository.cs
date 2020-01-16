@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using hip_service.Link.Patient;
+using hip_service.Link.Patient.Database;
 using hip_service.Link.Patient.Models;
 using hip_service.OTP.Models;
 using Microsoft.EntityFrameworkCore;
