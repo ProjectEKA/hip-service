@@ -6,7 +6,7 @@ using Microsoft.Extensions.FileProviders;
 
 namespace OtpServer
 {
-    public static partial class ApplicationBuilderExtensions
+    public static class ApplicationBuilderExtensions
     {
         public static IApplicationBuilder UseStaticFilesWithYaml(this IApplicationBuilder application)
         {
