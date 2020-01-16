@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using HipLibrary.Patient.Model.Response;
+
 namespace hip_service.OTP
 {
     public class OtpVerification
@@ -20,7 +21,7 @@ namespace hip_service.OTP
 
         public async Task<Error> CheckOtpValue(string sessionId, string value)
         {
-            var (otpValue, exception) = await otpRepository.GetOtp(sessionId);
+            var (otpValue, _) = await otpRepository.GetOtp(sessionId);
             return otpValue.OtpToken == value ? null : new Error(ErrorCode.OtpInValid, "OTP not valid");
         }
     }
