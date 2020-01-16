@@ -9,7 +9,7 @@ using hip_service.Link.Patient.Models;
 namespace hip_service.Migrations
 {
     [DbContext(typeof(LinkPatientContext))]
-    [Migration("20200110085309_intial")]
+    [Migration("20200116150715_intial")]
     partial class intial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -55,7 +55,7 @@ namespace hip_service.Migrations
 
                     b.HasIndex("LinkReferenceNumber");
 
-                    b.ToTable("LinkedCareContexts");
+                    b.ToTable("LinkedCareContext");
                 });
 
             modelBuilder.Entity("hip_service.OTP.Models.OtpRequest", b =>

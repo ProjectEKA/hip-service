@@ -35,7 +35,7 @@ namespace hip_service.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "LinkedCareContexts",
+                name: "LinkedCareContext",
                 columns: table => new
                 {
                     CareContextNumber = table.Column<string>(nullable: false),
@@ -45,7 +45,7 @@ namespace hip_service.Migrations
                 {
                     table.PrimaryKey("Id", x => new { x.CareContextNumber, x.LinkReferenceNumber });
                     table.ForeignKey(
-                        name: "FK_LinkedCareContexts_LinkRequest_LinkReferenceNumber",
+                        name: "FK_LinkedCareContext_LinkRequest_LinkReferenceNumber",
                         column: x => x.LinkReferenceNumber,
                         principalTable: "LinkRequest",
                         principalColumn: "LinkReferenceNumber",
@@ -53,15 +53,15 @@ namespace hip_service.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_LinkedCareContexts_LinkReferenceNumber",
-                table: "LinkedCareContexts",
+                name: "IX_LinkedCareContext_LinkReferenceNumber",
+                table: "LinkedCareContext",
                 column: "LinkReferenceNumber");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "LinkedCareContexts");
+                name: "LinkedCareContext");
 
             migrationBuilder.DropTable(
                 name: "OtpRequests");

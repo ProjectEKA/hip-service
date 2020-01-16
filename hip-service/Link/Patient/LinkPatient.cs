@@ -4,8 +4,8 @@ using System.Threading.Tasks;
 using hip_service.OTP;
 using HipLibrary.Patient;
 using HipLibrary.Patient.Model;
-using HipLibrary.Patient.Model.Request;
 using HipLibrary.Patient.Model.Response;
+using hip_service.Link.Patient;
 
 namespace hip_service.Link.Patient
 {
@@ -26,7 +26,7 @@ namespace hip_service.Link.Patient
         }
 
         public async Task<Tuple<PatientLinkReferenceResponse, ErrorResponse>> LinkPatients(
-            PatientLinkReferenceRequest request)
+            HipLibrary.Patient.Model.Request.PatientLinkReferenceRequest request)
         {
             var (patient, error) = PatientAndCareContextValidation(request);
             if (error != null)
@@ -63,7 +63,7 @@ namespace hip_service.Link.Patient
             var meta = new LinkReferenceMeta(nameof(CommunicationMode.MOBILE),
                 patient.PhoneNumber, expiry);
             var patientLinkReferenceResponse = new PatientLinkReferenceResponse(
-                new LinkReference(
+                new HipLibrary.Patient.Model.Response.LinkReference(
                     linkRefNumber,
                     "MEDIATED",
                     meta));
@@ -71,7 +71,7 @@ namespace hip_service.Link.Patient
         }
 
         private Tuple<Discovery.Patient.Model.Patient, ErrorResponse> PatientAndCareContextValidation(
-            PatientLinkReferenceRequest request)
+            HipLibrary.Patient.Model.Request.PatientLinkReferenceRequest request)
         {
             return patientRepository.PatientWith(request.Patient.ReferenceNumber).Map(
                 (patient) =>

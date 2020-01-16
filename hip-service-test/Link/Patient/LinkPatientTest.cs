@@ -17,6 +17,7 @@ using LinkLib = HipLibrary.Patient.Model.Request.Link;
 using CareContextSer = hip_service.Discovery.Patient.Model.CareContext;
 using PatientLinkRequest = HipLibrary.Patient.Model.Request.PatientLinkRequest;
 using PatientSer = hip_service.Discovery.Patient.Model.Patient;
+using PatientLinkRefRequest =HipLibrary.Patient.Model.Request.PatientLinkReferenceRequest;
 
 namespace hip_service_test.Link.Patient
 {
@@ -58,7 +59,7 @@ namespace hip_service_test.Link.Patient
             IEnumerable<CareContext> careContexts = new[] {new CareContext(programRefNo)};
             var patient = new LinkLib(TestBuilder.Faker().Random.Hash(),
                 TestBuilder.Faker().Random.Hash(), testPatient.Identifier, careContexts);
-            var patientReferenceRequest = new PatientLinkReferenceRequest(TestBuilder.Faker().Random.Hash(), patient);
+            var patientReferenceRequest = new PatientLinkRefRequest(TestBuilder.Faker().Random.Hash(), patient);
             guidGenerator.Setup(x => x.NewGuid()).Returns(linkReferenceNumber);
             patientVerification.Setup(x => x.SendTokenFor(new Session(linkReferenceNumber
                 , new Communication(CommunicationMode.MOBILE, testPatient.PhoneNumber)))).ReturnsAsync((OtpMessage)null);
@@ -91,7 +92,7 @@ namespace hip_service_test.Link.Patient
             IEnumerable<CareContext> careContexts = new[] {new CareContext("129")};
             var patient = new LinkLib(TestBuilder.Faker().Random.Hash(),
                 TestBuilder.Faker().Random.Hash(), "1234", careContexts);
-            var patientReferenceRequest = new PatientLinkReferenceRequest(TestBuilder.Faker().Random.Hash(), patient);
+            var patientReferenceRequest = new PatientLinkRefRequest(TestBuilder.Faker().Random.Hash(), patient);
 
             var expectedError = new ErrorResponse(new Error(ErrorCode.NoPatientFound, ErrorMessage.NoPatientFound));
             var (_, error) = await linkPatient.LinkPatients(patientReferenceRequest);
@@ -105,7 +106,7 @@ namespace hip_service_test.Link.Patient
             IEnumerable<CareContext> careContexts = new[] {new CareContext("1234")};
             var patient = new LinkLib(TestBuilder.Faker().Random.Hash(),
                 TestBuilder.Faker().Random.Hash(), "4", careContexts);
-            var patientReferenceRequest = new PatientLinkReferenceRequest(TestBuilder.Faker().Random.Hash(), patient);
+            var patientReferenceRequest = new PatientLinkRefRequest(TestBuilder.Faker().Random.Hash(), patient);
             patientRepository.Setup(e => e.PatientWith(testPatient.Identifier))
                 .Returns(Option.Some<hip_service.Discovery.Patient.Model.Patient>(testPatient));
             patientRepository.Setup(e => e.ProgramInfoWith(testPatient.Identifier

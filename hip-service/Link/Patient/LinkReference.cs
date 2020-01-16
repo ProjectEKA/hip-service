@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using HipLibrary.Patient.Model.Request;
 
-namespace hip_service.Link.Patient.Dto
+namespace hip_service.Link.Patient
 {
     public class LinkReference
     {

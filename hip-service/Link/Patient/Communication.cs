@@ -1,12 +1,9 @@
-using hip_service.Link.Patient;
-using HipLibrary.Patient.Model;
-
-namespace hip_service.OTP
+namespace hip_service.Link.Patient
 {
     public class Communication
     {
-        private readonly CommunicationMode Mode;
-        private readonly string Value;
+        public CommunicationMode Mode { get; }
+        public string Value { get; }
 
         public Communication(CommunicationMode mode, string value)
         {

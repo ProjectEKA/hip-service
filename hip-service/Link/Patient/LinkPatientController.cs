@@ -24,14 +24,14 @@ namespace hip_service.Link.Patient
         [HttpPost]
         public async Task<ActionResult> LinkPatientCareContexts(
             [FromHeader(Name = "X-ConsentManagerID")] string consentManagerId,
-            [FromBody] PatientLinkReferenceRequest request)
+            [FromBody] HipLibrary.Patient.Model.Request.PatientLinkReferenceRequest request)
         {
             var patient = new Link(
                 consentManagerId,
                 request.Patient.ConsentManagerUserId,
                 request.Patient.ReferenceNumber,
                 request.Patient.CareContexts);
-            var patientReferenceRequest = new PatientLinkReferenceRequest(request.TransactionId, patient);
+            var patientReferenceRequest = new HipLibrary.Patient.Model.Request.PatientLinkReferenceRequest(request.TransactionId, patient);
             var (linkReferenceResponse, error) = await linkPatient.LinkPatients(patientReferenceRequest);
             return error != null ? ReturnServerResponse(error) : Ok(linkReferenceResponse);
         }

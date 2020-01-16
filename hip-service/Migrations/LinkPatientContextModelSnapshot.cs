@@ -53,7 +53,7 @@ namespace hip_service.Migrations
 
                     b.HasIndex("LinkReferenceNumber");
 
-                    b.ToTable("LinkedCareContexts");
+                    b.ToTable("LinkedCareContext");
                 });
 
             modelBuilder.Entity("hip_service.OTP.Models.OtpRequest", b =>
