@@ -4,7 +4,7 @@ namespace OtpServer.Otp
 {
     public interface IOtpService
     {
-        public Task<OtpResponse> GenerateOtp(OtpGenerationRequest otpGenerationRequest);
-        public Task<OtpResponse> CheckOtpValue(string sessionId, string value);
+        Task<OtpResponse> GenerateOtp(OtpGenerationRequest otpGenerationRequest);
+        Task<OtpResponse> CheckOtpValue(string sessionId, string value);
     }
 }

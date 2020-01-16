@@ -3,6 +3,8 @@
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <RootNamespace>OtpServer</RootNamespace>
+	<LangVersion>latest</LangVersion>
+	<Nullable>enable</Nullable>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.HttpsPolicy" Version="2.2.0" />

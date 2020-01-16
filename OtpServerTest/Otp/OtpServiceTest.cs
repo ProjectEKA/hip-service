@@ -52,7 +52,7 @@ namespace OtpServerTest.Otp
             var otpToken = TestBuilder.Faker().Random.Number().ToString();
             var testOtpResponse = new OtpResponse(ResponseType.OtpValid,"Valid OTP");
             var testOtpRequest = new OtpRequest(sessionId,It.IsAny<string>(),otpToken);
-            otpRepository.Setup(e => e.GetOtp(sessionId)).ReturnsAsync(Option.Some(testOtpRequest));
+            otpRepository.Setup(e => e.GetWith(sessionId)).ReturnsAsync(Option.Some(testOtpRequest));
 
             var otpResponse = await otpService.CheckOtpValue(sessionId, otpToken);
             
@@ -67,7 +67,7 @@ namespace OtpServerTest.Otp
             var testOtpResponse = new OtpResponse(ResponseType.OtpInvalid,"Invalid Otp");
             var testOtpRequest = new OtpRequest(sessionId,It.IsAny<string>()
                 ,faker.Random.Number().ToString());
-            otpRepository.Setup(e => e.GetOtp(sessionId)).ReturnsAsync(Option.Some(testOtpRequest));
+            otpRepository.Setup(e => e.GetWith(sessionId)).ReturnsAsync(Option.Some(testOtpRequest));
 
             var otpResponse = await otpService.CheckOtpValue(sessionId, faker.Random.Hash());
 

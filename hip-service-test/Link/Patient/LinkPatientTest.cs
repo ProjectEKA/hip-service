@@ -93,7 +93,7 @@ namespace hip_service_test.Link.Patient
                 TestBuilder.Faker().Random.Hash(), "1234", careContexts);
             var patientReferenceRequest = new PatientLinkReferenceRequest(TestBuilder.Faker().Random.Hash(), patient);
 
-            var expectedError = new ErrorResponse(new Error(ErrorCode.NoPatientFound, "No patient Found"));
+            var expectedError = new ErrorResponse(new Error(ErrorCode.NoPatientFound, ErrorMessage.NoPatientFound));
             var (_, error) = await linkPatient.LinkPatients(patientReferenceRequest);
             
             error.Should().BeEquivalentTo(expectedError);
@@ -111,7 +111,7 @@ namespace hip_service_test.Link.Patient
             patientRepository.Setup(e => e.ProgramInfoWith(testPatient.Identifier
                 , careContexts.First().ReferenceNumber)).Returns(null);
             var expectedError = new ErrorResponse(new Error(ErrorCode.CareContextNotFound,
-                "Care context not found for given patient"));
+                ErrorMessage.CareContextNotFound));
             
             var (_, error) = await linkPatient.LinkPatients(patientReferenceRequest);
             

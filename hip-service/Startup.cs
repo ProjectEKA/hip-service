@@ -24,7 +24,8 @@ namespace hip_service
         {
             Configuration = configuration;
         }
-        public void ConfigureServices(IServiceCollection services) {
+
+        public void ConfigureServices(IServiceCollection services) =>
             services
                 .AddDbContext<LinkPatientContext>(options =>
                     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")))
@@ -37,14 +38,13 @@ namespace hip_service
                 .AddTransient<ILink, LinkPatient>()
                 .AddScoped<IOtpRepository, OtpRepository>()
                 .AddScoped<OtpVerification>()
+                .AddSingleton(Configuration)
                 .AddScoped<IPatientVerification, PatientVerification>()
                 .AddRouting(options => options.LowercaseUrls = true)
                 .AddControllers()
-                .AddNewtonsoftJson(options =>{});
-            services.AddSingleton<IConfiguration>(Configuration);
-            services.AddControllers().AddJsonOptions(options =>
+                .AddNewtonsoftJson(options =>{})
+                .AddJsonOptions(options =>
                 options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase);
-        }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env) =>
             

@@ -1,8 +1,10 @@
+using System;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using OtpServer.Otp;
+using OtpServer.Otp.Model;
 using OtpServerTest.Otp.Builder;
 using Xunit;
 
@@ -23,8 +25,8 @@ namespace OtpServerTest.Otp
         [Fact]
         public async Task ShouldSuccessInOtpGeneration()
         {
-            var otpRequest = TestBuilder.otpGenerationRequest()
-                .Generate();
+            var otpRequest = new OtpGenerationRequest(TestBuilder.Faker().Random.Hash()
+                ,new Communication("MOBILE", "+91999999999999"));
             var expectedResult = new OtpResponse(ResponseType.Success,"Otp Created");
             otpService.Setup(e => e.GenerateOtp(It.IsAny<OtpGenerationRequest>())
                 ).ReturnsAsync(expectedResult);
@@ -44,8 +46,8 @@ namespace OtpServerTest.Otp
         [Fact]
         public async Task ReturnOtpGenerationBadRequest()
         {
-            var otpRequest = TestBuilder.otpGenerationRequest()
-                .Generate();
+            var otpRequest = new OtpGenerationRequest(TestBuilder.Faker().Random.Hash()
+                ,new Communication("MOBILE", "+91999999999999"));
             var expectedResult = new OtpResponse(ResponseType.InternalServerError,"OtpGeneration Saving failed");
             otpService.Setup(e => e.GenerateOtp(It.IsAny<OtpGenerationRequest>())
             ).ReturnsAsync(expectedResult);
@@ -59,8 +61,8 @@ namespace OtpServerTest.Otp
         [Fact]
         public async Task ReturnOtpValidResponse()
         {
-            var otpRequest = TestBuilder.otpVerificationRequest()
-                .Generate();
+            var otpRequest = new OtpVerificationRequest(TestBuilder.Faker().Random.Hash()
+                , "1234");
             var expectedResult = new OtpResponse(ResponseType.OtpValid,"Valid OTP");
             otpService.Setup(e => e.CheckOtpValue(otpRequest.SessionID,otpRequest.Value)
             ).ReturnsAsync(expectedResult);
@@ -80,8 +82,8 @@ namespace OtpServerTest.Otp
         [Fact]
         public async Task ReturnOtpInValidBadRequest()
         {
-            var otpRequest = TestBuilder.otpVerificationRequest()
-                .Generate();
+            var otpRequest = new OtpVerificationRequest(TestBuilder.Faker().Random.Hash()
+                , "1234");
             var expectedResult = new OtpResponse(ResponseType.OtpInvalid,"Invalid Otp");
             otpService.Setup(e => e.CheckOtpValue(otpRequest.SessionID,otpRequest.Value)
             ).ReturnsAsync(expectedResult);

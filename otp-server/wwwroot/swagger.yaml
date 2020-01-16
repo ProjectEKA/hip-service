@@ -111,7 +111,7 @@ components:
         sessionId:
           type: string
           format: uuid
-        Communication:
+        communication:
           type: object
           properties:
             mode:

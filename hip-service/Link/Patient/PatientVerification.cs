@@ -44,7 +44,7 @@ namespace hip_service.Link.Patient
             return new StringContent(json, Encoding.UTF8, "application/json");  
         }
         
-        private async Task<Option<OtpMessage>> PostCallToOTPServer (Uri serverUrl, HttpContent content)
+        private async Task<Option<OtpMessage>> PostCallToOTPServer(Uri serverUrl, HttpContent content)
         {
             var clientHandler = new HttpClientHandler
             {
@@ -55,8 +55,7 @@ namespace hip_service.Link.Patient
                 new MediaTypeWithQualityHeaderValue("application/json"));
             try
             {
-                var response = await httpClient.PostAsync(serverUrl.ToString()
-                    , content);
+                var response = await httpClient.PostAsync(serverUrl.ToString(), content);
             
                 if (response.IsSuccessStatusCode)
                 {
@@ -72,12 +71,12 @@ namespace hip_service.Link.Patient
                     return Option.Some(otpMessage);
                 }
                 return Option.Some(new OtpMessage(ErrorCode.ServerInternalError.ToString()
-                    , "Internal Server Error"));
+                    , ErrorMessage.InternalServerError));
             }
             catch (Exception)
             {
                 return Option.Some(new OtpMessage(ErrorCode.ServerInternalError.ToString()
-                    , "Internal Server Error"));
+                    , ErrorMessage.InternalServerError));
             }
         }
     }

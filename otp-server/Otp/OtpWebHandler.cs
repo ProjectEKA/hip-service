@@ -2,12 +2,20 @@ using System.Collections.Specialized;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json.Linq;
 
 namespace OtpServer.Otp
 {
     public class OtpWebHandler: IOtpWebHandler
     {
+        private readonly IConfiguration configuration;
+
+        public OtpWebHandler(IConfiguration configuration)
+        {
+            this.configuration = configuration;
+        }
+
         public OtpResponse SendOtp(string value, string otp)
         {
             var message = HttpUtility.UrlEncode("Your Otp is: " + otp);
@@ -15,7 +23,7 @@ namespace OtpServer.Otp
             var response = wb.UploadValues("https://api.textlocal.in/send/",
                 new NameValueCollection
                 {
-                    {"apikey" , "IwCFl4LRc+8-J2PvpYTfQ46hotNN0ztNhPMgOeCWYl"},
+                    {"apikey" , configuration.GetConnectionString("TextLocaleApiKey")},
                     {"numbers" , value},
                     {"message" , message},
                     {"sender name" , "HCMNCG"},

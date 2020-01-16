@@ -6,7 +6,7 @@ namespace OtpServer.Otp
 {
     public interface IOtpRepository
     {
-        public Task<OtpResponse> Save(string otp, string sessionId);
-        public Task<Option<OtpRequest>> GetOtp(string sessionId);
+        Task<OtpResponse> Save(string otp, string sessionId);
+        Task<Option<OtpRequest>> GetWith(string sessionId);
     }
 }

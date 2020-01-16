@@ -43,7 +43,7 @@ namespace OtpServerTest.Otp
             await otpRepository.Save(TestBuilder.Faker().Random.Number().ToString()
                 , sessionId);
             
-            var response = await otpRepository.GetOtp(sessionId);
+            var response = await otpRepository.GetWith(sessionId);
             var otpRequest = response.ValueOr((OtpRequest) null);
 
             otpRequest.Should().NotBeNull();
@@ -60,7 +60,7 @@ namespace OtpServerTest.Otp
             await otpRepository.Save(TestBuilder.Faker().Random.Number().ToString()
                 , TestBuilder.Faker().Random.Hash());
             
-            var response = await otpRepository.GetOtp(TestBuilder.Faker().Random.Hash());
+            var response = await otpRepository.GetWith(TestBuilder.Faker().Random.Hash());
             var otpRequest = response.ValueOr((OtpRequest) null);
 
             otpRequest.Should().BeNull();

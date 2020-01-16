@@ -31,7 +31,7 @@ namespace OtpServer.Otp
             }
         }
         
-        public async Task<Option<OtpRequest>> GetOtp(string sessionId)
+        public async Task<Option<OtpRequest>> GetWith(string sessionId)
         {
             try
             {

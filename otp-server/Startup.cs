@@ -19,35 +19,27 @@ namespace OtpServer
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
+        public void ConfigureServices(IServiceCollection services) =>
             services
                 .AddDbContext<OtpContext>(options =>
-                    options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")))    
+                    options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")))
                 .AddScoped<IOtpRepository, OtpRepository>()
-                .AddScoped<IOtpService,OtpService>()
+                .AddScoped<IOtpService, OtpService>()
                 .AddScoped<IOtpGenerator, OtpGenerator>()
                 .AddScoped<IOtpWebHandler, OtpWebHandler>()
                 .AddControllers()
-                .AddNewtonsoftJson(options =>{});
-            
-                services.AddControllers().AddJsonOptions(options =>
-                options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase);
-        }
+                .AddNewtonsoftJson(options => { })
+                .AddJsonOptions(options =>
+                    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase);
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            app.UseHttpsRedirection();
-            app.UseRouting();
-            app.UseAuthorization();
-            app
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env) =>
+            app.UseHttpsRedirection()
+                .UseRouting()
+                .UseAuthorization()
                 .UseStaticFilesWithYaml()
                 .UseCustomOpenAPI()
                 .UseIf(!env.IsDevelopment(), x => x.UseHsts())
-                .UseIf(env.IsDevelopment(), x => x.UseDeveloperExceptionPage());
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
-        }
+                .UseIf(env.IsDevelopment(), x => x.UseDeveloperExceptionPage())
+                .UseEndpoints(endpoints => { endpoints.MapControllers(); });
     }
 }

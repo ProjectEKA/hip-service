@@ -56,7 +56,7 @@ namespace hip_service.Link.Patient
                 return new Tuple<PatientLinkReferenceResponse, ErrorResponse>
                 (null,
                     new ErrorResponse(new Error(ErrorCode.ServerInternalError,
-                        "Unable to store data to Database")));
+                        ErrorMessage.DatabaseStorageError)));
             }
             
             var date = DateTime.Now;
@@ -87,13 +87,13 @@ namespace hip_service.Link.Patient
                         return new Tuple<Discovery.Patient.Model.Patient, ErrorResponse>
                         (null,
                             new ErrorResponse(new Error(ErrorCode.CareContextNotFound,
-                                "Care context not found for given patient")));
+                                ErrorMessage.CareContextNotFound)));
                     }
 
                     return new Tuple<Discovery.Patient.Model.Patient, ErrorResponse>(patient, null);
                 }).ValueOr(
                 new Tuple<Discovery.Patient.Model.Patient, ErrorResponse>(null
-                    , new ErrorResponse(new Error(ErrorCode.NoPatientFound,"No patient Found")))
+                    , new ErrorResponse(new Error(ErrorCode.NoPatientFound,ErrorMessage.NoPatientFound)))
             );
         }
         
@@ -113,7 +113,7 @@ namespace hip_service.Link.Patient
             if (exception != null)
             {
                 return new Tuple<PatientLinkResponse, ErrorResponse>
-                    (null, new ErrorResponse(new Error(ErrorCode.NoLinkRequestFound, "No request found")));
+                    (null, new ErrorResponse(new Error(ErrorCode.NoLinkRequestFound, ErrorMessage.NoLinkRequestFound)));
             }
             
             var patientInfo = patientRepository.PatientWith(linkRequest.PatientReferenceNumber);
@@ -133,7 +133,7 @@ namespace hip_service.Link.Patient
                 
                 return new Tuple<PatientLinkResponse, ErrorResponse>(patientLinkResponse, null);
             }).ValueOr(new Tuple<PatientLinkResponse, ErrorResponse>(null,
-                new ErrorResponse(new Error(ErrorCode.CareContextNotFound, "Care Context Not Found"))));
+                new ErrorResponse(new Error(ErrorCode.CareContextNotFound, ErrorMessage.CareContextNotFound))));
         }
     }
 }

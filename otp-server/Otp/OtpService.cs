@@ -12,11 +12,7 @@ namespace OtpServer.Otp
         private readonly IOtpRepository otpRepository;
         private readonly IOtpGenerator otpGenerator;
         private readonly IOtpWebHandler otpWebHandler;
-
-        public OtpService()
-        {
-        }
-
+        
         public OtpService(IOtpRepository otpRepository, IOtpGenerator otpGenerator, IOtpWebHandler otpWebHandler)
         {
             this.otpRepository = otpRepository;
@@ -37,7 +33,7 @@ namespace OtpServer.Otp
         
         public async Task<OtpResponse> CheckOtpValue(string sessionId, string value)
         {
-            var otpRequest = await otpRepository.GetOtp(sessionId) ;
+            var otpRequest = await otpRepository.GetWith(sessionId) ;
             return otpRequest.Map(o => o.OtpToken == value
                 ? new OtpResponse(ResponseType.OtpValid,"Valid OTP")
                 : new OtpResponse(ResponseType.OtpInvalid,"Invalid Otp"))
