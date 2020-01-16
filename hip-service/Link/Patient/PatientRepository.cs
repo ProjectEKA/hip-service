@@ -15,7 +15,6 @@ namespace hip_service.Link.Patient
         {
             this.filePath = filePath;
         }
-
         
         public IEnumerable<Discovery.Patient.Model.Patient> All()
         {
@@ -35,7 +34,6 @@ namespace hip_service.Link.Patient
             {
                 return Option.None<Discovery.Patient.Model.Patient>();
             }
-
         }
 
         public Option<CareContext> ProgramInfoWith(string patientReferenceNumber, string programReferenceNumber)

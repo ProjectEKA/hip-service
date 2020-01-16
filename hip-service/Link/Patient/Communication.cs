@@ -5,8 +5,8 @@ namespace hip_service.OTP
 {
     public class Communication
     {
-        public CommunicationMode Mode { get; set; }
-        public string Value { get; set; }
+        private readonly CommunicationMode Mode;
+        private readonly string Value;
 
         public Communication(CommunicationMode mode, string value)
         {

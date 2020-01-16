@@ -2,13 +2,16 @@ using System;
 using System.Threading.Tasks;
 using HipLibrary.Patient;
 using Microsoft.AspNetCore.Mvc;
-using PatientLinkReferenceRequest = hip_service.Link.Patient.Dto.PatientLinkReferenceRequest;
+using HipLibrary.Patient.Model.Request;
+using LinkReferenceRequest = HipLibrary.Patient.Model.Request.PatientLinkRequest;
 
 namespace hip_service.Link.Patient
 {
-    [Route("patients/link")]
+    using Link = HipLibrary.Patient.Model.Request.Link;
+
     [ApiController]
-    public class LinkPatientController: ControllerBase
+    [Route("patients/link")]
+    public class LinkPatientController : ControllerBase
     {
         private readonly ILink linkPatient;
 
@@ -18,15 +21,17 @@ namespace hip_service.Link.Patient
         }
 
         [HttpPost]
-        public async Task<ActionResult> LinkPatientCareContexts([FromHeader(Name = "X-ConsentManagerID")]string consentManagerId,
-            [FromBody]PatientLinkReferenceRequest request)
+        public async Task<ActionResult> LinkPatientCareContexts(
+            [FromHeader(Name = "X-ConsentManagerID")] string consentManagerId,
+            [FromBody] PatientLinkReferenceRequest request)
         {
-            var patient = new HipLibrary.Patient.Model.Request.Link(consentManagerId
-                , request.Patient.ConsentManagerUserId, request.Patient.ReferenceNumber, request.Patient.CareContexts);
-            
-            var patientReferenceRequest = new HipLibrary.Patient.Model.Request.PatientLinkReferenceRequest(request.TransactionId,patient);
+            var patient = new Link(
+                consentManagerId,
+                request.Patient.ConsentManagerUserId,
+                request.Patient.ReferenceNumber,
+                request.Patient.CareContexts);
+            var patientReferenceRequest = new PatientLinkReferenceRequest(request.TransactionId, patient);
             var (linkReferenceResponse, error) = await linkPatient.LinkPatients(patientReferenceRequest);
-
             if (error != null)
             {
                 return NotFound(error);
@@ -36,11 +41,12 @@ namespace hip_service.Link.Patient
         }
 
         [HttpPost("{linkReferenceNumber}")]
-        public async Task<ActionResult> LinkPatient([FromRoute] string linkReferenceNumber, [FromBody]PatientLinkRequest patientLinkRequest)
+        public async Task<ActionResult> LinkPatient(
+            [FromRoute] string linkReferenceNumber,
+            [FromBody] PatientLinkRequest patientLinkRequest)
         {
-            var (patientLinkResponse, error) = await linkPatient
-                .VerifyAndLinkCareContext(new HipLibrary.Patient.Model.Request.PatientLinkRequest(patientLinkRequest.Token, linkReferenceNumber));
-
+            var (patientLinkResponse, error) = await linkPatient.VerifyAndLinkCareContext(
+                new LinkReferenceRequest(patientLinkRequest.Token, linkReferenceNumber));
             if (error != null)
             {
                 return NotFound(error);
