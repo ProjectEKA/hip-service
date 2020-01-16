@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using hip_service.Link.Patient;
 using hip_service.Link.Patient.Models;
@@ -28,7 +27,6 @@ namespace hip_service.OTP
             catch (Exception exception)
             {
                 return new Tuple<OtpRequest, Exception>(null, exception);
-                
             }
         }
 
@@ -43,7 +41,6 @@ namespace hip_service.OTP
             catch (Exception exception)
             {
                 return new Tuple<OtpRequest, Exception>(null, exception);
-                
             }
         }
     }
