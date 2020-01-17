@@ -17,7 +17,7 @@ namespace hip_service_test.Link.Patient
     [Collection("Patient Verification Tests")]
     public class PatientVerificationTest
     {
-        private IConfiguration configuration;
+        private readonly IConfiguration configuration;
         public PatientVerificationTest()
         {
             configuration = TestBuilder.GetIConfigurationRoot();
