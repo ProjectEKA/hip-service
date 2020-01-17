@@ -21,7 +21,7 @@ jobs:
       - name: Set env
         run: echo ::set-env name=RELEASE_VERSION::$(echo $GITHUB_SHA | head -c7)
       - name: Test coverage
-        run: dotnet test hip-service-test/hip-service-test.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
+        run: dotnet test test/In.ProjectEKA.HipServiceTest/In.ProjectEKA.HipServiceTest.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
       - name: Docker Registry
         env:
           DOCKER_REGISTRY_URL: docker.io
