@@ -16,7 +16,7 @@ namespace OtpServer.Otp
             this.configuration = configuration;
         }
 
-        public OtpResponse SendOtp(string value, string otp)
+        public OtpResponse SendOtp(string phoneNumber, string otp)
         {
             var message = HttpUtility.UrlEncode("Your Otp is: " + otp);
             using var wb = new WebClient();
@@ -24,7 +24,7 @@ namespace OtpServer.Otp
                 new NameValueCollection
                 {
                     {"apikey" , configuration.GetConnectionString("TextLocaleApiKey")},
-                    {"numbers" , value},
+                    {"numbers" , phoneNumber},
                     {"message" , message},
                     {"sender name" , "HCMNCG"},
                 });

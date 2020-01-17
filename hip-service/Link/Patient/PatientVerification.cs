@@ -15,10 +15,12 @@ namespace hip_service.Link.Patient
     public class PatientVerification: IPatientVerification
     {
         private readonly IConfiguration configuration;
-        
-        public PatientVerification(IConfiguration configuration)
+        private readonly HttpClient httpClient;
+
+        public PatientVerification(IConfiguration configuration, HttpClient httpClient)
         {
             this.configuration = configuration;
+            this.httpClient = httpClient;
         }
         
         public async Task<OtpMessage> SendTokenFor(Session session)
@@ -46,11 +48,6 @@ namespace hip_service.Link.Patient
         
         private async Task<Option<OtpMessage>> PostCallToOTPServer(Uri serverUrl, HttpContent content)
         {
-            var clientHandler = new HttpClientHandler
-            {
-                ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true
-            };
-            var httpClient = new HttpClient(clientHandler);
             httpClient.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
             try

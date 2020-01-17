@@ -19,10 +19,15 @@ namespace hip_service
     public class Startup
     {
         public IConfiguration Configuration { get; }
-
+        public HttpClient HttpClient { get; }
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            var clientHandler = new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true
+            };
+            HttpClient = new HttpClient(clientHandler);
         }
 
         public void ConfigureServices(IServiceCollection services) =>
@@ -39,6 +44,7 @@ namespace hip_service
                 .AddScoped<IOtpRepository, OtpRepository>()
                 .AddScoped<OtpVerification>()
                 .AddSingleton(Configuration)
+                .AddSingleton(HttpClient)
                 .AddScoped<IPatientVerification, PatientVerification>()
                 .AddRouting(options => options.LowercaseUrls = true)
                 .AddControllers()
