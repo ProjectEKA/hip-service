@@ -115,7 +115,7 @@ package-lock.json
 *.dbmdl
 Generated_Code #added for RIA/Silverlight projects
 .sonarqube/
-hip-service-test/coverage.opencover.xml
+test/In.ProjectEKA.HipServiceTest/coverage.opencover.xml
 coverage.json
 
 # Backup & report files from converting an old project file to a newer
