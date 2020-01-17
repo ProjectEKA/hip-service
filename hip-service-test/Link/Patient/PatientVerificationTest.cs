@@ -36,7 +36,7 @@ namespace hip_service_test.Link.Patient
                     ItExpr.IsAny<HttpRequestMessage>(),
                     ItExpr.IsAny<CancellationToken>()
                 )
-                .ReturnsAsync(new HttpResponseMessage()
+                .ReturnsAsync(new HttpResponseMessage
                 {
                     StatusCode = HttpStatusCode.BadRequest,
                     Content = new StringContent("{'code':1,'message':'Unable to create Otp'}"),
@@ -67,7 +67,7 @@ namespace hip_service_test.Link.Patient
                     ItExpr.IsAny<HttpRequestMessage>(),
                     ItExpr.IsAny<CancellationToken>()
                 )
-                .ReturnsAsync(new HttpResponseMessage()
+                .ReturnsAsync(new HttpResponseMessage
                 {
                     StatusCode = HttpStatusCode.OK,
                     Content = new StringContent("{'code':1,'message':'Otp created'}"),
