@@ -33,7 +33,7 @@ jobs:
         env:
           CONTAINER_REPO_NAME: health-information-provider
           DOCKER_USERNAME: ${{ secrets.SE_DOCKER_USERNAME }}
-        run: docker build -t $DOCKER_USERNAME/$CONTAINER_REPO_NAME:$RELEASE_VERSION hip-service/.
+        run: docker build -t $DOCKER_USERNAME/$CONTAINER_REPO_NAME:$RELEASE_VERSION src/In.ProjectEKA.HipService/.
       - name: Push Docker Container to Registry
         env:
           CONTAINER_REPO_NAME: health-information-provider
