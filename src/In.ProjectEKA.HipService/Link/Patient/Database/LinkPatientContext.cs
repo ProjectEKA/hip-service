@@ -1,13 +1,12 @@
-
 namespace In.ProjectEKA.HipService.Link.Patient.Database
 {
     using Microsoft.EntityFrameworkCore;
     using OTP.Model;
     using Model;
-    
+
     public class LinkPatientContext : DbContext
     {
-        public LinkPatientContext(DbContextOptions options) : base(options)
+        public LinkPatientContext(DbContextOptions<LinkPatientContext> options) : base(options)
         {
         }
 

@@ -75,7 +75,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery.Patient
 
             var (discoveryResponse, error) = await patientDiscovery.PatientFor(discoveryRequest);
 
-            discoveryResponse.Patient.Should().BeNull();
+            discoveryResponse.Should().BeNull();
             discoveryRequestRepositoryMock.Invocations.Count.Should().Be(0);
             error.Should().BeEquivalentTo(expectedError);
         }
@@ -101,7 +101,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery.Patient
 
             var (discoveryResponse, error) = await patientDiscovery.PatientFor(discoveryRequest);
 
-            discoveryResponse.Patient.Should().BeNull();
+            discoveryResponse.Should().BeNull();
             discoveryRequestRepositoryMock.Invocations.Count.Should().Be(0);
             error.Should().BeEquivalentTo(expectedError);
         }

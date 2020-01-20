@@ -7,7 +7,7 @@ namespace In.ProjectEKA.HipService.Discovery.Patient.Database
     {
         public DbSet<DiscoveryRequest> DiscoveryRequest { get; set; }
 
-        public DiscoveryContext(DbContextOptions options) : base(options)
+        public DiscoveryContext(DbContextOptions<DiscoveryContext> options) : base(options)
         {
         }
 

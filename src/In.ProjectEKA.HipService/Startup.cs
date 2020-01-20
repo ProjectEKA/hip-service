@@ -14,6 +14,7 @@ namespace In.ProjectEKA.HipService
     using Middleware;
     using OTP;
     using Discovery.Patient.Database;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)

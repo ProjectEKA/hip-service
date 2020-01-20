@@ -11,13 +11,13 @@ namespace In.ProjectEKA.HipService.Discovery.Patient
     public class PatientDiscovery : IDiscovery
     {
         private readonly Filter filter;
-        private readonly IMatchingRepository repo;
+        private readonly IMatchingRepository matchingRepository;
         private readonly IDiscoveryRequestRepository discoveryRequestRepository;
 
         public PatientDiscovery(IMatchingRepository patientRepository,
             IDiscoveryRequestRepository discoveryRequestRepository)
         {
-            repo = patientRepository;
+            matchingRepository = patientRepository;
             this.discoveryRequestRepository = discoveryRequestRepository;
             filter = new Filter();
         }
@@ -25,16 +25,14 @@ namespace In.ProjectEKA.HipService.Discovery.Patient
         public async Task<Tuple<DiscoveryResponse, ErrorResponse>> PatientFor(DiscoveryRequest request)
         {
             var expression = GetExpression(request.Patient.VerifiedIdentifiers);
-            var patientInfos = await repo.Where(expression);
+            var patientInfos = await matchingRepository.Where(expression);
             var (patient, error) = DiscoveryUseCase.DiscoverPatient(filter.Do(patientInfos, request).AsQueryable());
 
-            if (patient != null)
-            {
-                await discoveryRequestRepository.Add(new Model.DiscoveryRequest(request.TransactionId,
-                    request.Patient.Id));
-            }
+            if (patient == null) return new Tuple<DiscoveryResponse, ErrorResponse>(null, error);
 
-            return new Tuple<DiscoveryResponse, ErrorResponse>(new DiscoveryResponse(patient), error);
+            await discoveryRequestRepository.Add(new Model.DiscoveryRequest(request.TransactionId,
+                request.Patient.Id));
+            return new Tuple<DiscoveryResponse, ErrorResponse>(new DiscoveryResponse(patient), null);
         }
     }
 }

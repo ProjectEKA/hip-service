@@ -9,8 +9,13 @@ namespace In.ProjectEKA.HipService.Discovery.Patient.Model
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public int Id { get; set; }
-        [Required, MaxLength(50)] public string TransactionId { get; set; }
-        [Required, MaxLength(50)] public string ConsentManagerUserId { get; set; }
+
+        [Required, MaxLength(50)]
+        public string TransactionId { get; set; }
+
+        [Required, MaxLength(50)]
+        public string ConsentManagerUserId { get; set; }
+
         public DateTime Timestamp { get; set; }
 
         public DiscoveryRequest(string transactionId, string consentManagerUserId)
