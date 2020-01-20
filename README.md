@@ -66,14 +66,14 @@ docker-compose -f docker-compose.yml -f docker-compose.development.yml up -d
 To run 
 
 ```
-dotnet run --environment="dev" --project hip-service/hip-service.csproj
+dotnet run --environment="dev" --project src/In.ProjectEKA.HipService/In.ProjectEKA.HipService.csproj
 ```
 
 ## Running The Tests
 
 To run the tests 
 ```
-dotnet test hip-service-test
+dotnet test test/In.ProjectEKA.HipServiceTest/In.ProjectEKA.HipServiceTest.csproj
 ```
 
 ## Features
