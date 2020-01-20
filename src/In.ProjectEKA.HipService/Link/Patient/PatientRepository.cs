@@ -3,8 +3,8 @@ namespace In.ProjectEKA.HipService.Link.Patient
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using Discovery.Patient.Helper;
-    using Discovery.Patient.Model;
+    using DefaultHip.Discovery.Helper;
+    using DefaultHip.Discovery.Model;
     using Optional;
 
     public class PatientRepository : IPatientRepository

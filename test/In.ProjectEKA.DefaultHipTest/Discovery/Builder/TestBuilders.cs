@@ -1,7 +1,7 @@
-namespace In.ProjectEKA.HipServiceTest.Discovery.Builder
+namespace In.ProjectEKA.DefaultHipTest.Discovery.Builder
 {
     using Bogus;
-    using HipLibrary.Patient.Model.Response;
+    using DefaultHip.Discovery.Model;
 
     public static class TestBuilders
     {

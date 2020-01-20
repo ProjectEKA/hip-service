@@ -2,7 +2,7 @@ namespace In.ProjectEKA.HipServiceTest.Link.Patient
 {
     using System;
     using FluentAssertions;
-    using HipService.Discovery.Patient.Model;
+    using In.ProjectEKA.DefaultHip.Discovery.Model;
     using HipService.Link.Patient;
     using Xunit;
 

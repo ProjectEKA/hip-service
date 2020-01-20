@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="coverlet.msbuild" Version="2.8.0">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.1"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0"/>
+        <PackageReference Include="FluentAssertions" Version="5.10.0"/>
+        <PackageReference Include="xunit" Version="2.4.1"/>
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="Moq" Version="4.13.1"/>
+        <PackageReference Include="Bogus" Version="28.4.4"/>
+        <PackageReference Include="health-information-provider-library" Version="0.0.10"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\src\In.ProjectEKA.DefaultHip\In.ProjectEKA.DefaultHip.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="..\..\src\In.ProjectEKA.HipService\Resources\patients.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+            <Link>patients.json</Link>
+        </Content>
+    </ItemGroup>
+</Project>

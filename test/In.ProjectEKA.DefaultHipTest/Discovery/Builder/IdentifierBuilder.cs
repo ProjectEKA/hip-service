@@ -1,4 +1,4 @@
-namespace In.ProjectEKA.HipServiceTest.Discovery.Builder
+namespace In.ProjectEKA.DefaultHipTest.Discovery.Builder
 {
     using HipLibrary.Patient.Model;
 

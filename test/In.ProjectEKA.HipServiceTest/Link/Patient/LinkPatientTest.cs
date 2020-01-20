@@ -4,6 +4,7 @@ namespace In.ProjectEKA.HipServiceTest.Link.Patient
     using System.Collections.Generic;
     using System.Linq;
     using Builder;
+    using DefaultHip.Discovery;
     using FluentAssertions;
     using HipLibrary.Patient.Model.Request;
     using HipLibrary.Patient.Model.Response;
@@ -13,10 +14,9 @@ namespace In.ProjectEKA.HipServiceTest.Link.Patient
     using Optional;
     using Xunit;
     using LinkPatient = HipService.Link.Patient.LinkPatient;
-    using In.ProjectEKA.HipService.Discovery.Patient;
     using LinkLib = HipLibrary.Patient.Model.Request.Link;
-    using CareContextSer = In.ProjectEKA.HipService.Discovery.Patient.Model.CareContext;
-    using PatientSer = In.ProjectEKA.HipService.Discovery.Patient.Model.Patient;
+    using CareContextSer = In.ProjectEKA.DefaultHip.Discovery.Model.CareContext;
+    using PatientSer = In.ProjectEKA.DefaultHip.Discovery.Model.Patient;
 
     public class LinkPatientTest
     {
@@ -81,7 +81,8 @@ namespace In.ProjectEKA.HipServiceTest.Link.Patient
             patientVerification.Verify();
             linkRepository.Verify();
             guidGenerator.Verify();
-            discoveryRequestRepository.Verify(x => x.Delete(patientReferenceRequest.TransactionId, patientReferenceRequest.Patient.ConsentManagerUserId));
+            discoveryRequestRepository.Verify(x => x.Delete(patientReferenceRequest.TransactionId,
+                patientReferenceRequest.Patient.ConsentManagerUserId));
             response.Link.ReferenceNumber.Should().Be(linkReferenceNumber);
             response.Link.AuthenticationType.Should().Be(authType);
             response.Link.Meta.CommunicationHint.Should().Be(testPatient.PhoneNumber);
@@ -111,7 +112,7 @@ namespace In.ProjectEKA.HipServiceTest.Link.Patient
                 TestBuilder.Faker().Random.Hash(), "4", careContexts);
             var patientReferenceRequest = new PatientLinkReferenceRequest(TestBuilder.Faker().Random.Hash(), patient);
             patientRepository.Setup(e => e.PatientWith(testPatient.Identifier))
-                .Returns(Option.Some<PatientSer>(testPatient));
+                .Returns(Option.Some(testPatient));
             patientRepository.Setup(e => e.ProgramInfoWith(testPatient.Identifier
                 , careContexts.First().ReferenceNumber)).Returns(null);
             var expectedError = new ErrorResponse(new Error(ErrorCode.CareContextNotFound,
