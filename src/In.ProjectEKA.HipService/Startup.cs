@@ -1,7 +1,9 @@
 namespace In.ProjectEKA.HipService
 {
     using System.Text.Json;
-    using Discovery.Patient;
+    using DefaultHip;
+    using DefaultHip.Discovery;
+    using DefaultHip.Discovery.Database;
     using HipLibrary.Patient;
     using Link.Patient;
     using Link.Patient.Database;
@@ -13,7 +15,6 @@ namespace In.ProjectEKA.HipService
     using Microsoft.Extensions.Hosting;
     using Middleware;
     using OTP;
-    using Discovery.Patient.Database;
 
     public class Startup
     {

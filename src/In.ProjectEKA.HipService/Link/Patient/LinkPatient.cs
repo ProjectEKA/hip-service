@@ -4,12 +4,12 @@ namespace In.ProjectEKA.HipService.Link.Patient
     using System.Linq;
     using System.Threading.Tasks;
     using System.Transactions;
+    using DefaultHip.Discovery;
     using HipLibrary.Patient;
     using HipLibrary.Patient.Model;
     using HipLibrary.Patient.Model.Request;
     using HipLibrary.Patient.Model.Response;
-    using Patient = Discovery.Patient.Model.Patient;
-    using In.ProjectEKA.HipService.Discovery.Patient;
+    using Patient = DefaultHip.Discovery.Model.Patient;
 
     public class LinkPatient : ILink
     {
