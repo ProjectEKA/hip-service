@@ -4,7 +4,7 @@ namespace In.ProjectEKA.HipService
     using Discovery.Patient;
     using HipLibrary.Patient;
     using Link.Patient;
-    using Link.Patient.Model;
+    using Link.Patient.Database;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;
@@ -13,6 +13,7 @@ namespace In.ProjectEKA.HipService
     using Microsoft.Extensions.Hosting;
     using Middleware;
     using OTP;
+    using Discovery.Patient.Database;
 
     public class Startup
     {
@@ -28,10 +29,13 @@ namespace In.ProjectEKA.HipService
             services
                 .AddDbContext<LinkPatientContext>(options =>
                     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")))
+                .AddDbContext<DiscoveryContext>(options =>
+                    options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")))
                 .AddSingleton<IPatientRepository>(new PatientRepository("Resources/patients.json"))
                 .AddScoped<ILinkPatientRepository, LinkPatientRepository>()
                 .AddSingleton<IMatchingRepository>(new PatientMatchingRepository("Resources/patients.json"))
-                .AddSingleton<PatientDiscovery>()
+                .AddScoped<IDiscoveryRequestRepository, DiscoveryRequestRepository>()
+                .AddScoped<PatientDiscovery>()
                 .AddTransient<IDiscovery, PatientDiscovery>()
                 .AddScoped<IReferenceNumberGenerator, ReferenceNumberGenerator>()
                 .AddTransient<ILink, LinkPatient>()
@@ -54,6 +58,12 @@ namespace In.ProjectEKA.HipService
                 .UseCustomOpenAPI()
                 .UseConsentManagerIdentifierMiddleware()
                 .UseEndpoints(endpoints => { endpoints.MapControllers(); });
+
+            using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
+            var linkContext = serviceScope.ServiceProvider.GetService<LinkPatientContext>();
+            linkContext.Database.Migrate();
+            var discoveryContext = serviceScope.ServiceProvider.GetService<DiscoveryContext>();
+            discoveryContext.Database.Migrate();
         }
     }
 }

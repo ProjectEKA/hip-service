@@ -1,6 +1,5 @@
 namespace In.ProjectEKA.HipService.Discovery.Patient.Ranker
 {
-    using Helper;
     using HipLibrary.Patient.Model.Response;
     using Matcher;
     using Patient = Model.Patient;

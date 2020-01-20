@@ -1,4 +1,4 @@
-﻿namespace hip_service.Migrations
+﻿namespace In.ProjectEKA.Link.Patient.Database.Migrations
 {
     using Microsoft.EntityFrameworkCore.Migrations;
 

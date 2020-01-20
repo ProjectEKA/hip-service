@@ -8,6 +8,7 @@ namespace In.ProjectEKA.HipServiceTest.Link.Patient
     using HipService.Link.Patient.Model;
     using Microsoft.EntityFrameworkCore;
     using Xunit;
+    using In.ProjectEKA.HipService.Link.Patient.Database;
 
     [Collection("Link Patient Repository Tests")]
     public class LinkPatientRepositoryTest
@@ -15,7 +16,7 @@ namespace In.ProjectEKA.HipServiceTest.Link.Patient
         public LinkPatientContext PatientContext()
         {
             var optionsBuilder = new DbContextOptionsBuilder<LinkPatientContext>()
-                .UseInMemoryDatabase("hipservice")
+                .UseInMemoryDatabase(TestBuilder.Faker().Random.String())
                 .Options;
             return new LinkPatientContext(optionsBuilder);
         }

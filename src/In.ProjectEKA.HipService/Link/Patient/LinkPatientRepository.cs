@@ -5,6 +5,7 @@ namespace In.ProjectEKA.HipService.Link.Patient
     using System.Linq;
     using System.Threading.Tasks;
     using Microsoft.EntityFrameworkCore;
+    using Database;
     using Model;
 
     public class LinkPatientRepository : ILinkPatientRepository
