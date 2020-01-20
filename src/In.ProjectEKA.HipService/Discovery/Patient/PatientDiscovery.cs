@@ -28,7 +28,10 @@ namespace In.ProjectEKA.HipService.Discovery.Patient
             var patientInfos = await matchingRepository.Where(expression);
             var (patient, error) = DiscoveryUseCase.DiscoverPatient(filter.Do(patientInfos, request).AsQueryable());
 
-            if (patient == null) return new Tuple<DiscoveryResponse, ErrorResponse>(null, error);
+            if (patient == null)
+            {
+                return new Tuple<DiscoveryResponse, ErrorResponse>(null, error);
+            }
 
             await discoveryRequestRepository.Add(new Model.DiscoveryRequest(request.TransactionId,
                 request.Patient.Id));
