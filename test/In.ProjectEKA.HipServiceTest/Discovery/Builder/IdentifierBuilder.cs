@@ -8,7 +8,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery.Builder
 
         public string Value;
 
-        public Identifier build()
+        public Identifier Build()
         {
             return new Identifier(Type, Value);
         }

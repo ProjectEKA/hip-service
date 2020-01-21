@@ -5,24 +5,32 @@ namespace In.ProjectEKA.HipService.Link.Patient
     using System;
     using System.Linq;
     using System.Threading.Tasks;
+    using System.Transactions;
+    using DefaultHip.Discovery;
     using HipLibrary.Patient;
     using HipLibrary.Patient.Model;
     using HipLibrary.Patient.Model.Response;
-
+    using Patient = DefaultHip.Discovery.Model.Patient;
+    
     public class LinkPatient : ILink
     {
         private readonly ILinkPatientRepository linkPatientRepository;
+        private readonly IDiscoveryRequestRepository discoveryRequestRepository;
         private readonly IPatientRepository patientRepository;
         private readonly IPatientVerification patientVerification;
         private readonly IReferenceNumberGenerator referenceNumberGenerator;
 
-        public LinkPatient(ILinkPatientRepository linkPatientRepository, IPatientRepository patientRepository,
-            IPatientVerification patientVerification, IReferenceNumberGenerator referenceNumberGenerator)
+        public LinkPatient(ILinkPatientRepository linkPatientRepository,
+            IPatientRepository patientRepository,
+            IPatientVerification patientVerification,
+            IReferenceNumberGenerator referenceNumberGenerator,
+            IDiscoveryRequestRepository discoveryRequestRepository)
         {
             this.linkPatientRepository = linkPatientRepository;
             this.patientRepository = patientRepository;
             this.patientVerification = patientVerification;
             this.referenceNumberGenerator = referenceNumberGenerator;
+            this.discoveryRequestRepository = discoveryRequestRepository;
         }
 
         public async Task<Tuple<PatientLinkReferenceResponse, ErrorResponse>> LinkPatients(
@@ -40,10 +48,13 @@ namespace In.ProjectEKA.HipService.Link.Patient
                 return new Tuple<PatientLinkReferenceResponse, ErrorResponse>
                     (null, new ErrorResponse(new Error(ErrorCode.OtpGenerationFailed, otpGeneration.Message)));
             }
+
+            using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
             var (_, exception) = await linkPatientRepository.SaveRequestWith(linkRefNumber,
                 request.Patient.ConsentManagerId,
                 request.Patient.ConsentManagerUserId, request.Patient.ReferenceNumber, request.Patient.CareContexts
-                    .Select(context => context.ReferenceNumber).ToArray());
+                    .Select(context => context.ReferenceNumber).ToArray()).ConfigureAwait(false);
+
             if (exception != null)
             {
                 return new Tuple<PatientLinkReferenceResponse, ErrorResponse>
@@ -51,6 +62,11 @@ namespace In.ProjectEKA.HipService.Link.Patient
                     new ErrorResponse(new Error(ErrorCode.ServerInternalError,
                         ErrorMessage.DatabaseStorageError)));
             }
+
+            await discoveryRequestRepository.Delete(request.TransactionId, request.Patient.ConsentManagerUserId)
+                .ConfigureAwait(false);
+            scope.Complete();
+            
             var date = DateTime.Now;
             var time = new TimeSpan(0, 0, 1, 0);
             var expiry = date.Add(time).ToUniversalTime().ToString(Constants.DateTimeFormat);
@@ -64,7 +80,7 @@ namespace In.ProjectEKA.HipService.Link.Patient
                     meta));
             return new Tuple<PatientLinkReferenceResponse, ErrorResponse>(patientLinkReferenceResponse, null);
         }
-        private Tuple<Discovery.Patient.Model.Patient, ErrorResponse> PatientAndCareContextValidation(
+        private Tuple<Patient, ErrorResponse> PatientAndCareContextValidation(
             HipLibrary.Patient.Model.Request.PatientLinkReferenceRequest request)
         {
             return patientRepository.PatientWith(request.Patient.ReferenceNumber).Map(
@@ -80,14 +96,14 @@ namespace In.ProjectEKA.HipService.Link.Patient
                         select careContextPatient.Map(context => context)).ToList();
                     if (programs.Count != request.Patient.CareContexts.Count())
                     {
-                        return new Tuple<Discovery.Patient.Model.Patient, ErrorResponse>
+                        return new Tuple<Patient, ErrorResponse>
                         (null, new ErrorResponse(new Error(ErrorCode.CareContextNotFound,
                                 ErrorMessage.CareContextNotFound)));
                     }
 
-                    return new Tuple<Discovery.Patient.Model.Patient, ErrorResponse>(patient, null);
+                    return new Tuple<Patient, ErrorResponse>(patient, null);
                 }).ValueOr(
-                new Tuple<Discovery.Patient.Model.Patient, ErrorResponse>(null
+                new Tuple<Patient, ErrorResponse>(null
                     , new ErrorResponse(new Error(ErrorCode.NoPatientFound,ErrorMessage.NoPatientFound)))
             );
         }
@@ -103,6 +119,7 @@ namespace In.ProjectEKA.HipService.Link.Patient
             }
             var (linkRequest, exception) =
                 await linkPatientRepository.GetPatientFor(request.LinkReferenceNumber);
+
             if (exception != null)
             {
                 return new Tuple<PatientLinkResponse, ErrorResponse>

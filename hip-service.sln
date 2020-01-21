@@ -9,9 +9,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{C6699092-7
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "In.ProjectEKA.HipServiceTest", "test\In.ProjectEKA.HipServiceTest\In.ProjectEKA.HipServiceTest.csproj", "{B5A9C0B9-25EC-472E-B2CD-3EC5A69584F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "otp-server", "otp-server\otp-server.csproj", "{73B0FC76-6D11-45EC-866E-434ABFB8AFCD}"
+<<<<<<< HEAD
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "In.ProjectEKA.OtpService", "In.ProjectEKA.OtpService\In.ProjectEKA.OtpService.csproj", "{73B0FC76-6D11-45EC-866E-434ABFB8AFCD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OtpServerTest", "OtpServerTest\OtpServerTest.csproj", "{F4E46D16-03BE-4C3B-848C-D3965DA49E35}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "In.ProjectEKA.OtpServiceTest", "In.ProjectEKA.OtpServiceTest\In.ProjectEKA.OtpServiceTest.csproj", "{F4E46D16-03BE-4C3B-848C-D3965DA49E35}"
+=======
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "In.ProjectEKA.DefaultHip", "src\In.ProjectEKA.DefaultHip\In.ProjectEKA.DefaultHip.csproj", "{23976B61-FBF9-41B8-AEA2-B70AD47F00A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "In.ProjectEKA.DefaultHipTest", "test\In.ProjectEKA.DefaultHipTest\In.ProjectEKA.DefaultHipTest.csproj", "{4412373D-2E69-412A-8264-FA2806902173}"
+>>>>>>> master
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,9 +70,35 @@ Global
 		{B5A9C0B9-25EC-472E-B2CD-3EC5A69584F7}.Release|x64.Build.0 = Release|Any CPU
 		{B5A9C0B9-25EC-472E-B2CD-3EC5A69584F7}.Release|x86.ActiveCfg = Release|Any CPU
 		{B5A9C0B9-25EC-472E-B2CD-3EC5A69584F7}.Release|x86.Build.0 = Release|Any CPU
+		{23976B61-FBF9-41B8-AEA2-B70AD47F00A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23976B61-FBF9-41B8-AEA2-B70AD47F00A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23976B61-FBF9-41B8-AEA2-B70AD47F00A8}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{23976B61-FBF9-41B8-AEA2-B70AD47F00A8}.Debug|x64.Build.0 = Debug|Any CPU
+		{23976B61-FBF9-41B8-AEA2-B70AD47F00A8}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{23976B61-FBF9-41B8-AEA2-B70AD47F00A8}.Debug|x86.Build.0 = Debug|Any CPU
+		{23976B61-FBF9-41B8-AEA2-B70AD47F00A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23976B61-FBF9-41B8-AEA2-B70AD47F00A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23976B61-FBF9-41B8-AEA2-B70AD47F00A8}.Release|x64.ActiveCfg = Release|Any CPU
+		{23976B61-FBF9-41B8-AEA2-B70AD47F00A8}.Release|x64.Build.0 = Release|Any CPU
+		{23976B61-FBF9-41B8-AEA2-B70AD47F00A8}.Release|x86.ActiveCfg = Release|Any CPU
+		{23976B61-FBF9-41B8-AEA2-B70AD47F00A8}.Release|x86.Build.0 = Release|Any CPU
+		{4412373D-2E69-412A-8264-FA2806902173}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4412373D-2E69-412A-8264-FA2806902173}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4412373D-2E69-412A-8264-FA2806902173}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4412373D-2E69-412A-8264-FA2806902173}.Debug|x64.Build.0 = Debug|Any CPU
+		{4412373D-2E69-412A-8264-FA2806902173}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4412373D-2E69-412A-8264-FA2806902173}.Debug|x86.Build.0 = Debug|Any CPU
+		{4412373D-2E69-412A-8264-FA2806902173}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4412373D-2E69-412A-8264-FA2806902173}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4412373D-2E69-412A-8264-FA2806902173}.Release|x64.ActiveCfg = Release|Any CPU
+		{4412373D-2E69-412A-8264-FA2806902173}.Release|x64.Build.0 = Release|Any CPU
+		{4412373D-2E69-412A-8264-FA2806902173}.Release|x86.ActiveCfg = Release|Any CPU
+		{4412373D-2E69-412A-8264-FA2806902173}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{7D3C3A05-9145-4A28-B36A-0DCAAB39BF7E} = {C032FE99-9669-480E-8933-B3DCEC39A9D6}
 		{B5A9C0B9-25EC-472E-B2CD-3EC5A69584F7} = {C6699092-7831-4330-AA7F-CA7A4A0FCEB5}
+		{23976B61-FBF9-41B8-AEA2-B70AD47F00A8} = {C032FE99-9669-480E-8933-B3DCEC39A9D6}
+		{4412373D-2E69-412A-8264-FA2806902173} = {C6699092-7831-4330-AA7F-CA7A4A0FCEB5}
 	EndGlobalSection
 EndGlobal

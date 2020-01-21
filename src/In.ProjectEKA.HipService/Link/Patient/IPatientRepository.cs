@@ -1,6 +1,6 @@
 namespace In.ProjectEKA.HipService.Link.Patient
 {
-    using Discovery.Patient.Model;
+    using DefaultHip.Discovery.Model;
     using Optional;
 
     public interface IPatientRepository

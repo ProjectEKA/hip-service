@@ -1,6 +1,6 @@
 version: '3'
 services:
   hip:
-    build: src/In.ProjectEKA.HipService/.
+    build: .
     ports:
       - "9052:80"

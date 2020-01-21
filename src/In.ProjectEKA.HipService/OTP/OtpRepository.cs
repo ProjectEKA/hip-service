@@ -3,10 +3,10 @@ namespace In.ProjectEKA.HipService.OTP
     using System;
     using System.Threading.Tasks;
     using Link.Patient;
-    using Link.Patient.Model;
-    using Microsoft.EntityFrameworkCore;
+    using Link.Patient.Database;
     using Model;
-
+    using Microsoft.EntityFrameworkCore;
+    
     public class OtpRepository : IOtpRepository
     {
         private readonly LinkPatientContext linkPatientContext;
