@@ -10,6 +10,8 @@ info:
 servers:
   - url: https://localhost:8001
     description: Dev
+  - url: http://localhost:8000
+    description: local
 
 tags:
   - name: discovery
