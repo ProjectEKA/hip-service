@@ -40,14 +40,6 @@ namespace In.ProjectEKA.HipService.Link.Patient
             if (error != null) return new Tuple<PatientLinkReferenceResponse, ErrorResponse>(null, error);
 
             var linkRefNumber = referenceNumberGenerator.NewGuid();
-            var session = new Session(linkRefNumber,
-                new Communication(CommunicationMode.MOBILE, patient.PhoneNumber));
-            var otpGeneration = await patientVerification.SendTokenFor(session);
-            if (otpGeneration != null)
-            {
-                return new Tuple<PatientLinkReferenceResponse, ErrorResponse>
-                    (null, new ErrorResponse(new Error(ErrorCode.OtpGenerationFailed, otpGeneration.Message)));
-            }
 
             using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
             var (_, exception) = await linkPatientRepository.SaveRequestWith(linkRefNumber,
@@ -66,6 +58,15 @@ namespace In.ProjectEKA.HipService.Link.Patient
             await discoveryRequestRepository.Delete(request.TransactionId, request.Patient.ConsentManagerUserId)
                 .ConfigureAwait(false);
             scope.Complete();
+            
+            var session = new Session(linkRefNumber,
+                new Communication(CommunicationMode.MOBILE, patient.PhoneNumber));
+            var otpGeneration = await patientVerification.SendTokenFor(session);
+            if (otpGeneration != null)
+            {
+                return new Tuple<PatientLinkReferenceResponse, ErrorResponse>
+                    (null, new ErrorResponse(new Error(ErrorCode.OtpGenerationFailed, otpGeneration.Message)));
+            }
             
             var date = DateTime.Now;
             var time = new TimeSpan(0, 0, 1, 0);
