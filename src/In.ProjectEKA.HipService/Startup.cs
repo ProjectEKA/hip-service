@@ -1,4 +1,6 @@
 using System.Net.Http;
+using In.ProjectEKA.DefaultHip.Link;
+using In.ProjectEKA.DefaultHip.Link.Database;
 
 namespace In.ProjectEKA.HipService
 {
@@ -7,8 +9,6 @@ namespace In.ProjectEKA.HipService
     using DefaultHip.Discovery;
     using DefaultHip.Discovery.Database;
     using HipLibrary.Patient;
-    using Link.Patient;
-    using Link.Patient.Database;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;
@@ -16,7 +16,6 @@ namespace In.ProjectEKA.HipService
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Middleware;
-    using OTP;
 
     public class Startup
     {
@@ -47,8 +46,6 @@ namespace In.ProjectEKA.HipService
                 .AddTransient<IDiscovery, PatientDiscovery>()
                 .AddScoped<IReferenceNumberGenerator, ReferenceNumberGenerator>()
                 .AddTransient<ILink, LinkPatient>()
-                .AddScoped<IOtpRepository, OtpRepository>()
-                .AddScoped<OtpVerification>()
                 .AddSingleton(Configuration)
                 .AddSingleton(HttpClient)
                 .AddScoped<IPatientVerification, PatientVerification>()
