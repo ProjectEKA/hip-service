@@ -24,7 +24,8 @@ namespace In.ProjectEKA.DefaultHip.Link
         
         public async Task<OtpMessage> SendTokenFor(Session session)
         {
-            var uri = new Uri(configuration.GetConnectionString("OTPGenerationConnection"));
+            var urlConfig = configuration.GetSection("OtpService").Get<OtpService>();
+            var uri = new Uri(urlConfig.BaseUrl + "/otp/link");
             var verifyMessage = await PostCallToOTPServer(uri
                 , CreateHttpContent(session)).ConfigureAwait(false);
             return verifyMessage.ValueOr((OtpMessage) null);
@@ -32,7 +33,8 @@ namespace In.ProjectEKA.DefaultHip.Link
         
         public async Task<OtpMessage> Verify(string sessionId, string value)
         {
-            var uri = new Uri(configuration.GetConnectionString("OTPVerificationConnection"));
+            var urlConfig = configuration.GetSection("OtpService").Get<OtpService>();
+            var uri = new Uri(urlConfig.BaseUrl + "/otp/verify");
             var verifyOtpRequest = new OtpVerificationRequest(sessionId, value);
             var verifyMessage = await PostCallToOTPServer(
                 uri,
