@@ -2,10 +2,8 @@ using Bogus;
 using In.ProjectEKA.DefaultHip.Link;
 using Microsoft.Extensions.Configuration;
 
-namespace In.ProjectEKA.HipServiceTest.Link.Builder
+namespace In.ProjectEKA.DefaultHipTest.Link.Builder
 {
-    using Bogus;
-
     public static class TestBuilder
     {
         private static Faker faker;

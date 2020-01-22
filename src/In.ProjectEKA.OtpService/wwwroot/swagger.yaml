@@ -1,0 +1,155 @@
+openapi: 3.0.0
+swagger: 2.0
+info:
+  version: 0.0.1
+  title: Otp server
+  description: >
+    Server for generating and validating the otp.
+servers:
+  - url: https://localhost:5000
+    description: Dev
+
+tags:
+  - name: otp
+
+paths:
+  /otp/link:
+    post:
+      tags:
+        - otp
+      summary: Generate Otp and return the status
+      description: >
+        Return the status about Otp generation
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OtpGenerationRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/OtpGenerationRequest'
+      responses:
+        '200':
+          description: Otp generated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OtpResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/OtpResponse'
+        '500':
+          description: >
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OtpResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/OtpResponse'
+                
+  /otp/verify:
+    post:
+      tags:
+        - otp
+      summary: Check Validity of otp value against a session id
+      description: >
+        - Return the status about Otp verification
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OtpVerificationRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/OtpVerificationRequest'     
+      responses:
+        '200':
+          description: Otp is valid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OtpResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/OtpResponse'
+        '400':
+          description: >
+            **Causes:**
+              * Otp token is invalid
+              * Session Id is invalid
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OtpResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/OtpResponse'
+        '500':
+          description: >
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OtpResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/OtpResponse'
+
+components:
+  schemas:
+    OtpGenerationRequest:
+      type: object
+      properties:
+        sessionId:
+          type: string
+          format: uuid
+        communication:
+          type: object
+          properties:
+            mode:
+              type: string
+              example: MOBILE
+              description: Sharing the mode
+            value:
+              type: string
+              example: "+91XXXXXXXXXX"
+      xml:
+        name: OtpGenerationRequest
+        
+    OtpVerificationRequest:
+      type: object
+      properties:
+        sessionId:
+          type: string
+          format: uuid
+        value:
+          type: string
+          description: Otp value
+      xml:
+        name: OtpVerificationRequest
+
+    OtpResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          enum: [1001, 1002, 1003, 1004, 1005, 1006]
+          description: >
+            1. code 1000 : Successfully created Otp
+            2. code 1001: Otp is invalid
+            3. code 1002: Unable to generate OTP
+            4. code 1003: Otp has expired
+            5. code 1004: Otp is valid
+            6. code 1005: Internal Server Error
+        message:
+          type: string
+      xml:
+        name: OtpResponse
