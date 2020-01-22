@@ -1,7 +1,7 @@
 namespace In.ProjectEKA.DefaultHip.Link
 {
     public class Session
-    {
+    { 
         public string SessionId { get; }
         public Communication Communication { get; }
         

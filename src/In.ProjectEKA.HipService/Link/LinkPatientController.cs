@@ -20,8 +20,7 @@ namespace In.ProjectEKA.HipService.Link
 
         [HttpPost]
         public async Task<ActionResult> LinkPatientCareContexts(
-            [FromHeader(Name = "X-ConsentManagerID")]
-            string consentManagerId,
+            [FromHeader(Name = "X-ConsentManagerID")] string consentManagerId,
             [FromBody] HipLibrary.Patient.Model.Request.PatientLinkReferenceRequest request)
         {
             var patient = new HipLibrary.Patient.Model.Request.Link(
@@ -34,9 +33,8 @@ namespace In.ProjectEKA.HipService.Link
             var (linkReferenceResponse, error) = await linkPatient.LinkPatients(patientReferenceRequest);
             return error != null ? ReturnServerResponse(error) : Ok(linkReferenceResponse);
         }
-    
 
-    [HttpPost("{linkReferenceNumber}")]
+        [HttpPost("{linkReferenceNumber}")]
         public async Task<ActionResult> LinkPatient(
             [FromRoute] string linkReferenceNumber,
             [FromBody] PatientLinkRequest patientLinkRequest)

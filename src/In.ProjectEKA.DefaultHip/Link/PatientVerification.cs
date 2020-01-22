@@ -34,10 +34,13 @@ namespace In.ProjectEKA.DefaultHip.Link
         {
             var uri = new Uri(configuration.GetConnectionString("OTPVerificationConnection"));
             var verifyOtpRequest = new OtpVerificationRequest(sessionId, value);
-            var verifyMessage = await PostCallToOTPServer(uri
-                , CreateHttpContent(verifyOtpRequest)).ConfigureAwait(false);
+            var verifyMessage = await PostCallToOTPServer(
+                uri,
+                CreateHttpContent(verifyOtpRequest))
+                .ConfigureAwait(false);
             return verifyMessage.ValueOr((OtpMessage) null);
-        }        
+        }
+        
         private static HttpContent CreateHttpContent<T>(T content)
         {
             var json = JsonConvert.SerializeObject(content);  
@@ -65,13 +68,13 @@ namespace In.ProjectEKA.DefaultHip.Link
                     var otpMessage = JsonConvert.DeserializeObject<OtpMessage>(result);
                     return Option.Some(otpMessage);
                 }
-                return Option.Some(new OtpMessage(ErrorCode.ServerInternalError.ToString()
-                    , ErrorMessage.InternalServerError));
+                return Option.Some(new OtpMessage(ErrorCode.ServerInternalError.ToString(),
+                    ErrorMessage.InternalServerError));
             }
             catch (Exception)
             {
-                return Option.Some(new OtpMessage(ErrorCode.ServerInternalError.ToString()
-                    , ErrorMessage.InternalServerError));
+                return Option.Some(new OtpMessage(ErrorCode.ServerInternalError.ToString(),
+                    ErrorMessage.InternalServerError));
             }
         }
     }

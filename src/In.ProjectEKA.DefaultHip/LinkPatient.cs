@@ -55,8 +55,8 @@ namespace In.ProjectEKA.DefaultHip
                         ErrorMessage.DatabaseStorageError)));
             }
 
-            // await discoveryRequestRepository.Delete(request.TransactionId, request.Patient.ConsentManagerUserId)
-            //     .ConfigureAwait(false);
+            await discoveryRequestRepository.Delete(request.TransactionId, request.Patient.ConsentManagerUserId)
+                .ConfigureAwait(false);
             scope.Complete();
             
             var session = new Session(linkRefNumber,
@@ -81,6 +81,7 @@ namespace In.ProjectEKA.DefaultHip
                     meta));
             return new Tuple<PatientLinkReferenceResponse, ErrorResponse>(patientLinkReferenceResponse, null);
         }
+        
         private Tuple<Patient, ErrorResponse> PatientAndCareContextValidation(
             HipLibrary.Patient.Model.Request.PatientLinkReferenceRequest request)
         {

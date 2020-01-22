@@ -11,6 +11,5 @@ namespace In.ProjectEKA.HipService.Link
             TransactionId = transactionId;
             Patient = patient;
         }
-
     }
 }
