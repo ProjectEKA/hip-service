@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace In.ProjectEKA.DefaultHip.Link.Database.Migrations
 {
     [DbContext(typeof(LinkPatientContext))]
-    internal class LinkPatientContextModelSnapshot : ModelSnapshot
+    partial class LinkPatientContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -18,67 +18,51 @@ namespace In.ProjectEKA.DefaultHip.Link.Database.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("hip_service.Link.Patient.Models.LinkRequest", b =>
-            {
-                b.Property<string>("LinkReferenceNumber")
-                    .HasColumnType("text");
+                {
+                    b.Property<string>("LinkReferenceNumber")
+                        .HasColumnType("text");
 
-                b.Property<string>("ConsentManagerId")
-                    .HasColumnType("text");
+                    b.Property<string>("ConsentManagerId")
+                        .HasColumnType("text");
 
-                b.Property<string>("ConsentManagerUserId")
-                    .HasColumnType("text");
+                    b.Property<string>("ConsentManagerUserId")
+                        .HasColumnType("text");
 
-                b.Property<string>("DateTimeStamp")
-                    .HasColumnType("text");
+                    b.Property<string>("DateTimeStamp")
+                        .HasColumnType("text");
 
-                b.Property<string>("PatientReferenceNumber")
-                    .HasColumnType("text");
+                    b.Property<string>("PatientReferenceNumber")
+                        .HasColumnType("text");
 
-                b.HasKey("LinkReferenceNumber");
+                    b.HasKey("LinkReferenceNumber");
 
-                b.ToTable("LinkRequest");
-            });
-
-            modelBuilder.Entity("hip_service.Link.Patient.Models.LinkedCareContext", b =>
-            {
-                b.Property<string>("CareContextNumber")
-                    .HasColumnType("text");
-
-                b.Property<string>("LinkReferenceNumber")
-                    .HasColumnType("text");
-
-                b.HasKey("CareContextNumber", "LinkReferenceNumber")
-                    .HasName("Id");
-
-                b.HasIndex("LinkReferenceNumber");
-
-                b.ToTable("LinkedCareContexts");
-            });
-
-            modelBuilder.Entity("hip_service.OTP.Models.OtpRequest", b =>
-            {
-                b.Property<string>("SessionId")
-                    .HasColumnType("text");
-
-                b.Property<string>("DateTimeStamp")
-                    .HasColumnType("text");
-
-                b.Property<string>("OtpToken")
-                    .HasColumnType("text");
-
-                b.HasKey("SessionId");
-
-                b.ToTable("OtpRequests");
-            });
+                    b.ToTable("LinkRequest");
+                });
 
             modelBuilder.Entity("hip_service.Link.Patient.Models.LinkedCareContext", b =>
-            {
-                b.HasOne("hip_service.Link.Patient.Models.LinkRequest", "LinkRequest")
-                    .WithMany("CareContexts")
-                    .HasForeignKey("LinkReferenceNumber")
-                    .OnDelete(DeleteBehavior.Cascade)
-                    .IsRequired();
-            });
+                {
+                    b.Property<string>("CareContextNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LinkReferenceNumber")
+                        .HasColumnType("text");
+
+                    b.HasKey("CareContextNumber", "LinkReferenceNumber")
+                        .HasName("Id");
+
+                    b.HasIndex("LinkReferenceNumber");
+
+                    b.ToTable("LinkedCareContext");
+                });
+
+            modelBuilder.Entity("hip_service.Link.Patient.Models.LinkedCareContext", b =>
+                {
+                    b.HasOne("hip_service.Link.Patient.Models.LinkRequest", "LinkRequest")
+                        .WithMany("CareContexts")
+                        .HasForeignKey("LinkReferenceNumber")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
 #pragma warning restore 612, 618
         }
     }

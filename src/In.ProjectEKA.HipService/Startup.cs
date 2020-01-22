@@ -1,6 +1,3 @@
-using System.Net.Http;
-using In.ProjectEKA.DefaultHip.Link;
-using In.ProjectEKA.DefaultHip.Link.Database;
 
 namespace In.ProjectEKA.HipService
 {
@@ -16,6 +13,9 @@ namespace In.ProjectEKA.HipService
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Middleware;
+    using System.Net.Http;
+    using In.ProjectEKA.DefaultHip.Link;
+    using In.ProjectEKA.DefaultHip.Link.Database;
 
     public class Startup
     {
@@ -35,9 +35,11 @@ namespace In.ProjectEKA.HipService
         public void ConfigureServices(IServiceCollection services) =>
             services
                 .AddDbContext<LinkPatientContext>(options =>
-                    options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")))
+                    options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"), 
+                        x => x.MigrationsAssembly("In.ProjectEKA.DefaultHip")))
                 .AddDbContext<DiscoveryContext>(options =>
-                    options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")))
+                    options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
+                        x => x.MigrationsAssembly("In.ProjectEKA.DefaultHip")))
                 .AddSingleton<IPatientRepository>(new PatientRepository("Resources/patients.json"))
                 .AddScoped<ILinkPatientRepository, LinkPatientRepository>()
                 .AddSingleton<IMatchingRepository>(new PatientMatchingRepository("Resources/patients.json"))
