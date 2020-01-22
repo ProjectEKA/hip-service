@@ -1,3 +1,4 @@
+
 namespace In.ProjectEKA.HipService
 {
     using System.Text.Json;
@@ -5,8 +6,6 @@ namespace In.ProjectEKA.HipService
     using DefaultHip.Discovery;
     using DefaultHip.Discovery.Database;
     using HipLibrary.Patient;
-    using Link.Patient;
-    using Link.Patient.Database;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;
@@ -14,24 +13,33 @@ namespace In.ProjectEKA.HipService
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Middleware;
-    using OTP;
+    using System.Net.Http;
+    using In.ProjectEKA.DefaultHip.Link;
+    using In.ProjectEKA.DefaultHip.Link.Database;
 
     public class Startup
     {
+        public IConfiguration Configuration { get; }
+        public HttpClient HttpClient { get; }
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            var clientHandler = new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true
+            };
+            HttpClient = new HttpClient(clientHandler);
         }
 
-        public IConfiguration Configuration { get; }
-
-        public void ConfigureServices(IServiceCollection services)
-        {
+        public void ConfigureServices(IServiceCollection services) =>
             services
                 .AddDbContext<LinkPatientContext>(options =>
-                    options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")))
+                    options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"), 
+                        x => x.MigrationsAssembly("In.ProjectEKA.DefaultHip")))
                 .AddDbContext<DiscoveryContext>(options =>
-                    options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")))
+                    options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
+                        x => x.MigrationsAssembly("In.ProjectEKA.DefaultHip")))
                 .AddSingleton<IPatientRepository>(new PatientRepository("Resources/patients.json"))
                 .AddScoped<ILinkPatientRepository, LinkPatientRepository>()
                 .AddSingleton<IMatchingRepository>(new PatientMatchingRepository("Resources/patients.json"))
@@ -40,15 +48,13 @@ namespace In.ProjectEKA.HipService
                 .AddTransient<IDiscovery, PatientDiscovery>()
                 .AddScoped<IReferenceNumberGenerator, ReferenceNumberGenerator>()
                 .AddTransient<ILink, LinkPatient>()
-                .AddScoped<IOtpRepository, OtpRepository>()
-                .AddScoped<OtpVerification>()
+                .AddSingleton(Configuration)
+                .AddSingleton(HttpClient)
                 .AddScoped<IPatientVerification, PatientVerification>()
                 .AddRouting(options => options.LowercaseUrls = true)
                 .AddControllers()
-                .AddNewtonsoftJson(options => { });
-            services.AddControllers().AddJsonOptions(options =>
-                options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase);
-        }
+                .AddNewtonsoftJson(options =>{})
+                .AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase);
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
