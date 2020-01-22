@@ -32,7 +32,8 @@ namespace In.ProjectEKA.OtpService
                 .AddJsonOptions(options =>
                     options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase);
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env) =>
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
             app.UseHttpsRedirection()
                 .UseRouting()
                 .UseAuthorization()
@@ -41,5 +42,11 @@ namespace In.ProjectEKA.OtpService
                 .UseIf(!env.IsDevelopment(), x => x.UseHsts())
                 .UseIf(env.IsDevelopment(), x => x.UseDeveloperExceptionPage())
                 .UseEndpoints(endpoints => { endpoints.MapControllers(); });
+                    
+            using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
+            var otpContext = serviceScope.ServiceProvider.GetService<OtpContext>();
+            otpContext.Database.Migrate();
+        }
+            
     }
 }

@@ -1,5 +1,4 @@
 using In.ProjectEKA.DefaultHip.Link.Model;
-using In.ProjectEKA.OtpService.Otp.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace In.ProjectEKA.DefaultHip.Link.Database
@@ -11,7 +10,6 @@ namespace In.ProjectEKA.DefaultHip.Link.Database
         }
 
         public DbSet<LinkRequest> LinkRequest { get; set; }
-        public DbSet<OtpRequest> OtpRequests { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
