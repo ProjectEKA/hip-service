@@ -5,8 +5,9 @@ using HipLibrary.Patient.Model.Response;
 using In.ProjectEKA.DefaultHip.Discovery;
 using In.ProjectEKA.DefaultHip.Link;
 using Microsoft.AspNetCore.Mvc;
-using PatientLinkRequest = In.ProjectEKA.HipService.Link.PatientLinkRequest;
-
+using PatientLinkRequestLib = HipLibrary.Patient.Model.Request.PatientLinkRequest;
+using PatientLinkRefRequest = HipLibrary.Patient.Model.Request.PatientLinkReferenceRequest;
+using LinkLib = HipLibrary.Patient.Model.Request.Link;
 namespace In.ProjectEKA.HipService.Link
 {
     [ApiController]
@@ -25,9 +26,9 @@ namespace In.ProjectEKA.HipService.Link
         [HttpPost]
         public async Task<ActionResult> LinkPatientCareContexts(
             [FromHeader(Name = "X-ConsentManagerID")] string consentManagerId,
-            [FromBody] HipLibrary.Patient.Model.Request.PatientLinkReferenceRequest request)
+            [FromBody] PatientLinkReferenceRequest request)
         {
-            var patient = new HipLibrary.Patient.Model.Request.Link(
+            var patient = new LinkLib(
                 consentManagerId,
                 request.Patient.ConsentManagerUserId,
                 request.Patient.ReferenceNumber,
@@ -39,7 +40,7 @@ namespace In.ProjectEKA.HipService.Link
                     ErrorMessage.TransactionIdNotFound)));
             }
             var patientReferenceRequest =
-                new HipLibrary.Patient.Model.Request.PatientLinkReferenceRequest(request.TransactionId, patient);
+                new PatientLinkRefRequest(request.TransactionId, patient);
             var (linkReferenceResponse, error) = await linkPatient.LinkPatients(patientReferenceRequest);
             return error != null ? ReturnServerResponse(error) : Ok(linkReferenceResponse);
         }
@@ -50,7 +51,7 @@ namespace In.ProjectEKA.HipService.Link
             [FromBody] PatientLinkRequest patientLinkRequest)
         {
             var (patientLinkResponse, error) = await linkPatient
-                .VerifyAndLinkCareContext(new HipLibrary.Patient.Model.Request.PatientLinkRequest(patientLinkRequest.Token,
+                .VerifyAndLinkCareContext(new PatientLinkRequestLib(patientLinkRequest.Token,
                     linkReferenceNumber));
             return error != null ? ReturnServerResponse(error) : Ok(patientLinkResponse);
         }

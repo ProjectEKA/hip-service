@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace In.ProjectEKA.DefaultHip.Discovery
 {
     using System.Threading.Tasks;
