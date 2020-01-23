@@ -2,6 +2,8 @@ using System;
 using System.Threading.Tasks;
 using HipLibrary.Patient;
 using HipLibrary.Patient.Model.Response;
+using In.ProjectEKA.DefaultHip.Discovery;
+using In.ProjectEKA.DefaultHip.Link;
 using Microsoft.AspNetCore.Mvc;
 using PatientLinkRequest = In.ProjectEKA.HipService.Link.PatientLinkRequest;
 
@@ -12,10 +14,12 @@ namespace In.ProjectEKA.HipService.Link
     public class LinkPatientController : ControllerBase
     {
         private readonly ILink linkPatient;
-
-        public LinkPatientController(ILink linkPatient)
+        private readonly IDiscoveryRequestRepository discoveryRequestRepository;
+        
+        public LinkPatientController(ILink linkPatient, IDiscoveryRequestRepository discoveryRequestRepository)
         {
             this.linkPatient = linkPatient;
+            this.discoveryRequestRepository = discoveryRequestRepository;
         }
 
         [HttpPost]
@@ -28,6 +32,12 @@ namespace In.ProjectEKA.HipService.Link
                 request.Patient.ConsentManagerUserId,
                 request.Patient.ReferenceNumber,
                 request.Patient.CareContexts);
+            var discoveryRequestExists = await discoveryRequestRepository.RequestExistsFor(request.TransactionId);
+            if (!discoveryRequestExists)
+            {
+                return ReturnServerResponse(new ErrorResponse(new Error(ErrorCode.ServerInternalError,
+                    ErrorMessage.TransactionIdNotFound)));
+            }
             var patientReferenceRequest =
                 new HipLibrary.Patient.Model.Request.PatientLinkReferenceRequest(request.TransactionId, patient);
             var (linkReferenceResponse, error) = await linkPatient.LinkPatients(patientReferenceRequest);
@@ -40,8 +50,9 @@ namespace In.ProjectEKA.HipService.Link
             [FromBody] PatientLinkRequest patientLinkRequest)
         {
             var (patientLinkResponse, error) = await linkPatient
-                .VerifyAndLinkCareContext(new HipLibrary.Patient.Model.Request.PatientLinkRequest(patientLinkRequest.Token, linkReferenceNumber));
-        return error != null ? ReturnServerResponse(error) : Ok(patientLinkResponse);
+                .VerifyAndLinkCareContext(new HipLibrary.Patient.Model.Request.PatientLinkRequest(patientLinkRequest.Token,
+                    linkReferenceNumber));
+            return error != null ? ReturnServerResponse(error) : Ok(patientLinkResponse);
         }
         
         private ActionResult ReturnServerResponse(ErrorResponse errorResponse)

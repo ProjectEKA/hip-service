@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace In.ProjectEKA.DefaultHip.Discovery
 {
     using System.Threading.Tasks;
@@ -28,6 +30,12 @@ namespace In.ProjectEKA.DefaultHip.Discovery
                     request.ConsentManagerUserId == consentManagerUserId);
             discoveryContext.Remove(discoveryRequest);
             await discoveryContext.SaveChangesAsync();
+        }
+
+        public Task<bool> RequestExistsFor(string transactionId)
+        {
+            return discoveryContext.DiscoveryRequest
+                .AnyAsync(request => request.TransactionId == transactionId);
         }
     }
 }

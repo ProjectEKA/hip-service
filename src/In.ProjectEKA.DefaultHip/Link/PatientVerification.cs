@@ -74,7 +74,7 @@ namespace In.ProjectEKA.DefaultHip.Link
             catch (Exception)
             {
                 return Option.Some(new OtpMessage(ErrorCode.ServerInternalError.ToString(),
-                    ErrorMessage.InternalServerError));
+                    ErrorMessage.OtpServiceError));
             }
         }
     }
