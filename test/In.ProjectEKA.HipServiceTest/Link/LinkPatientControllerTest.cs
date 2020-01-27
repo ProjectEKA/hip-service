@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using Bogus;
 using FluentAssertions;
 using HipLibrary.Patient;
 using HipLibrary.Patient.Model;
@@ -12,6 +14,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
+using Patient = HipLibrary.Patient.Model.Request.Patient;
 
 namespace In.ProjectEKA.HipServiceTest.Link
 {
@@ -112,9 +115,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
         {
             var faker = TestBuilder.Faker();
             var consentManagerId = faker.Random.Hash();
-            var linkRequest = new PatientLinkReferenceRequest(faker.Random.Hash()
-                , new LinkReference(faker.Random.Hash()
-                    , referenceNumber:faker.Random.Hash(), new [] {new CareContext(faker.Random.Hash())}));
+            var linkRequest = TestBuilder.GetFakeLinkRequest();
             var expectedError = new ErrorResponse(new Error(ErrorCode.OtpGenerationFailed, "Otp Generation Failed"));
             link.Setup(e => e.LinkPatients(
                     It.Is<PatientLinkRefRequest>(p =>
@@ -145,9 +146,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
         {
             var faker = TestBuilder.Faker();
             var consentManagerId = faker.Random.Hash();
-            var linkRequest = new PatientLinkReferenceRequest(faker.Random.Hash()
-                , new LinkReference(faker.Random.Hash()
-                    , referenceNumber:faker.Random.Hash(), new [] {new CareContext(faker.Random.Hash())}));
+            var linkRequest = TestBuilder.GetFakeLinkRequest();
             var expectedError = new ErrorResponse(new Error(ErrorCode.ServerInternalError, ErrorMessage.DatabaseStorageError));
             link.Setup(e => e.LinkPatients(
                     It.Is<PatientLinkRefRequest>(p =>
@@ -178,9 +177,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
         {
             var faker = TestBuilder.Faker();
             var consentManagerId = faker.Random.Hash();
-            var linkRequest = new PatientLinkReferenceRequest(faker.Random.Hash()
-                , new LinkReference(faker.Random.Hash()
-                    , referenceNumber:faker.Random.Hash(), new [] {new CareContext(faker.Random.Hash())}));
+            var linkRequest = TestBuilder.GetFakeLinkRequest();
             var expectedError = new ErrorResponse(new Error(ErrorCode.CareContextNotFound, "Care context not found for given patient"));
             link.Setup(e => e.LinkPatients(
                     It.Is<PatientLinkRefRequest>(p =>
@@ -211,9 +208,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
         {
             var faker = TestBuilder.Faker();
             var consentManagerId = faker.Random.Hash();
-            var linkRequest = new PatientLinkReferenceRequest(faker.Random.Hash()
-                , new LinkReference(faker.Random.Hash()
-                    , referenceNumber:faker.Random.Hash(), new [] {new CareContext(faker.Random.Hash())}));
+            var linkRequest = TestBuilder.GetFakeLinkRequest();
             var expectedError = new ErrorResponse(new Error(ErrorCode.CareContextNotFound, "No patient Found"));
             link.Setup(e => e.LinkPatients(
                     It.Is<PatientLinkRefRequest>(p =>
@@ -244,9 +239,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
         {
             var faker = TestBuilder.Faker();
             var consentManagerId = faker.Random.Hash();
-            var linkRequest = new PatientLinkReferenceRequest(faker.Random.Hash()
-                , new LinkReference(faker.Random.Hash()
-                    , referenceNumber:faker.Random.Hash(), new [] {new CareContext(faker.Random.Hash())}));
+            var linkRequest =TestBuilder.GetFakeLinkRequest();
             var expectedError = new ErrorResponse(new Error(ErrorCode.OtpInValid, "Otp Invalid"));
             link.Setup(e => e.LinkPatients(
                     It.Is<PatientLinkRefRequest>(p =>
@@ -277,9 +270,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
         {
             var faker = TestBuilder.Faker();
             var consentManagerId = faker.Random.Hash();
-            var linkRequest = new PatientLinkReferenceRequest(faker.Random.Hash()
-                , new LinkReference(faker.Random.Hash()
-                    , referenceNumber:faker.Random.Hash(), new [] {new CareContext(faker.Random.Hash())}));
+            var linkRequest = TestBuilder.GetFakeLinkRequest();
             var expectedError = new ErrorResponse(new Error(ErrorCode.ServerInternalError, ErrorMessage.TransactionIdNotFound));
             link.Setup(e => e.LinkPatients(
                     It.Is<PatientLinkRefRequest>(p =>

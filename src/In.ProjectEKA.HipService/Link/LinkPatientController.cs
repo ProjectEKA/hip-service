@@ -33,8 +33,8 @@ namespace In.ProjectEKA.HipService.Link
                 request.Patient.ConsentManagerUserId,
                 request.Patient.ReferenceNumber,
                 request.Patient.CareContexts);
-            var discoveryRequestExists = await discoveryRequestRepository.RequestExistsFor(request.TransactionId);
-            if (!discoveryRequestExists)
+            var doesRequestExists = await discoveryRequestRepository.RequestExistsFor(request.TransactionId);
+            if (!doesRequestExists)
             {
                 return ReturnServerResponse(new ErrorResponse(new Error(ErrorCode.ServerInternalError,
                     ErrorMessage.TransactionIdNotFound)));
