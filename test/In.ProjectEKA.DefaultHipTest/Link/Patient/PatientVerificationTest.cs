@@ -19,7 +19,7 @@ namespace In.ProjectEKA.DefaultHipTest.Link.Patient
     [Collection("Patient Verification Tests")]
     public class PatientVerificationTest
     {
-        private readonly IConfiguration configurationMock;
+        private readonly IConfiguration configuration;
         
         public PatientVerificationTest()
         {
@@ -27,7 +27,7 @@ namespace In.ProjectEKA.DefaultHipTest.Link.Patient
             {
                 {"OtpService:BaseUrl", "http://localhost:5000"},
             };
-            configurationMock = new ConfigurationBuilder()
+            configuration = new ConfigurationBuilder()
                 .AddInMemoryCollection(inMemorySettings)
                 .Build();
         }
@@ -56,7 +56,7 @@ namespace In.ProjectEKA.DefaultHipTest.Link.Patient
                 BaseAddress = new Uri("http://localhost:5000/otp/link"),
             };
 
-            var patientVerification = new PatientVerification(configurationMock,httpClient);
+            var patientVerification = new PatientVerification(configuration, httpClient);
             
             var result = await patientVerification.SendTokenFor(session);
             
@@ -88,7 +88,7 @@ namespace In.ProjectEKA.DefaultHipTest.Link.Patient
                 BaseAddress = new Uri("http://localhost:5000/otp/link"),
             };
             
-            var patientVerification = new PatientVerification(configurationMock,httpClient);
+            var patientVerification = new PatientVerification(configuration, httpClient);
             
             var result = await patientVerification.SendTokenFor(session);
             
