@@ -29,5 +29,11 @@ namespace In.ProjectEKA.DefaultHip.Discovery
             discoveryContext.Remove(discoveryRequest);
             await discoveryContext.SaveChangesAsync();
         }
+
+        public Task<bool> RequestExistsFor(string transactionId)
+        {
+            return discoveryContext.DiscoveryRequest
+                .AnyAsync(request => request.TransactionId == transactionId);
+        }
     }
 }
