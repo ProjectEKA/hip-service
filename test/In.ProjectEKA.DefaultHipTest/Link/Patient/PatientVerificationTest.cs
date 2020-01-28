@@ -20,7 +20,7 @@ namespace In.ProjectEKA.DefaultHipTest.Link.Patient
         private readonly IOptions<OtpServiceConfiguration> otpServiceConfigurations;
         public PatientVerificationTest()
         {
-            var otpService = new OtpServiceConfiguration() { BaseUrl = "http://localhost:5000" };
+            var otpService = new OtpServiceConfiguration { BaseUrl = "http://localhost:5000" };
             otpServiceConfigurations = Options.Create(otpService);
         }
 
