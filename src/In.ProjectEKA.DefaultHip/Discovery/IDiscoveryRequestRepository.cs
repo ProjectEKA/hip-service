@@ -8,5 +8,7 @@ namespace In.ProjectEKA.DefaultHip.Discovery
         Task Add(DiscoveryRequest discoveryRequest);
 
         Task Delete(string transactionId, string consentManagerUserId);
+
+        Task<bool> RequestExistsFor(string transactionId);
     }
 }

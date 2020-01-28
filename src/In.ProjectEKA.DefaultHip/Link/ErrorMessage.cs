@@ -7,5 +7,7 @@ namespace In.ProjectEKA.DefaultHip.Link
         public static readonly string NoPatientFound = "No patient Found";
         public static readonly string DatabaseStorageError = "Unable to store data to Database";
         public static readonly string InternalServerError = "Internal Server Error";
+        public static readonly string TransactionIdNotFound = "Transaction id not found.";
+        public static readonly string OtpServiceError = "Otp service not working";
     }
 }

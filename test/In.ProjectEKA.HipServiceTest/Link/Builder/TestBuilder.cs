@@ -1,6 +1,9 @@
 using Bogus;
+using HipLibrary.Patient.Model.Request;
 using In.ProjectEKA.DefaultHip.Link;
+using In.ProjectEKA.HipService.Link;
 using Microsoft.Extensions.Configuration;
+using PatientLinkReferenceRequest = In.ProjectEKA.HipService.Link.PatientLinkReferenceRequest;
 
 namespace In.ProjectEKA.HipServiceTest.Link.Builder
 {
@@ -9,18 +12,15 @@ namespace In.ProjectEKA.HipServiceTest.Link.Builder
     public static class TestBuilder
     {
         private static Faker faker;
-        internal static Faker Faker() => faker ??= new Faker();
-        internal static Faker<OtpMessage> otpMessage()
-        {
-            return new Faker<OtpMessage>();
-        }
         
-        public static IConfigurationRoot GetIConfigurationRoot()
-        {            
-            return new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json", optional: true)
-                .AddEnvironmentVariables()
-                .Build();
+        internal static Faker Faker() => faker ??= new Faker();
+
+        internal static PatientLinkReferenceRequest GetFakeLinkRequest()
+        {
+            return new PatientLinkReferenceRequest(faker.Random.Hash()
+                , new LinkReference(faker.Random.Hash()
+                    , referenceNumber:faker.Random.Hash()
+                    , new [] {new CareContext(faker.Random.Hash())}));
         }
     }
 }
