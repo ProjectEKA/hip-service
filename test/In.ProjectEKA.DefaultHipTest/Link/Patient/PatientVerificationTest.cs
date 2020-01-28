@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -7,8 +6,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using In.ProjectEKA.DefaultHip.Link;
 using In.ProjectEKA.DefaultHipTest.Link.Builder;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Primitives;
+using Microsoft.Extensions.Options;
 using Moq;
 using Moq.Protected;
 using Xunit;
@@ -19,17 +17,11 @@ namespace In.ProjectEKA.DefaultHipTest.Link.Patient
     [Collection("Patient Verification Tests")]
     public class PatientVerificationTest
     {
-        private readonly IConfiguration configuration;
-        
+        private readonly IOptions<OtpServiceConfiguration> otpServiceConfigurations;
         public PatientVerificationTest()
         {
-            var inMemorySettings = new Dictionary<string, string>
-            {
-                {"OtpService:BaseUrl", "http://localhost:5000"},
-            };
-            configuration = new ConfigurationBuilder()
-                .AddInMemoryCollection(inMemorySettings)
-                .Build();
+            var otpService = new OtpServiceConfiguration() { BaseUrl = "http://localhost:5000" };
+            otpServiceConfigurations = Options.Create(otpService);
         }
 
         [Fact]
@@ -55,8 +47,7 @@ namespace In.ProjectEKA.DefaultHipTest.Link.Patient
             {
                 BaseAddress = new Uri("http://localhost:5000/otp/link"),
             };
-
-            var patientVerification = new PatientVerification(configuration, httpClient);
+            var patientVerification = new PatientVerification(httpClient, otpServiceConfigurations);
             
             var result = await patientVerification.SendTokenFor(session);
             
@@ -88,8 +79,8 @@ namespace In.ProjectEKA.DefaultHipTest.Link.Patient
                 BaseAddress = new Uri("http://localhost:5000/otp/link"),
             };
             
-            var patientVerification = new PatientVerification(configuration, httpClient);
-            
+            var patientVerification = new PatientVerification(httpClient, otpServiceConfigurations);            
+           
             var result = await patientVerification.SendTokenFor(session);
             
             result.Should().BeNull();        }

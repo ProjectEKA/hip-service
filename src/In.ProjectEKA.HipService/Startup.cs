@@ -50,6 +50,7 @@ namespace In.ProjectEKA.HipService
                 .AddTransient<ILink, LinkPatient>()
                 .AddSingleton(Configuration)
                 .AddSingleton(HttpClient)
+                .Configure<OtpServiceConfiguration>(Configuration.GetSection("OtpService"))
                 .AddScoped<IPatientVerification, PatientVerification>()
                 .AddRouting(options => options.LowercaseUrls = true)
                 .AddControllers()
