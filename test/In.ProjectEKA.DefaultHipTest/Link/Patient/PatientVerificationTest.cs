@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -7,8 +6,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using In.ProjectEKA.DefaultHip.Link;
 using In.ProjectEKA.DefaultHipTest.Link.Builder;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Primitives;
+using Microsoft.Extensions.Options;
 using Moq;
 using Moq.Protected;
 using Xunit;
@@ -19,13 +17,18 @@ namespace In.ProjectEKA.DefaultHipTest.Link.Patient
     [Collection("Patient Verification Tests")]
     public class PatientVerificationTest
     {
-        private readonly Mock<IConfiguration> configurationMock = new Mock<IConfiguration>();
+        private readonly IOptions<OtpServiceConfiguration> otpServiceConfigurations;
+        public PatientVerificationTest()
+        {
+            var otpService = new OtpServiceConfiguration { BaseUrl = "http://localhost:5000" };
+            otpServiceConfigurations = Options.Create(otpService);
+        }
 
         [Fact]
         private async void ReturnFailureOnOtpCreation()
         {
             var session = new Session(TestBuilder.Faker().Random.Hash()
-                , new Communication(CommunicationMode.MOBILE,"+91666666666666"));
+                , new Communication(CommunicationMode.MOBILE, "+91666666666666"));
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
             handlerMock
                 .Protected()
@@ -44,13 +47,7 @@ namespace In.ProjectEKA.DefaultHipTest.Link.Patient
             {
                 BaseAddress = new Uri("http://localhost:5000/otp/link"),
             };
-            var mockConfSection = new Mock<IConfigurationSection>();
-            mockConfSection.SetupGet(m => m[It.Is<string>(s => s == "OTPGenerationConnection")])
-                .Returns("http://localhost:5000/otp/link");
-            configurationMock.Setup(x => x.GetSection(It.Is<string>(s=>s == "ConnectionStrings")))
-                .Returns(mockConfSection.Object);
-
-            var patientVerification = new PatientVerification(configurationMock.Object,httpClient);
+            var patientVerification = new PatientVerification(httpClient, otpServiceConfigurations);
             
             var result = await patientVerification.SendTokenFor(session);
             
@@ -81,14 +78,9 @@ namespace In.ProjectEKA.DefaultHipTest.Link.Patient
             {
                 BaseAddress = new Uri("http://localhost:5000/otp/link"),
             };
-            var mockConfSection = new Mock<IConfigurationSection>();
-            mockConfSection.SetupGet(m => m[It.Is<string>(s => s == "OTPGenerationConnection")])
-                .Returns("http://localhost:5000/otp/link");
-            configurationMock.Setup(x => x.GetSection(It.Is<string>(s=>s == "ConnectionStrings")))
-                .Returns(mockConfSection.Object);
             
-            var patientVerification = new PatientVerification(configurationMock.Object,httpClient);
-            
+            var patientVerification = new PatientVerification(httpClient, otpServiceConfigurations);            
+           
             var result = await patientVerification.SendTokenFor(session);
             
             result.Should().BeNull();        }

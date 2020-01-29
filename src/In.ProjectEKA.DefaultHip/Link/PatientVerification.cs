@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using HipLibrary.Patient.Model.Response;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using Optional;
 
@@ -13,18 +14,19 @@ namespace In.ProjectEKA.DefaultHip.Link
 {
     public class PatientVerification : IPatientVerification
     {
-        private readonly IConfiguration configuration;
         private readonly HttpClient httpClient;
-
-        public PatientVerification(IConfiguration configuration, HttpClient httpClient)
+        private readonly IOptions<OtpServiceConfiguration> otpService;
+        
+        public PatientVerification(HttpClient httpClient, IOptions<OtpServiceConfiguration> otpService)
         {
-            this.configuration = configuration;
             this.httpClient = httpClient;
+            this.otpService = otpService;
         }
         
         public async Task<OtpMessage> SendTokenFor(Session session)
         {
-            var uri = new Uri(configuration.GetConnectionString("OTPGenerationConnection"));
+            var urlConfig = otpService.Value.BaseUrl;
+            var uri = new Uri(urlConfig + "/otp/link");
             var verifyMessage = await PostCallToOTPServer(uri
                 , CreateHttpContent(session)).ConfigureAwait(false);
             return verifyMessage.ValueOr((OtpMessage) null);
@@ -32,7 +34,8 @@ namespace In.ProjectEKA.DefaultHip.Link
         
         public async Task<OtpMessage> Verify(string sessionId, string value)
         {
-            var uri = new Uri(configuration.GetConnectionString("OTPVerificationConnection"));
+            var urlConfig = otpService.Value.BaseUrl;
+            var uri = new Uri(urlConfig + "/otp/verify");
             var verifyOtpRequest = new OtpVerificationRequest(sessionId, value);
             var verifyMessage = await PostCallToOTPServer(
                 uri,
