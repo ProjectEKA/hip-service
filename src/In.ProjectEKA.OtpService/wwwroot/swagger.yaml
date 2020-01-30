@@ -1,5 +1,4 @@
 openapi: 3.0.0
-swagger: 2.0
 info:
   version: 0.0.1
   title: Otp server
@@ -13,7 +12,7 @@ tags:
   - name: otp
 
 paths:
-  /otp/link:
+  /otp:
     post:
       tags:
         - otp

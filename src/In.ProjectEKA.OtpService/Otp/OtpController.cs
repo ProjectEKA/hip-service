@@ -15,7 +15,7 @@ namespace In.ProjectEKA.OtpService.Otp
             this.otpService = otpService;
         }
 
-        [HttpPost("link")]
+        [HttpPost]
         public async Task<ActionResult> GenerateOtp([FromBody] OtpGenerationRequest request)
         {
             var generateOtp = await otpService.GenerateOtp(request);
@@ -37,7 +37,6 @@ namespace In.ProjectEKA.OtpService.Otp
                 ResponseType.OtpValid => Ok(otpResponse),
                 ResponseType.OtpInvalid => BadRequest(otpResponse),
                 ResponseType.OtpExpired => Unauthorized(otpResponse),
-                ResponseType.OtpGenerationFailed => BadRequest(otpResponse),
                 ResponseType.InternalServerError => StatusCode(StatusCodes.Status500InternalServerError, otpResponse),
                 _ => NotFound(otpResponse)
             };
