@@ -47,32 +47,5 @@ namespace In.ProjectEKA.HipServiceTest.Link.Patient
             patient.ValueOr((Patient) null)
                 .Should().BeNull();
         }
-        
-        [Fact]
-        private void ReturnNotNullCareContextForValidPatient()
-        {
-            const string patientReferenceNumber = "4";
-            const string careContextReferenceNumber = "129";
-            var careContext = new CareContext
-            {
-                ReferenceNumber = careContextReferenceNumber,
-                Description = "National Cancer program"
-            };
-            
-            patientRepository.ProgramInfoWith(patientReferenceNumber,
-                    careContextReferenceNumber).ValueOr(new CareContext())
-                .Should().BeEquivalentTo(careContext);
-        }
-        
-        [Fact]
-        private void ReturnNullCareContextForValidPatient()
-        {
-            const string patientReferenceNumber = "4";
-            const string careContextReferenceNumber = "190";
-            
-            patientRepository.ProgramInfoWith(patientReferenceNumber,
-                careContextReferenceNumber).ValueOr((CareContext)null)
-                .Should().BeNull();
-        }
     }
 }
