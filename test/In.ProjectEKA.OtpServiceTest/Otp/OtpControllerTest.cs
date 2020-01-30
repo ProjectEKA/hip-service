@@ -60,13 +60,13 @@ namespace In.ProjectEKA.OtpServiceTest.Otp
         [Fact]
         public async Task ReturnOtpValidResponse()
         {
-            var otpRequest = new OtpVerificationRequest(TestBuilder.Faker().Random.Hash()
-                , "1234");
+            var sessionId = TestBuilder.Faker().Random.Hash();
+            var otpRequest = new OtpVerificationRequest("1234");
             var expectedResult = new OtpResponse(ResponseType.OtpValid,"Valid OTP");
-            otpService.Setup(e => e.CheckOtpValue(otpRequest.SessionID,otpRequest.Value)
+            otpService.Setup(e => e.CheckOtpValue(sessionId, otpRequest.Value)
             ).ReturnsAsync(expectedResult);
             
-            var response = await otpController.VerifyOtp(otpRequest);
+            var response = await otpController.VerifyOtp(sessionId, otpRequest);
             
             otpService.Verify();
             response.Should()
@@ -81,13 +81,13 @@ namespace In.ProjectEKA.OtpServiceTest.Otp
         [Fact]
         public async Task ReturnOtpInValidBadRequest()
         {
-            var otpRequest = new OtpVerificationRequest(TestBuilder.Faker().Random.Hash()
-                , "1234");
+            var sessionId = TestBuilder.Faker().Random.Hash();
+            var otpRequest = new OtpVerificationRequest("1234");
             var expectedResult = new OtpResponse(ResponseType.OtpInvalid,"Invalid Otp");
-            otpService.Setup(e => e.CheckOtpValue(otpRequest.SessionID,otpRequest.Value)
+            otpService.Setup(e => e.CheckOtpValue(sessionId, otpRequest.Value)
             ).ReturnsAsync(expectedResult);
             
-            var response = await otpController.VerifyOtp(otpRequest);
+            var response = await otpController.VerifyOtp(sessionId, otpRequest);
             
             otpService.Verify();
             response.Should().BeOfType<BadRequestObjectResult>();

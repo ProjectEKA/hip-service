@@ -22,10 +22,10 @@ namespace In.ProjectEKA.OtpService.Otp
             return ReturnServerResponse(generateOtp);
         }
 
-        [HttpPost("verify")]
-        public async Task<ActionResult> VerifyOtp([FromBody] OtpVerificationRequest request)
+        [HttpPost("{sessionId}/verify")]
+        public async Task<ActionResult> VerifyOtp([FromRoute] string sessionId, [FromBody] OtpVerificationRequest request)
         {
-            var verifyOtp = await otpService.CheckOtpValue(request.SessionID, request.Value);
+            var verifyOtp = await otpService.CheckOtpValue(sessionId, request.Value);
             return ReturnServerResponse(verifyOtp);
         }
 
