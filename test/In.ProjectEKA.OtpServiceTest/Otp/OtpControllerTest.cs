@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using In.ProjectEKA.OtpService.Otp;
 using In.ProjectEKA.OtpServiceTest.Otp.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
@@ -50,10 +51,10 @@ namespace In.ProjectEKA.OtpServiceTest.Otp
             otpService.Setup(e => e.GenerateOtp(It.IsAny<OtpGenerationRequest>())
             ).ReturnsAsync(expectedResult);
             
-            var response = await otpController.GenerateOtp(otpRequest);
+            var response = await otpController.GenerateOtp(otpRequest) as ObjectResult;
             
             otpService.Verify();
-            response.Should().BeOfType<BadRequestObjectResult>();
+            response.StatusCode.Should().Be(StatusCodes.Status500InternalServerError);
         }
         
         [Fact]

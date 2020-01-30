@@ -71,7 +71,7 @@ namespace In.ProjectEKA.DefaultHip.Link
                     var otpMessage = JsonConvert.DeserializeObject<OtpMessage>(result);
                     return Option.Some(otpMessage);
                 }
-                return Option.Some(new OtpMessage(ErrorCode.ServerInternalError.ToString(),
+                return Option.Some(new OtpMessage(ErrorCode.OtpGenerationFailed.ToString(),
                     ErrorMessage.InternalServerError));
             }
             catch (Exception)

@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace In.ProjectEKA.OtpService.Otp
@@ -37,7 +38,7 @@ namespace In.ProjectEKA.OtpService.Otp
                 ResponseType.OtpInvalid => BadRequest(otpResponse),
                 ResponseType.OtpExpired => Unauthorized(otpResponse),
                 ResponseType.OtpGenerationFailed => BadRequest(otpResponse),
-                ResponseType.InternalServerError => BadRequest(otpResponse),
+                ResponseType.InternalServerError => StatusCode(StatusCodes.Status500InternalServerError, otpResponse),
                 _ => NotFound(otpResponse)
             };
         }

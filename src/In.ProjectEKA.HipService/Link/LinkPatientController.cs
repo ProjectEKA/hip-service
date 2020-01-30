@@ -4,6 +4,7 @@ using HipLibrary.Patient;
 using HipLibrary.Patient.Model.Response;
 using In.ProjectEKA.DefaultHip.Discovery;
 using In.ProjectEKA.DefaultHip.Link;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PatientLinkRequestLib = HipLibrary.Patient.Model.Request.PatientLinkRequest;
 using PatientLinkRefRequest = HipLibrary.Patient.Model.Request.PatientLinkReferenceRequest;
@@ -36,8 +37,8 @@ namespace In.ProjectEKA.HipService.Link
             var doesRequestExists = await discoveryRequestRepository.RequestExistsFor(request.TransactionId);
             if (!doesRequestExists)
             {
-                return ReturnServerResponse(new ErrorResponse(new Error(ErrorCode.ServerInternalError,
-                    ErrorMessage.TransactionIdNotFound)));
+                return ReturnServerResponse(new ErrorResponse(new Error(ErrorCode.DiscoveryRequestNotFound,
+                    ErrorMessage.DiscoveryRequestNotFound)));
             }
             var patientReferenceRequest =
                 new PatientLinkRefRequest(request.TransactionId, patient);
@@ -63,9 +64,9 @@ namespace In.ProjectEKA.HipService.Link
                 ErrorCode.OtpExpired => (ActionResult) BadRequest(errorResponse),
                 ErrorCode.MultiplePatientsFound => NotFound(errorResponse),
                 ErrorCode.NoPatientFound => NotFound(errorResponse),
-                ErrorCode.OtpGenerationFailed => BadRequest(errorResponse),
+                ErrorCode.OtpGenerationFailed => StatusCode(StatusCodes.Status500InternalServerError, errorResponse),
                 ErrorCode.OtpInValid => NotFound(errorResponse),
-                ErrorCode.ServerInternalError => BadRequest(errorResponse),
+                ErrorCode.ServerInternalError => StatusCode(StatusCodes.Status500InternalServerError, errorResponse),
                 ErrorCode.CareContextNotFound => NotFound(errorResponse),
                 ErrorCode.NoLinkRequestFound => NotFound(errorResponse),
                 _ => NotFound(errorResponse)
