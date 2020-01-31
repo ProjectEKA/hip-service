@@ -88,14 +88,13 @@ namespace In.ProjectEKA.DefaultHip
             return patientRepository.PatientWith(request.Patient.ReferenceNumber).Map(
                 (patient) =>
                 {
-                    var programs = (from careContext in request.Patient.CareContexts
-                        where patientRepository
-                            .ProgramInfoWith(request.Patient.ReferenceNumber, careContext.ReferenceNumber)
-                            .HasValue
-                        select patientRepository.ProgramInfoWith(request.Patient.ReferenceNumber,
-                            careContext.ReferenceNumber)
-                        into careContextPatient
-                        select careContextPatient.Map(context => context)).ToList();
+                    var programs  = request.Patient.CareContexts
+                        .Where(careContext =>
+                            patient.CareContexts.Any(c => c.ReferenceNumber == careContext.ReferenceNumber))
+                        .Select(context => new CareContextRepresentation(context.ReferenceNumber,
+                            patient.CareContexts.First(info => info.ReferenceNumber == context.ReferenceNumber)
+                                .Description)).ToList();    
+                    
                     if (programs.Count != request.Patient.CareContexts.Count())
                     {
                         return new Tuple<Patient, ErrorResponse>

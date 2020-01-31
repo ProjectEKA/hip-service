@@ -30,20 +30,6 @@ namespace In.ProjectEKA.DefaultHip.Link
             }
         }
 
-        public Option<CareContext> ProgramInfoWith(string patientReferenceNumber, string programReferenceNumber)
-        {
-            try
-            {
-                return PatientWith(patientReferenceNumber)
-                    .Map(patient => patient.CareContexts.First(program =>
-                        program.ReferenceNumber == programReferenceNumber));
-            }
-            catch (Exception)
-            {
-                return Option.None<CareContext>();
-            }
-        }
-
         public IEnumerable<Patient> All()
         {
             var patientsInfo = FileReader.ReadJson(filePath);
