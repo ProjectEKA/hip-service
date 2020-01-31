@@ -35,6 +35,8 @@ namespace In.ProjectEKA.DefaultHipTest.Link.Patient
                 DateOfBirth = DateTime.ParseExact("2019-12-06", "yyyy-MM-dd",
                     System.Globalization.CultureInfo.InvariantCulture),
                 Email = TestBuilder.Faker().Random.Words(),
+                CareContexts = new List<CareContextSer> { new CareContextSer{ReferenceNumber = "129"
+                    , Description = "National Cancer program"}}
             };
 
         private readonly LinkPatient linkPatient;
@@ -76,10 +78,6 @@ namespace In.ProjectEKA.DefaultHipTest.Link.Patient
                 .ReturnsAsync(new Tuple<LinkRequest, Exception>(null, null));
             patientRepository.Setup(x => x.PatientWith(testPatient.Identifier))
                 .Returns(Option.Some(testPatient));
-            var careContext = new CareContextSer
-                {Description = TestBuilder.Faker().Random.Words(), ReferenceNumber = programRefNo};
-            patientRepository.Setup(x => x.ProgramInfoWith(testPatient.Identifier, programRefNo))
-                .Returns(Option.Some(careContext));
 
             var (response, _) = await linkPatient.LinkPatients(patientReferenceRequest);
 
@@ -118,8 +116,6 @@ namespace In.ProjectEKA.DefaultHipTest.Link.Patient
             var patientReferenceRequest = new PatientLinkRefRequest(TestBuilder.Faker().Random.Hash(), patient);
             patientRepository.Setup(e => e.PatientWith(testPatient.Identifier))
                 .Returns(Option.Some(testPatient));
-            patientRepository.Setup(e => e.ProgramInfoWith(testPatient.Identifier
-                , careContexts.First().ReferenceNumber)).Returns(null);
             var expectedError = new ErrorResponse(new Error(ErrorCode.CareContextNotFound,
                 ErrorMessage.CareContextNotFound));
             
@@ -185,10 +181,6 @@ namespace In.ProjectEKA.DefaultHipTest.Link.Patient
                 .ReturnsAsync(new Tuple<LinkRequest, Exception>(testLinkRequest, null));
             patientRepository.Setup(x => x.PatientWith(testPatient.Identifier))
                 .Returns(Option.Some(testPatient));
-            var careContext = new CareContextSer {Description = TestBuilder.Faker().Random.Words()
-                , ReferenceNumber = programRefNo};
-            patientRepository.Setup(x => x.ProgramInfoWith(testPatient.Identifier, programRefNo))
-                .Returns(Option.Some(careContext));
             var expectedLinkResponse = new PatientLinkResponse(new HipLibrary.Patient.Model.Response.LinkPatient(
                 testPatient.Identifier
                 , testPatient.FirstName + " " + testPatient.LastName
