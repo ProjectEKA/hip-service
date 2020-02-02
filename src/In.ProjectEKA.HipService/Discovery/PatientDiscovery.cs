@@ -5,7 +5,6 @@ namespace In.ProjectEKA.HipService.Discovery
     using System.Threading.Tasks;
     using HipLibrary.Patient;
     using HipLibrary.Patient.Model.Response;
-    using static Matcher.StrongMatcherFactory;
     using DiscoveryRequest = HipLibrary.Patient.Model.Request.DiscoveryRequest;
 
     public class PatientDiscovery : IDiscovery
@@ -24,8 +23,7 @@ namespace In.ProjectEKA.HipService.Discovery
 
         public async Task<Tuple<DiscoveryResponse, ErrorResponse>> PatientFor(DiscoveryRequest request)
         {
-            var expression = GetExpression(request.Patient.VerifiedIdentifiers);
-            var patientInfos = await matchingRepository.Where(expression);
+            var patientInfos = await matchingRepository.Where(request);
             var (patient, error) = DiscoveryUseCase.DiscoverPatient(filter.Do(patientInfos, request).AsQueryable());
 
             if (patient == null)

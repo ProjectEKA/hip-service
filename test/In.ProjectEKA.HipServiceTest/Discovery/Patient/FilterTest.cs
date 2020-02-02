@@ -38,14 +38,14 @@ namespace In.ProjectEKA.HipServiceTest.Discovery.Patient
                     Faker().Name.FirstName(),
                     Faker().PickRandom<Gender>(),
                     Faker().Date.Past()), Faker().Random.String());
-            var patients = PatientResponse()
+            var patients = Patient()
                 .GenerateLazy(10)
-                .Append(PatientResponse().Rules((_, patient) =>
+                .Append(Patient().Rules((_, patient) =>
                 {
                     patient.PhoneNumber = patientPhoneNumber;
                     patient.FirstName = patientFirstName;
                 }).Generate())
-                .Append(PatientResponse().Rules((_, patient) => { patient.PhoneNumber = patientPhoneNumber; }).Generate());
+                .Append(Patient().Rules((_, patient) => { patient.PhoneNumber = patientPhoneNumber; }).Generate());
 
             var filteredPatients = filter.Do(patients, discoveryRequest);
 
@@ -71,10 +71,10 @@ namespace In.ProjectEKA.HipServiceTest.Discovery.Patient
                     null,
                     Faker().PickRandom<Gender>(),
                     Faker().Date.Past()), Faker().Random.String());
-            var patients = PatientResponse()
+            var patients = Patient()
                 .GenerateLazy(10)
-                .Append(PatientResponse().Rules((_, patient) => { patient.PhoneNumber = mobileNumber; }).Generate())
-                .Append(PatientResponse().Rules((_, patient) => { patient.PhoneNumber = mobileNumber; }).Generate());
+                .Append(Patient().Rules((_, patient) => { patient.PhoneNumber = mobileNumber; }).Generate())
+                .Append(Patient().Rules((_, patient) => { patient.PhoneNumber = mobileNumber; }).Generate());
 
             var filteredPatients = filter.Do(patients, discoveryRequest);
 
@@ -102,14 +102,14 @@ namespace In.ProjectEKA.HipServiceTest.Discovery.Patient
                     null,
                     patientGender,
                     Faker().Date.Past()), Faker().Random.String());
-            var patients = PatientResponse()
+            var patients = Patient()
                 .GenerateLazy(10)
-                .Append(PatientResponse().Rules((_, patient) =>
+                .Append(Patient().Rules((_, patient) =>
                 {
                     patient.PhoneNumber = mobileNumber;
                     patient.Gender = patientGender.ToString();
                 }).Generate())
-                .Append(PatientResponse().Rules((_, patient) => { patient.PhoneNumber = mobileNumber; }).Generate());
+                .Append(Patient().Rules((_, patient) => { patient.PhoneNumber = mobileNumber; }).Generate());
 
             var filteredPatients = filter.Do(patients, discoveryRequest);
 
