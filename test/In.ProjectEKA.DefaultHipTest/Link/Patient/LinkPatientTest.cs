@@ -1,11 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using FluentAssertions;
 using HipLibrary.Patient.Model;
-using HipLibrary.Patient.Model.Request;
 using HipLibrary.Patient.Model.Response;
-using In.ProjectEKA.DefaultHip.Discovery;
 using In.ProjectEKA.DefaultHip.Link;
 using In.ProjectEKA.DefaultHip.Link.Model;
 using In.ProjectEKA.DefaultHipTest.Link.Builder;
@@ -17,10 +14,11 @@ using PatientLinkRefRequest =HipLibrary.Patient.Model.Request.PatientLinkReferen
 
 namespace In.ProjectEKA.DefaultHipTest.Link.Patient
 {
+    using CareContext = HipLibrary.Patient.Model.Request.CareContext;
     using LinkPatient = LinkPatient;
     using LinkLib = HipLibrary.Patient.Model.Request.Link;
-    using CareContextSer = DefaultHip.Discovery.Model.CareContext;
-    using PatientSer = DefaultHip.Discovery.Model.Patient;
+    using CareContextSer = DefaultHip.Link.Model.CareContext;
+    using PatientSer = DefaultHip.Link.Model.Patient;
 
     public class LinkPatientTest
     {

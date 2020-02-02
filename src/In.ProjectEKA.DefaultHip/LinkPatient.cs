@@ -5,13 +5,11 @@ using System.Transactions;
 using HipLibrary.Patient;
 using HipLibrary.Patient.Model;
 using HipLibrary.Patient.Model.Response;
-using In.ProjectEKA.DefaultHip.Discovery;
 using In.ProjectEKA.DefaultHip.Link;
 
 namespace In.ProjectEKA.DefaultHip
 {
-    using Patient = Discovery.Model.Patient;
-    
+    using Patient = Link.Model.Patient;
     public class LinkPatient : ILink
     {
         private readonly ILinkPatientRepository linkPatientRepository;
@@ -24,7 +22,8 @@ namespace In.ProjectEKA.DefaultHip
             IPatientRepository patientRepository,
             IPatientVerification patientVerification,
             IReferenceNumberGenerator referenceNumberGenerator,
-            IDiscoveryRequestRepository discoveryRequestRepository)
+            IDiscoveryRequestRepository discoveryRequestRepository
+            )
         {
             this.linkPatientRepository = linkPatientRepository;
             this.patientRepository = patientRepository;
@@ -75,7 +74,7 @@ namespace In.ProjectEKA.DefaultHip
             var meta = new LinkReferenceMeta(nameof(CommunicationMode.MOBILE),
                 patient.PhoneNumber, expiry);
             var patientLinkReferenceResponse = new PatientLinkReferenceResponse(
-                new HipLibrary.Patient.Model.Response.LinkReference(
+                new LinkReference(
                     linkRefNumber,
                     "MEDIATED",
                     meta));

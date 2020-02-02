@@ -40,7 +40,7 @@
                 .GenerateLazy(1)
                 .Select(builder => builder.Build());
             var discoveryRequest = new DiscoveryRequest(
-                new Patient(Faker().Random.Hash(),
+                new HipLibrary.Patient.Model.Request.Patient(Faker().Random.Hash(),
                     verifiedIdentifiers,
                     unverifiedIdentifiers,
                     Faker().Name.FirstName(),
@@ -78,7 +78,7 @@
                 .GenerateLazy(1)
                 .Select(builder => builder.Build());
             var discoveryRequest = new DiscoveryRequest(
-                new Patient(Faker().Random.Hash(),
+                new HipLibrary.Patient.Model.Request.Patient(Faker().Random.Hash(),
                     verifiedIdentifiers,
                     unverifiedIdentifiers,
                     Faker().Name.FirstName(),

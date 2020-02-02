@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using In.ProjectEKA.DefaultHip.Discovery.Helper;
-using In.ProjectEKA.DefaultHip.Discovery.Model;
 using Optional;
 
 namespace In.ProjectEKA.DefaultHip.Link
 {
+    using Model;
+
     public class PatientRepository : IPatientRepository
     {
         private readonly string filePath;

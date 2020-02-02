@@ -11,6 +11,11 @@ namespace In.ProjectEKA.HipServiceTest.Discovery.Builder
             return new Faker<Patient>();
         }
 
+        internal static Faker<HipService.Discovery.Model.Patient> PatientResponse()
+        {
+            return new Faker<HipService.Discovery.Model.Patient>();
+        }
+
         internal static Faker<IdentifierBuilder> Identifier()
         {
             return new Faker<IdentifierBuilder>();

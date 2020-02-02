@@ -3,8 +3,6 @@ namespace In.ProjectEKA.HipService
 {
     using System.Text.Json;
     using DefaultHip;
-    using DefaultHip.Discovery;
-    using DefaultHip.Discovery.Database;
     using HipLibrary.Patient;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -14,13 +12,15 @@ namespace In.ProjectEKA.HipService
     using Microsoft.Extensions.Hosting;
     using Middleware;
     using System.Net.Http;
+    using Discovery;
+    using Discovery.Database;
     using In.ProjectEKA.DefaultHip.Link;
     using In.ProjectEKA.DefaultHip.Link.Database;
 
     public class Startup
     {
-        public IConfiguration Configuration { get; }
-        public HttpClient HttpClient { get; }
+        private IConfiguration Configuration { get; }
+        private HttpClient HttpClient { get; }
 
         public Startup(IConfiguration configuration)
         {
@@ -43,7 +43,7 @@ namespace In.ProjectEKA.HipService
                 .AddSingleton<IPatientRepository>(new PatientRepository("Resources/patients.json"))
                 .AddScoped<ILinkPatientRepository, LinkPatientRepository>()
                 .AddSingleton<IMatchingRepository>(new PatientMatchingRepository("Resources/patients.json"))
-                .AddScoped<IDiscoveryRequestRepository, DiscoveryRequestRepository>()
+                .AddScoped<Discovery.IDiscoveryRequestRepository, DiscoveryRequestRepository>()
                 .AddScoped<PatientDiscovery>()
                 .AddTransient<IDiscovery, PatientDiscovery>()
                 .AddScoped<IReferenceNumberGenerator, ReferenceNumberGenerator>()

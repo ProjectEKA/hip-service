@@ -4,7 +4,7 @@ namespace In.ProjectEKA.HipServiceTest.Link.Patient
 {
     using System;
     using FluentAssertions;
-    using In.ProjectEKA.DefaultHip.Discovery.Model;
+    using In.ProjectEKA.DefaultHip.Link.Model;
     using Xunit;
 
     [Collection("Patient Repository Tests")]
