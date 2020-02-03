@@ -17,8 +17,8 @@ namespace In.ProjectEKA.DefaultHipTest.Link.Patient
     using CareContext = HipLibrary.Patient.Model.Request.CareContext;
     using LinkPatient = LinkPatient;
     using LinkLib = HipLibrary.Patient.Model.Request.Link;
-    using CareContextSer = DefaultHip.Link.Model.CareContext;
-    using PatientSer = DefaultHip.Link.Model.Patient;
+    using CareContextSer = CareContext;
+    using PatientSer = HipLibrary.Patient.Model.Patient;
 
     public class LinkPatientTest
     {
@@ -30,9 +30,6 @@ namespace In.ProjectEKA.DefaultHipTest.Link.Patient
                 FirstName = TestBuilder.Faker().Random.Word(),
                 LastName = TestBuilder.Faker().Random.Word(),
                 Gender = TestBuilder.Faker().Random.Word(),
-                DateOfBirth = DateTime.ParseExact("2019-12-06", "yyyy-MM-dd",
-                    System.Globalization.CultureInfo.InvariantCulture),
-                Email = TestBuilder.Faker().Random.Words(),
                 CareContexts = new List<CareContextSer> { new CareContextSer{ReferenceNumber = "129"
                     , Description = "National Cancer program"}}
             };

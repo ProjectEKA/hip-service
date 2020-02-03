@@ -5,7 +5,9 @@ using Optional;
 
 namespace In.ProjectEKA.DefaultHip.Link
 {
+    using HipLibrary.Patient.Model;
     using Model;
+    using Patient;
 
     public class PatientRepository : IPatientRepository
     {

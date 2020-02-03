@@ -2,7 +2,7 @@ using Optional;
 
 namespace In.ProjectEKA.DefaultHip.Link
 {
-    using Model;
+    using HipLibrary.Patient.Model;
 
     public interface IPatientRepository
     {

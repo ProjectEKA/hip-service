@@ -9,7 +9,6 @@ using In.ProjectEKA.DefaultHip.Link;
 
 namespace In.ProjectEKA.DefaultHip
 {
-    using Patient = Link.Model.Patient;
     public class LinkPatient : ILink
     {
         private readonly ILinkPatientRepository linkPatientRepository;
@@ -81,7 +80,7 @@ namespace In.ProjectEKA.DefaultHip
             return new Tuple<PatientLinkReferenceResponse, ErrorResponse>(patientLinkReferenceResponse, null);
         }
         
-        private Tuple<Patient, ErrorResponse> PatientAndCareContextValidation(
+        private Tuple<HipLibrary.Patient.Model.Patient, ErrorResponse> PatientAndCareContextValidation(
             HipLibrary.Patient.Model.Request.PatientLinkReferenceRequest request)
         {
             return patientRepository.PatientWith(request.Patient.ReferenceNumber).Map(
@@ -96,14 +95,14 @@ namespace In.ProjectEKA.DefaultHip
                     
                     if (programs.Count != request.Patient.CareContexts.Count())
                     {
-                        return new Tuple<Patient, ErrorResponse>
+                        return new Tuple<HipLibrary.Patient.Model.Patient, ErrorResponse>
                         (null, new ErrorResponse(new Error(ErrorCode.CareContextNotFound,
                                 ErrorMessage.CareContextNotFound)));
                     }
 
-                    return new Tuple<Patient, ErrorResponse>(patient, null);
+                    return new Tuple<HipLibrary.Patient.Model.Patient, ErrorResponse>(patient, null);
                 }).ValueOr(
-                new Tuple<Patient, ErrorResponse>(null
+                new Tuple<HipLibrary.Patient.Model.Patient, ErrorResponse>(null
                     , new ErrorResponse(new Error(ErrorCode.NoPatientFound,ErrorMessage.NoPatientFound)))
             );
         }

@@ -1,10 +1,9 @@
 using In.ProjectEKA.DefaultHip.Link;
 
-namespace In.ProjectEKA.HipServiceTest.Link.Patient
+namespace In.ProjectEKA.DefaultHipTest.Link.Patient
 {
-    using System;
     using FluentAssertions;
-    using In.ProjectEKA.DefaultHip.Link.Model;
+    using HipLibrary.Patient.Model;
     using Xunit;
 
     [Collection("Patient Repository Tests")]
@@ -24,9 +23,6 @@ namespace In.ProjectEKA.HipServiceTest.Link.Patient
                 FirstName = "Jill",
                 LastName = "Doee",
                 Gender = "F",
-                DateOfBirth = DateTime.ParseExact("2019-12-06","yyyy-MM-dd",
-                    System.Globalization.CultureInfo.InvariantCulture),
-                Email = "zzy@def.com",
             };
             
             var patient = patientRepository

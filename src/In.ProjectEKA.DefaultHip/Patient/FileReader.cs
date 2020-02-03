@@ -1,4 +1,4 @@
-namespace In.ProjectEKA.DefaultHip.Discovery
+namespace In.ProjectEKA.DefaultHip.Patient
 {
     using System.Collections.Generic;
     using System.IO;
@@ -14,10 +14,10 @@ namespace In.ProjectEKA.DefaultHip.Discovery
             return JsonConvert.DeserializeObject<List<Patient>>(jsonData);
         }
         
-        public static IEnumerable<Patient> ReadJson(string patientFilePath)
-        {
-            var jsonData = File.ReadAllText(patientFilePath);
-            return JsonConvert.DeserializeObject<List<Patient>>(jsonData);
-        }
+         public static IEnumerable<Patient> ReadJson(string patientFilePath)
+         {
+           var jsonData = File.ReadAllText(patientFilePath);
+           return JsonConvert.DeserializeObject<List<Patient>>(jsonData);
+         }
     }
 }
