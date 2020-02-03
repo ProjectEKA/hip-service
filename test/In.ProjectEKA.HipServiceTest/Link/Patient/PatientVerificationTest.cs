@@ -3,16 +3,16 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using FluentAssertions;
-using In.ProjectEKA.DefaultHip.Link;
-using In.ProjectEKA.DefaultHipTest.Link.Builder;
 using Microsoft.Extensions.Options;
 using Moq;
 using Moq.Protected;
 using Xunit;
 
-namespace In.ProjectEKA.DefaultHipTest.Link.Patient
+namespace In.ProjectEKA.HipServiceTest.Link.Patient
 {
+    using Builder;
+    using FluentAssertions;
+    using HipService.Link;
 
     [Collection("Patient Verification Tests")]
     public class PatientVerificationTest

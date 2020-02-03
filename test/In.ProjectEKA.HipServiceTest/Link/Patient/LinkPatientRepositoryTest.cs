@@ -1,15 +1,16 @@
-using System;
 using System.Collections.Generic;
-using FluentAssertions;
-using In.ProjectEKA.DefaultHip.Link;
-using In.ProjectEKA.DefaultHip.Link.Database;
-using In.ProjectEKA.DefaultHip.Link.Model;
-using In.ProjectEKA.DefaultHipTest.Link.Builder;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
-namespace In.ProjectEKA.DefaultHipTest.Link.Patient
+namespace In.ProjectEKA.HipServiceTest.Link.Patient
 {
+    using System;
+    using Builder;
+    using FluentAssertions;
+    using HipService.Link;
+    using HipService.Link.Database;
+    using HipService.Link.Model;
+
     [Collection("Link Patient Repository Tests")]
     public class LinkPatientRepositoryTest
     {

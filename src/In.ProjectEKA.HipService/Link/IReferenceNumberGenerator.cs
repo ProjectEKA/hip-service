@@ -1,4 +1,4 @@
-namespace In.ProjectEKA.DefaultHip.Link
+namespace In.ProjectEKA.HipService.Link
 {
     public interface IReferenceNumberGenerator
     {

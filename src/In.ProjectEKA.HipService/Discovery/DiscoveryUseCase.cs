@@ -6,8 +6,7 @@ namespace In.ProjectEKA.HipService.Discovery
 
     public static class DiscoveryUseCase
     {
-        public static Tuple<Patient, ErrorResponse> DiscoverPatient(
-            IQueryable<Patient> patients)
+        public static Tuple<Patient, ErrorResponse> DiscoverPatient(IQueryable<Patient> patients)
         {
             if (!patients.Any())
             {

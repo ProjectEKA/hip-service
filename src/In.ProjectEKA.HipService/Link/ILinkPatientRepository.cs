@@ -1,10 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using In.ProjectEKA.DefaultHip.Link.Model;
-
-namespace In.ProjectEKA.DefaultHip.Link
+namespace In.ProjectEKA.HipService.Link
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using Model;
+
     public interface ILinkPatientRepository
     {
         Task<Tuple<LinkRequest, Exception>> SaveRequestWith(

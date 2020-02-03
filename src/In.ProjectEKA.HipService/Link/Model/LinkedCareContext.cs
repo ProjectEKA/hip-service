@@ -1,7 +1,7 @@
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace In.ProjectEKA.DefaultHip.Link.Model
+namespace In.ProjectEKA.HipService.Link.Model
 {
+    using System.ComponentModel.DataAnnotations.Schema;
+
     public class LinkedCareContext
     {
         public LinkedCareContext()

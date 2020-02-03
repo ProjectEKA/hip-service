@@ -1,13 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using In.ProjectEKA.DefaultHip.Link.Database;
-using In.ProjectEKA.DefaultHip.Link.Model;
-using Microsoft.EntityFrameworkCore;
-
-namespace In.ProjectEKA.DefaultHip.Link
+namespace In.ProjectEKA.HipService.Link
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using Database;
+    using Microsoft.EntityFrameworkCore;
+    using Model;
+
     public class LinkPatientRepository : ILinkPatientRepository
     {
         private readonly LinkPatientContext linkPatientContext;
@@ -27,8 +27,13 @@ namespace In.ProjectEKA.DefaultHip.Link
             var dateTimeStamp = DateTime.Now.ToUniversalTime().ToString(Constants.DateTimeFormat);
             var linkedCareContexts = careContextReferenceNumbers
                 .Select(referenceNumber => new LinkedCareContext(referenceNumber)).ToList();
-            var linkRequest = new LinkRequest(patientReferenceNumber, linkReferenceNumber, consentManagerId,
-                consentManagerUserId, dateTimeStamp, linkedCareContexts);
+            var linkRequest = new LinkRequest(
+                patientReferenceNumber,
+                linkReferenceNumber,
+                consentManagerId,
+                consentManagerUserId,
+                dateTimeStamp, 
+                linkedCareContexts);
             try
             {
                 linkPatientContext.LinkRequest.Add(linkRequest);

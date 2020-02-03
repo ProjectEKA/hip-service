@@ -5,8 +5,8 @@ using Optional;
 
 namespace In.ProjectEKA.DefaultHip.Link
 {
+    using HipLibrary.Patient;
     using HipLibrary.Patient.Model;
-    using Model;
     using Patient;
 
     public class PatientRepository : IPatientRepository
@@ -32,7 +32,7 @@ namespace In.ProjectEKA.DefaultHip.Link
             }
         }
 
-        public IEnumerable<Patient> All()
+        private IEnumerable<Patient> All()
         {
             var patientsInfo = FileReader.ReadJson(filePath);
             return patientsInfo;

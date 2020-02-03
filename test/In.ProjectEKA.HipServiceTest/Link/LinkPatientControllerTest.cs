@@ -17,11 +17,12 @@ namespace In.ProjectEKA.HipServiceTest.Link
 {
     using PatientLinkRefRequest = HipLibrary.Patient.Model.Request.PatientLinkReferenceRequest;
     using LinkLib = HipLibrary.Patient.Model.Request.Link;
-    using LinkPatient = LinkPatient;
+    using LinkPatient = HipLibrary.Patient.Model.Response.LinkPatient;
     using LinkReferenceLib = HipLibrary.Patient.Model.Response.LinkReference;
     using PatientLinkRequest = HipLibrary.Patient.Model.Request.PatientLinkRequest;
     using PatientLinkReferenceRequest = In.ProjectEKA.HipService.Link.PatientLinkReferenceRequest;
     using LinkReference = In.ProjectEKA.HipService.Link.LinkReference;
+    
     [Collection("Link Patient Controller Tests")]
     public class LinkPatientControllerTest
     {

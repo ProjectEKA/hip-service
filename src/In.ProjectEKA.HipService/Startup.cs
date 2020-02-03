@@ -17,6 +17,8 @@ namespace In.ProjectEKA.HipService
     using Discovery.Database;
     using In.ProjectEKA.DefaultHip.Link;
     using In.ProjectEKA.DefaultHip.Link.Database;
+    using Link;
+    using Link.Database;
 
     public class Startup
     {

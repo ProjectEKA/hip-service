@@ -1,8 +1,9 @@
-namespace In.ProjectEKA.DefaultHip.Link
+namespace In.ProjectEKA.HipService.Link
 {
     public class OtpVerificationRequest
     {
         public string SessionID { get; }
+        
         public string Value { get; }
 
         public OtpVerificationRequest(string sessionId, string value)

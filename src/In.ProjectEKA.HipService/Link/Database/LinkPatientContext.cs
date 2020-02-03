@@ -1,8 +1,8 @@
-using In.ProjectEKA.DefaultHip.Link.Model;
-using Microsoft.EntityFrameworkCore;
-
-namespace In.ProjectEKA.DefaultHip.Link.Database
+namespace In.ProjectEKA.HipService.Link.Database
 {
+    using Microsoft.EntityFrameworkCore;
+    using Model;
+
     public class LinkPatientContext : DbContext
     {
         public LinkPatientContext(DbContextOptions<LinkPatientContext> options) : base(options)

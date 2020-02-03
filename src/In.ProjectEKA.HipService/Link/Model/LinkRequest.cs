@@ -1,8 +1,8 @@
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
-namespace In.ProjectEKA.DefaultHip.Link.Model
+namespace In.ProjectEKA.HipService.Link.Model
 {
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+
     public class LinkRequest
     {
         public LinkRequest()

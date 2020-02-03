@@ -1,9 +1,8 @@
 using In.ProjectEKA.DefaultHip.Link;
 
-namespace In.ProjectEKA.DefaultHipTest.Link.Patient
+namespace In.ProjectEKA.DefaultHipTest.Link
 {
     using FluentAssertions;
-    using HipLibrary.Patient.Model;
     using Xunit;
 
     [Collection("Patient Repository Tests")]
@@ -16,7 +15,7 @@ namespace In.ProjectEKA.DefaultHipTest.Link.Patient
         private void ReturnObjectForKnownPatient()
         {
             const string patientReferenceNumber = "11";
-            var testPatient = new Patient
+            var testPatient = new HipLibrary.Patient.Model.Patient
             {
                 PhoneNumber = "+919999999999",
                 Identifier = patientReferenceNumber,
@@ -28,7 +27,7 @@ namespace In.ProjectEKA.DefaultHipTest.Link.Patient
             var patient = patientRepository
                 .PatientWith(patientReferenceNumber);
             
-            patient.ValueOr(new Patient()).Should()
+            patient.ValueOr(new HipLibrary.Patient.Model.Patient()).Should()
                 .BeEquivalentTo(testPatient);
         }
         
@@ -40,7 +39,7 @@ namespace In.ProjectEKA.DefaultHipTest.Link.Patient
             var patient = patientRepository
                 .PatientWith(patientReferenceNumber);
             
-            patient.ValueOr((Patient) null)
+            patient.ValueOr((HipLibrary.Patient.Model.Patient) null)
                 .Should().BeNull();
         }
     }

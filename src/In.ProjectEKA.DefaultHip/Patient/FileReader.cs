@@ -14,10 +14,10 @@ namespace In.ProjectEKA.DefaultHip.Patient
             return JsonConvert.DeserializeObject<List<Patient>>(jsonData);
         }
         
-         public static IEnumerable<Patient> ReadJson(string patientFilePath)
-         {
+        public static IEnumerable<Patient> ReadJson(string patientFilePath)
+        {
            var jsonData = File.ReadAllText(patientFilePath);
            return JsonConvert.DeserializeObject<List<Patient>>(jsonData);
-         }
+        }
     }
 }

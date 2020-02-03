@@ -1,17 +1,16 @@
-using System;
-using System.IO;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Threading.Tasks;
-using HipLibrary.Patient.Model.Response;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
-using Optional;
-
-namespace In.ProjectEKA.DefaultHip.Link
+namespace In.ProjectEKA.HipService.Link
 {
+    using System;
+    using System.IO;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Text;
+    using System.Threading.Tasks;
+    using HipLibrary.Patient.Model.Response;
+    using Microsoft.Extensions.Options;
+    using Newtonsoft.Json;
+    using Optional;
+
     public class PatientVerification : IPatientVerification
     {
         private readonly HttpClient httpClient;
@@ -20,14 +19,16 @@ namespace In.ProjectEKA.DefaultHip.Link
         public PatientVerification(HttpClient httpClient, IOptions<OtpServiceConfiguration> otpService)
         {
             this.httpClient = httpClient;
+            httpClient.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
             this.otpService = otpService;
         }
         
         public async Task<OtpMessage> SendTokenFor(Session session)
         {
             var urlConfig = otpService.Value.BaseUrl;
-            var uri = new Uri(urlConfig + "/otp/link");
-            var verifyMessage = await PostCallToOTPServer(uri
+            var uri = new Uri($"{urlConfig}/otp/link");
+            var verifyMessage = await PostCallToOtpServer(uri
                 , CreateHttpContent(session)).ConfigureAwait(false);
             return verifyMessage.ValueOr((OtpMessage) null);
         }
@@ -35,9 +36,9 @@ namespace In.ProjectEKA.DefaultHip.Link
         public async Task<OtpMessage> Verify(string sessionId, string value)
         {
             var urlConfig = otpService.Value.BaseUrl;
-            var uri = new Uri(urlConfig + "/otp/verify");
+            var uri = new Uri($"{urlConfig}/otp/verify");
             var verifyOtpRequest = new OtpVerificationRequest(sessionId, value);
-            var verifyMessage = await PostCallToOTPServer(
+            var verifyMessage = await PostCallToOtpServer(
                 uri,
                 CreateHttpContent(verifyOtpRequest))
                 .ConfigureAwait(false);
@@ -50,10 +51,8 @@ namespace In.ProjectEKA.DefaultHip.Link
             return new StringContent(json, Encoding.UTF8, "application/json");  
         }
         
-        private async Task<Option<OtpMessage>> PostCallToOTPServer(Uri serverUrl, HttpContent content)
+        private async Task<Option<OtpMessage>> PostCallToOtpServer(Uri serverUrl, HttpContent content)
         {
-            httpClient.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
             try
             {
                 var response = await httpClient.PostAsync(serverUrl.ToString(), content);

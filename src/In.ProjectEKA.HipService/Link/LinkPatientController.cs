@@ -8,8 +8,6 @@ using PatientLinkRefRequest = HipLibrary.Patient.Model.Request.PatientLinkRefere
 using LinkLib = HipLibrary.Patient.Model.Request.Link;
 namespace In.ProjectEKA.HipService.Link
 {
-    using DefaultHip.Link;
-
     [ApiController]
     [Route("patients/link")]
     public class LinkPatientController : ControllerBase
@@ -17,9 +15,9 @@ namespace In.ProjectEKA.HipService.Link
         private readonly ILink linkPatient;
         private readonly IDiscoveryRequestRepository discoveryRequestRepository;
         
-        public LinkPatientController(ILink linkPatient
-            ,IDiscoveryRequestRepository discoveryRequestRepository
-            )
+        public LinkPatientController(
+            ILink linkPatient,
+            IDiscoveryRequestRepository discoveryRequestRepository)
         {
             this.linkPatient = linkPatient;
             this.discoveryRequestRepository = discoveryRequestRepository;
