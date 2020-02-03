@@ -19,7 +19,7 @@
         </PackageReference>
         <PackageReference Include="Moq" Version="4.13.1" />
         <PackageReference Include="Bogus" Version="28.4.4" />
-        <PackageReference Include="health-information-provider-library" Version="0.1.0" />
+        <PackageReference Include="health-information-provider-library" Version="0.1.3" />
     </ItemGroup>
 
     <ItemGroup>
