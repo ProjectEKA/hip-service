@@ -1,8 +1,8 @@
-namespace In.ProjectEKA.HipService.Discovery.Matcher
+namespace In.ProjectEKA.DefaultHip.Discovery
 {
     using System;
     using System.Linq.Expressions;
-    using Model;
+    using HipLibrary.Patient.Model;
 
     public class EmptyMatcher : IIdentifierMatcher
     {

@@ -1,4 +1,4 @@
-namespace In.ProjectEKA.HipService.Discovery.Helper
+namespace In.ProjectEKA.DefaultHip.Discovery
 {
     using System;
     using System.Linq.Expressions;

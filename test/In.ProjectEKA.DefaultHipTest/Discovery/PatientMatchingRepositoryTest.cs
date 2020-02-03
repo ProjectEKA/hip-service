@@ -1,13 +1,14 @@
-namespace In.ProjectEKA.HipServiceTest.Discovery.Patient
+namespace In.ProjectEKA.DefaultHipTest.Discovery
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using DefaultHip.Discovery;
     using FluentAssertions;
     using HipLibrary.Patient.Model;
     using HipLibrary.Patient.Model.Request;
-    using HipService.Discovery;
     using Xunit;
+    using Patient = HipLibrary.Patient.Model.Request.Patient;
 
     [Collection("Patient Repository Tests")]
     public class PatientMatchingRepositoryTest

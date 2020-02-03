@@ -9,6 +9,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery.Patient
     using HipService.Discovery;
     using Xunit;
     using static Builder.TestBuilders;
+    using Patient = HipLibrary.Patient.Model.Request.Patient;
 
     [Collection("Patient Filter Tests")]
     public class FilterTest

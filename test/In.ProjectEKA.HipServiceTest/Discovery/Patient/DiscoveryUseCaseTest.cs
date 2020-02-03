@@ -8,6 +8,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery.Patient
     using HipLibrary.Patient.Model.Response;
     using HipService.Discovery;
     using Xunit;
+    using Patient = HipLibrary.Patient.Model.Response.Patient;
 
     public class DiscoveryUseCaseTest
     {

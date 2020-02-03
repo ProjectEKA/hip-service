@@ -12,6 +12,7 @@ namespace In.ProjectEKA.HipService
     using Microsoft.Extensions.Hosting;
     using Middleware;
     using System.Net.Http;
+    using DefaultHip.Discovery;
     using Discovery;
     using Discovery.Database;
     using In.ProjectEKA.DefaultHip.Link;

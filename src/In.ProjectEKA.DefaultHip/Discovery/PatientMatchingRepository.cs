@@ -1,13 +1,11 @@
-namespace In.ProjectEKA.HipService.Discovery
+namespace In.ProjectEKA.DefaultHip.Discovery
 {
-    using System;
     using System.Linq;
-    using System.Linq.Expressions;
     using System.Threading.Tasks;
-    using Helper;
-    using Model;
+    using HipLibrary.Patient;
+    using HipLibrary.Patient.Model;
     using DiscoveryRequest = HipLibrary.Patient.Model.Request.DiscoveryRequest;
-    using static Matcher.StrongMatcherFactory;
+    using static StrongMatcherFactory;
 
     public class PatientMatchingRepository : IMatchingRepository
     {

@@ -13,7 +13,8 @@ namespace In.ProjectEKA.HipService.Discovery
         private readonly IMatchingRepository matchingRepository;
         private readonly IDiscoveryRequestRepository discoveryRequestRepository;
 
-        public PatientDiscovery(IMatchingRepository patientRepository,
+        public PatientDiscovery(
+            IMatchingRepository patientRepository,
             IDiscoveryRequestRepository discoveryRequestRepository)
         {
             matchingRepository = patientRepository;
@@ -23,8 +24,8 @@ namespace In.ProjectEKA.HipService.Discovery
 
         public async Task<Tuple<DiscoveryResponse, ErrorResponse>> PatientFor(DiscoveryRequest request)
         {
-            var patientInfos = await matchingRepository.Where(request);
-            var (patient, error) = DiscoveryUseCase.DiscoverPatient(filter.Do(patientInfos, request).AsQueryable());
+            var patients = await matchingRepository.Where(request);
+            var (patient, error) = DiscoveryUseCase.DiscoverPatient(filter.Do(patients, request).AsQueryable());
 
             if (patient == null)
             {

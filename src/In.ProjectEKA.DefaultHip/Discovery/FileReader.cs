@@ -1,9 +1,9 @@
-namespace In.ProjectEKA.HipService.Discovery.Helper
+namespace In.ProjectEKA.DefaultHip.Discovery
 {
     using System.Collections.Generic;
     using System.IO;
     using System.Threading.Tasks;
-    using Model;
+    using HipLibrary.Patient.Model;
     using Newtonsoft.Json;
 
     public static class FileReader

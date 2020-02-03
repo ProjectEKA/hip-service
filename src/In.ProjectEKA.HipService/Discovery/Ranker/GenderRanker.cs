@@ -1,7 +1,7 @@
 namespace In.ProjectEKA.HipService.Discovery.Ranker
 {
     using HipLibrary.Patient.Model.Response;
-    using Patient = Model.Patient;
+    using Patient = HipLibrary.Patient.Model.Patient;
 
     public class GenderRanker : IRanker<Patient>
     {

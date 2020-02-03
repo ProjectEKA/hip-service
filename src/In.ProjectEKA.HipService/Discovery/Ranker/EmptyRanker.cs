@@ -1,6 +1,6 @@
 namespace In.ProjectEKA.HipService.Discovery.Ranker
 {
-    using Model;
+    using HipLibrary.Patient.Model;
 
     public class EmptyRanker : IRanker<Patient>
     {

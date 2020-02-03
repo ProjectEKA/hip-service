@@ -1,12 +1,10 @@
-﻿namespace In.ProjectEKA.HipService.Discovery.Matcher
+﻿namespace In.ProjectEKA.DefaultHip.Discovery
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Linq.Expressions;
-    using Helper;
     using HipLibrary.Patient.Model;
-    using Model;
 
     public static class StrongMatcherFactory
     {
@@ -28,5 +26,10 @@
                 .Aggregate(ExpressionBuilder.False<Patient>(),
                     (accumulate, next) => accumulate.Or(next));
         }
+    }
+
+    public interface IIdentifierMatcher
+    {
+        Expression<Func<Patient, bool>> Of(string value);
     }
 }

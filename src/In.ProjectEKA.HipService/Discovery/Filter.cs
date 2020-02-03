@@ -6,8 +6,8 @@ namespace In.ProjectEKA.HipService.Discovery
     using HipLibrary.Patient.Model.Request;
     using Ranker;
     using static Ranker.PatientWithRankBuilder;
-    using Patient = Model.Patient;
-    
+    using Patient = HipLibrary.Patient.Model.Patient;
+
     public class Filter
     {
         private static readonly Dictionary<IdentifierTypeExt, IRanker<Patient>> Ranks =

@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
+using CareContext = HipLibrary.Patient.Model.Request.CareContext;
 
 namespace In.ProjectEKA.HipServiceTest.Link
 {

@@ -6,9 +6,9 @@ namespace In.ProjectEKA.HipServiceTest.Discovery.Builder
     {
         private static Faker faker;
 
-        internal static Faker<HipService.Discovery.Model.Patient> Patient()
+        internal static Faker<HipLibrary.Patient.Model.Patient> Patient()
         {
-            return new Faker<HipService.Discovery.Model.Patient>();
+            return new Faker<HipLibrary.Patient.Model.Patient>();
         }
 
         internal static Faker<IdentifierBuilder> Identifier()
