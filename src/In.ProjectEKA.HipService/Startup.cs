@@ -2,7 +2,6 @@
 namespace In.ProjectEKA.HipService
 {
     using System.Text.Json;
-    using DefaultHip;
     using HipLibrary.Patient;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
@@ -16,7 +15,6 @@ namespace In.ProjectEKA.HipService
     using Discovery;
     using Discovery.Database;
     using In.ProjectEKA.DefaultHip.Link;
-    using In.ProjectEKA.DefaultHip.Link.Database;
     using Link;
     using Link.Database;
 
@@ -39,10 +37,10 @@ namespace In.ProjectEKA.HipService
             services
                 .AddDbContext<LinkPatientContext>(options =>
                     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"), 
-                        x => x.MigrationsAssembly("In.ProjectEKA.DefaultHip")))
+                        x => x.MigrationsAssembly("In.ProjectEKA.HipService")))
                 .AddDbContext<DiscoveryContext>(options =>
                     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
-                        x => x.MigrationsAssembly("In.ProjectEKA.DefaultHip")))
+                        x => x.MigrationsAssembly("In.ProjectEKA.HipService")))
                 .AddSingleton<IPatientRepository>(new PatientRepository("Resources/patients.json"))
                 .AddScoped<ILinkPatientRepository, LinkPatientRepository>()
                 .AddSingleton<IMatchingRepository>(new PatientMatchingRepository("Resources/patients.json"))

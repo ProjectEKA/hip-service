@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace In.ProjectEKA.DefaultHip.Link.Database.Migrations
+namespace In.ProjectEKA.HipService.Link.Database.Migrations
 {
     public partial class LinkRequestMigrations : Migration
     {

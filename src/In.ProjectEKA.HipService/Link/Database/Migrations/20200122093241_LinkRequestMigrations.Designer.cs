@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
-namespace In.ProjectEKA.DefaultHip.Link.Database.Migrations
+namespace In.ProjectEKA.HipService.Link.Database.Migrations
 {
     using HipService.Link.Database;
 
