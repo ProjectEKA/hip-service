@@ -1,14 +1,13 @@
-namespace In.ProjectEKA.HipLibrary.Patient.Model.Response
+namespace In.ProjectEKA.HipLibrary.Patient.Model
 {
-    using System;
     using System.Text.Json.Serialization;
     using System.Xml.Serialization;
 
-    public class LinkReference
+    public class LinkEnquiryRepresentation
     { 
         [JsonPropertyName("referenceNumber")]
         [XmlElement("referenceNumber")]
-        public String ReferenceNumber { get; }
+        public string ReferenceNumber { get; }
 
         [JsonPropertyName("authenticationType")]
         [XmlElement("authenticationType")]
@@ -18,7 +17,7 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model.Response
         [XmlElement("meta")]
         public LinkReferenceMeta Meta { get; }
         
-        public LinkReference(string referenceNumber, string authenticationType, LinkReferenceMeta meta)
+        public LinkEnquiryRepresentation(string referenceNumber, string authenticationType, LinkReferenceMeta meta)
         {
             ReferenceNumber = referenceNumber;
             AuthenticationType = authenticationType;

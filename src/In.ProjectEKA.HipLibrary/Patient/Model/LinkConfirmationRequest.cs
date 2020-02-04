@@ -1,10 +1,11 @@
-namespace In.ProjectEKA.HipLibrary.Patient.Model.Request
+namespace In.ProjectEKA.HipLibrary.Patient.Model
 { 
-    public class PatientLinkRequest
+    public class LinkConfirmationRequest
     { 
         public string Token { get; }
+        
         public string LinkReferenceNumber { get; }
-        public PatientLinkRequest(string token, string linkReferenceNumber)
+        public LinkConfirmationRequest(string token, string linkReferenceNumber)
         {
             Token = token;
             LinkReferenceNumber = linkReferenceNumber;

@@ -1,10 +1,10 @@
-namespace In.ProjectEKA.HipLibrary.Patient.Model.Request
+namespace In.ProjectEKA.HipLibrary.Patient.Model
 {
     using System.Collections.Generic;
     using System.Text.Json.Serialization;
     using System.Xml.Serialization;
 
-    public class Link
+    public class LinkEnquiry
     {
         [JsonPropertyName("consentManagerId")]
         [XmlElement("consentManagerId")]
@@ -20,9 +20,13 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model.Request
 
         [JsonPropertyName("careContexts")]
         [XmlElement("careContexts")]
-        public IEnumerable<CareContext> CareContexts { get; }
+        public IEnumerable<CareContextEnquiry> CareContexts { get; }
 
-        public Link(string consentManagerId, string consentManagerUserId, string referenceNumber, IEnumerable<CareContext> careContexts)
+        public LinkEnquiry(
+            string consentManagerId, 
+            string consentManagerUserId, 
+            string referenceNumber, 
+            IEnumerable<CareContextEnquiry> careContexts)
         {
             ConsentManagerId = consentManagerId;
             ConsentManagerUserId = consentManagerUserId;

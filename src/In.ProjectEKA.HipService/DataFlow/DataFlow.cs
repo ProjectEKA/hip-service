@@ -2,8 +2,8 @@ namespace In.ProjectEKA.HipService.DataFlow
 {
     using System;
     using System.Threading.Tasks;
-    using HipLibrary.Patient.Model.Response;
-    
+    using HipLibrary.Patient.Model;
+
     public class DataFlow : IDataFlow
     {
         private readonly IDataFlowRepository dataFlowRepository;
@@ -13,22 +13,22 @@ namespace In.ProjectEKA.HipService.DataFlow
             this.dataFlowRepository = dataFlowRepository;
         }
         
-        public async Task<Tuple<HealthInformationResponse, ErrorResponse>> HealthInformationRequestFor(HealthInformationRequest request)
+        public async Task<Tuple<HealthInformationResponse, ErrorRepresentation>> HealthInformationRequestFor(HealthInformationRequest request)
         {
             if (!IsValidConsentArtefact(request.Consent))
             {
-                return new Tuple<HealthInformationResponse, ErrorResponse>(null, null);
+                return new Tuple<HealthInformationResponse, ErrorRepresentation>(null, null);
             }
             
             var result = await dataFlowRepository.SaveRequestFor(request.TransactionId, request)
                 .ConfigureAwait(false);
             return result.Map(r =>
             {
-                var errorResponse = new ErrorResponse(new Error(ErrorCode.ServerInternalError,
+                var errorResponse = new ErrorRepresentation(new Error(ErrorCode.ServerInternalError,
                     ErrorMessage.InternalServerError));
-                return new Tuple<HealthInformationResponse, ErrorResponse>(null, errorResponse);
+                return new Tuple<HealthInformationResponse, ErrorRepresentation>(null, errorResponse);
             }).ValueOr(new Tuple<HealthInformationResponse,
-                ErrorResponse>(new HealthInformationResponse(request.TransactionId), null));
+                ErrorRepresentation>(new HealthInformationResponse(request.TransactionId), null));
         }
 
         private static bool IsValidConsentArtefact(Consent consent)

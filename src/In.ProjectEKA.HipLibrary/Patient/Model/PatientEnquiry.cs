@@ -1,11 +1,11 @@
-namespace In.ProjectEKA.HipLibrary.Patient.Model.Request
+namespace In.ProjectEKA.HipLibrary.Patient.Model
 {
     using System;
     using System.Collections.Generic;
     using System.Text.Json.Serialization;
     using System.Xml.Serialization;
 
-    public class Patient
+    public class PatientEnquiry
     {
         [JsonPropertyName("id")]
         [XmlElement("id")]
@@ -35,8 +35,13 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model.Request
         [XmlElement("dateOfBirth")]
         public DateTime DateOfBirth { get; }
 
-        public Patient(string id, IEnumerable<Identifier> verifiedIdentifiers,
-            IEnumerable<Identifier> unverifiedIdentifiers, string firstName, string lastName, Gender gender,
+        public PatientEnquiry(
+            string id, 
+            IEnumerable<Identifier> verifiedIdentifiers,
+            IEnumerable<Identifier> unverifiedIdentifiers, 
+            string firstName, 
+            string lastName, 
+            Gender gender,
             DateTime dateOfBirth)
         {
             Id = id;

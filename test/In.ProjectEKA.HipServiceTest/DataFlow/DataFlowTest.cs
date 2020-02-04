@@ -2,9 +2,9 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
 {
     using System;
     using FluentAssertions;
-    using HipLibrary.Patient.Model.Response;
     using In.ProjectEKA.HipService.DataFlow;
     using Builder;
+    using HipLibrary.Patient.Model;
     using Moq;
     using Optional;
     using Xunit;
@@ -43,7 +43,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var request = TestBuilder.HealthInformationRequest(transactionId);
             dataFlowRepository.Setup(d => d.SaveRequestFor(transactionId, request))
                 .ReturnsAsync(Option.Some(new Exception()));
-            var expectedError = new ErrorResponse(new Error(ErrorCode.ServerInternalError,
+            var expectedError = new ErrorRepresentation(new Error(ErrorCode.ServerInternalError,
                 ErrorMessage.InternalServerError));
             
             var (_, errorResponse) = await dataFlowService.HealthInformationRequestFor(request);

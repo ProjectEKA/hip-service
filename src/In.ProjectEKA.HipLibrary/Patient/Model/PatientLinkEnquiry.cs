@@ -1,9 +1,9 @@
-namespace In.ProjectEKA.HipLibrary.Patient.Model.Request
+namespace In.ProjectEKA.HipLibrary.Patient.Model
 {
     using System.Text.Json.Serialization;
     using System.Xml.Serialization;
 
-    public class PatientLinkReferenceRequest
+    public class PatientLinkEnquiry
     {
         [JsonPropertyName("transactionId")]
         [XmlElement("transactionId")]
@@ -11,9 +11,9 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model.Request
         
         [JsonPropertyName("patient")]
         [XmlElement("patient")]
-        public Link Patient { get; }
+        public LinkEnquiry Patient { get; }
         
-        public PatientLinkReferenceRequest(string transactionId, Link patient)
+        public PatientLinkEnquiry(string transactionId, LinkEnquiry patient)
         {
             TransactionId = transactionId;
             Patient = patient;

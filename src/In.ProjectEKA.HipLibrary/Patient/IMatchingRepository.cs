@@ -6,6 +6,6 @@ namespace In.ProjectEKA.HipLibrary.Patient
 
     public interface IMatchingRepository
     {
-        Task<IQueryable<Patient>> Where(Model.Request.DiscoveryRequest request);
+        Task<IQueryable<Patient>> Where(DiscoveryRequest request);
     }
 }

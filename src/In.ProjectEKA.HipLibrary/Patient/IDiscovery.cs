@@ -2,11 +2,10 @@ namespace In.ProjectEKA.HipLibrary.Patient
 {
     using System;
     using System.Threading.Tasks;
-    using Model.Request;
-    using Model.Response;
+    using Model;
 
     public interface IDiscovery
     {
-        Task<Tuple<DiscoveryResponse, ErrorResponse>> PatientFor(DiscoveryRequest request);
+        Task<Tuple<DiscoveryRepresentation, ErrorRepresentation>> PatientFor(DiscoveryRequest request);
     }
 }

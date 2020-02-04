@@ -6,9 +6,7 @@ namespace In.ProjectEKA.DefaultHipTest.Discovery
     using DefaultHip.Discovery;
     using FluentAssertions;
     using HipLibrary.Patient.Model;
-    using HipLibrary.Patient.Model.Request;
     using Xunit;
-    using Patient = HipLibrary.Patient.Model.Request.Patient;
 
     [Collection("Patient Repository Tests")]
     public class PatientMatchingRepositoryTest
@@ -19,13 +17,13 @@ namespace In.ProjectEKA.DefaultHipTest.Discovery
             var patientMatchingRepository = new PatientMatchingRepository("patients.json");
             var phoneNumberIdentifier = new Identifier(IdentifierType.MOBILE, "+919999999999");
             var request = new DiscoveryRequest(
-                new Patient(string.Empty,
+                new PatientEnquiry(string.Empty,
                     new List<Identifier> {phoneNumberIdentifier},
                     null,
                     string.Empty,
                     string.Empty,
                     Gender.F,
-                    DateTime.Now),
+                    DateTime.Now), 
                 string.Empty);
 
             var patientInfo = await patientMatchingRepository.Where(request);

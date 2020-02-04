@@ -1,4 +1,4 @@
-namespace In.ProjectEKA.HipLibrary.Patient.Model.Request
+namespace In.ProjectEKA.HipLibrary.Patient.Model
 {
     using System.Text.Json.Serialization;
     using System.Xml.Serialization;
@@ -7,13 +7,13 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model.Request
     {
         [JsonPropertyName("patient")]
         [XmlElement("patient")]
-        public Patient Patient { get; }
+        public PatientEnquiry Patient { get; }
 
         [JsonPropertyName("transactionId")]
         [XmlElement("transactionId")]
         public string TransactionId { get; }
 
-        public DiscoveryRequest(Patient patient, string transactionId)
+        public DiscoveryRequest(PatientEnquiry patient, string transactionId)
         {
             Patient = patient;
             TransactionId = transactionId;

@@ -14,6 +14,6 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
 
         public string LastName { get; set; }
 
-        public IEnumerable<CareContext> CareContexts { get; set; }
+        public IEnumerable<CareContextRepresentation> CareContexts { get; set; }
     }
 }

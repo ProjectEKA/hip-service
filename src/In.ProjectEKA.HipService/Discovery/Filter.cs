@@ -3,7 +3,6 @@ namespace In.ProjectEKA.HipService.Discovery
     using System.Collections.Generic;
     using System.Linq;
     using HipLibrary.Patient.Model;
-    using HipLibrary.Patient.Model.Request;
     using Ranker;
     using static Ranker.PatientWithRankBuilder;
     using Patient = HipLibrary.Patient.Model.Patient;
@@ -55,7 +54,7 @@ namespace In.ProjectEKA.HipService.Discovery
                 .Append(new IdentifierExt(IdentifierTypeExt.GENDER, request.Patient.Gender.ToString()));
         }
 
-        public IEnumerable<HipLibrary.Patient.Model.Response.Patient> Do(IEnumerable<Patient> patients,
+        public IEnumerable<PatientEnquiryRepresentation> Do(IEnumerable<Patient> patients,
             DiscoveryRequest request)
         {
             return patients
@@ -74,11 +73,11 @@ namespace In.ProjectEKA.HipService.Discovery
                             .Select(program =>
                                 new CareContextRepresentation(
                                     program.ReferenceNumber,
-                                    program.Description))
+                                    program.Display))
                             .ToList()
                         : new List<CareContextRepresentation>();
 
-                    return new HipLibrary.Patient.Model.Response.Patient(
+                    return new PatientEnquiryRepresentation(
                         rankedPatient.Patient.Identifier,
                         $"{rankedPatient.Patient.FirstName} {rankedPatient.Patient.LastName}",
                         careContexts, rankedPatient.Meta.Select(meta => meta.Field));

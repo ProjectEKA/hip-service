@@ -1,15 +1,15 @@
-namespace In.ProjectEKA.HipLibrary.Patient.Model.Response
+namespace In.ProjectEKA.HipLibrary.Patient.Model
 {
     using System.Text.Json.Serialization;
     using System.Xml.Serialization;
 
-    public class ErrorResponse
+    public class ErrorRepresentation
     {
         [JsonPropertyName("error")]
         [XmlElement("error")]
         public Error Error { get; }
         
-        public ErrorResponse(Error error)
+        public ErrorRepresentation(Error error)
         {
             Error = error;
         }

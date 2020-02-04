@@ -1,10 +1,10 @@
-namespace In.ProjectEKA.HipLibrary.Patient.Model.Response
+namespace In.ProjectEKA.HipLibrary.Patient.Model
 {
     using System.Collections.Generic;
     using System.Text.Json.Serialization;
     using System.Xml.Serialization;
 
-    public class LinkPatient
+    public class LinkConfirmationRepresentation
     {
         [JsonPropertyName("referenceNumber")]
         [XmlElement("referenceNumber")]
@@ -18,7 +18,7 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model.Response
         [XmlElement("careContexts")]
         public IEnumerable<CareContextRepresentation> CareContexts { get; }
 
-        public LinkPatient(string referenceNumber, string display, IEnumerable<CareContextRepresentation> careContexts)
+        public LinkConfirmationRepresentation(string referenceNumber, string display, IEnumerable<CareContextRepresentation> careContexts)
         {
             ReferenceNumber = referenceNumber;
             Display = display;

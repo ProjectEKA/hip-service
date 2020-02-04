@@ -1,7 +1,7 @@
 namespace In.ProjectEKA.HipService.Link
 {
     using System.Collections.Generic;
-    using HipLibrary.Patient.Model.Request;
+    using HipLibrary.Patient.Model;
 
     public class LinkReference
     {
@@ -9,9 +9,9 @@ namespace In.ProjectEKA.HipService.Link
         
         public string ReferenceNumber { get; }
         
-        public IEnumerable<CareContext> CareContexts { get; }
+        public IEnumerable<CareContextEnquiry> CareContexts { get; }
 
-        public LinkReference(string consentManagerUserId, string referenceNumber, IEnumerable<CareContext> careContexts)
+        public LinkReference(string consentManagerUserId, string referenceNumber, IEnumerable<CareContextEnquiry> careContexts)
         {
             ConsentManagerUserId = consentManagerUserId;
             ReferenceNumber = referenceNumber;

@@ -1,4 +1,4 @@
-namespace In.ProjectEKA.HipLibrary.Patient.Model.Response
+namespace In.ProjectEKA.HipLibrary.Patient.Model
 {
     public enum ErrorCode
     {

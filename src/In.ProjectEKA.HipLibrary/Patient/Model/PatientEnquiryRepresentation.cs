@@ -1,10 +1,10 @@
-namespace In.ProjectEKA.HipLibrary.Patient.Model.Response
+namespace In.ProjectEKA.HipLibrary.Patient.Model
 {
     using System.Collections.Generic;
     using System.Text.Json.Serialization;
     using System.Xml.Serialization;
 
-    public class Patient
+    public class PatientEnquiryRepresentation
     {
         [JsonPropertyName("referenceNumber")]
         [XmlElement("referenceNumber")]
@@ -22,7 +22,10 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model.Response
         [XmlElement("matchedBy")]
         public IEnumerable<string> MatchedBy { get; }
 
-        public Patient(string referenceNumber, string display, IEnumerable<CareContextRepresentation> careContexts,
+        public PatientEnquiryRepresentation(
+            string referenceNumber, 
+            string display, 
+            IEnumerable<CareContextRepresentation> careContexts,
             IEnumerable<string> matchedBy)
         {
             ReferenceNumber = referenceNumber;
