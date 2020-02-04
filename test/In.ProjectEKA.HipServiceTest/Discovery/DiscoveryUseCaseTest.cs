@@ -1,4 +1,4 @@
-namespace In.ProjectEKA.HipServiceTest.Discovery.Patient
+namespace In.ProjectEKA.HipServiceTest.Discovery
 {
     using System;
     using System.Collections.Generic;

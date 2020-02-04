@@ -8,7 +8,7 @@ using Optional;
 using Xunit;
 using PatientLinkRefRequest = HipLibrary.Patient.Model.Request.PatientLinkReferenceRequest;
 
-namespace In.ProjectEKA.HipServiceTest.Link.Patient
+namespace In.ProjectEKA.HipServiceTest.Link
 {
     using Builder;
     using HipLibrary.Patient;

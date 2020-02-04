@@ -1,4 +1,4 @@
-namespace In.ProjectEKA.HipServiceTest.Discovery.Patient.Ranker
+namespace In.ProjectEKA.HipServiceTest.Discovery.Ranker
 {
     using FluentAssertions;
     using HipLibrary.Patient.Model.Response;

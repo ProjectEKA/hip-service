@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
-namespace In.ProjectEKA.HipServiceTest.Link.Patient
+namespace In.ProjectEKA.HipServiceTest.Link
 {
     using System;
     using Builder;

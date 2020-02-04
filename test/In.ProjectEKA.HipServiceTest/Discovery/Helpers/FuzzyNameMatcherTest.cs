@@ -1,4 +1,4 @@
-namespace In.ProjectEKA.HipServiceTest.Discovery.Patient.Helpers
+namespace In.ProjectEKA.HipServiceTest.Discovery.Helpers
 {
     using FluentAssertions;
     using HipService.Discovery.Matcher;
