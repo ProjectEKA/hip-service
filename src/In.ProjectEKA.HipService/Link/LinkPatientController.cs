@@ -1,6 +1,6 @@
-using PatientLinkRequestLib = HipLibrary.Patient.Model.Request.PatientLinkRequest;
-using PatientLinkRefRequest = HipLibrary.Patient.Model.Request.PatientLinkReferenceRequest;
-using LinkLib = HipLibrary.Patient.Model.Request.Link;
+using PatientLinkRequestLib = In.ProjectEKA.HipLibrary.Patient.Model.Request.PatientLinkRequest;
+using PatientLinkRefRequest = In.ProjectEKA.HipLibrary.Patient.Model.Request.PatientLinkReferenceRequest;
+using LinkLib = In.ProjectEKA.HipLibrary.Patient.Model.Request.Link;
 namespace In.ProjectEKA.HipService.Link
 {
     using System;

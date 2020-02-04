@@ -1,9 +1,5 @@
 using System;
 using FluentAssertions;
-using HipLibrary.Patient;
-using HipLibrary.Patient.Model;
-using HipLibrary.Patient.Model.Request;
-using HipLibrary.Patient.Model.Response;
 using In.ProjectEKA.DefaultHip.Link;
 using In.ProjectEKA.HipService.Link;
 using In.ProjectEKA.HipServiceTest.Link.Builder;
@@ -11,11 +7,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Xunit;
-using CareContext = HipLibrary.Patient.Model.Request.CareContext;
 
 namespace In.ProjectEKA.HipServiceTest.Link
 {
+    using HipLibrary.Patient;
+    using HipLibrary.Patient.Model;
+    using HipLibrary.Patient.Model.Response;
     using HipService.Discovery;
+    using CareContext = HipLibrary.Patient.Model.Request.CareContext;
     using PatientLinkRefRequest = HipLibrary.Patient.Model.Request.PatientLinkReferenceRequest;
     using LinkLib = HipLibrary.Patient.Model.Request.Link;
     using LinkPatient = HipLibrary.Patient.Model.Response.LinkPatient;

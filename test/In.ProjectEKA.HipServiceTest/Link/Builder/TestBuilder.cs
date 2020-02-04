@@ -1,13 +1,13 @@
 using Bogus;
-using HipLibrary.Patient.Model.Request;
 using In.ProjectEKA.DefaultHip.Link;
 using In.ProjectEKA.HipService.Link;
 using Microsoft.Extensions.Configuration;
-using PatientLinkReferenceRequest = In.ProjectEKA.HipService.Link.PatientLinkReferenceRequest;
 
 namespace In.ProjectEKA.HipServiceTest.Link.Builder
 {
     using Bogus;
+    using HipLibrary.Patient.Model.Request;
+    using PatientLinkReferenceRequest = HipService.Link.PatientLinkReferenceRequest;
 
     public static class TestBuilder
     {

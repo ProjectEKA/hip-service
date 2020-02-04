@@ -1,23 +1,24 @@
 using System;
 using System.Collections.Generic;
 using FluentAssertions;
-using HipLibrary.Patient.Model;
-using HipLibrary.Patient.Model.Response;
 using Moq;
 using Optional;
 using Xunit;
-using PatientLinkRefRequest = HipLibrary.Patient.Model.Request.PatientLinkReferenceRequest;
+using PatientLinkRefRequest = In.ProjectEKA.HipLibrary.Patient.Model.Request.PatientLinkReferenceRequest;
 
 namespace In.ProjectEKA.HipServiceTest.Link
 {
     using Builder;
     using HipLibrary.Patient;
+    using HipLibrary.Patient.Model;
+    using HipLibrary.Patient.Model.Response;
     using HipService.Discovery;
     using HipService.Link;
     using HipService.Link.Model;
     using CareContext = HipLibrary.Patient.Model.Request.CareContext;
     using LinkLib = HipLibrary.Patient.Model.Request.Link;
-    using CareContextSer = CareContext;
+    using CareContextSer = HipLibrary.Patient.Model.CareContext;
+    using LinkPatient = HipService.Link.LinkPatient;
     using PatientSer = HipLibrary.Patient.Model.Patient;
 
     public class LinkPatientTest
