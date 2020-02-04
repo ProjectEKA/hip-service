@@ -31,6 +31,8 @@ namespace In.ProjectEKA.HipService
     using Newtonsoft.Json;
     using Serilog;
     using Task = System.Threading.Tasks.Task;
+    using TMHHip.Discovery;
+    using TMHHip.Link;
 
     public class Startup
     {
