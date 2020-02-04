@@ -1,13 +1,15 @@
-using System;
-using System.Threading.Tasks;
-using HipLibrary.Patient;
-using HipLibrary.Patient.Model.Response;
-using Microsoft.AspNetCore.Mvc;
 using PatientLinkRequestLib = HipLibrary.Patient.Model.Request.PatientLinkRequest;
 using PatientLinkRefRequest = HipLibrary.Patient.Model.Request.PatientLinkReferenceRequest;
 using LinkLib = HipLibrary.Patient.Model.Request.Link;
 namespace In.ProjectEKA.HipService.Link
 {
+    using System;
+    using System.Threading.Tasks;
+    using Discovery;
+    using HipLibrary.Patient;
+    using HipLibrary.Patient.Model.Response;
+    using Microsoft.AspNetCore.Mvc;
+
     [ApiController]
     [Route("patients/link")]
     public class LinkPatientController : ControllerBase

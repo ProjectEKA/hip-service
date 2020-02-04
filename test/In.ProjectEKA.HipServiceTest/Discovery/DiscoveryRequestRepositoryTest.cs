@@ -4,9 +4,9 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
     using HipService.Discovery;
     using HipService.Discovery.Database;
     using HipService.Discovery.Model;
-    using static Builder.TestBuilders;
     using Microsoft.EntityFrameworkCore;
     using Xunit;
+    using static Builder.TestBuilders;
 
     public class DiscoveryRequestRepositoryTest
     {

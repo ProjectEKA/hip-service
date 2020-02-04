@@ -4,10 +4,11 @@ namespace In.ProjectEKA.HipService.Link
     using System.Linq;
     using System.Threading.Tasks;
     using System.Transactions;
+    using Discovery;
     using HipLibrary.Patient;
     using HipLibrary.Patient.Model;
     using HipLibrary.Patient.Model.Response;
-    using IPatientRepository = HipLibrary.Patient.IPatientRepository;
+    using Patient = HipLibrary.Patient.Model.Patient;
 
     public class LinkPatient : ILink
     {
@@ -82,7 +83,7 @@ namespace In.ProjectEKA.HipService.Link
             return new Tuple<PatientLinkReferenceResponse, ErrorResponse>(patientLinkReferenceResponse, null);
         }
 
-        private Tuple<HipLibrary.Patient.Model.Patient, ErrorResponse> PatientAndCareContextValidation(
+        private Tuple<Patient, ErrorResponse> PatientAndCareContextValidation(
             HipLibrary.Patient.Model.Request.PatientLinkReferenceRequest request)
         {
             return patientRepository.PatientWith(request.Patient.ReferenceNumber).Map(
@@ -96,13 +97,13 @@ namespace In.ProjectEKA.HipService.Link
                                 .Description)).ToList();
                     if (programs.Count != request.Patient.CareContexts.Count())
                     {
-                        return new Tuple<HipLibrary.Patient.Model.Patient, ErrorResponse>
+                        return new Tuple<Patient, ErrorResponse>
                         (null, new ErrorResponse(new Error(ErrorCode.CareContextNotFound,
                             ErrorMessage.CareContextNotFound)));
                     }
-                    return new Tuple<HipLibrary.Patient.Model.Patient, ErrorResponse>(patient, null);
+                    return new Tuple<Patient, ErrorResponse>(patient, null);
                 }).ValueOr(
-                new Tuple<HipLibrary.Patient.Model.Patient, ErrorResponse>(
+                new Tuple<Patient, ErrorResponse>(
                     null,
                     new ErrorResponse(new Error(ErrorCode.NoPatientFound, ErrorMessage.NoPatientFound))));
         }

@@ -15,6 +15,7 @@ using CareContext = HipLibrary.Patient.Model.Request.CareContext;
 
 namespace In.ProjectEKA.HipServiceTest.Link
 {
+    using HipService.Discovery;
     using PatientLinkRefRequest = HipLibrary.Patient.Model.Request.PatientLinkReferenceRequest;
     using LinkLib = HipLibrary.Patient.Model.Request.Link;
     using LinkPatient = HipLibrary.Patient.Model.Response.LinkPatient;

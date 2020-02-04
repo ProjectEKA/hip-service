@@ -4,8 +4,8 @@ namespace In.ProjectEKA.HipService.Discovery
     using System.Linq;
     using System.Threading.Tasks;
     using HipLibrary.Patient;
+    using HipLibrary.Patient.Model.Request;
     using HipLibrary.Patient.Model.Response;
-    using DiscoveryRequest = HipLibrary.Patient.Model.Request.DiscoveryRequest;
 
     public class PatientDiscovery : IDiscovery
     {

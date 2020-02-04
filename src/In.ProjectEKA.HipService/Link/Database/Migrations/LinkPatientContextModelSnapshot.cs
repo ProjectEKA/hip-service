@@ -7,7 +7,7 @@ namespace In.ProjectEKA.HipService.Link.Database.Migrations
     using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
     [DbContext(typeof(LinkPatientContext))]
-    partial class LinkPatientContextModelSnapshot : ModelSnapshot
+    class LinkPatientContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

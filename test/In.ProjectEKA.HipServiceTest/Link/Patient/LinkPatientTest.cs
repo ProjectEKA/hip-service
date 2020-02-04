@@ -12,6 +12,7 @@ namespace In.ProjectEKA.HipServiceTest.Link.Patient
 {
     using Builder;
     using HipLibrary.Patient;
+    using HipService.Discovery;
     using HipService.Link;
     using HipService.Link.Model;
     using CareContext = HipLibrary.Patient.Model.Request.CareContext;

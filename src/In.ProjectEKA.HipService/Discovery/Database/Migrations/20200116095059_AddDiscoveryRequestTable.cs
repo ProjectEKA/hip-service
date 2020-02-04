@@ -1,9 +1,9 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-
-namespace In.ProjectEKA.HipService.Discovery.Database.Migrations
+﻿namespace In.ProjectEKA.HipService.Discovery.Database.Migrations
 {
+    using System;
+    using Microsoft.EntityFrameworkCore.Migrations;
+    using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+
     public partial class AddDiscoveryRequestTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -12,10 +12,10 @@ namespace In.ProjectEKA.HipService.Discovery.Database.Migrations
                 name: "DiscoveryRequest",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>()
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    TransactionId = table.Column<string>(maxLength: 50, nullable: false),
-                    ConsentManagerUserId = table.Column<string>(maxLength: 50, nullable: false),
+                    TransactionId = table.Column<string>(maxLength: 50),
+                    ConsentManagerUserId = table.Column<string>(maxLength: 50),
                     Timestamp = table.Column<DateTime>(nullable: false, defaultValueSql: "now()")
                 },
                 constraints: table =>

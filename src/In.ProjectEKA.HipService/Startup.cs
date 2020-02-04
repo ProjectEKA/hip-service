@@ -1,8 +1,15 @@
 
 namespace In.ProjectEKA.HipService
 {
+    using System.Net.Http;
     using System.Text.Json;
+    using DefaultHip.Discovery;
+    using DefaultHip.Link;
+    using Discovery;
+    using Discovery.Database;
     using HipLibrary.Patient;
+    using Link;
+    using Link.Database;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;
@@ -10,13 +17,6 @@ namespace In.ProjectEKA.HipService
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Middleware;
-    using System.Net.Http;
-    using DefaultHip.Discovery;
-    using Discovery;
-    using Discovery.Database;
-    using In.ProjectEKA.DefaultHip.Link;
-    using Link;
-    using Link.Database;
 
     public class Startup
     {
@@ -44,7 +44,7 @@ namespace In.ProjectEKA.HipService
                 .AddSingleton<IPatientRepository>(new PatientRepository("Resources/patients.json"))
                 .AddScoped<ILinkPatientRepository, LinkPatientRepository>()
                 .AddSingleton<IMatchingRepository>(new PatientMatchingRepository("Resources/patients.json"))
-                .AddScoped<Discovery.IDiscoveryRequestRepository, DiscoveryRequestRepository>()
+                .AddScoped<IDiscoveryRequestRepository, DiscoveryRequestRepository>()
                 .AddScoped<PatientDiscovery>()
                 .AddTransient<IDiscovery, PatientDiscovery>()
                 .AddScoped<IReferenceNumberGenerator, ReferenceNumberGenerator>()

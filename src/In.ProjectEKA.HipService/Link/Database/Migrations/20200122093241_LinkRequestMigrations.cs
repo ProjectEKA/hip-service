@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace In.ProjectEKA.HipService.Link.Database.Migrations
+﻿namespace In.ProjectEKA.HipService.Link.Database.Migrations
 {
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class LinkRequestMigrations : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -10,7 +10,7 @@ namespace In.ProjectEKA.HipService.Link.Database.Migrations
                 name: "LinkRequest",
                 columns: table => new
                 {
-                    LinkReferenceNumber = table.Column<string>(nullable: false),
+                    LinkReferenceNumber = table.Column<string>(),
                     PatientReferenceNumber = table.Column<string>(nullable: true),
                     ConsentManagerId = table.Column<string>(nullable: true),
                     ConsentManagerUserId = table.Column<string>(nullable: true),
@@ -25,8 +25,8 @@ namespace In.ProjectEKA.HipService.Link.Database.Migrations
                 name: "LinkedCareContext",
                 columns: table => new
                 {
-                    CareContextNumber = table.Column<string>(nullable: false),
-                    LinkReferenceNumber = table.Column<string>(nullable: false)
+                    CareContextNumber = table.Column<string>(),
+                    LinkReferenceNumber = table.Column<string>()
                 },
                 constraints: table =>
                 {
