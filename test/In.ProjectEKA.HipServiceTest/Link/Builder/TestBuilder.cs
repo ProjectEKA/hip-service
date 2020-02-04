@@ -1,4 +1,5 @@
 using In.ProjectEKA.HipService.Link;
+using PatientLinkReferenceRequest = In.ProjectEKA.HipService.Link.PatientLinkReferenceRequest;
 
 namespace In.ProjectEKA.HipServiceTest.Link.Builder
 {

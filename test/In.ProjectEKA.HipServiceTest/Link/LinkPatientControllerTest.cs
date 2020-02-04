@@ -1,5 +1,6 @@
 using System;
 using FluentAssertions;
+
 using In.ProjectEKA.HipService.Link;
 using In.ProjectEKA.HipServiceTest.Link.Builder;
 using Microsoft.AspNetCore.Http;
@@ -39,7 +40,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
             var transactionId = faker.Random.Hash();
             var linkRequest = new PatientLinkReferenceRequest(
                 transactionId,
-                new LinkReference(
+                new HipService.Link.LinkReference(
                     consentManagerUserId,
                     patientReference,
                     new[] {new CareContextEnquiry(programRefNo)}));

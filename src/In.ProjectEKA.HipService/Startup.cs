@@ -2,8 +2,6 @@ namespace In.ProjectEKA.HipService
 {
     using System.Net.Http;
     using System.Text.Json;
-    using DefaultHip.Discovery;
-    using DefaultHip.Link;
     using Discovery;
     using Discovery.Database;
     using HipLibrary.Patient;
@@ -20,6 +18,8 @@ namespace In.ProjectEKA.HipService
     using DataFlow.Database;
     using Serilog;
     using MessagingQueue;
+    using TMHHip.Discovery;
+    using TMHHip.Link;
 
     public class Startup
     {
@@ -47,10 +47,10 @@ namespace In.ProjectEKA.HipService
                 .AddDbContext<DataFlowContext>(options =>
                     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
                         x => x.MigrationsAssembly("In.ProjectEKA.HipService")))
-                .AddSingleton<IPatientRepository>(new PatientRepository("Resources/patients.json"))
                 .AddRabbit(Configuration)
+                .AddSingleton<IMatchingRepository, PatientMatchingRepository>()
                 .AddScoped<ILinkPatientRepository, LinkPatientRepository>()
-                .AddSingleton<IMatchingRepository>(new PatientMatchingRepository("Resources/patients.json"))
+                .AddSingleton<IPatientRepository, PatientRepository>()
                 .AddScoped<IDiscoveryRequestRepository, DiscoveryRequestRepository>()
                 .AddScoped<PatientDiscovery>()
                 .AddTransient<IDiscovery, PatientDiscovery>()

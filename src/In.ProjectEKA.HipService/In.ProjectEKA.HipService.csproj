@@ -29,8 +29,12 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\In.ProjectEKA.DefaultHip\In.ProjectEKA.DefaultHip.csproj" />
         <ProjectReference Include="..\In.ProjectEKA.HipLibrary\In.ProjectEKA.HipLibrary.csproj" />
+      <ProjectReference Include="..\In.ProjectEKA.TMHHip\In.ProjectEKA.TMHHip.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Discovery\Database\Migrations" />
     </ItemGroup>
 
 </Project>
