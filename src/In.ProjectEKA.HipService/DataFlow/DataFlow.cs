@@ -16,7 +16,9 @@ namespace In.ProjectEKA.HipService.DataFlow
         public async Task<Tuple<HealthInformationResponse, ErrorResponse>> HealthInformationRequestFor(HealthInformationRequest request)
         {
             if (!ValidateConsentArtefact(request.Consent))
+            {
                 return new Tuple<HealthInformationResponse, ErrorResponse>(null, null);
+            }
             
             var result = await dataFlowRepository.SaveRequestFor(request.TransactionId, request)
                 .ConfigureAwait(false);
