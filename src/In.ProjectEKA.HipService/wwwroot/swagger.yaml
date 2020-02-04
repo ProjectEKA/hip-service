@@ -223,7 +223,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
-  /health-information:
+  /health-information/request:
     post:
       tags:
         - data flow
@@ -265,7 +265,7 @@ paths:
         '401':
           description: >
             **Causes:**
-              * Unauthorized request
+              * ConsentManagerId is not present
           content:
             application/json:
               schema:
