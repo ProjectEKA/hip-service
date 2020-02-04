@@ -1,12 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using In.ProjectEKA.DefaultHip.Discovery.Helper;
-using In.ProjectEKA.DefaultHip.Discovery.Model;
 using Optional;
 
 namespace In.ProjectEKA.DefaultHip.Link
 {
+    using HipLibrary.Patient;
+    using HipLibrary.Patient.Model;
+    using Patient;
+
     public class PatientRepository : IPatientRepository
     {
         private readonly string filePath;
@@ -30,7 +32,7 @@ namespace In.ProjectEKA.DefaultHip.Link
             }
         }
 
-        public IEnumerable<Patient> All()
+        private IEnumerable<Patient> All()
         {
             var patientsInfo = FileReader.ReadJson(filePath);
             return patientsInfo;
