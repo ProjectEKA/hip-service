@@ -1,8 +1,8 @@
-using System.Collections.Generic;
-using HipLibrary.Patient.Model.Request;
-
 namespace In.ProjectEKA.HipService.Link
 {
+    using System.Collections.Generic;
+    using HipLibrary.Patient.Model.Request;
+
     public class LinkReference
     {
         public string ConsentManagerUserId { get; }
