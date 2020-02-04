@@ -16,6 +16,7 @@ servers:
 tags:
   - name: discovery
   - name: link
+  - name: data flow
 
 paths:
   /patients/discover:
@@ -221,6 +222,71 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+
+  /health-information/{transactionId}:
+    post:
+      tags:
+        - data flow
+      parameters:
+        - $ref: '#/components/parameters/TranscationId'
+      summary: Acknowledge the data request from consent manager
+
+      description: >
+        Acknowledge the data request from consent manager
+          1. **Validate consent artefact id**
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HealthInformationRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/HealthInformationRequest'
+      responses:
+        '200':
+          description: An Acknowledged data transfer request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthInformationRequestResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/HealthInformationRequestResponse'
+        '400':
+          description: >
+            **Causes:**
+              * Consent Artefact id not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: >
+            **Causes:**
+              * Unauthorized request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: >
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 components:
   parameters:
     LinkRefNumber:
@@ -232,6 +298,15 @@ components:
         type: string
         format: uuid
         example: b2b8c932-2f70-4b1e-a3b5-2cb19b82a18d
+    TranscationId:
+      name: transactionId
+      in: path
+      required: true
+      description: Transcation id for keeping track of requests.
+      schema:
+        type: string
+        format: uuid
+        example: a1s2c932-2f70-3ds3-a3b5-2sfd46b12a18d
   schemas:
     PatientDiscoveryRequest:
       type: object
@@ -434,3 +509,50 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/CareContextRepresentation'
+
+    HealthInformationRequest:
+      type: object
+      required:
+        - consentArtefactId
+        - callBackUrl
+      properties:
+        consent:
+          $ref: '#/components/schemas/consent'
+        hiDataRange:
+          $ref: '#/components/schemas/hiDataRange'
+        callBackUrl:
+          type: string
+        keyMaterial:
+          type: object
+
+    HealthInformationRequestResponse:
+      type: object
+      required:
+        - transactionId
+      properties:
+        transactionId:
+          type: string
+
+    consent:
+      type: object
+      required:
+        - id
+        - digitalSignature
+      properties:
+        id:
+          type: string
+        digitalSignature:
+          type: string
+
+    hiDataRange:
+      type: object
+      required:
+        - from
+        - to
+      properties:
+        from:
+          type: string
+          format: date-time
+        to:
+          type: string
+          format: date-time
