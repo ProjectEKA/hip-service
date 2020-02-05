@@ -4,6 +4,7 @@ WORKDIR /app
 # Copy csproj and restore as distinct layers
 COPY HipServiceSrc.sln ./
 COPY src/In.ProjectEKA.DefaultHip/*.csproj ./src/In.ProjectEKA.DefaultHip/
+COPY src/In.ProjectEKA.HipLibrary/*.csproj ./src/In.ProjectEKA.HipLibrary/
 COPY src/In.ProjectEKA.HipService/*.csproj ./src/In.ProjectEKA.HipService/
 RUN dotnet restore
 
