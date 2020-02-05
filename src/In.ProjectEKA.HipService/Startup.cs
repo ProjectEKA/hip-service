@@ -17,6 +17,8 @@ namespace In.ProjectEKA.HipService
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Middleware;
+    using DataFlow;
+    using DataFlow.Database;
 
     public class Startup
     {
@@ -41,6 +43,9 @@ namespace In.ProjectEKA.HipService
                 .AddDbContext<DiscoveryContext>(options =>
                     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
                         x => x.MigrationsAssembly("In.ProjectEKA.HipService")))
+                .AddDbContext<DataFlowContext>(options =>
+                    options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
+                        x => x.MigrationsAssembly("In.ProjectEKA.HipService")))
                 .AddSingleton<IPatientRepository>(new PatientRepository("Resources/patients.json"))
                 .AddScoped<ILinkPatientRepository, LinkPatientRepository>()
                 .AddSingleton<IMatchingRepository>(new PatientMatchingRepository("Resources/patients.json"))
@@ -53,6 +58,8 @@ namespace In.ProjectEKA.HipService
                 .AddSingleton(HttpClient)
                 .Configure<OtpServiceConfiguration>(Configuration.GetSection("OtpService"))
                 .AddScoped<IPatientVerification, PatientVerification>()
+                .AddScoped<IDataFlowRepository, DataFlowRepository>()
+                .AddTransient<IDataFlow, DataFlow.DataFlow>()
                 .AddRouting(options => options.LowercaseUrls = true)
                 .AddControllers()
                 .AddNewtonsoftJson(options =>{})
@@ -73,6 +80,8 @@ namespace In.ProjectEKA.HipService
             linkContext.Database.Migrate();
             var discoveryContext = serviceScope.ServiceProvider.GetService<DiscoveryContext>();
             discoveryContext.Database.Migrate();
+            var dataFlowContext = serviceScope.ServiceProvider.GetService<DataFlowContext>();
+            dataFlowContext.Database.Migrate();
         }
     }
 }
