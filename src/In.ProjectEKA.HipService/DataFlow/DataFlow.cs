@@ -17,7 +17,9 @@ namespace In.ProjectEKA.HipService.DataFlow
         {
             if (!IsValidConsentArtefact(request.Consent))
             {
-                return new Tuple<HealthInformationResponse, ErrorRepresentation>(null, null);
+                var errorRepresentation = new ErrorRepresentation(new Error(ErrorCode.ContextArtefactIdNotFound,
+                    ErrorMessage.ContextArtefactIdNotFound));
+                return new Tuple<HealthInformationResponse, ErrorRepresentation>(null, errorRepresentation);
             }
             
             var result = await dataFlowRepository.SaveRequestFor(request.TransactionId, request)

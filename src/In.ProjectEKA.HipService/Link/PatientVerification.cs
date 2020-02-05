@@ -27,7 +27,7 @@ namespace In.ProjectEKA.HipService.Link
         public async Task<OtpMessage> SendTokenFor(Session session)
         {
             var urlConfig = otpService.Value.BaseUrl;
-            var uri = new Uri($"{urlConfig}/otp/link");
+            var uri = new Uri(urlConfig + "/otp");
             var verifyMessage = await PostCallToOtpServer(uri
                 , CreateHttpContent(session)).ConfigureAwait(false);
             return verifyMessage.ValueOr((OtpMessage) null);
@@ -36,12 +36,10 @@ namespace In.ProjectEKA.HipService.Link
         public async Task<OtpMessage> Verify(string sessionId, string value)
         {
             var urlConfig = otpService.Value.BaseUrl;
-            var uri = new Uri($"{urlConfig}/otp/verify");
-            var verifyOtpRequest = new OtpVerificationRequest(sessionId, value);
-            var verifyMessage = await PostCallToOtpServer(
-                    uri,
-                    CreateHttpContent(verifyOtpRequest))
-                .ConfigureAwait(false);
+            var uri = new Uri($"{urlConfig}/otp/{sessionId}/verify");
+            var verifyOtpRequest = new OtpVerificationRequest(value);
+            var verifyMessage = await PostCallToOtpServer(uri, 
+                CreateHttpContent(verifyOtpRequest)).ConfigureAwait(false);
             return verifyMessage.ValueOr((OtpMessage) null);
         }
 
@@ -60,6 +58,7 @@ namespace In.ProjectEKA.HipService.Link
                 {
                     return Option.None<OtpMessage>();
                 }
+                
                 var responseContent = response.Content;
                 using var reader = new StreamReader(await responseContent.ReadAsStreamAsync());
                 var result = await reader.ReadToEndAsync().ConfigureAwait(false);

@@ -4,7 +4,6 @@ namespace In.ProjectEKA.OtpService.Otp
     {
         Success = 1000,
         OtpInvalid,
-        OtpGenerationFailed,
         OtpExpired,
         OtpValid,
         InternalServerError,

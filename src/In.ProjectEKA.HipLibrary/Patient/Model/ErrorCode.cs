@@ -10,6 +10,7 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
         OtpGenerationFailed,
         NoLinkRequestFound,
         ServerInternalError,
-        DiscoveryRequestNotFound
+        DiscoveryRequestNotFound,
+        ContextArtefactIdNotFound
     }
 }
