@@ -6,7 +6,7 @@ namespace In.ProjectEKA.HipService.Link
     using System.Net.Http.Headers;
     using System.Text;
     using System.Threading.Tasks;
-    using HipLibrary.Patient.Model.Response;
+    using HipLibrary.Patient.Model;
     using Microsoft.Extensions.Options;
     using Newtonsoft.Json;
     using Optional;

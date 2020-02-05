@@ -7,7 +7,6 @@ namespace In.ProjectEKA.HipService.Link
     using Discovery;
     using HipLibrary.Patient;
     using HipLibrary.Patient.Model;
-    using HipLibrary.Patient.Model.Response;
     using Patient = HipLibrary.Patient.Model.Patient;
 
     public class LinkPatient : ILink
@@ -32,11 +31,11 @@ namespace In.ProjectEKA.HipService.Link
             this.discoveryRequestRepository = discoveryRequestRepository;
         }
 
-        public async Task<Tuple<PatientLinkReferenceResponse, ErrorResponse>> LinkPatients(
-            HipLibrary.Patient.Model.Request.PatientLinkReferenceRequest request)
+        public async Task<Tuple<PatientLinkEnquiryRepresentation, ErrorRepresentation>> LinkPatients(
+            PatientLinkEnquiry request)
         {
             var (patient, error) = PatientAndCareContextValidation(request);
-            if (error != null) return new Tuple<PatientLinkReferenceResponse, ErrorResponse>(null, error);
+            if (error != null) return new Tuple<PatientLinkEnquiryRepresentation, ErrorRepresentation>(null, error);
 
             var linkRefNumber = referenceNumberGenerator.NewGuid();
 
@@ -54,9 +53,9 @@ namespace In.ProjectEKA.HipService.Link
 
             if (exception != null)
             {
-                return new Tuple<PatientLinkReferenceResponse, ErrorResponse>
+                return new Tuple<PatientLinkEnquiryRepresentation, ErrorRepresentation>
                 (null,
-                    new ErrorResponse(new Error(ErrorCode.ServerInternalError,
+                    new ErrorRepresentation(new Error(ErrorCode.ServerInternalError,
                         ErrorMessage.DatabaseStorageError)));
             }
 
@@ -70,21 +69,21 @@ namespace In.ProjectEKA.HipService.Link
             var otpGeneration = await patientVerification.SendTokenFor(session);
             if (otpGeneration != null)
             {
-                return new Tuple<PatientLinkReferenceResponse, ErrorResponse>
-                    (null, new ErrorResponse(new Error(ErrorCode.OtpGenerationFailed, otpGeneration.Message)));
+                return new Tuple<PatientLinkEnquiryRepresentation, ErrorRepresentation>
+                    (null, new ErrorRepresentation(new Error(ErrorCode.OtpGenerationFailed, otpGeneration.Message)));
             }
 
             var time = new TimeSpan(0, 0, 1, 0);
             var expiry = DateTime.Now.Add(time).ToUniversalTime().ToString(Constants.DateTimeFormat);
             var meta = new LinkReferenceMeta(nameof(CommunicationMode.MOBILE),
                 patient.PhoneNumber, expiry);
-            var patientLinkReferenceResponse = new PatientLinkReferenceResponse(
-                new HipLibrary.Patient.Model.Response.LinkReference(linkRefNumber, "MEDIATED", meta));
-            return new Tuple<PatientLinkReferenceResponse, ErrorResponse>(patientLinkReferenceResponse, null);
+            var patientLinkReferenceResponse = new PatientLinkEnquiryRepresentation(
+                new LinkEnquiryRepresentation(linkRefNumber, "MEDIATED", meta));
+            return new Tuple<PatientLinkEnquiryRepresentation, ErrorRepresentation>(patientLinkReferenceResponse, null);
         }
 
-        private Tuple<Patient, ErrorResponse> PatientAndCareContextValidation(
-            HipLibrary.Patient.Model.Request.PatientLinkReferenceRequest request)
+        private Tuple<Patient, ErrorRepresentation> PatientAndCareContextValidation(
+            PatientLinkEnquiry request)
         {
             return patientRepository.PatientWith(request.Patient.ReferenceNumber).Map(
                 patient =>
@@ -94,29 +93,29 @@ namespace In.ProjectEKA.HipService.Link
                             patient.CareContexts.Any(c => c.ReferenceNumber == careContext.ReferenceNumber))
                         .Select(context => new CareContextRepresentation(context.ReferenceNumber,
                             patient.CareContexts.First(info => info.ReferenceNumber == context.ReferenceNumber)
-                                .Description)).ToList();
+                                .Display)).ToList();
                     if (programs.Count != request.Patient.CareContexts.Count())
                     {
-                        return new Tuple<Patient, ErrorResponse>
-                        (null, new ErrorResponse(new Error(ErrorCode.CareContextNotFound,
+                        return new Tuple<Patient, ErrorRepresentation>
+                        (null, new ErrorRepresentation(new Error(ErrorCode.CareContextNotFound,
                             ErrorMessage.CareContextNotFound)));
                     }
-                    return new Tuple<Patient, ErrorResponse>(patient, null);
+                    return new Tuple<Patient, ErrorRepresentation>(patient, null);
                 }).ValueOr(
-                new Tuple<Patient, ErrorResponse>(
+                new Tuple<Patient, ErrorRepresentation>(
                     null,
-                    new ErrorResponse(new Error(ErrorCode.NoPatientFound, ErrorMessage.NoPatientFound))));
+                    new ErrorRepresentation(new Error(ErrorCode.NoPatientFound, ErrorMessage.NoPatientFound))));
         }
 
-        public async Task<Tuple<PatientLinkResponse, ErrorResponse>> VerifyAndLinkCareContext(
-            HipLibrary.Patient.Model.Request.PatientLinkRequest request)
+        public async Task<Tuple<PatientLinkConfirmationRepresentation, ErrorRepresentation>> VerifyAndLinkCareContext(
+            LinkConfirmationRequest request)
         {
             var verifyOtp = await patientVerification.Verify(request.LinkReferenceNumber
                 , request.Token);
             if (verifyOtp != null)
             {
-                return new Tuple<PatientLinkResponse, ErrorResponse>
-                    (null, new ErrorResponse(new Error(ErrorCode.OtpInValid, verifyOtp.Message)));
+                return new Tuple<PatientLinkConfirmationRepresentation, ErrorRepresentation>
+                    (null, new ErrorRepresentation(new Error(ErrorCode.OtpInValid, verifyOtp.Message)));
             }
 
             var (linkRequest, exception) =
@@ -124,13 +123,13 @@ namespace In.ProjectEKA.HipService.Link
 
             if (exception != null)
             {
-                return new Tuple<PatientLinkResponse, ErrorResponse>
-                    (null, new ErrorResponse(new Error(ErrorCode.NoLinkRequestFound, ErrorMessage.NoLinkRequestFound)));
+                return new Tuple<PatientLinkConfirmationRepresentation, ErrorRepresentation>
+                    (null, new ErrorRepresentation(new Error(ErrorCode.NoLinkRequestFound, ErrorMessage.NoLinkRequestFound)));
             }
 
             if (await patientVerification.Verify(request.LinkReferenceNumber, request.Token) != null)
-                return new Tuple<PatientLinkResponse, ErrorResponse>
-                    (null, new ErrorResponse(new Error(ErrorCode.OtpInValid, "Otp Invalid")));
+                return new Tuple<PatientLinkConfirmationRepresentation, ErrorRepresentation>
+                    (null, new ErrorRepresentation(new Error(ErrorCode.OtpInValid, "Otp Invalid")));
             return patientRepository.PatientWith(linkRequest.PatientReferenceNumber)
                 .Map(patient =>
                 {
@@ -139,15 +138,15 @@ namespace In.ProjectEKA.HipService.Link
                             patient.CareContexts.Any(info => info.ReferenceNumber == careContext.CareContextNumber))
                         .Select(context => new CareContextRepresentation(context.CareContextNumber,
                             patient.CareContexts.First(info => info.ReferenceNumber == context.CareContextNumber)
-                                .Description));
-                    var patientLinkResponse = new PatientLinkResponse(
-                        new HipLibrary.Patient.Model.Response.LinkPatient(
+                                .Display));
+                    var patientLinkResponse = new PatientLinkConfirmationRepresentation(
+                        new LinkConfirmationRepresentation(
                             linkRequest.PatientReferenceNumber,
                             $"{patient.FirstName} {patient.LastName}",
                             representations));
-                    return new Tuple<PatientLinkResponse, ErrorResponse>(patientLinkResponse, null);
-                }).ValueOr(new Tuple<PatientLinkResponse, ErrorResponse>(null,
-                    new ErrorResponse(new Error(ErrorCode.CareContextNotFound, ErrorMessage.CareContextNotFound))));
+                    return new Tuple<PatientLinkConfirmationRepresentation, ErrorRepresentation>(patientLinkResponse, null);
+                }).ValueOr(new Tuple<PatientLinkConfirmationRepresentation, ErrorRepresentation>(null,
+                    new ErrorRepresentation(new Error(ErrorCode.CareContextNotFound, ErrorMessage.CareContextNotFound))));
         }
     }
 }

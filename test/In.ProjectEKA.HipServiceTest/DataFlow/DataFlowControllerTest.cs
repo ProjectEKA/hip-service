@@ -2,9 +2,9 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
 {
     using System;
     using FluentAssertions;
-    using HipLibrary.Patient.Model.Response;
     using In.ProjectEKA.HipService.DataFlow;
     using Builder;
+    using HipLibrary.Patient.Model;
     using Microsoft.AspNetCore.Mvc;
     using Moq;
     using Xunit;
@@ -28,7 +28,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var request = TestBuilder.HealthInformationRequest(transactionId);
             var expectedResponse = new HealthInformationResponse(transactionId);
             dataFlow.Setup(d => d.HealthInformationRequestFor(request))
-                .ReturnsAsync(new Tuple<HealthInformationResponse, ErrorResponse>(expectedResponse, null));
+                .ReturnsAsync(new Tuple<HealthInformationResponse, ErrorRepresentation>(expectedResponse, null));
 
             var response = await dataFlowController.HealthInformationRequestFor(request);
             
@@ -46,10 +46,10 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
         private async void CheckInternalServerErrorOnSaveDataFailure()
         {
             var request = TestBuilder.HealthInformationRequest(TestBuilder.Faker().Random.Hash());
-            var expectedError = new ErrorResponse(new Error(ErrorCode.ServerInternalError,
+            var expectedError = new ErrorRepresentation(new Error(ErrorCode.ServerInternalError,
                 ErrorMessage.InternalServerError));
             dataFlow.Setup(d => d.HealthInformationRequestFor(request))
-                .ReturnsAsync(new Tuple<HealthInformationResponse, ErrorResponse>(null, expectedError));
+                .ReturnsAsync(new Tuple<HealthInformationResponse, ErrorRepresentation>(null, expectedError));
             
             var response = await dataFlowController.HealthInformationRequestFor(request) as ObjectResult;
             

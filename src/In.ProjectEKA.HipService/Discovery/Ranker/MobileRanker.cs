@@ -1,6 +1,6 @@
 namespace In.ProjectEKA.HipService.Discovery.Ranker
 {
-    using HipLibrary.Patient.Model.Response;
+    using HipLibrary.Patient.Model;
     using Patient = HipLibrary.Patient.Model.Patient;
 
     public class MobileRanker : IRanker<Patient>
@@ -9,7 +9,7 @@ namespace In.ProjectEKA.HipService.Discovery.Ranker
         {
             return patient.PhoneNumber == mobile
                 ? new PatientWithRank<Patient>(patient, RankBuilder.StrongMatchRank,
-                    MetaBuilder.FullMatchMeta(Match.MOBILE))
+                    MetaBuilder.FullMatchMeta(Match.Mobile))
                 : new PatientWithRank<Patient>(patient, RankBuilder.EmptyRank, MetaBuilder.EmptyMeta);
         }
     }
