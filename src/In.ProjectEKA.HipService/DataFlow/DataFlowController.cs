@@ -2,8 +2,8 @@ namespace In.ProjectEKA.HipService.DataFlow
 {
     using System;
     using System.Threading.Tasks;
+    using HipLibrary.Patient.Model;
     using Microsoft.AspNetCore.Mvc;
-    using HipLibrary.Patient.Model.Response;
     using Microsoft.AspNetCore.Http;
     
     [ApiController]
@@ -25,7 +25,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             return error != null ? ReturnServerResponse(error) : Ok(healthInformationResponse);
         }
         
-        private ActionResult ReturnServerResponse(ErrorResponse errorResponse)
+        private ActionResult ReturnServerResponse(ErrorRepresentation errorResponse)
         {
             return errorResponse.Error.Code switch
             {

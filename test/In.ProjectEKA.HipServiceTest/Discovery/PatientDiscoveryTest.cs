@@ -7,20 +7,16 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
     using FluentAssertions;
     using HipLibrary.Patient;
     using HipLibrary.Patient.Model;
-    using HipLibrary.Patient.Model.Request;
-    using HipLibrary.Patient.Model.Response;
     using HipService.Discovery;
     using Moq;
     using Xunit;
-    using CareContext = HipLibrary.Patient.Model.CareContext;
-    using Match = HipLibrary.Patient.Model.Response.Match;
-    using Patient = HipLibrary.Patient.Model.Response.Patient;
+    using Match = HipLibrary.Patient.Model.Match;
 
     public class PatientDiscoveryTest
     {
         private readonly Mock<IDiscoveryRequestRepository> discoveryRequestRepository =
             new Mock<IDiscoveryRequestRepository>();
-        
+
         private readonly Mock<IMatchingRepository> matchingRepository = new Mock<IMatchingRepository>();
 
         [Fact]
@@ -28,15 +24,15 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
         {
             var patientDiscovery =
                 new PatientDiscovery(matchingRepository.Object, discoveryRequestRepository.Object);
-            var expectedPatient = new Patient("1", "John Doee",
+            var expectedPatient = new PatientEnquiryRepresentation("1", "John Doee",
                 new List<CareContextRepresentation>
                 {
                     new CareContextRepresentation("123", "National Cancer program"),
                     new CareContextRepresentation("124", "National TB program")
                 }, new List<string>
                 {
-                    Match.FIRST_NAME.ToString(),
-                    Match.GENDER.ToString()
+                    Match.FirstName.ToString(),
+                    Match.Gender.ToString()
                 });
             var verifiedIdentifiers = new List<Identifier>
             {
@@ -47,7 +43,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 new Identifier(IdentifierType.MR, "123")
             };
             const string patientId = "cm-1";
-            var patientRequest = new HipLibrary.Patient.Model.Request.Patient(patientId, verifiedIdentifiers,
+            var patientRequest = new PatientEnquiry(patientId, verifiedIdentifiers,
                 unverifiedIdentifiers, "John", null, Gender.M, new DateTime(2019, 01, 01));
             const string transactionId = "transaction-id-1";
             var discoveryRequest = new DiscoveryRequest(patientRequest, transactionId);
@@ -58,21 +54,13 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                     new HipLibrary.Patient.Model.Patient
                     {
                         Gender = Gender.M.ToString(),
-                        Identifier = "1", 
+                        Identifier = "1",
                         FirstName = "John",
-                        LastName = "Doee", 
-                        CareContexts = new List<CareContext>
+                        LastName = "Doee",
+                        CareContexts = new List<CareContextRepresentation>
                         {
-                            new CareContext
-                            {
-                                ReferenceNumber = "123", 
-                                Description = "National Cancer program"
-                            },
-                            new CareContext
-                            {
-                                ReferenceNumber = "124",
-                                Description = "National TB program"
-                            }
+                            new CareContextRepresentation("123", "National Cancer program"),
+                            new CareContextRepresentation("124", "National TB program")
                         }
                     }
                 }.AsQueryable()));
@@ -92,12 +80,12 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
         {
             var patientDiscovery = new PatientDiscovery(matchingRepository.Object, discoveryRequestRepository.Object);
             var expectedError =
-                new ErrorResponse(new Error(ErrorCode.MultiplePatientsFound, "Multiple patients found"));
+                new ErrorRepresentation(new Error(ErrorCode.MultiplePatientsFound, "Multiple patients found"));
             var verifiedIdentifiers = new List<Identifier>
             {
                 new Identifier(IdentifierType.MOBILE, "+919999999999")
             };
-            var patientRequest = new HipLibrary.Patient.Model.Request.Patient("cm-1", verifiedIdentifiers,
+            var patientRequest = new PatientEnquiry("cm-1", verifiedIdentifiers,
                 new List<Identifier>(), null, null, Gender.M, new DateTime(2019, 01, 01));
             var discoveryRequest = new DiscoveryRequest(patientRequest, "transaction-id-1");
             matchingRepository
@@ -119,12 +107,12 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
         private async void ShouldGetNoPatientFoundError()
         {
             var patientDiscovery = new PatientDiscovery(matchingRepository.Object, discoveryRequestRepository.Object);
-            var expectedError = new ErrorResponse(new Error(ErrorCode.NoPatientFound, "No patient found"));
+            var expectedError = new ErrorRepresentation(new Error(ErrorCode.NoPatientFound, "No patient found"));
             var verifiedIdentifiers = new List<Identifier>
             {
                 new Identifier(IdentifierType.MR, "311231231231")
             };
-            var patientRequest = new HipLibrary.Patient.Model.Request.Patient("cm-1", verifiedIdentifiers,
+            var patientRequest = new PatientEnquiry("cm-1", verifiedIdentifiers,
                 new List<Identifier>(), null, null,
                 Gender.M, new DateTime(2019, 01, 01));
             var discoveryRequest = new DiscoveryRequest(patientRequest, "transaction-id-1");

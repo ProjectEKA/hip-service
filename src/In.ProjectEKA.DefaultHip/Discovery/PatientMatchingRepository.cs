@@ -5,7 +5,7 @@ namespace In.ProjectEKA.DefaultHip.Discovery
     using HipLibrary.Patient;
     using HipLibrary.Patient.Model;
     using Patient;
-    using DiscoveryRequest = HipLibrary.Patient.Model.Request.DiscoveryRequest;
+    using DiscoveryRequest = HipLibrary.Patient.Model.DiscoveryRequest;
     using static StrongMatcherFactory;
 
     public class PatientMatchingRepository : IMatchingRepository

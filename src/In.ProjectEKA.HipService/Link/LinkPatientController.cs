@@ -1,13 +1,10 @@
-using PatientLinkRequestLib = HipLibrary.Patient.Model.Request.PatientLinkRequest;
-using PatientLinkRefRequest = HipLibrary.Patient.Model.Request.PatientLinkReferenceRequest;
-using LinkLib = HipLibrary.Patient.Model.Request.Link;
 namespace In.ProjectEKA.HipService.Link
 {
     using System;
     using System.Threading.Tasks;
     using Discovery;
     using HipLibrary.Patient;
-    using HipLibrary.Patient.Model.Response;
+    using HipLibrary.Patient.Model;
     using Microsoft.AspNetCore.Mvc;
 
     [ApiController]
@@ -16,7 +13,7 @@ namespace In.ProjectEKA.HipService.Link
     {
         private readonly ILink linkPatient;
         private readonly IDiscoveryRequestRepository discoveryRequestRepository;
-        
+
         public LinkPatientController(
             ILink linkPatient,
             IDiscoveryRequestRepository discoveryRequestRepository)
@@ -30,7 +27,7 @@ namespace In.ProjectEKA.HipService.Link
             [FromHeader(Name = "X-ConsentManagerID")] string consentManagerId,
             [FromBody] PatientLinkReferenceRequest request)
         {
-            var patient = new LinkLib(
+            var patient = new LinkEnquiry(
                 consentManagerId,
                 request.Patient.ConsentManagerUserId,
                 request.Patient.ReferenceNumber,
@@ -38,11 +35,12 @@ namespace In.ProjectEKA.HipService.Link
             var doesRequestExists = await discoveryRequestRepository.RequestExistsFor(request.TransactionId);
             if (!doesRequestExists)
             {
-                return ReturnServerResponse(new ErrorResponse(new Error(ErrorCode.ServerInternalError,
-                    ErrorMessage.TransactionIdNotFound)));
+                return ReturnServerResponse(new ErrorRepresentation(
+                    new Error(ErrorCode.DiscoveryRequestNotFound, ErrorMessage.TransactionIdNotFound)));
             }
+
             var patientReferenceRequest =
-                new PatientLinkRefRequest(request.TransactionId, patient);
+                new PatientLinkEnquiry(request.TransactionId, patient);
             var (linkReferenceResponse, error) = await linkPatient.LinkPatients(patientReferenceRequest);
             return error != null ? ReturnServerResponse(error) : Ok(linkReferenceResponse);
         }
@@ -53,12 +51,12 @@ namespace In.ProjectEKA.HipService.Link
             [FromBody] PatientLinkRequest patientLinkRequest)
         {
             var (patientLinkResponse, error) = await linkPatient
-                .VerifyAndLinkCareContext(new PatientLinkRequestLib(patientLinkRequest.Token,
+                .VerifyAndLinkCareContext(new LinkConfirmationRequest(patientLinkRequest.Token,
                     linkReferenceNumber));
             return error != null ? ReturnServerResponse(error) : Ok(patientLinkResponse);
         }
-        
-        private ActionResult ReturnServerResponse(ErrorResponse errorResponse)
+
+        private ActionResult ReturnServerResponse(ErrorRepresentation errorResponse)
         {
             return errorResponse.Error.Code switch
             {
@@ -70,6 +68,7 @@ namespace In.ProjectEKA.HipService.Link
                 ErrorCode.ServerInternalError => BadRequest(errorResponse),
                 ErrorCode.CareContextNotFound => NotFound(errorResponse),
                 ErrorCode.NoLinkRequestFound => NotFound(errorResponse),
+                ErrorCode.DiscoveryRequestNotFound => BadRequest(errorResponse),
                 _ => NotFound(errorResponse)
             };
         }

@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "In.ProjectEKA.HipService", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "In.ProjectEKA.DefaultHip", "src\In.ProjectEKA.DefaultHip\In.ProjectEKA.DefaultHip.csproj", "{288B99D5-3659-41A3-8098-6A645CE3CEF6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "In.ProjectEKA.HipLibrary", "src\In.ProjectEKA.HipLibrary\In.ProjectEKA.HipLibrary.csproj", "{7B3816DD-1B05-4249-91BA-47F40EF8BF78}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,9 +48,22 @@ Global
 		{288B99D5-3659-41A3-8098-6A645CE3CEF6}.Release|x64.Build.0 = Release|Any CPU
 		{288B99D5-3659-41A3-8098-6A645CE3CEF6}.Release|x86.ActiveCfg = Release|Any CPU
 		{288B99D5-3659-41A3-8098-6A645CE3CEF6}.Release|x86.Build.0 = Release|Any CPU
+		{7B3816DD-1B05-4249-91BA-47F40EF8BF78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B3816DD-1B05-4249-91BA-47F40EF8BF78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B3816DD-1B05-4249-91BA-47F40EF8BF78}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7B3816DD-1B05-4249-91BA-47F40EF8BF78}.Debug|x64.Build.0 = Debug|Any CPU
+		{7B3816DD-1B05-4249-91BA-47F40EF8BF78}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7B3816DD-1B05-4249-91BA-47F40EF8BF78}.Debug|x86.Build.0 = Debug|Any CPU
+		{7B3816DD-1B05-4249-91BA-47F40EF8BF78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B3816DD-1B05-4249-91BA-47F40EF8BF78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B3816DD-1B05-4249-91BA-47F40EF8BF78}.Release|x64.ActiveCfg = Release|Any CPU
+		{7B3816DD-1B05-4249-91BA-47F40EF8BF78}.Release|x64.Build.0 = Release|Any CPU
+		{7B3816DD-1B05-4249-91BA-47F40EF8BF78}.Release|x86.ActiveCfg = Release|Any CPU
+		{7B3816DD-1B05-4249-91BA-47F40EF8BF78}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{3D613EA0-0D56-4B53-89B4-F1035A3934B4} = {461C4BC2-AAFA-41D1-B508-46D26912A31E}
 		{288B99D5-3659-41A3-8098-6A645CE3CEF6} = {461C4BC2-AAFA-41D1-B508-46D26912A31E}
+		{7B3816DD-1B05-4249-91BA-47F40EF8BF78} = {461C4BC2-AAFA-41D1-B508-46D26912A31E}
 	EndGlobalSection
 EndGlobal

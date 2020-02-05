@@ -1,6 +1,6 @@
 namespace In.ProjectEKA.HipService.Discovery.Ranker
 {
-    using HipLibrary.Patient.Model.Response;
+    using HipLibrary.Patient.Model;
     using Matcher;
     using Patient = HipLibrary.Patient.Model.Patient;
 
@@ -11,9 +11,9 @@ namespace In.ProjectEKA.HipService.Discovery.Ranker
             var diff = FuzzyNameMatcher.LevenshteinDistance(patient.LastName, lastName);
             if (diff == 0)
                 return new PatientWithRank<Patient>(patient, RankBuilder.StrongMatchRank,
-                    MetaBuilder.FullMatchMeta(Match.LAST_NAME));
+                    MetaBuilder.FullMatchMeta(Match.LastName));
             if (diff <= 2)
-                return new PatientWithRank<Patient>(patient, new Rank(5), MetaBuilder.FullMatchMeta(Match.LAST_NAME));
+                return new PatientWithRank<Patient>(patient, new Rank(5), MetaBuilder.FullMatchMeta(Match.LastName));
 
             return new PatientWithRank<Patient>(patient, RankBuilder.EmptyRank, MetaBuilder.EmptyMeta);
         }

@@ -5,11 +5,9 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
     using Builder;
     using FluentAssertions;
     using HipLibrary.Patient.Model;
-    using HipLibrary.Patient.Model.Request;
     using HipService.Discovery;
     using Xunit;
     using static Builder.TestBuilders;
-    using Patient = HipLibrary.Patient.Model.Request.Patient;
 
     [Collection("Patient Filter Tests")]
     public class FilterTest
@@ -32,7 +30,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 .GenerateLazy(10)
                 .Select(builder => builder.Build());
             var discoveryRequest = new DiscoveryRequest(
-                new Patient(Faker().Random.Hash(),
+                new PatientEnquiry(Faker().Random.Hash(),
                     verifiedIdentifiers,
                     unverifiedIdentifiers,
                     patientFirstName,
@@ -66,7 +64,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 .GenerateLazy(10)
                 .Select(builder => builder.Build());
             var discoveryRequest = new DiscoveryRequest(
-                new Patient(new Faker().Random.Hash(), verifiedIdentifiers,
+                new PatientEnquiry(new Faker().Random.Hash(), verifiedIdentifiers,
                     unverifiedIdentifiers,
                     null,
                     null,
@@ -96,7 +94,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 .GenerateLazy(10)
                 .Select(builder => builder.Build());
             var discoveryRequest = new DiscoveryRequest(
-                new Patient(Faker().Random.Hash(),
+                new PatientEnquiry(Faker().Random.Hash(),
                     verifiedIdentifiers,
                     unverifiedIdentifiers,
                     null,
