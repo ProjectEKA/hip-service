@@ -16,6 +16,7 @@ servers:
 tags:
   - name: discovery
   - name: link
+  - name: data flow
 
 paths:
   /patients/discover:
@@ -221,6 +222,69 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+
+  /health-information/request:
+    post:
+      tags:
+        - data flow
+      summary: Health information data request
+
+      description: >
+        Acknowledge data request for Health information
+          1. **Validate consent artefact id**
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/HealthInformationRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/HealthInformationRequest'
+      responses:
+        '200':
+          description: An Acknowledged data transfer request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthInformationRequestResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/HealthInformationRequestResponse'
+        '400':
+          description: >
+            **Causes:**
+              * Consent Artefact id not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: >
+            **Causes:**
+              * ConsentManagerId is not present
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: >
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 components:
   parameters:
     LinkRefNumber:
@@ -229,10 +293,12 @@ components:
       required: true
       description: Reference number for the link request made earlier.
       schema:
-        type: string
-        format: uuid
-        example: b2b8c932-2f70-4b1e-a3b5-2cb19b82a18d
+        $ref: '#/components/schemas/UuidSchema'
   schemas:
+    UuidSchema:
+      type: string
+      format: uuid
+      example: a1s2c932-2f70-3ds3-a3b5-2sfd46b12a18d
     PatientDiscoveryRequest:
       type: object
       properties:
@@ -434,3 +500,55 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/CareContextRepresentation'
+
+    HealthInformationRequest:
+      type: object
+      required:
+        - transactionId
+        - consent
+        - callBackUrl
+        - keyMaterial
+        - hiDataRange
+      properties:
+        transactionId:
+          $ref: '#/components/schemas/UuidSchema'
+        consent:
+          $ref: '#/components/schemas/consent'
+        hiDataRange:
+          $ref: '#/components/schemas/hiDataRange'
+        callBackUrl:
+          type: string
+        keyMaterial:
+          type: object
+
+    HealthInformationRequestResponse:
+      type: object
+      required:
+        - transactionId
+      properties:
+        transactionId:
+          type: string
+
+    consent:
+      type: object
+      required:
+        - id
+        - digitalSignature
+      properties:
+        id:
+          type: string
+        digitalSignature:
+          type: string
+
+    hiDataRange:
+      type: object
+      required:
+        - from
+        - to
+      properties:
+        from:
+          type: string
+          format: date-time
+        to:
+          type: string
+          format: date-time

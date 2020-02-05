@@ -1,11 +1,12 @@
 namespace In.ProjectEKA.DefaultHip.Discovery
 {
-    using System;
     using System.Linq;
-    using System.Linq.Expressions;
     using System.Threading.Tasks;
-    using Helper;
-    using Model;
+    using HipLibrary.Patient;
+    using HipLibrary.Patient.Model;
+    using Patient;
+    using DiscoveryRequest = HipLibrary.Patient.Model.Request.DiscoveryRequest;
+    using static StrongMatcherFactory;
 
     public class PatientMatchingRepository : IMatchingRepository
     {
@@ -15,11 +16,11 @@ namespace In.ProjectEKA.DefaultHip.Discovery
         {
             this.patientFilePath = patientFilePath;
         }
-
-        public async Task<IQueryable<Patient>> Where(Expression<Func<Patient, bool>> predicate)
+        public async Task<IQueryable<Patient>> Where(DiscoveryRequest request)
         {
+            var expression = GetExpression(request.Patient.VerifiedIdentifiers);
             var patientsInfo = await FileReader.ReadJsonAsync(patientFilePath);
-            return patientsInfo.Where(predicate.Compile()).AsQueryable();
+            return patientsInfo.Where(expression.Compile()).AsQueryable();
         }
     }
 }

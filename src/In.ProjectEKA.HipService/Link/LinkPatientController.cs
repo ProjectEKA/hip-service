@@ -1,16 +1,16 @@
-using System;
-using System.Threading.Tasks;
-using HipLibrary.Patient;
-using HipLibrary.Patient.Model.Response;
-using In.ProjectEKA.DefaultHip.Discovery;
-using In.ProjectEKA.DefaultHip.Link;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using PatientLinkRequestLib = HipLibrary.Patient.Model.Request.PatientLinkRequest;
-using PatientLinkRefRequest = HipLibrary.Patient.Model.Request.PatientLinkReferenceRequest;
-using LinkLib = HipLibrary.Patient.Model.Request.Link;
 namespace In.ProjectEKA.HipService.Link
 {
+    using System;
+    using System.Threading.Tasks;
+    using Discovery;
+    using HipLibrary.Patient;
+    using HipLibrary.Patient.Model.Response;
+    using Microsoft.AspNetCore.Mvc;
+    using PatientLinkRequestLib = HipLibrary.Patient.Model.Request.PatientLinkRequest;
+    using PatientLinkRefRequest = HipLibrary.Patient.Model.Request.PatientLinkReferenceRequest;
+    using LinkLib = HipLibrary.Patient.Model.Request.Link;
+    using Microsoft.AspNetCore.Http;
+
     [ApiController]
     [Route("patients/link")]
     public class LinkPatientController : ControllerBase
@@ -18,7 +18,9 @@ namespace In.ProjectEKA.HipService.Link
         private readonly ILink linkPatient;
         private readonly IDiscoveryRequestRepository discoveryRequestRepository;
         
-        public LinkPatientController(ILink linkPatient, IDiscoveryRequestRepository discoveryRequestRepository)
+        public LinkPatientController(
+            ILink linkPatient,
+            IDiscoveryRequestRepository discoveryRequestRepository)
         {
             this.linkPatient = linkPatient;
             this.discoveryRequestRepository = discoveryRequestRepository;

@@ -14,8 +14,8 @@
     using Microsoft.AspNetCore.Mvc;
     using Moq;
     using Xunit;
-    using Patient = HipLibrary.Patient.Model.Request.Patient;
     using static Builder.TestBuilders;
+    using Patient = HipLibrary.Patient.Model.Request.Patient;
 
     [Collection("Patient Controller Tests")]
     public class PatientsControllerTest
