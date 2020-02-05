@@ -5,7 +5,7 @@ namespace In.ProjectEKA.HipService.DataFlow
     using Database;
     using Model;
     using Optional;
-    public class DataFlowRepository: IDataFlowRepository
+    public class DataFlowRepository : IDataFlowRepository
     {
         private readonly DataFlowContext dataFlowContext;
 
@@ -14,7 +14,8 @@ namespace In.ProjectEKA.HipService.DataFlow
             this.dataFlowContext = dataFlowContext;
         }
 
-        public async Task<Option<Exception>> SaveRequestFor(string transactionId,
+        public async Task<Option<Exception>> SaveRequestFor(
+            string transactionId,
             HealthInformationRequest request)
         {
             var dataFlowRequest = new DataFlowRequest(transactionId, request);

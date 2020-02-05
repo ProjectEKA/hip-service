@@ -4,7 +4,7 @@ namespace In.ProjectEKA.HipService.DataFlow
     using System.Threading.Tasks;
     using HipLibrary.Patient.Model.Response;
     
-    public class DataFlow: IDataFlow
+    public class DataFlow : IDataFlow
     {
         private readonly IDataFlowRepository dataFlowRepository;
 
@@ -15,7 +15,7 @@ namespace In.ProjectEKA.HipService.DataFlow
         
         public async Task<Tuple<HealthInformationResponse, ErrorResponse>> HealthInformationRequestFor(HealthInformationRequest request)
         {
-            if (!ValidateConsentArtefact(request.Consent))
+            if (!IsValidConsentArtefact(request.Consent))
             {
                 return new Tuple<HealthInformationResponse, ErrorResponse>(null, null);
             }
@@ -31,7 +31,7 @@ namespace In.ProjectEKA.HipService.DataFlow
                 ErrorResponse>(new HealthInformationResponse(request.TransactionId), null));
         }
 
-        private static bool ValidateConsentArtefact(Consent consent)
+        private static bool IsValidConsentArtefact(Consent consent)
         {
             return true;
         }

@@ -28,9 +28,4 @@
       <ProjectReference Include="..\In.ProjectEKA.DefaultHip\In.ProjectEKA.DefaultHip.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="DataFlow\Database\Migrations" />
-      <Folder Include="Discovery\Database\Migrations" />
-    </ItemGroup>
-
 </Project>

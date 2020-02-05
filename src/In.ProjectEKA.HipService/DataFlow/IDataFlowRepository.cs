@@ -6,7 +6,6 @@ namespace In.ProjectEKA.HipService.DataFlow
 
     public interface IDataFlowRepository
     {
-        Task<Option<Exception>> SaveRequestFor(string transactionId,
-            HealthInformationRequest request);
+        Task<Option<Exception>> SaveRequestFor(string transactionId, HealthInformationRequest request);
     }
 }

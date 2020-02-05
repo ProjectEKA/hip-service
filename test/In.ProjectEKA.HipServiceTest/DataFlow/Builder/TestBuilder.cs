@@ -16,8 +16,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
                 new Consent(faker.Random.Hash(),
                 faker.Random.Hash()),
                 new HiDataRange(faker.Random.Hash(), faker.Random.Hash()),
-                faker.Random.Hash(),
-                new KeyMaterial());
+                faker.Random.Hash());
         }
     }
 }
