@@ -1,5 +1,5 @@
 
-namespace In.ProjectEKA.HipService.Logger
+namespace In.ProjectEKA.OtpService.Otp.Logger
 {
     using System;
     using Serilog;
