@@ -4,9 +4,9 @@ namespace In.ProjectEKA.HipService.Logger
     using System;
     using Serilog;
     
-    public class Log
+    public static class Log
     {
-        public static ILogger Logger
+        private static ILogger Logger
         {
             set => Serilog.Log.Logger = value;
         }
