@@ -2,15 +2,9 @@
 namespace In.ProjectEKA.HipService.Logger
 {
     using System;
-    using Serilog;
-    
-    public class Log
-    {
-        public static ILogger Logger
-        {
-            set => Serilog.Log.Logger = value;
-        }
 
+    public static class Log
+    {
         public static void Information(string format, params object[] arg)
         {
             Serilog.Log.Information(format, arg);
