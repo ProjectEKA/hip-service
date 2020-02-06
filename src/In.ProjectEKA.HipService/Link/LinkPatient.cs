@@ -7,6 +7,7 @@ namespace In.ProjectEKA.HipService.Link
     using Discovery;
     using HipLibrary.Patient;
     using HipLibrary.Patient.Model;
+    using Logger;
     using Patient = HipLibrary.Patient.Model.Patient;
 
     public class LinkPatient : ILink
@@ -35,8 +36,11 @@ namespace In.ProjectEKA.HipService.Link
             PatientLinkEnquiry request)
         {
             var (patient, error) = PatientAndCareContextValidation(request);
-            if (error != null) return new Tuple<PatientLinkEnquiryRepresentation, ErrorRepresentation>(null, error);
-
+            if (error != null)
+            {
+                Log.Error(LogTemplate.ErrorTemplate, error.Error.Message);
+                return new Tuple<PatientLinkEnquiryRepresentation, ErrorRepresentation>(null, error); 
+            }
             var linkRefNumber = referenceNumberGenerator.NewGuid();
 
             using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);

@@ -1,3 +1,5 @@
+
+
 namespace In.ProjectEKA.HipService.Link
 {
     using System;
@@ -7,6 +9,7 @@ namespace In.ProjectEKA.HipService.Link
     using Database;
     using Microsoft.EntityFrameworkCore;
     using Model;
+    using Logger;
 
     public class LinkPatientRepository : ILinkPatientRepository
     {
@@ -42,6 +45,7 @@ namespace In.ProjectEKA.HipService.Link
             }
             catch (Exception exception)
             {
+                Log.Fatal(exception, LogTemplate.ExceptionTemplate, exception.StackTrace);
                 return new Tuple<LinkRequest, Exception>(null, exception);
             }
         }
@@ -56,6 +60,7 @@ namespace In.ProjectEKA.HipService.Link
             }
             catch (Exception exception)
             {
+                Log.Fatal(exception, LogTemplate.ExceptionTemplate, exception.StackTrace);
                 return new Tuple<LinkRequest, Exception>(null, exception);
             }
         }

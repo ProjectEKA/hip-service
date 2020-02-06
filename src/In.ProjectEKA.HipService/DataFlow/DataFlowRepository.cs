@@ -1,3 +1,5 @@
+using In.ProjectEKA.HipService.Logger;
+
 namespace In.ProjectEKA.HipService.DataFlow
 {
     using System;
@@ -27,6 +29,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             }
             catch (Exception exception)
             {
+                Log.Fatal(exception,"Error Occured");
                 return Option.Some(exception);
             }
         }

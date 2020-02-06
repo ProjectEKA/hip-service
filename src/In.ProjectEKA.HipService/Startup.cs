@@ -1,4 +1,7 @@
 
+using In.ProjectEKA.HipService.Logger;
+using Serilog;
+
 namespace In.ProjectEKA.HipService
 {
     using System.Net.Http;
@@ -72,6 +75,7 @@ namespace In.ProjectEKA.HipService
                 .UseIf(!env.IsDevelopment(), x => x.UseHsts())
                 .UseIf(env.IsDevelopment(), x => x.UseDeveloperExceptionPage())
                 .UseCustomOpenAPI()
+                .UseSerilogRequestLogging()
                 .UseConsentManagerIdentifierMiddleware()
                 .UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
