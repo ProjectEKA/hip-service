@@ -1,4 +1,3 @@
-
 namespace In.ProjectEKA.OtpService.Otp
 {
     public interface IOtpWebHandler

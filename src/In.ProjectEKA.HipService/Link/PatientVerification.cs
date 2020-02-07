@@ -10,6 +10,7 @@ namespace In.ProjectEKA.HipService.Link
     using Microsoft.Extensions.Options;
     using Newtonsoft.Json;
     using Optional;
+    using Logger;
 
     public class PatientVerification : IPatientVerification
     {
@@ -63,10 +64,12 @@ namespace In.ProjectEKA.HipService.Link
                 using var reader = new StreamReader(await responseContent.ReadAsStreamAsync());
                 var result = await reader.ReadToEndAsync().ConfigureAwait(false);
                 var otpMessage = JsonConvert.DeserializeObject<OtpMessage>(result);
+                Log.Information(otpMessage.Message);
                 return Option.Some(otpMessage);
             }
-            catch (Exception)
+            catch (Exception exception)
             {
+                Log.Fatal(exception, exception.StackTrace);
                 return Option.Some(new OtpMessage(ErrorCode.ServerInternalError.ToString(),
                     ErrorMessage.OtpServiceError));
             }

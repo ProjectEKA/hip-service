@@ -1,7 +1,7 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace In.ProjectEKA.OtpService.Otp.Model
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class OtpRequest
     {
         [Key]
