@@ -43,7 +43,7 @@ namespace In.ProjectEKA.HipService.Link
             }
             catch (Exception exception)
             {
-                Log.Fatal(exception, LogTemplate.ExceptionTemplate, exception.StackTrace);
+                Log.Fatal(exception, exception.StackTrace);
                 return new Tuple<LinkRequest, Exception>(null, exception);
             }
         }
@@ -58,7 +58,7 @@ namespace In.ProjectEKA.HipService.Link
             }
             catch (Exception exception)
             {
-                Log.Fatal(exception, LogTemplate.ExceptionTemplate, exception.StackTrace);
+                Log.Fatal(exception, exception.StackTrace);
                 return new Tuple<LinkRequest, Exception>(null, exception);
             }
         }

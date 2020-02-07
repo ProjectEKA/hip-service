@@ -64,12 +64,12 @@ namespace In.ProjectEKA.HipService.Link
                 using var reader = new StreamReader(await responseContent.ReadAsStreamAsync());
                 var result = await reader.ReadToEndAsync().ConfigureAwait(false);
                 var otpMessage = JsonConvert.DeserializeObject<OtpMessage>(result);
-                Log.Information(LogTemplate.InformationTemplate, otpMessage.Message);
+                Log.Information(otpMessage.Message);
                 return Option.Some(otpMessage);
             }
             catch (Exception exception)
             {
-                Log.Fatal(exception, LogTemplate.ExceptionTemplate, exception.StackTrace);
+                Log.Fatal(exception, exception.StackTrace);
                 return Option.Some(new OtpMessage(ErrorCode.ServerInternalError.ToString(),
                     ErrorMessage.OtpServiceError));
             }

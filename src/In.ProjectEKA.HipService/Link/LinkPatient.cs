@@ -38,7 +38,7 @@ namespace In.ProjectEKA.HipService.Link
             var (patient, error) = PatientAndCareContextValidation(request);
             if (error != null)
             {
-                Log.Error(LogTemplate.ErrorTemplate, error.Error.Message);
+                Log.Error(error.Error.Message);
                 return new Tuple<PatientLinkEnquiryRepresentation, ErrorRepresentation>(null, error); 
             }
             var linkRefNumber = referenceNumberGenerator.NewGuid();

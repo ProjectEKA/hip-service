@@ -28,7 +28,7 @@ namespace In.ProjectEKA.OtpService.Otp
             }
             catch (Exception exception)
             {
-                Log.Fatal(exception, LogTemplate.ExceptionTemplate, exception.StackTrace);
+                Log.Fatal(exception, exception.StackTrace);
                 return new OtpResponse(ResponseType.InternalServerError,"OtpGeneration Saving failed");
             }
         }
@@ -43,7 +43,7 @@ namespace In.ProjectEKA.OtpService.Otp
             }
             catch (Exception exception)
             {
-                Log.Fatal(exception, LogTemplate.ExceptionTemplate, exception.StackTrace);
+                Log.Fatal(exception, exception.StackTrace);
                 return Option.None<OtpRequest>();
             }
         }
