@@ -17,7 +17,7 @@ namespace In.ProjectEKA.HipService.MessagingQueue
         
         private IConnection GetConnection()  
         {  
-            var factory = new ConnectionFactory()  
+            var factory = new ConnectionFactory  
             {  
                 HostName = options.HostName,
                 Port = options.Port,  

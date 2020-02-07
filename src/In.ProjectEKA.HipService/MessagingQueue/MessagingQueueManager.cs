@@ -16,13 +16,11 @@ namespace In.ProjectEKA.HipService.MessagingQueue
             objectPool = new DefaultObjectPool<IModel>(objectPolicy, Environment.ProcessorCount * 2);  
         }
         
-        public void Publish<T>(T message, string exchangeName, string exchangeType, string routeKey) where T : class  
-        {  
-            if (message == null)  
-                return;  
-  
-            var channel = objectPool.Get();  
-  
+        public void Publish<T>(T message, string exchangeName, string exchangeType, string routeKey) where T : class
+        {
+            if (message == null) { return; }
+            var channel = objectPool.Get();
+            
             try  
             {  
                 channel.ExchangeDeclare(exchangeName, exchangeType, true, false, null);  
@@ -33,11 +31,11 @@ namespace In.ProjectEKA.HipService.MessagingQueue
                 properties.Persistent = true;  
   
                 channel.BasicPublish(exchangeName, routeKey, properties, sendBytes); 
-            }  
-            catch (Exception ex)  
-            {  
-                throw ex;  
-            }  
+            }
+            catch (Exception)
+            {
+                // ignored
+            }
             finally  
             {  
                 objectPool.Return(channel);                  

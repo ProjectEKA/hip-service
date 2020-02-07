@@ -46,7 +46,6 @@ namespace In.ProjectEKA.HipService.DataFlow
             var consumer = new EventingBasicConsumer(channel);
             consumer.Received += (ch, ea) =>
             {
-                Console.Write("[*] Received Message");
                 var body = ea.Body;
                 var message = Encoding.UTF8.GetString(body);
                 var dataFlowMessage = JsonConvert.DeserializeObject<DataFlowArtefact>(message);
