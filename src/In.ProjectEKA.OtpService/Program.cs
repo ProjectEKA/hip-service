@@ -1,4 +1,3 @@
-
 namespace In.ProjectEKA.OtpService
 {
     using Microsoft.AspNetCore;

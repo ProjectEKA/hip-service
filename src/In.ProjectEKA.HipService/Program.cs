@@ -1,5 +1,4 @@
-﻿
-namespace In.ProjectEKA.HipService
+﻿namespace In.ProjectEKA.HipService
 {
     using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;

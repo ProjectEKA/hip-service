@@ -1,5 +1,3 @@
-
-
 namespace In.ProjectEKA.HipService.Link
 {
     using System;

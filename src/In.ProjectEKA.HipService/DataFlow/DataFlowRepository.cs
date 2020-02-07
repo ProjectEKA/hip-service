@@ -1,5 +1,3 @@
-using In.ProjectEKA.HipService.Logger;
-
 namespace In.ProjectEKA.HipService.DataFlow
 {
     using System;
@@ -7,6 +5,8 @@ namespace In.ProjectEKA.HipService.DataFlow
     using Database;
     using Model;
     using Optional;
+    using Logger;
+    
     public class DataFlowRepository : IDataFlowRepository
     {
         private readonly DataFlowContext dataFlowContext;

@@ -1,5 +1,3 @@
-using In.ProjectEKA.HipService.Logger;
-
 namespace In.ProjectEKA.HipService.Link
 {
     using System;
@@ -12,6 +10,7 @@ namespace In.ProjectEKA.HipService.Link
     using Microsoft.Extensions.Options;
     using Newtonsoft.Json;
     using Optional;
+    using Logger;
 
     public class PatientVerification : IPatientVerification
     {

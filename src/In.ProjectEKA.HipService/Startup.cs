@@ -1,7 +1,3 @@
-
-using In.ProjectEKA.HipService.Logger;
-using Serilog;
-
 namespace In.ProjectEKA.HipService
 {
     using System.Net.Http;
@@ -22,6 +18,7 @@ namespace In.ProjectEKA.HipService
     using Middleware;
     using DataFlow;
     using DataFlow.Database;
+    using Serilog;
 
     public class Startup
     {
