@@ -1,4 +1,3 @@
-
 namespace In.ProjectEKA.HipService.MessagingQueue
 {
     using Microsoft.Extensions.ObjectPool;

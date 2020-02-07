@@ -1,8 +1,7 @@
-using In.ProjectEKA.HipService.DataFlow;
-
 namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
 {
     using Bogus;
+    using In.ProjectEKA.HipService.DataFlow;
 
     public static class TestBuilder
     {

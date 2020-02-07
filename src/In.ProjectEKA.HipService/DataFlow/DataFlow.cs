@@ -12,7 +12,9 @@ namespace In.ProjectEKA.HipService.DataFlow
         private readonly IDataFlowRepository dataFlowRepository;
         private readonly IDataFlowArtefactRepository dataFlowArtefactRepository;
 
-        public DataFlow(IDataFlowRepository dataFlowRepository, IDataFlowArtefactRepository dataFlowArtefactRepository, IMessagingQueueManager messagingQueueManager)
+        public DataFlow(IDataFlowRepository dataFlowRepository,
+            IDataFlowArtefactRepository dataFlowArtefactRepository,
+            IMessagingQueueManager messagingQueueManager)
         {
             this.dataFlowRepository = dataFlowRepository;
             this.dataFlowArtefactRepository = dataFlowArtefactRepository;
@@ -21,7 +23,7 @@ namespace In.ProjectEKA.HipService.DataFlow
         
         public async Task<Tuple<HealthInformationResponse, ErrorRepresentation>> HealthInformationRequestFor(HealthInformationRequest request)
         {
-            var (dataFlowArtefact, error) = await dataFlowArtefactRepository.GetFor(request);
+            var (dataFlowArtefact, error) = dataFlowArtefactRepository.GetFor(request);
             if (error != null)
             {
                 return new Tuple<HealthInformationResponse, ErrorRepresentation>(null, error);

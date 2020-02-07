@@ -7,6 +7,6 @@ namespace In.ProjectEKA.HipService.DataFlow
     
     public interface IDataFlowArtefactRepository
     {
-        Task<Tuple<DataFlowArtefact, ErrorRepresentation>> GetFor(HealthInformationRequest healthInformationRequest);
+        Tuple<DataFlowArtefact, ErrorRepresentation> GetFor(HealthInformationRequest healthInformationRequest);
     }
 }

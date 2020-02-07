@@ -8,7 +8,7 @@ namespace In.ProjectEKA.HipService.DataFlow
     
     public class DataFlowArtefactRepository : IDataFlowArtefactRepository
     {
-        public async Task<Tuple<DataFlowArtefact, ErrorRepresentation>> GetFor(
+        public Tuple<DataFlowArtefact, ErrorRepresentation> GetFor(
             HealthInformationRequest healthInformationRequest)
         {
             var dataFlowMessage = new DataFlowArtefact(

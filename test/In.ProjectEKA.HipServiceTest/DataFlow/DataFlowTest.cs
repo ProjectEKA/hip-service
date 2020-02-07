@@ -1,4 +1,3 @@
-
 namespace In.ProjectEKA.HipServiceTest.DataFlow
 {
     using System;
@@ -24,7 +23,9 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
 
         public DataFlowTest()
         {
-            dataFlowService = new DataFlowService(dataFlowRepository.Object, dataFlowArtefactRepository.Object,
+            dataFlowService = new DataFlowService(
+                dataFlowRepository.Object,
+                dataFlowArtefactRepository.Object,
                 messagingQueueManager.Object);
         }
 
@@ -42,7 +43,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             dataFlowRepository.Setup(d => d.SaveRequestFor(transactionId, request))
                 .ReturnsAsync(Option.None<Exception>());
             dataFlowArtefactRepository.Setup(d => d.GetFor(request)).
-                ReturnsAsync(new Tuple<DataFlowArtefact, ErrorRepresentation>(dataFlowArtefact, null));
+                Returns(new Tuple<DataFlowArtefact, ErrorRepresentation>(dataFlowArtefact, null));
 
             var (healthInformationResponse, _) = await dataFlowService.HealthInformationRequestFor(request);
 
@@ -60,7 +61,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var expectedError = new ErrorRepresentation(new Error(ErrorCode.ServerInternalError,
                 ErrorMessage.InternalServerError));
             dataFlowArtefactRepository.Setup(d => d.GetFor(request)).
-                ReturnsAsync(new Tuple<DataFlowArtefact, ErrorRepresentation>(null, expectedError));
+                Returns(new Tuple<DataFlowArtefact, ErrorRepresentation>(null, expectedError));
             
             var (_, errorResponse) = await dataFlowService.HealthInformationRequestFor(request);
             
