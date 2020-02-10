@@ -3,6 +3,7 @@ namespace In.ProjectEKA.HipService.DataFlow
     using System;
     using System.Threading.Tasks;
     using HipLibrary.Patient.Model;
+    using Logger;
     using MessagingQueue;
 
     public class DataFlow : IDataFlow
@@ -47,6 +48,7 @@ namespace In.ProjectEKA.HipService.DataFlow
 
         private void PublishArtefact(DataRequest artefact)
         {
+            Log.Information("Publishing artefact: {artefact}", artefact);
             messagingQueueManager.Publish(
                 artefact,
                 MessagingQueueConstants.DataRequestExchangeName,
