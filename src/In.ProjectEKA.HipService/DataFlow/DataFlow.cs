@@ -40,17 +40,17 @@ namespace In.ProjectEKA.HipService.DataFlow
 
             if (errorRepresentation == null)
             {
-                PublishArtefact(dataRequest);
+                PublishDataRequest(dataRequest);
             }
 
             return new Tuple<HealthInformationResponse, ErrorRepresentation>(response, errorRepresentation);
         }
 
-        private void PublishArtefact(DataRequest artefact)
+        private void PublishDataRequest(DataRequest dataRequest)
         {
-            Log.Information("Publishing artefact: {artefact}", artefact);
+            Log.Information("Publishing dataRequest: {dataRequest}", dataRequest);
             messagingQueueManager.Publish(
-                artefact,
+                dataRequest,
                 MessagingQueueConstants.DataRequestExchangeName,
                 MessagingQueueConstants.DataRequestExchangeType,
                 MessagingQueueConstants.DataRequestRoutingKey);
