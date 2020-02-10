@@ -54,7 +54,6 @@ namespace In.ProjectEKA.HipService.Link
                     request.Patient.ReferenceNumber,
                     careContextReferenceNumbers)
                 .ConfigureAwait(false);
-
             if (exception != null)
             {
                 return new Tuple<PatientLinkEnquiryRepresentation, ErrorRepresentation>
@@ -62,11 +61,6 @@ namespace In.ProjectEKA.HipService.Link
                     new ErrorRepresentation(new Error(ErrorCode.ServerInternalError,
                         ErrorMessage.DatabaseStorageError)));
             }
-
-            await discoveryRequestRepository.Delete(request.TransactionId, request.Patient.ConsentManagerUserId)
-                .ConfigureAwait(false);
-            scope.Complete();
-
             var session = new Session(
                 linkRefNumber,
                 new Communication(CommunicationMode.MOBILE, patient.PhoneNumber));
@@ -76,7 +70,10 @@ namespace In.ProjectEKA.HipService.Link
                 return new Tuple<PatientLinkEnquiryRepresentation, ErrorRepresentation>
                     (null, new ErrorRepresentation(new Error(ErrorCode.OtpGenerationFailed, otpGeneration.Message)));
             }
-
+            await discoveryRequestRepository.Delete(request.TransactionId, request.Patient.ConsentManagerUserId)
+                .ConfigureAwait(false);
+            scope.Complete();
+            
             var time = new TimeSpan(0, 0, 1, 0);
             var expiry = DateTime.Now.Add(time).ToUniversalTime().ToString(Constants.DateTimeFormat);
             var meta = new LinkReferenceMeta(nameof(CommunicationMode.MOBILE),

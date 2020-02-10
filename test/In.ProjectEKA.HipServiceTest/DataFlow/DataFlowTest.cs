@@ -8,6 +8,9 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
     using Moq;
     using Optional;
     using Xunit;
+    using System.Collections.Generic;
+    using Bogus;
+    using HipService.MessagingQueue;
     
     using DataFlowService = HipService.DataFlow.DataFlow;
     
@@ -15,11 +18,14 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
     public class DataFlowTest
     {
         private readonly Mock<IDataFlowRepository> dataFlowRepository = new Mock<IDataFlowRepository>();
+        private readonly Mock<IMessagingQueueManager> messagingQueueManager = new Mock<IMessagingQueueManager>();
         private readonly DataFlowService dataFlowService;
 
         public DataFlowTest()
         {
-            dataFlowService = new DataFlowService(dataFlowRepository.Object);
+            dataFlowService = new DataFlowService(
+                dataFlowRepository.Object,
+                messagingQueueManager.Object);
         }
 
         [Fact]
@@ -29,6 +35,8 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var request = TestBuilder.HealthInformationRequest(transactionId);
             dataFlowRepository.Setup(d => d.SaveRequestFor(transactionId, request))
                 .ReturnsAsync(Option.None<Exception>());
+            dataFlowRepository.Setup(d => d.GetFor(request.Consent.Id)).
+                Returns(new Tuple<ConsentArtefact, Exception>(TestBuilder.ConsentArtefact().Generate().Build(), null));
 
             var (healthInformationResponse, _) = await dataFlowService.HealthInformationRequestFor(request);
 
@@ -45,6 +53,8 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                 .ReturnsAsync(Option.Some(new Exception()));
             var expectedError = new ErrorRepresentation(new Error(ErrorCode.ServerInternalError,
                 ErrorMessage.InternalServerError));
+            dataFlowRepository.Setup(d => d.GetFor(request.Consent.Id)).
+                Returns(new Tuple<ConsentArtefact, Exception>(TestBuilder.ConsentArtefact().Generate().Build(), null));
             
             var (_, errorResponse) = await dataFlowService.HealthInformationRequestFor(request);
             

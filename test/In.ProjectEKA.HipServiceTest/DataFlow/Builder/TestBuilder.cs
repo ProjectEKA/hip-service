@@ -1,8 +1,9 @@
-using In.ProjectEKA.HipService.DataFlow;
-
 namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
 {
+    using System;
+    using System.Collections.Generic;
     using Bogus;
+    using In.ProjectEKA.HipService.DataFlow;
 
     public static class TestBuilder
     {
@@ -17,6 +18,11 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
                 faker.Random.Hash()),
                 new HiDataRange(faker.Random.Hash(), faker.Random.Hash()),
                 faker.Random.Hash());
+        }
+
+        internal static Faker<ConsentArtefactBuilder> ConsentArtefact()
+        {
+            return new Faker<ConsentArtefactBuilder>();
         }
     }
 }
