@@ -20,9 +20,9 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
                 faker.Random.Hash());
         }
 
-        internal static Faker<ConsentArtefact> ConsentArtefact()
+        internal static Faker<ConsentArtefactBuilder> ConsentArtefact()
         {
-            return new Faker<ConsentArtefact>();
+            return new Faker<ConsentArtefactBuilder>();
         }
     }
 }

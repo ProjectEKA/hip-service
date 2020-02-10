@@ -14,10 +14,6 @@ namespace In.ProjectEKA.HipService.DataFlow
         public ConsentPermission Permission { get; }
         public IEnumerable<GrantedContext> CareContexts { get; }
 
-        public ConsentArtefact()
-        {
-        }
-
         public ConsentArtefact(string consentId, DateTime createdAt, ConsentPurpose purpose, PatientReference patient,
             HIPReference hip, IEnumerable<HiType> hiTypes, ConsentPermission permission,
             IEnumerable<GrantedContext> careContexts)

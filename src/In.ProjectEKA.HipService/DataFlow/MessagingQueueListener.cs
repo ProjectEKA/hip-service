@@ -47,7 +47,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             {
                 var body = ea.Body;
                 var message = Encoding.UTF8.GetString(body);
-                var dataFlowMessage = JsonConvert.DeserializeObject<DataFlowArtefact>(message);
+                var dataFlowMessage = JsonConvert.DeserializeObject<DataRequest>(message);
                 HandleMessagingQueueResult(dataFlowMessage);  
                 channel.BasicAck(ea.DeliveryTag, false);  
             };
@@ -55,9 +55,9 @@ namespace In.ProjectEKA.HipService.DataFlow
             return Task.CompletedTask;
         }
 
-        private static void HandleMessagingQueueResult(DataFlowArtefact dataFlowArtefact)
+        private static void HandleMessagingQueueResult(DataRequest dataRequest)
         {
-            Console.Write(dataFlowArtefact);
+            Console.Write(dataRequest);
         }
     }
 }

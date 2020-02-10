@@ -9,28 +9,24 @@ namespace In.ProjectEKA.HipService.DataFlow
     {
         private readonly IMessagingQueueManager messagingQueueManager;
         private readonly IDataFlowRepository dataFlowRepository;
-        private readonly IConsentArtefactRepository consentArtefactRepository;
 
-        public DataFlow(IDataFlowRepository dataFlowRepository,
-            IConsentArtefactRepository consentArtefactRepository,
-            IMessagingQueueManager messagingQueueManager)
+        public DataFlow(IDataFlowRepository dataFlowRepository, IMessagingQueueManager messagingQueueManager)
         {
             this.dataFlowRepository = dataFlowRepository;
-            this.consentArtefactRepository = consentArtefactRepository;
             this.messagingQueueManager = messagingQueueManager;
         }
         
         public async Task<Tuple<HealthInformationResponse, ErrorRepresentation>> HealthInformationRequestFor(HealthInformationRequest request)
         {
-            var (artefact, error) = consentArtefactRepository.GetFor(request.Consent.Id);
+            var (artefact, error) = dataFlowRepository.GetFor(request.Consent.Id);
             if (error != null)
             {
                 return new Tuple<HealthInformationResponse, ErrorRepresentation>(null,
                     new ErrorRepresentation(new Error(ErrorCode.ContextArtefactIdNotFound,
                         ErrorMessage.ContextArtefactIdNotFound)));
             }
-            var dataFlowArtefact = new DataFlowArtefact(artefact.CareContexts, request.HiDataRange,
-                request.CallBackUrl, artefact.HiTypes);
+            var dataRequest = new DataRequest(artefact.CareContexts, request.HiDataRange,
+                request.CallBackUrl, artefact.HiTypes, request.TransactionId);
             var result = await dataFlowRepository.SaveRequestFor(request.TransactionId, request)
                 .ConfigureAwait(false);
             var (response, errorRepresentation) = result.Map(r =>
@@ -43,13 +39,13 @@ namespace In.ProjectEKA.HipService.DataFlow
 
             if (errorRepresentation == null)
             {
-                PublishArtefact(dataFlowArtefact);
+                PublishArtefact(dataRequest);
             }
 
             return new Tuple<HealthInformationResponse, ErrorRepresentation>(response, errorRepresentation);
         }
 
-        private void PublishArtefact(DataFlowArtefact artefact)
+        private void PublishArtefact(DataRequest artefact)
         {
             messagingQueueManager.Publish(
                 artefact,
