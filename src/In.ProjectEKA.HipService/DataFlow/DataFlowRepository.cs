@@ -5,6 +5,8 @@ namespace In.ProjectEKA.HipService.DataFlow
     using Database;
     using Model;
     using Optional;
+    using Logger;
+    
     public class DataFlowRepository : IDataFlowRepository
     {
         private readonly DataFlowContext dataFlowContext;
@@ -27,6 +29,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             }
             catch (Exception exception)
             {
+                Log.Fatal(exception,"Error Occured");
                 return Option.Some(exception);
             }
         }

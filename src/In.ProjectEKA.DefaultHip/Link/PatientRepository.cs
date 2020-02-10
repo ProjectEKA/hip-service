@@ -1,13 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Optional;
-
 namespace In.ProjectEKA.DefaultHip.Link
 {
     using HipLibrary.Patient;
     using HipLibrary.Patient.Model;
     using Patient;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Optional;
 
     public class PatientRepository : IPatientRepository
     {

@@ -1,6 +1,3 @@
-
-using In.ProjectEKA.HipService.MessagingQueue;
-
 namespace In.ProjectEKA.HipService
 {
     using System.Net.Http;
@@ -21,6 +18,8 @@ namespace In.ProjectEKA.HipService
     using Middleware;
     using DataFlow;
     using DataFlow.Database;
+    using Serilog;
+    using MessagingQueue;
 
     public class Startup
     {
@@ -63,7 +62,7 @@ namespace In.ProjectEKA.HipService
                 .AddScoped<IPatientVerification, PatientVerification>()
                 .AddHostedService<MessagingQueueListener>()
                 .AddScoped<IDataFlowRepository, DataFlowRepository>()
-                .AddScoped<IDataFlowArtefactRepository, DataFlowArtefactRepository>()
+                .AddScoped<IConsentArtefactRepository, ConsentArtefactRepository>()
                 .AddTransient<IDataFlow, DataFlow.DataFlow>()
                 .AddRouting(options => options.LowercaseUrls = true)
                 .AddControllers()
@@ -77,6 +76,7 @@ namespace In.ProjectEKA.HipService
                 .UseIf(!env.IsDevelopment(), x => x.UseHsts())
                 .UseIf(env.IsDevelopment(), x => x.UseDeveloperExceptionPage())
                 .UseCustomOpenAPI()
+                .UseSerilogRequestLogging()
                 .UseConsentManagerIdentifierMiddleware()
                 .UseEndpoints(endpoints => { endpoints.MapControllers(); });
 

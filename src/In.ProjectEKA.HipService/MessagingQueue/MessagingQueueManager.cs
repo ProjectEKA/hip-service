@@ -5,6 +5,7 @@ namespace In.ProjectEKA.HipService.MessagingQueue
     using Microsoft.Extensions.ObjectPool;
     using Newtonsoft.Json;
     using RabbitMQ.Client;
+    using Log = Logger.Log;
     
     public class MessagingQueueManager : IMessagingQueueManager
     {
@@ -31,9 +32,9 @@ namespace In.ProjectEKA.HipService.MessagingQueue
   
                 channel.BasicPublish(exchangeName, routeKey, properties, sendBytes); 
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-                // ignored
+                Log.Fatal(exception, exception);
             }
             finally  
             {  

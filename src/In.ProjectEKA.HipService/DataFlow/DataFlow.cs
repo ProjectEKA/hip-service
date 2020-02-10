@@ -1,4 +1,3 @@
-
 namespace In.ProjectEKA.HipService.DataFlow
 {
     using System;
@@ -10,25 +9,28 @@ namespace In.ProjectEKA.HipService.DataFlow
     {
         private readonly IMessagingQueueManager messagingQueueManager;
         private readonly IDataFlowRepository dataFlowRepository;
-        private readonly IDataFlowArtefactRepository dataFlowArtefactRepository;
+        private readonly IConsentArtefactRepository consentArtefactRepository;
 
         public DataFlow(IDataFlowRepository dataFlowRepository,
-            IDataFlowArtefactRepository dataFlowArtefactRepository,
+            IConsentArtefactRepository consentArtefactRepository,
             IMessagingQueueManager messagingQueueManager)
         {
             this.dataFlowRepository = dataFlowRepository;
-            this.dataFlowArtefactRepository = dataFlowArtefactRepository;
+            this.consentArtefactRepository = consentArtefactRepository;
             this.messagingQueueManager = messagingQueueManager;
         }
         
         public async Task<Tuple<HealthInformationResponse, ErrorRepresentation>> HealthInformationRequestFor(HealthInformationRequest request)
         {
-            var (dataFlowArtefact, error) = dataFlowArtefactRepository.GetFor(request);
+            var (artefact, error) = consentArtefactRepository.GetFor(request.Consent.Id);
             if (error != null)
             {
-                return new Tuple<HealthInformationResponse, ErrorRepresentation>(null, error);
+                return new Tuple<HealthInformationResponse, ErrorRepresentation>(null,
+                    new ErrorRepresentation(new Error(ErrorCode.ContextArtefactIdNotFound,
+                        ErrorMessage.ContextArtefactIdNotFound)));
             }
-            
+            var dataFlowArtefact = new DataFlowArtefact(artefact.CareContexts, request.HiDataRange,
+                request.CallBackUrl, artefact.HiTypes);
             var result = await dataFlowRepository.SaveRequestFor(request.TransactionId, request)
                 .ConfigureAwait(false);
             var (response, errorRepresentation) = result.Map(r =>
@@ -43,7 +45,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             {
                 PublishArtefact(dataFlowArtefact);
             }
-            
+
             return new Tuple<HealthInformationResponse, ErrorRepresentation>(response, errorRepresentation);
         }
 

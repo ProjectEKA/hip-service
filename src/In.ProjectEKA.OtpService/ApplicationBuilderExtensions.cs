@@ -1,11 +1,11 @@
-using System;
-using System.IO;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.StaticFiles;
-using Microsoft.Extensions.FileProviders;
-
 namespace In.ProjectEKA.OtpService
 {
+    using System;
+    using System.IO;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.StaticFiles;
+    using Microsoft.Extensions.FileProviders;
+    
     public static class ApplicationBuilderExtensions
     {
         public static IApplicationBuilder UseStaticFilesWithYaml(this IApplicationBuilder application)
