@@ -1,8 +1,7 @@
-using System.Net.Http;
-using System.Text;
-
 namespace In.ProjectEKA.TMHHip.Link
 {
+    using System.Net.Http;
+    using System.Text;
     using System.Collections.Generic;
     using HipLibrary.Patient;
     using HipLibrary.Patient.Model;
@@ -21,7 +20,7 @@ namespace In.ProjectEKA.TMHHip.Link
 
         public Option<Patient> PatientWith(string referenceNumber)
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:49699/patients/get");
+            var request = new HttpRequestMessage(HttpMethod.Post, "https://tmc.gov.in/tmh_ncg_api/patients/get");
             request.Content = new StringContent(
                 JsonConvert.SerializeObject(new {caseId = referenceNumber}),
                 Encoding.UTF8, "application/json");
@@ -31,7 +30,6 @@ namespace In.ProjectEKA.TMHHip.Link
             return Option.Some(new Patient
             {
                 FirstName = patient.FirstName,
-                PhoneNumber = "8340289040",
                 CareContexts = new List<CareContextRepresentation>
                 {
                     new CareContextRepresentation($"{patient.Identifier}", $"{patient.FirstName}  {patient.LastName}")
@@ -39,6 +37,7 @@ namespace In.ProjectEKA.TMHHip.Link
                 Gender = patient.Gender,
                 Identifier = patient.Identifier,
                 LastName = patient.LastName,
+                PhoneNumber = patient.PhoneNumber
             });
         }
     }
