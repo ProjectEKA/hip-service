@@ -8,7 +8,6 @@ namespace In.ProjectEKA.TMHHip.Discovery
         
         public string Gender { get; set; }
         
-        // ReSharper disable once UnusedMember.Global
         public string PhoneNumber { get; set; }
         
         public string FirstName { get; set; }

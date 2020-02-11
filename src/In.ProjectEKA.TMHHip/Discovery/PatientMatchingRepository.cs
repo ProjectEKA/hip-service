@@ -21,7 +21,7 @@ namespace In.ProjectEKA.TMHHip.Discovery
 
         public async Task<IQueryable<HipLibrary.Patient.Model.Patient>> Where(DiscoveryRequest predicate)
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost:49699/patients/find");
+            var request = new HttpRequestMessage(HttpMethod.Post, "https://tmc.gov.in/tmh_ncg_api/patients/find");
             request.Content = new StringContent(
                 JsonConvert.SerializeObject(new {mobileNumber = predicate.Patient.VerifiedIdentifiers.First().Value}),
                 Encoding.UTF8, "application/json");
@@ -39,7 +39,7 @@ namespace In.ProjectEKA.TMHHip.Discovery
                     new CareContextRepresentation($"{patient.Identifier}",
                         $"{patient.FirstName}  {patient.LastName}")
                 },
-                PhoneNumber = "8340289040"
+                PhoneNumber = patient.PhoneNumber
             }).AsQueryable();
         }
     }
