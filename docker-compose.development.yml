@@ -5,15 +5,14 @@ services:
     ports:
       - "8000:80"
     depends_on:
-      - db
-      - otp
-  otp:
+      - db1
+      - otp1
+      - rabbitmq
+  otp1:
     image: "ganesan92/otp-service"
-    ports:
-      - "5000:80"
     depends_on:
-      - db
-  db:
+      - db1
+  db1:
     image: "postgres:latest"
     environment:
       - POSTGRES_USER=postgres
