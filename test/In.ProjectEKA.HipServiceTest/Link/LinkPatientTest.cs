@@ -13,6 +13,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
     using HipService.Discovery;
     using HipService.Link;
     using HipService.Link.Model;
+    using Microsoft.Extensions.Options;
     using LinkPatient = HipService.Link.LinkPatient;
     using PatientSer = HipLibrary.Patient.Model.Patient;
 
@@ -41,11 +42,16 @@ namespace In.ProjectEKA.HipServiceTest.Link
         private readonly Mock<IPatientRepository> patientRepository = new Mock<IPatientRepository>();
         private readonly Mock<IPatientVerification> patientVerification = new Mock<IPatientVerification>();
         private readonly Mock<IReferenceNumberGenerator> guidGenerator = new Mock<IReferenceNumberGenerator>();
+        private readonly Mock<IOptions<OtpServiceConfiguration>> otpServiceConfigurations = new Mock<IOptions<OtpServiceConfiguration>>();
 
         public LinkPatientTest()
         {
-            linkPatient = new LinkPatient(linkRepository.Object, patientRepository.Object,
-                patientVerification.Object, guidGenerator.Object, discoveryRequestRepository.Object);
+            linkPatient = new LinkPatient(linkRepository.Object,
+                                          patientRepository.Object,
+                                          patientVerification.Object,
+                                          guidGenerator.Object,
+                                          discoveryRequestRepository.Object,
+                                          otpServiceConfigurations.Object);
         }
 
         [Fact]
