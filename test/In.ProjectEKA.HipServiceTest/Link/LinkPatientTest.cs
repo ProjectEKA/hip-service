@@ -42,16 +42,17 @@ namespace In.ProjectEKA.HipServiceTest.Link
         private readonly Mock<IPatientRepository> patientRepository = new Mock<IPatientRepository>();
         private readonly Mock<IPatientVerification> patientVerification = new Mock<IPatientVerification>();
         private readonly Mock<IReferenceNumberGenerator> guidGenerator = new Mock<IReferenceNumberGenerator>();
-        private readonly Mock<IOptions<OtpServiceConfiguration>> otpServiceConfigurations = new Mock<IOptions<OtpServiceConfiguration>>();
 
         public LinkPatientTest()
         {
+            var otpService = new OtpServiceConfiguration {BaseUrl = "http://localhost:5000",OffsetInMinutes = 5};
+            var otpServiceConfigurations = Options.Create(otpService);
             linkPatient = new LinkPatient(linkRepository.Object,
                                           patientRepository.Object,
                                           patientVerification.Object,
                                           guidGenerator.Object,
                                           discoveryRequestRepository.Object,
-                                          otpServiceConfigurations.Object);
+                                          otpServiceConfigurations);
         }
 
         [Fact]

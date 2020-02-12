@@ -78,7 +78,7 @@ namespace In.ProjectEKA.HipService.Link
                 .ConfigureAwait(false);
             scope.Complete();
             
-            var time = new TimeSpan(0, 0, otpService.Value.OffsetTime, 0);
+            var time = new TimeSpan(0, 0, otpService.Value.OffsetInMinutes, 0);
             var expiry = DateTime.Now.Add(time).ToUniversalTime().ToString(Constants.DateTimeFormat);
             var meta = new LinkReferenceMeta(nameof(CommunicationMode.MOBILE),
                 patient.PhoneNumber, expiry);
