@@ -1,8 +1,7 @@
 namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
 {
-    using System;
-    using System.Collections.Generic;
     using Bogus;
+    using Common.Builder;
     using In.ProjectEKA.HipService.DataFlow;
 
     public static class TestBuilder
