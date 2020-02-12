@@ -1,3 +1,6 @@
+using In.ProjectEKA.DefaultHip.DataFlow;
+using Newtonsoft.Json;
+
 namespace In.ProjectEKA.HipService
 {
     using System.Net.Http;
@@ -48,6 +51,7 @@ namespace In.ProjectEKA.HipService
                     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
                         x => x.MigrationsAssembly("In.ProjectEKA.HipService")))
                 .AddSingleton<IPatientRepository>(new PatientRepository("Resources/patients.json"))
+                .AddSingleton<ICollect>(new Collect("../In.ProjectEKA.DefaultHip/Resources/observation.json"))
                 .AddRabbit(Configuration)
                 .AddScoped<ILinkPatientRepository, LinkPatientRepository>()
                 .AddSingleton<IMatchingRepository>(new PatientMatchingRepository("Resources/patients.json"))
@@ -66,8 +70,15 @@ namespace In.ProjectEKA.HipService
                 .AddTransient<IDataFlow, DataFlow.DataFlow>()
                 .AddRouting(options => options.LowercaseUrls = true)
                 .AddControllers()
-                .AddNewtonsoftJson(options =>{})
-                .AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase);
+                .AddNewtonsoftJson(options =>
+                    {
+                        options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                    })
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                    options.JsonSerializerOptions.IgnoreNullValues = true;
+                });
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

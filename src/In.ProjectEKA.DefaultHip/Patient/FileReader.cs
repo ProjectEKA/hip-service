@@ -1,3 +1,6 @@
+using Hl7.Fhir.Model;
+using Hl7.Fhir.Serialization;
+
 namespace In.ProjectEKA.DefaultHip.Patient
 {
     using System.Collections.Generic;
@@ -13,11 +16,24 @@ namespace In.ProjectEKA.DefaultHip.Patient
             var jsonData = await File.ReadAllTextAsync(patientFilePath);
             return JsonConvert.DeserializeObject<List<Patient>>(jsonData);
         }
-        
+
         public static IEnumerable<Patient> ReadJson(string patientFilePath)
         {
-           var jsonData = File.ReadAllText(patientFilePath);
-           return JsonConvert.DeserializeObject<List<Patient>>(jsonData);
+            var jsonData = File.ReadAllText(patientFilePath);
+            return JsonConvert.DeserializeObject<List<Patient>>(jsonData);
+        }
+
+        public static async Task<T> ReadJsonAsync<T>(string filePath) where T : Base
+        {
+            var jsonData = await File.ReadAllTextAsync(filePath);
+            FhirJsonParser fjp = new FhirJsonParser();
+            return fjp.Parse<T>(jsonData);
+        }
+
+        public static T ReadJson<T>(string filePath)
+        {
+            var jsonData = File.ReadAllText(filePath);
+            return JsonConvert.DeserializeObject<T>(jsonData);
         }
     }
 }
