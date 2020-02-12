@@ -1,6 +1,7 @@
 namespace In.ProjectEKA.HipService.DataFlow
 {
     using System;
+    using Common.Model;
     using Optional;
 
     public interface IConsentArtefactRepository

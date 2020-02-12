@@ -10,6 +10,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
     using Xunit;
     using System.Collections.Generic;
     using Bogus;
+    using HipService.Common.Model;
     using HipService.MessagingQueue;
     
     using DataFlowService = HipService.DataFlow.DataFlow;

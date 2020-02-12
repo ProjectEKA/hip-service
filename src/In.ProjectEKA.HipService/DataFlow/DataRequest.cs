@@ -1,6 +1,7 @@
 namespace In.ProjectEKA.HipService.DataFlow
 {
     using System.Collections.Generic;
+    using Common.Model;
 
     public class DataRequest
     {
