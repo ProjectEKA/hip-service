@@ -30,6 +30,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             return errorResponse.Error.Code switch
             {
                 ErrorCode.ServerInternalError => StatusCode(StatusCodes.Status500InternalServerError, errorResponse),
+                ErrorCode.ContextArtefactIdNotFound => StatusCode(StatusCodes.Status404NotFound, errorResponse),
                 _ => NotFound(errorResponse)
             };
         }

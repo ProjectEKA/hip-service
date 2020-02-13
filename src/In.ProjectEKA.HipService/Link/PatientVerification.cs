@@ -10,6 +10,7 @@ namespace In.ProjectEKA.HipService.Link
     using Microsoft.Extensions.Options;
     using Newtonsoft.Json;
     using Optional;
+    using Logger;
 
     public class PatientVerification : IPatientVerification
     {
@@ -27,7 +28,7 @@ namespace In.ProjectEKA.HipService.Link
         public async Task<OtpMessage> SendTokenFor(Session session)
         {
             var urlConfig = otpService.Value.BaseUrl;
-            var uri = new Uri($"{urlConfig}/otp/link");
+            var uri = new Uri(urlConfig + "/otp");
             var verifyMessage = await PostCallToOtpServer(uri
                 , CreateHttpContent(session)).ConfigureAwait(false);
             return verifyMessage.ValueOr((OtpMessage) null);
@@ -36,12 +37,10 @@ namespace In.ProjectEKA.HipService.Link
         public async Task<OtpMessage> Verify(string sessionId, string value)
         {
             var urlConfig = otpService.Value.BaseUrl;
-            var uri = new Uri($"{urlConfig}/otp/verify");
-            var verifyOtpRequest = new OtpVerificationRequest(sessionId, value);
-            var verifyMessage = await PostCallToOtpServer(
-                    uri,
-                    CreateHttpContent(verifyOtpRequest))
-                .ConfigureAwait(false);
+            var uri = new Uri($"{urlConfig}/otp/{sessionId}/verify");
+            var verifyOtpRequest = new OtpVerificationRequest(value);
+            var verifyMessage = await PostCallToOtpServer(uri, 
+                CreateHttpContent(verifyOtpRequest)).ConfigureAwait(false);
             return verifyMessage.ValueOr((OtpMessage) null);
         }
 
@@ -60,14 +59,17 @@ namespace In.ProjectEKA.HipService.Link
                 {
                     return Option.None<OtpMessage>();
                 }
+                
                 var responseContent = response.Content;
                 using var reader = new StreamReader(await responseContent.ReadAsStreamAsync());
                 var result = await reader.ReadToEndAsync().ConfigureAwait(false);
                 var otpMessage = JsonConvert.DeserializeObject<OtpMessage>(result);
+                Log.Information(otpMessage.Message);
                 return Option.Some(otpMessage);
             }
-            catch (Exception)
+            catch (Exception exception)
             {
+                Log.Fatal(exception, exception.StackTrace);
                 return Option.Some(new OtpMessage(ErrorCode.ServerInternalError.ToString(),
                     ErrorMessage.OtpServiceError));
             }

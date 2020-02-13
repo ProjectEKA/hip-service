@@ -1,0 +1,18 @@
+@startuml "Architecture"
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Container.puml
+!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/release/1-0/C4_Component.puml
+
+LAYOUT_TOP_DOWN
+
+Container(HIP, "HIP Service", "C#, ASP.NET Core")
+ContainerDb(HIPDb, "HIP data store", "Postgres 11+")
+Component(HIP_Library, "HIP Library", "C#, dotnet standard 2.1")
+Component(DefaultHip, "Default HIP", "C#, dotnet.core")
+Container(OTP, "OTP service", "C#, ASP.NET Core, TextLocal")
+
+Rel(HIP, OTP, "Uses to send OTP (with authentication token)", "Https")
+Rel(HIP, HIPDb, "Stores information required for HIP")
+Rel(OTP, HIPDb, "Stores session request")
+Rel(HIP, HIP_Library, "Abstraction patient information")
+Rel(HIP_Library, DefaultHip, "Implements")
+@enduml

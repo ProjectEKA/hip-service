@@ -7,6 +7,8 @@ namespace In.ProjectEKA.HipService.Link
     using Discovery;
     using HipLibrary.Patient;
     using HipLibrary.Patient.Model;
+    using Logger;
+    using Microsoft.Extensions.Options;
     using Patient = HipLibrary.Patient.Model.Patient;
 
     public class LinkPatient : ILink
@@ -16,27 +18,33 @@ namespace In.ProjectEKA.HipService.Link
         private readonly IPatientRepository patientRepository;
         private readonly IPatientVerification patientVerification;
         private readonly IReferenceNumberGenerator referenceNumberGenerator;
+        private readonly IOptions<OtpServiceConfiguration> otpService;
 
         public LinkPatient(
             ILinkPatientRepository linkPatientRepository,
             IPatientRepository patientRepository,
             IPatientVerification patientVerification,
             IReferenceNumberGenerator referenceNumberGenerator,
-            IDiscoveryRequestRepository discoveryRequestRepository)
+            IDiscoveryRequestRepository discoveryRequestRepository,
+            IOptions<OtpServiceConfiguration> otpService)
         {
             this.linkPatientRepository = linkPatientRepository;
             this.patientRepository = patientRepository;
             this.patientVerification = patientVerification;
             this.referenceNumberGenerator = referenceNumberGenerator;
             this.discoveryRequestRepository = discoveryRequestRepository;
+            this.otpService = otpService;
         }
 
         public async Task<Tuple<PatientLinkEnquiryRepresentation, ErrorRepresentation>> LinkPatients(
             PatientLinkEnquiry request)
         {
             var (patient, error) = PatientAndCareContextValidation(request);
-            if (error != null) return new Tuple<PatientLinkEnquiryRepresentation, ErrorRepresentation>(null, error);
-
+            if (error != null)
+            {
+                Log.Error(error.Error.Message);
+                return new Tuple<PatientLinkEnquiryRepresentation, ErrorRepresentation>(null, error); 
+            }
             var linkRefNumber = referenceNumberGenerator.NewGuid();
 
             using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
@@ -50,7 +58,6 @@ namespace In.ProjectEKA.HipService.Link
                     request.Patient.ReferenceNumber,
                     careContextReferenceNumbers)
                 .ConfigureAwait(false);
-
             if (exception != null)
             {
                 return new Tuple<PatientLinkEnquiryRepresentation, ErrorRepresentation>
@@ -58,11 +65,6 @@ namespace In.ProjectEKA.HipService.Link
                     new ErrorRepresentation(new Error(ErrorCode.ServerInternalError,
                         ErrorMessage.DatabaseStorageError)));
             }
-
-            await discoveryRequestRepository.Delete(request.TransactionId, request.Patient.ConsentManagerUserId)
-                .ConfigureAwait(false);
-            scope.Complete();
-
             var session = new Session(
                 linkRefNumber,
                 new Communication(CommunicationMode.MOBILE, patient.PhoneNumber));
@@ -72,8 +74,11 @@ namespace In.ProjectEKA.HipService.Link
                 return new Tuple<PatientLinkEnquiryRepresentation, ErrorRepresentation>
                     (null, new ErrorRepresentation(new Error(ErrorCode.OtpGenerationFailed, otpGeneration.Message)));
             }
-
-            var time = new TimeSpan(0, 0, 1, 0);
+            await discoveryRequestRepository.Delete(request.TransactionId, request.Patient.ConsentManagerUserId)
+                .ConfigureAwait(false);
+            scope.Complete();
+            
+            var time = new TimeSpan(0, 0, otpService.Value.OffsetInMinutes, 0);
             var expiry = DateTime.Now.Add(time).ToUniversalTime().ToString(Constants.DateTimeFormat);
             var meta = new LinkReferenceMeta(nameof(CommunicationMode.MOBILE),
                 patient.PhoneNumber, expiry);

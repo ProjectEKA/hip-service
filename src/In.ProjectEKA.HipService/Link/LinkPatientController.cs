@@ -6,6 +6,7 @@ namespace In.ProjectEKA.HipService.Link
     using HipLibrary.Patient;
     using HipLibrary.Patient.Model;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Http;
 
     [ApiController]
     [Route("patients/link")]
@@ -36,7 +37,7 @@ namespace In.ProjectEKA.HipService.Link
             if (!doesRequestExists)
             {
                 return ReturnServerResponse(new ErrorRepresentation(
-                    new Error(ErrorCode.DiscoveryRequestNotFound, ErrorMessage.TransactionIdNotFound)));
+                    new Error(ErrorCode.DiscoveryRequestNotFound, ErrorMessage.DiscoveryRequestNotFound)));
             }
 
             var patientReferenceRequest =
@@ -63,12 +64,12 @@ namespace In.ProjectEKA.HipService.Link
                 ErrorCode.OtpExpired => (ActionResult) BadRequest(errorResponse),
                 ErrorCode.MultiplePatientsFound => NotFound(errorResponse),
                 ErrorCode.NoPatientFound => NotFound(errorResponse),
-                ErrorCode.OtpGenerationFailed => BadRequest(errorResponse),
+                ErrorCode.OtpGenerationFailed => StatusCode(StatusCodes.Status500InternalServerError, errorResponse),
                 ErrorCode.OtpInValid => NotFound(errorResponse),
-                ErrorCode.ServerInternalError => BadRequest(errorResponse),
+                ErrorCode.ServerInternalError => StatusCode(StatusCodes.Status500InternalServerError, errorResponse),
                 ErrorCode.CareContextNotFound => NotFound(errorResponse),
                 ErrorCode.NoLinkRequestFound => NotFound(errorResponse),
-                ErrorCode.DiscoveryRequestNotFound => BadRequest(errorResponse),
+                ErrorCode.DiscoveryRequestNotFound => NotFound(errorResponse),
                 _ => NotFound(errorResponse)
             };
         }

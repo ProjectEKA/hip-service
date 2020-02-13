@@ -1,9 +1,9 @@
-using System.Threading.Tasks;
-using In.ProjectEKA.OtpService.Otp.Model;
-using Optional;
-
 namespace In.ProjectEKA.OtpService.Otp
 {
+    using System.Threading.Tasks;
+    using Model;
+    using Optional;
+    
     public interface IOtpRepository
     {
         Task<OtpResponse> Save(string otp, string sessionId);

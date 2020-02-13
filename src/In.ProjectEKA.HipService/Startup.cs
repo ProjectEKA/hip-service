@@ -1,4 +1,3 @@
-
 namespace In.ProjectEKA.HipService
 {
     using System.Net.Http;
@@ -19,6 +18,8 @@ namespace In.ProjectEKA.HipService
     using Middleware;
     using DataFlow;
     using DataFlow.Database;
+    using Serilog;
+    using MessagingQueue;
 
     public class Startup
     {
@@ -47,6 +48,8 @@ namespace In.ProjectEKA.HipService
                     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
                         x => x.MigrationsAssembly("In.ProjectEKA.HipService")))
                 .AddSingleton<IPatientRepository>(new PatientRepository("Resources/patients.json"))
+                .AddRabbit(Configuration)
+                .Configure<OtpServiceConfiguration>(Configuration.GetSection("OtpService"))
                 .AddScoped<ILinkPatientRepository, LinkPatientRepository>()
                 .AddSingleton<IMatchingRepository>(new PatientMatchingRepository("Resources/patients.json"))
                 .AddScoped<IDiscoveryRequestRepository, DiscoveryRequestRepository>()
@@ -56,9 +59,10 @@ namespace In.ProjectEKA.HipService
                 .AddTransient<ILink, LinkPatient>()
                 .AddSingleton(Configuration)
                 .AddSingleton(HttpClient)
-                .Configure<OtpServiceConfiguration>(Configuration.GetSection("OtpService"))
                 .AddScoped<IPatientVerification, PatientVerification>()
+                .AddHostedService<MessagingQueueListener>()
                 .AddScoped<IDataFlowRepository, DataFlowRepository>()
+                .AddScoped<IConsentArtefactRepository, ConsentArtefactRepository>()
                 .AddTransient<IDataFlow, DataFlow.DataFlow>()
                 .AddRouting(options => options.LowercaseUrls = true)
                 .AddControllers()
@@ -72,6 +76,7 @@ namespace In.ProjectEKA.HipService
                 .UseIf(!env.IsDevelopment(), x => x.UseHsts())
                 .UseIf(env.IsDevelopment(), x => x.UseDeveloperExceptionPage())
                 .UseCustomOpenAPI()
+                .UseSerilogRequestLogging()
                 .UseConsentManagerIdentifierMiddleware()
                 .UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
