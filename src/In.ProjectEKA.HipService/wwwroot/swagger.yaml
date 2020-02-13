@@ -601,6 +601,12 @@ components:
                     example: Episode1
             purpose:
               $ref: '#/components/schemas/UsePurpose'
+            hip:
+              type: object
+              allOf:
+                - $ref: '#/components/schemas/OrganizationRepresentation'
+                - xml:
+                    name: hip
             hiTypes:
               type: array
               items:
@@ -681,3 +687,18 @@ components:
               type: integer
       xml:
         name: Permission
+    OrganizationRepresentation:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          xml:
+            attribute: true
+        name:
+          type: string
+          xml:
+            attribute: true
+      xml:
+        name: OrganizationResponse
