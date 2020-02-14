@@ -1,8 +1,8 @@
-using In.ProjectEKA.DefaultHip.Link;
-
 namespace In.ProjectEKA.DefaultHipTest.Link
 {
+    using DefaultHip.Link;
     using FluentAssertions;
+    using HipLibrary.Patient.Model;
     using Xunit;
 
     [Collection("Patient Repository Tests")]
@@ -14,20 +14,24 @@ namespace In.ProjectEKA.DefaultHipTest.Link
         [Fact]
         private void ReturnObjectForKnownPatient()
         {
-            const string patientReferenceNumber = "11";
-            var testPatient = new HipLibrary.Patient.Model.Patient
+            const string patientReferenceNumber = "1";
+            var testPatient = new Patient
             {
                 PhoneNumber = "+919999999999",
                 Identifier = patientReferenceNumber,
-                FirstName = "Jill",
+                FirstName = "John",
                 LastName = "Doee",
-                Gender = "F",
+                Gender = "M",
+                CareContexts = new []
+                {
+                    new CareContextRepresentation("124", "National TB program"),
+                    new CareContextRepresentation("123", "National Cancer program"), 
+                }
             };
             
-            var patient = patientRepository
-                .PatientWith(patientReferenceNumber);
+            var patient = patientRepository.PatientWith(patientReferenceNumber);
             
-            patient.ValueOr(new HipLibrary.Patient.Model.Patient()).Should()
+            patient.ValueOr(new Patient()).Should()
                 .BeEquivalentTo(testPatient);
         }
         
@@ -36,10 +40,9 @@ namespace In.ProjectEKA.DefaultHipTest.Link
         {
             const string patientReferenceNumber = "1234";
             
-            var patient = patientRepository
-                .PatientWith(patientReferenceNumber);
+            var patient = patientRepository.PatientWith(patientReferenceNumber);
             
-            patient.ValueOr((HipLibrary.Patient.Model.Patient) null)
+            patient.ValueOr((Patient) null)
                 .Should().BeNull();
         }
     }
