@@ -38,9 +38,9 @@ namespace In.ProjectEKA.HipServiceTest.Consent
             var consentAdded = TestBuilder.Consent();
             await consentRepository.AddAsync(consentAdded);
 
-            var consentFetched = await consentRepository.GetFor(consentAdded.ConsentArtefactId);
-            
-            consentFetched.Should().BeEquivalentTo(consentAdded);
+            var consent = await consentRepository.GetFor(consentAdded.ConsentArtefactId);
+
+            consent.Should().BeEquivalentTo(consentAdded);
         }
 
         [Fact]
@@ -51,9 +51,9 @@ namespace In.ProjectEKA.HipServiceTest.Consent
             var consentAdded = TestBuilder.Consent();
             await consentRepository.AddAsync(consentAdded);
 
-            var consentFetched = await consentRepository.GetFor("not-found-consent-id");
-            
-            consentFetched.Should().BeNull();
+            var consent = await consentRepository.GetFor("not-found-consent-id");
+
+            consent.Should().BeNull();
         }
     }
 }
