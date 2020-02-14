@@ -2,6 +2,8 @@ namespace In.ProjectEKA.HipService
 {
     using System.Net.Http;
     using System.Text.Json;
+    using Consent;
+    using Consent.Database;
     using DefaultHip.Discovery;
     using DefaultHip.Link;
     using Discovery;
@@ -47,6 +49,9 @@ namespace In.ProjectEKA.HipService
                 .AddDbContext<DataFlowContext>(options =>
                     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
                         x => x.MigrationsAssembly("In.ProjectEKA.HipService")))
+                .AddDbContext<ConsentContext>(options =>
+                    options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
+                        x => x.MigrationsAssembly("In.ProjectEKA.HipService")))
                 .AddSingleton<IPatientRepository>(new PatientRepository("Resources/patients.json"))
                 .AddRabbit(Configuration)
                 .Configure<OtpServiceConfiguration>(Configuration.GetSection("OtpService"))
@@ -60,6 +65,7 @@ namespace In.ProjectEKA.HipService
                 .AddSingleton(Configuration)
                 .AddSingleton(HttpClient)
                 .AddScoped<IPatientVerification, PatientVerification>()
+                .AddScoped<IConsentRepository, ConsentRepository>()
                 .AddHostedService<MessagingQueueListener>()
                 .AddScoped<IDataFlowRepository, DataFlowRepository>()
                 .AddScoped<IConsentArtefactRepository, ConsentArtefactRepository>()
@@ -87,6 +93,8 @@ namespace In.ProjectEKA.HipService
             discoveryContext.Database.Migrate();
             var dataFlowContext = serviceScope.ServiceProvider.GetService<DataFlowContext>();
             dataFlowContext.Database.Migrate();
+            var consentContext = serviceScope.ServiceProvider.GetService<ConsentContext>();
+            consentContext.Database.Migrate();
         }
     }
 }

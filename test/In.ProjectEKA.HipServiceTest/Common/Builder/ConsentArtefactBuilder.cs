@@ -1,8 +1,8 @@
-namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
+namespace In.ProjectEKA.HipServiceTest.Common.Builder
 {
     using System;
     using System.Collections.Generic;
-    using HipService.DataFlow;
+    using HipService.Common.Model;
 
     internal class ConsentArtefactBuilder
     {

@@ -3,6 +3,7 @@ namespace In.ProjectEKA.HipService.DataFlow
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using Common.Model;
     using Database;
     using Model;
     using Optional;

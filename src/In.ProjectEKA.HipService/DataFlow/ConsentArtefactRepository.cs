@@ -2,6 +2,7 @@ namespace In.ProjectEKA.HipService.DataFlow
 {
     using System;
     using System.Collections.Generic;
+    using Common.Model;
 
     public class ConsentArtefactRepository : IConsentArtefactRepository
     {
