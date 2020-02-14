@@ -3,6 +3,7 @@ namespace In.ProjectEKA.HipService.DataFlow
     using System;
     using System.Threading.Tasks;
     using HipLibrary.Patient.Model;
+    using HipService.Consent;
     using Logger;
     using MessagingQueue;
 
@@ -10,24 +11,30 @@ namespace In.ProjectEKA.HipService.DataFlow
     {
         private readonly IMessagingQueueManager messagingQueueManager;
         private readonly IDataFlowRepository dataFlowRepository;
+        private readonly IConsentRepository consentRepository;
 
-        public DataFlow(IDataFlowRepository dataFlowRepository, IMessagingQueueManager messagingQueueManager)
+        public DataFlow(IDataFlowRepository dataFlowRepository,
+            IMessagingQueueManager messagingQueueManager,
+            IConsentRepository consentRepository)
         {
             this.dataFlowRepository = dataFlowRepository;
             this.messagingQueueManager = messagingQueueManager;
+            this.consentRepository = consentRepository;
         }
-        
-        public async Task<Tuple<HealthInformationResponse, ErrorRepresentation>> HealthInformationRequestFor(HealthInformationRequest request)
+
+        public async Task<Tuple<HealthInformationResponse, ErrorRepresentation>> HealthInformationRequestFor(
+            HealthInformationRequest request)
         {
-            var (artefact, error) = dataFlowRepository.GetFor(request.Consent.Id);
-            if (error != null)
+            var consent = await consentRepository.GetFor(request.Consent.Id);
+            if (consent == null)
             {
                 return new Tuple<HealthInformationResponse, ErrorRepresentation>(null,
                     new ErrorRepresentation(new Error(ErrorCode.ContextArtefactIdNotFound,
                         ErrorMessage.ContextArtefactIdNotFound)));
             }
-            var dataRequest = new DataRequest(artefact.CareContexts, request.HiDataRange,
-                request.CallBackUrl, artefact.HiTypes, request.TransactionId);
+
+            var dataRequest = new DataRequest(consent.ConsentArtefact.CareContexts, request.HiDataRange,
+                request.CallBackUrl, consent.ConsentArtefact.HiTypes, request.TransactionId);
             var result = await dataFlowRepository.SaveRequestFor(request.TransactionId, request)
                 .ConfigureAwait(false);
             var (response, errorRepresentation) = result.Map(r =>

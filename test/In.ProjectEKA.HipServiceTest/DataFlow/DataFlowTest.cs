@@ -11,6 +11,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
     using System.Collections.Generic;
     using Bogus;
     using HipService.Common.Model;
+    using HipService.Consent;
     using HipService.MessagingQueue;
     
     using DataFlowService = HipService.DataFlow.DataFlow;
@@ -19,6 +20,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
     public class DataFlowTest
     {
         private readonly Mock<IDataFlowRepository> dataFlowRepository = new Mock<IDataFlowRepository>();
+        private readonly Mock<IConsentRepository> consentRepository = new Mock<IConsentRepository>();
         private readonly Mock<IMessagingQueueManager> messagingQueueManager = new Mock<IMessagingQueueManager>();
         private readonly DataFlowService dataFlowService;
 
@@ -26,7 +28,8 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
         {
             dataFlowService = new DataFlowService(
                 dataFlowRepository.Object,
-                messagingQueueManager.Object);
+                messagingQueueManager.Object,
+                consentRepository.Object);
         }
 
         [Fact]
@@ -36,8 +39,8 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var request = TestBuilder.HealthInformationRequest(transactionId);
             dataFlowRepository.Setup(d => d.SaveRequestFor(transactionId, request))
                 .ReturnsAsync(Option.None<Exception>());
-            dataFlowRepository.Setup(d => d.GetFor(request.Consent.Id)).
-                Returns(new Tuple<ConsentArtefact, Exception>(TestBuilder.ConsentArtefact().Generate().Build(), null));
+            consentRepository.Setup(d => d.GetFor(request.Consent.Id)).
+                ReturnsAsync(TestBuilder.Consent());
 
             var (healthInformationResponse, _) = await dataFlowService.HealthInformationRequestFor(request);
 
@@ -54,8 +57,8 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                 .ReturnsAsync(Option.Some(new Exception()));
             var expectedError = new ErrorRepresentation(new Error(ErrorCode.ServerInternalError,
                 ErrorMessage.InternalServerError));
-            dataFlowRepository.Setup(d => d.GetFor(request.Consent.Id)).
-                Returns(new Tuple<ConsentArtefact, Exception>(TestBuilder.ConsentArtefact().Generate().Build(), null));
+            consentRepository.Setup(d => d.GetFor(request.Consent.Id)).
+                ReturnsAsync(TestBuilder.Consent());
             
             var (_, errorResponse) = await dataFlowService.HealthInformationRequestFor(request);
             

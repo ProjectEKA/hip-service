@@ -29,5 +29,31 @@ namespace In.ProjectEKA.HipServiceTest.Consent
 
             consentContext.ConsentArtefact.Count().Should().Be(1);
         }
+
+        [Fact]
+        async void ShouldFetchConsent()
+        {
+            var consentContext = ConsentContext();
+            var consentRepository = new ConsentRepository(consentContext);
+            var consentAdded = TestBuilder.Consent();
+            await consentRepository.AddAsync(consentAdded);
+
+            var consent = await consentRepository.GetFor(consentAdded.ConsentArtefactId);
+
+            consent.Should().BeEquivalentTo(consentAdded);
+        }
+
+        [Fact]
+        async void ShouldReturnNullWhenConsentIsNotFound()
+        {
+            var consentContext = ConsentContext();
+            var consentRepository = new ConsentRepository(consentContext);
+            var consentAdded = TestBuilder.Consent();
+            await consentRepository.AddAsync(consentAdded);
+
+            var consent = await consentRepository.GetFor("not-found-consent-id");
+
+            consent.Should().BeNull();
+        }
     }
 }

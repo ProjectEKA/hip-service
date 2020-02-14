@@ -8,6 +8,5 @@ namespace In.ProjectEKA.HipService.DataFlow
     public interface IDataFlowRepository
     {
         Task<Option<Exception>> SaveRequestFor(string transactionId, HealthInformationRequest request);
-        public Tuple<ConsentArtefact, Exception> GetFor(string consentId);
     }
 }
