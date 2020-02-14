@@ -65,7 +65,7 @@ namespace In.ProjectEKA.HipService
                 .AddSingleton(Configuration)
                 .AddSingleton(HttpClient)
                 .AddScoped<IPatientVerification, PatientVerification>()
-                .AddScoped<ConsentRepository>()
+                .AddScoped<IConsentRepository, ConsentRepository>()
                 .AddHostedService<MessagingQueueListener>()
                 .AddScoped<IDataFlowRepository, DataFlowRepository>()
                 .AddScoped<IConsentArtefactRepository, ConsentArtefactRepository>()
