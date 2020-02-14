@@ -2,6 +2,7 @@ namespace In.ProjectEKA.HipService.Consent
 {
     using System.Threading.Tasks;
     using Database;
+    using Microsoft.EntityFrameworkCore;
     using Model;
 
     public class ConsentRepository: IConsentRepository
@@ -17,6 +18,12 @@ namespace In.ProjectEKA.HipService.Consent
         {
             await consentContext.ConsentArtefact.AddAsync(consent); 
             await consentContext.SaveChangesAsync();
+        }
+
+        public async Task<Consent> GetFor(string consentArtefactId)
+        {
+            return await consentContext.ConsentArtefact
+                .FirstOrDefaultAsync(x => x.ConsentArtefactId == consentArtefactId);
         }
     }
 }

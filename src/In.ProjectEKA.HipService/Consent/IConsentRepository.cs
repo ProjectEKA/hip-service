@@ -6,5 +6,6 @@ namespace In.ProjectEKA.HipService.Consent
     public interface IConsentRepository
     {
         public Task AddAsync(Consent consent);
+        public Task<Consent> GetFor(string consentArtefactId);
     }
 }
