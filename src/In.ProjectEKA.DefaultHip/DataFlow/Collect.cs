@@ -16,6 +16,7 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
         {
             this.filePath = filePath;
         }
+
         public async Task<Option<Entries>> CollectData(DataRequest dataRequest)
         {
             var bundle = await FileReader.ReadJsonAsync<Bundle>(filePath);

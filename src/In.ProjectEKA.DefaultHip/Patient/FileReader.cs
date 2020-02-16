@@ -29,11 +29,5 @@ namespace In.ProjectEKA.DefaultHip.Patient
             FhirJsonParser fjp = new FhirJsonParser();
             return fjp.Parse<T>(jsonData);
         }
-
-        public static T ReadJson<T>(string filePath)
-        {
-            var jsonData = File.ReadAllText(filePath);
-            return JsonConvert.DeserializeObject<T>(jsonData);
-        }
     }
 }
