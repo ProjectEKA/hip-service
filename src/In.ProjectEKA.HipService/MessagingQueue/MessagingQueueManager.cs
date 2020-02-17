@@ -2,11 +2,11 @@ namespace In.ProjectEKA.HipService.MessagingQueue
 {
     using System;
     using System.Text;
+    using Logger;
     using Microsoft.Extensions.ObjectPool;
     using Newtonsoft.Json;
     using RabbitMQ.Client;
-    using Log = Logger.Log;
-    
+
     public class MessagingQueueManager : IMessagingQueueManager
     {
         private readonly DefaultObjectPool<IModel> objectPool;  

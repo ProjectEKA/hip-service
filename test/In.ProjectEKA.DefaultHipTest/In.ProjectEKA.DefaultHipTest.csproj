@@ -29,9 +29,5 @@
         <Content Include="..\..\src\In.ProjectEKA.DefaultHip\Resources\observation.json">
           <Link>observation.json</Link>
         </Content>
-        <Content Include="..\..\src\In.ProjectEKA.HipService\Resources\patients.json">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-            <Link>patients.json</Link>
-        </Content>
     </ItemGroup>
 </Project>

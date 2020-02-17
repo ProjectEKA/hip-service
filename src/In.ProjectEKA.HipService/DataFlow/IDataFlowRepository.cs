@@ -1,9 +1,8 @@
 namespace In.ProjectEKA.HipService.DataFlow
 {
-    using Optional;
     using System;
     using System.Threading.Tasks;
-    using Common.Model;
+    using Optional;
 
     public interface IDataFlowRepository
     {
