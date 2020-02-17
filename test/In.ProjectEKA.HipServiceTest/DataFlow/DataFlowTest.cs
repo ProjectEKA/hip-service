@@ -8,9 +8,6 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
     using Moq;
     using Optional;
     using Xunit;
-    using System.Collections.Generic;
-    using Bogus;
-    using HipService.Common.Model;
     using HipService.Consent;
     using HipService.MessagingQueue;
     

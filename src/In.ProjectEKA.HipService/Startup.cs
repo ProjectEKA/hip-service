@@ -2,32 +2,31 @@ namespace In.ProjectEKA.HipService
 {
     using System.Net.Http;
     using System.Text.Json;
-    using Consent;
-    using Consent.Database;
-    using DefaultHip.Discovery;
-    using DefaultHip.Link;
-    using Discovery;
-    using Discovery.Database;
-    using HipLibrary.Patient;
-    using Link;
-    using Link.Database;
+    using In.ProjectEKA.DefaultHip.DataFlow;
+    using In.ProjectEKA.DefaultHip.Discovery;
+    using In.ProjectEKA.DefaultHip.Link;
+    using In.ProjectEKA.HipLibrary.Patient;
+    using In.ProjectEKA.HipService.Consent;
+    using In.ProjectEKA.HipService.Consent.Database;
+    using In.ProjectEKA.HipService.DataFlow;
+    using In.ProjectEKA.HipService.DataFlow.Database;
+    using In.ProjectEKA.HipService.Discovery;
+    using In.ProjectEKA.HipService.Discovery.Database;
+    using In.ProjectEKA.HipService.Link;
+    using In.ProjectEKA.HipService.Link.Database;
+    using In.ProjectEKA.HipService.MessagingQueue;
+    using In.ProjectEKA.HipService.Middleware;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using Middleware;
-    using DataFlow;
-    using DataFlow.Database;
+    using Newtonsoft.Json;
     using Serilog;
-    using MessagingQueue;
 
     public class Startup
     {
-        private IConfiguration Configuration { get; }
-        private HttpClient HttpClient { get; }
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -38,10 +37,14 @@ namespace In.ProjectEKA.HipService
             HttpClient = new HttpClient(clientHandler);
         }
 
-        public void ConfigureServices(IServiceCollection services) =>
+        private IConfiguration Configuration { get; }
+        private HttpClient HttpClient { get; }
+
+        public void ConfigureServices(IServiceCollection services)
+        {
             services
                 .AddDbContext<LinkPatientContext>(options =>
-                    options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"), 
+                    options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
                         x => x.MigrationsAssembly("In.ProjectEKA.HipService")))
                 .AddDbContext<DiscoveryContext>(options =>
                     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
@@ -53,6 +56,7 @@ namespace In.ProjectEKA.HipService
                     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
                         x => x.MigrationsAssembly("In.ProjectEKA.HipService")))
                 .AddSingleton<IPatientRepository>(new PatientRepository("Resources/patients.json"))
+                .AddSingleton<ICollect>(new Collect("../In.ProjectEKA.DefaultHip/Resources/observation.json"))
                 .AddRabbit(Configuration)
                 .Configure<OtpServiceConfiguration>(Configuration.GetSection("OtpService"))
                 .AddScoped<ILinkPatientRepository, LinkPatientRepository>()
@@ -63,6 +67,7 @@ namespace In.ProjectEKA.HipService
                 .AddScoped<IReferenceNumberGenerator, ReferenceNumberGenerator>()
                 .AddTransient<ILink, LinkPatient>()
                 .AddSingleton(Configuration)
+                .AddSingleton<DataFlowClient>()
                 .AddSingleton(HttpClient)
                 .AddScoped<IPatientVerification, PatientVerification>()
                 .AddScoped<IConsentRepository, ConsentRepository>()
@@ -71,8 +76,16 @@ namespace In.ProjectEKA.HipService
                 .AddTransient<IDataFlow, DataFlow.DataFlow>()
                 .AddRouting(options => options.LowercaseUrls = true)
                 .AddControllers()
-                .AddNewtonsoftJson(options =>{})
-                .AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase);
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                })
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                    options.JsonSerializerOptions.IgnoreNullValues = true;
+                });
+        }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

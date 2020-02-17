@@ -12,4 +12,11 @@
     <ProjectReference Include="..\In.ProjectEKA.HipLibrary\In.ProjectEKA.HipLibrary.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="..\..\src\In.ProjectEKA.DefaultHip\Resources\observation.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Link>observation.json</Link>
+    </Content>
+  </ItemGroup>
+
 </Project>
