@@ -21,6 +21,7 @@ namespace In.ProjectEKA.HipService
     using Middleware;
     using Newtonsoft.Json;
     using Serilog;
+    using TMHHip.DataFlow;
     using TMHHip.Discovery;
     using TMHHip.Link;
 
@@ -62,6 +63,7 @@ namespace In.ProjectEKA.HipService
                 .AddScoped<IDiscoveryRequestRepository, DiscoveryRequestRepository>()
                 .AddScoped<PatientDiscovery>()
                 .AddTransient<IDiscovery, PatientDiscovery>()
+                .AddTransient<ICollect, Collect>()
                 .AddScoped<IReferenceNumberGenerator, ReferenceNumberGenerator>()
                 .AddTransient<ILink, LinkPatient>()
                 .AddSingleton(Configuration)
