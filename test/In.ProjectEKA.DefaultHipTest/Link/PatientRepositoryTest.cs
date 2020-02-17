@@ -8,8 +8,7 @@ namespace In.ProjectEKA.DefaultHipTest.Link
     [Collection("Patient Repository Tests")]
     public class PatientRepositoryTest
     {
-        private readonly PatientRepository patientRepository 
-            = new PatientRepository("patients.json");
+        private readonly PatientRepository patientRepository = new PatientRepository("patients.json");
         
         [Fact]
         private void ReturnObjectForKnownPatient()
@@ -17,7 +16,7 @@ namespace In.ProjectEKA.DefaultHipTest.Link
             const string patientReferenceNumber = "1";
             var testPatient = new Patient
             {
-                PhoneNumber = "+919999999999",
+                PhoneNumber = "+91-9999999999",
                 Identifier = patientReferenceNumber,
                 FirstName = "John",
                 LastName = "Doee",
@@ -31,8 +30,7 @@ namespace In.ProjectEKA.DefaultHipTest.Link
             
             var patient = patientRepository.PatientWith(patientReferenceNumber);
             
-            patient.ValueOr(new Patient()).Should()
-                .BeEquivalentTo(testPatient);
+            patient.ValueOr(new Patient()).Should().BeEquivalentTo(testPatient);
         }
         
         [Fact]
@@ -42,8 +40,7 @@ namespace In.ProjectEKA.DefaultHipTest.Link
             
             var patient = patientRepository.PatientWith(patientReferenceNumber);
             
-            patient.ValueOr((Patient) null)
-                .Should().BeNull();
+            patient.ValueOr((Patient) null).Should().BeNull();
         }
     }
 }

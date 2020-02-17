@@ -1,6 +1,6 @@
 [
   {
-    "phoneNumber": "+919999999999",
+    "phoneNumber": "+91-9999999999",
     "identifier": "1",
     "firstName": "John",
     "lastName": "Doee",
@@ -19,7 +19,7 @@
     ]
   },
   {
-    "phoneNumber": "+918888888888",
+    "phoneNumber": "+91-8888888888",
     "identifier": "2",
     "email": "ijk@def.com",
     "firstName": "Jane",
@@ -39,7 +39,7 @@
     ]
   },
   {
-    "phoneNumber": "+9177777777777",
+    "phoneNumber": "+91-77777777777",
     "identifier": "3",
     "email": "def@def.com",
     "firstName": "Olivia",
@@ -59,7 +59,7 @@
     ]
   },
   {
-    "phoneNumber": "+91666666666666",
+    "phoneNumber": "+91-666666666666",
     "identifier": "4",
     "email": "ghi@def.com",
     "firstName": "Ron",
@@ -79,7 +79,7 @@
     ]
   },
   {
-    "phoneNumber": "+918340289040",
+    "phoneNumber": "+91-8340289040",
     "identifier": "5",
     "email": "ghi@def.com",
     "firstName": "Ron",
@@ -95,7 +95,7 @@
     ]
   },
   {
-    "phoneNumber": "+919611727707",
+    "phoneNumber": "+91-9611727707",
     "identifier": "6",
     "email": "qwe@def.com",
     "firstName": "Jane",
@@ -111,7 +111,7 @@
     ]
   },
   {
-    "phoneNumber": "+919620004135",
+    "phoneNumber": "+91-9620004135",
     "identifier": "7",
     "email": "jnh@def.com",
     "firstName": "Philip",
