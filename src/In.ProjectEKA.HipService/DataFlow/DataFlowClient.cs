@@ -16,12 +16,12 @@ namespace In.ProjectEKA.HipService.DataFlow
         private readonly ICollect collect;
         private readonly HttpClient httpClient;
 
-
         public DataFlowClient(ICollect collect, HttpClient httpClient)
         {
             this.collect = collect;
             this.httpClient = httpClient;
         }
+
         public async Task HandleMessagingQueueResult(HipLibrary.Patient.Model.DataRequest dataRequest)
         {
             (await collect.CollectData(dataRequest))
@@ -39,11 +39,12 @@ namespace In.ProjectEKA.HipService.DataFlow
                     return Task.CompletedTask;
                 });
         }
-        
+
         private async Task SendDataToHiu(DataResponse dataResponse, string callBackUrl)
         {
             try
             {
+                httpClient.DefaultRequestHeaders.Add("Authorization", GetAuthToken());
                 await httpClient.PostAsync($"{callBackUrl}/data/notification", CreateHttpContent(dataResponse))
                     .ConfigureAwait(false);
             }
@@ -52,7 +53,13 @@ namespace In.ProjectEKA.HipService.DataFlow
                 Log.Fatal(exception, exception.StackTrace);
             }
         }
-        
+
+        private static string GetAuthToken()
+        {
+            // TODO : Should be fetched from central registry
+            return "AuthToken";
+        }
+
         private static HttpContent CreateHttpContent<T>(T content)
         {
             var json = JsonConvert.SerializeObject(content, new JsonSerializerSettings

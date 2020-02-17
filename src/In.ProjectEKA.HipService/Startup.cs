@@ -42,7 +42,7 @@ namespace In.ProjectEKA.HipService
         public void ConfigureServices(IServiceCollection services) =>
             services
                 .AddDbContext<LinkPatientContext>(options =>
-                    options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"), 
+                    options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
                         x => x.MigrationsAssembly("In.ProjectEKA.HipService")))
                 .AddDbContext<DiscoveryContext>(options =>
                     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
@@ -61,6 +61,7 @@ namespace In.ProjectEKA.HipService
                 .AddScoped<IReferenceNumberGenerator, ReferenceNumberGenerator>()
                 .AddTransient<ILink, LinkPatient>()
                 .AddSingleton(Configuration)
+                .AddSingleton<DataFlowClient>()
                 .AddSingleton(HttpClient)
                 .Configure<OtpServiceConfiguration>(Configuration.GetSection("OtpService"))
                 .AddScoped<IPatientVerification, PatientVerification>()
@@ -71,9 +72,9 @@ namespace In.ProjectEKA.HipService
                 .AddRouting(options => options.LowercaseUrls = true)
                 .AddControllers()
                 .AddNewtonsoftJson(options =>
-                    {
-                        options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-                    })
+                {
+                    options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                })
                 .AddJsonOptions(options =>
                 {
                     options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;

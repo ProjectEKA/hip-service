@@ -9,7 +9,6 @@ using In.ProjectEKA.HipServiceTest.DataFlow.Builder;
 using Moq;
 using Moq.Protected;
 using Xunit;
-using System.Linq.Expressions;
 
 namespace In.ProjectEKA.HipServiceTest.DataFlow
 {
