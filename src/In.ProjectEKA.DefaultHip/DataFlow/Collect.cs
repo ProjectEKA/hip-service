@@ -1,13 +1,13 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Hl7.Fhir.Model;
-using In.ProjectEKA.DefaultHip.Patient;
-using In.ProjectEKA.HipLibrary.Patient;
-using In.ProjectEKA.HipLibrary.Patient.Model;
-using Optional;
-
 namespace In.ProjectEKA.DefaultHip.DataFlow
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using Hl7.Fhir.Model;
+    using In.ProjectEKA.DefaultHip.Patient;
+    using In.ProjectEKA.HipLibrary.Patient;
+    using In.ProjectEKA.HipLibrary.Patient.Model;
+    using Optional;
+
     public class Collect : ICollect
     {
         private readonly string filePath;

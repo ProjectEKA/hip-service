@@ -1,20 +1,20 @@
-using System;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.ObjectPool;
-using Newtonsoft.Json;
-using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
-
 namespace In.ProjectEKA.HipService.DataFlow
 {
+    using System;
+    using System.Text;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using Microsoft.Extensions.Hosting;
+    using Microsoft.Extensions.ObjectPool;
+    using Newtonsoft.Json;
+    using RabbitMQ.Client;
+    using RabbitMQ.Client.Events;
+
     public class MessagingQueueListener : BackgroundService
     {
+        private readonly DataFlowClient dataFlowClient;
         private readonly DefaultObjectPool<IModel> objectPool;
         private IModel channel;
-        private readonly DataFlowClient dataFlowClient;
 
         public MessagingQueueListener(IPooledObjectPolicy<IModel> objectPolicy, DataFlowClient dataFlowClient)
         {

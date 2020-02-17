@@ -1,16 +1,16 @@
-using System;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using Hl7.Fhir.Serialization;
-using In.ProjectEKA.HipLibrary.Patient;
-using In.ProjectEKA.HipService.Logger;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-
 namespace In.ProjectEKA.HipService.DataFlow
 {
+    using System;
+    using System.Linq;
+    using System.Net.Http;
+    using System.Text;
+    using System.Threading.Tasks;
+    using Hl7.Fhir.Serialization;
+    using In.ProjectEKA.HipLibrary.Patient;
+    using In.ProjectEKA.HipService.Logger;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Serialization;
+
     public class DataFlowClient
     {
         private readonly ICollect collect;

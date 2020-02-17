@@ -1,17 +1,17 @@
-using System;
-using System.Net;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
-using In.ProjectEKA.DefaultHip.DataFlow;
-using In.ProjectEKA.HipService.DataFlow;
-using In.ProjectEKA.HipServiceTest.DataFlow.Builder;
-using Moq;
-using Moq.Protected;
-using Xunit;
-
 namespace In.ProjectEKA.HipServiceTest.DataFlow
 {
+    using System;
+    using System.Net;
+    using System.Net.Http;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using In.ProjectEKA.DefaultHip.DataFlow;
+    using In.ProjectEKA.HipService.DataFlow;
+    using In.ProjectEKA.HipServiceTest.DataFlow.Builder;
+    using Moq;
+    using Moq.Protected;
+    using Xunit;
+
     [Collection("Queue Listener Tests")]
     public class DataFlowClientTest
     {
@@ -30,12 +30,12 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                 )
                 .ReturnsAsync(new HttpResponseMessage
                 {
-                    StatusCode = HttpStatusCode.OK,
+                    StatusCode = HttpStatusCode.OK
                 })
                 .Verifiable();
             var httpClient = new HttpClient(handlerMock.Object)
             {
-                BaseAddress = new Uri("http://localhost:8003"),
+                BaseAddress = new Uri("http://localhost:8003")
             };
             var dataRequest = TestBuilder.DataRequest().Generate().Build();
 
