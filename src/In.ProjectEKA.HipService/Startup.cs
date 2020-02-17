@@ -29,6 +29,7 @@ namespace In.ProjectEKA.HipService
     using Microsoft.IdentityModel.Logging;
     using Microsoft.IdentityModel.Tokens;
     using Newtonsoft.Json;
+    using TMHHip.DataFlow;
     using Serilog;
     using Task = System.Threading.Tasks.Task;
     using TMHHip.Discovery;
@@ -47,6 +48,7 @@ namespace In.ProjectEKA.HipService
         }
 
         private IConfiguration Configuration { get; }
+        private HttpClient HttpClient { get; }
 
         public void ConfigureServices(IServiceCollection services) =>
             services
@@ -71,7 +73,7 @@ namespace In.ProjectEKA.HipService
                 .Configure<DataFlowConfiguration>(Configuration.GetSection("dataFlow"))
                 .Configure<HipConfiguration>(Configuration.GetSection("hip"))
                 .AddScoped<ILinkPatientRepository, LinkPatientRepository>()
-                .AddSingleton<IMatchingRepository>(new PatientMatchingRepository("demoPatients.json"))
+                .AddSingleton<IPatientRepository, PatientRepository>()
                 .AddScoped<IDiscoveryRequestRepository, DiscoveryRequestRepository>()
                 .AddScoped<PatientDiscovery>()
                 .AddScoped<LinkPatient>()

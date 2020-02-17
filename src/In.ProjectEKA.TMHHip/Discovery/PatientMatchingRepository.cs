@@ -21,10 +21,22 @@ namespace In.ProjectEKA.TMHHip.Discovery
 
         public async Task<IQueryable<HipLibrary.Patient.Model.Patient>> Where(DiscoveryRequest predicate)
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, "https://tmc.gov.in/tmh_ncg_api/patients/find");
-            request.Content = new StringContent(
-                JsonConvert.SerializeObject(new {mobileNumber = predicate.Patient.VerifiedIdentifiers.First().Value}),
-                Encoding.UTF8, "application/json");
+            static string RemoveCountryCodeFrom(string value)
+            {
+                return value?.Split("-").Length > 1 ? value.Split("-")[1] : value;
+            }
+
+            var request = new HttpRequestMessage(HttpMethod.Post, "https://tmc.gov.in/tmh_ncg_api/patients/find")
+            {
+                Content = new StringContent(
+                    JsonConvert.SerializeObject(new
+                    {
+                        mobileNumber =
+                            RemoveCountryCodeFrom(predicate.Patient.VerifiedIdentifiers.First().Value)
+                    }),
+                    Encoding.UTF8,
+                    "application/json")
+            };
             var response = await client.SendAsync(request);
             await using var responseStream = await response.Content.ReadAsStreamAsync();
             var result = await JsonSerializer.DeserializeAsync<IEnumerable<Patient>>(responseStream);
@@ -36,7 +48,8 @@ namespace In.ProjectEKA.TMHHip.Discovery
                 LastName = patient.LastName,
                 CareContexts = new List<CareContextRepresentation>
                 {
-                    new CareContextRepresentation($"{patient.Identifier}",
+                    new CareContextRepresentation(
+                        $"{patient.Identifier}",
                         $"{patient.FirstName}  {patient.LastName}")
                 },
                 PhoneNumber = patient.PhoneNumber
