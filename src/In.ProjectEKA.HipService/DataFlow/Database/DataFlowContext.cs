@@ -1,9 +1,10 @@
 namespace In.ProjectEKA.HipService.DataFlow.Database
 {
-    using Model;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
+    using Model;
     using Newtonsoft.Json;
+
     public class DataFlowContext : DbContext
     {
         public DbSet<DataFlowRequest> DataFlowRequest { get; set; }

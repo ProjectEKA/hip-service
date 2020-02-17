@@ -1,7 +1,7 @@
 namespace In.ProjectEKA.HipService.Logger
 {
     using System;
-    
+
     public static class Log
     {
         public static void Information(string format, params object[] arg)

@@ -5,8 +5,8 @@ namespace In.ProjectEKA.HipService.Link
     using Discovery;
     using HipLibrary.Patient;
     using HipLibrary.Patient.Model;
-    using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
 
     [ApiController]
     [Route("patients/link")]

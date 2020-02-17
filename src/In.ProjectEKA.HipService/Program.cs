@@ -1,11 +1,12 @@
 ﻿namespace In.ProjectEKA.HipService
 {
+    using System;
     using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
-    using Serilog;
-    using System;
     using Microsoft.Extensions.DependencyInjection;
+    using Serilog;
+
     public class Program
     {
         public static void Main(string[] args) =>

@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\In.ProjectEKA.HipLibrary\In.ProjectEKA.HipLibrary.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\observation.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <Link>observation.json</Link>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\patients.json">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>patients.json</Link>
+    </Content>
+  </ItemGroup>
+</Project>
