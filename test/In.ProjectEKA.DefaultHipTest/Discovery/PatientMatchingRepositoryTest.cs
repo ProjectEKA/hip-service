@@ -28,7 +28,7 @@ namespace In.ProjectEKA.DefaultHipTest.Discovery
 
             var patientInfo = await patientMatchingRepository.Where(request);
 
-            patientInfo.Count().Should().Be(4);
+            patientInfo.Count().Should().Be(1);
         }
     }
 }

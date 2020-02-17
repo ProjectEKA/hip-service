@@ -8,6 +8,7 @@ namespace In.ProjectEKA.HipService.Link
     using HipLibrary.Patient;
     using HipLibrary.Patient.Model;
     using Logger;
+    using Microsoft.Extensions.Options;
     using Patient = HipLibrary.Patient.Model.Patient;
 
     public class LinkPatient : ILink
@@ -17,19 +18,22 @@ namespace In.ProjectEKA.HipService.Link
         private readonly IPatientRepository patientRepository;
         private readonly IPatientVerification patientVerification;
         private readonly IReferenceNumberGenerator referenceNumberGenerator;
+        private readonly IOptions<OtpServiceConfiguration> otpService;
 
         public LinkPatient(
             ILinkPatientRepository linkPatientRepository,
             IPatientRepository patientRepository,
             IPatientVerification patientVerification,
             IReferenceNumberGenerator referenceNumberGenerator,
-            IDiscoveryRequestRepository discoveryRequestRepository)
+            IDiscoveryRequestRepository discoveryRequestRepository,
+            IOptions<OtpServiceConfiguration> otpService)
         {
             this.linkPatientRepository = linkPatientRepository;
             this.patientRepository = patientRepository;
             this.patientVerification = patientVerification;
             this.referenceNumberGenerator = referenceNumberGenerator;
             this.discoveryRequestRepository = discoveryRequestRepository;
+            this.otpService = otpService;
         }
 
         public async Task<Tuple<PatientLinkEnquiryRepresentation, ErrorRepresentation>> LinkPatients(
@@ -74,7 +78,7 @@ namespace In.ProjectEKA.HipService.Link
                 .ConfigureAwait(false);
             scope.Complete();
             
-            var time = new TimeSpan(0, 0, 1, 0);
+            var time = new TimeSpan(0, 0, otpService.Value.OffsetInMinutes, 0);
             var expiry = DateTime.Now.Add(time).ToUniversalTime().ToString(Constants.DateTimeFormat);
             var meta = new LinkReferenceMeta(nameof(CommunicationMode.MOBILE),
                 patient.PhoneNumber, expiry);

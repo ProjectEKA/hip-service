@@ -1,4 +1,4 @@
-namespace In.ProjectEKA.HipService.DataFlow
+namespace In.ProjectEKA.HipService.Common.Model
 {
     public class HIPReference
     {
