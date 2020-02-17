@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-
-namespace In.ProjectEKA.HipService.Consent.Database.Migrations
+﻿namespace In.ProjectEKA.HipService.Consent.Database.Migrations
 {
+    using Microsoft.EntityFrameworkCore.Migrations;
+    using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+
     public partial class AddConsentArtefactTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -11,12 +11,12 @@ namespace In.ProjectEKA.HipService.Consent.Database.Migrations
                 name: "ConsentArtefact",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
+                    Id = table.Column<int>()
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     ConsentArtefactId = table.Column<string>(nullable: true),
                     ConsentArtefact = table.Column<string>(nullable: true),
                     Signature = table.Column<string>(nullable: true),
-                    Status = table.Column<string>(nullable: false)
+                    Status = table.Column<string>()
                 },
                 constraints: table =>
                 {

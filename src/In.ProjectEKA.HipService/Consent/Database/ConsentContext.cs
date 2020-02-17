@@ -4,8 +4,8 @@ namespace In.ProjectEKA.HipService.Consent.Database
     using Common.Model;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
+    using Model;
     using Newtonsoft.Json;
-    using Consent = Model.Consent;
 
     public class ConsentContext : DbContext
     {

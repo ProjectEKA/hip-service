@@ -2,7 +2,6 @@ namespace In.ProjectEKA.HipService.Discovery.Ranker
 {
     using HipLibrary.Patient.Model;
     using Matcher;
-    using Patient = HipLibrary.Patient.Model.Patient;
 
     public class FirstNameRanker : IRanker<Patient>
     {

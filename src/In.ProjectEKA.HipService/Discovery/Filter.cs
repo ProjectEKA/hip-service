@@ -5,7 +5,6 @@ namespace In.ProjectEKA.HipService.Discovery
     using HipLibrary.Patient.Model;
     using Ranker;
     using static Ranker.PatientWithRankBuilder;
-    using Patient = HipLibrary.Patient.Model.Patient;
 
     public class Filter
     {

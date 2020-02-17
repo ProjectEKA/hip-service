@@ -5,9 +5,9 @@ namespace In.ProjectEKA.HipService.Link
     using System.Linq;
     using System.Threading.Tasks;
     using Database;
+    using Logger;
     using Microsoft.EntityFrameworkCore;
     using Model;
-    using Logger;
 
     public class LinkPatientRepository : ILinkPatientRepository
     {

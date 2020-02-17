@@ -5,10 +5,10 @@ namespace In.ProjectEKA.HipService.DataFlow
     using System.Threading.Tasks;
     using Common.Model;
     using Database;
+    using Logger;
     using Model;
     using Optional;
-    using Logger;
-    
+
     public class DataFlowRepository : IDataFlowRepository
     {
         private readonly DataFlowContext dataFlowContext;

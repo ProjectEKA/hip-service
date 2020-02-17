@@ -4,7 +4,7 @@ namespace In.ProjectEKA.HipService.MessagingQueue
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.ObjectPool;
     using RabbitMQ.Client;
-    
+
     public static class MessagingQueueCollectionExtensions
     {
         public static IServiceCollection AddRabbit(this IServiceCollection services, IConfiguration configuration)  

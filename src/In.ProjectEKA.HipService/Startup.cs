@@ -2,26 +2,26 @@ namespace In.ProjectEKA.HipService
 {
     using System.Net.Http;
     using System.Text.Json;
-    using In.ProjectEKA.DefaultHip.DataFlow;
-    using In.ProjectEKA.DefaultHip.Discovery;
-    using In.ProjectEKA.DefaultHip.Link;
-    using In.ProjectEKA.HipLibrary.Patient;
-    using In.ProjectEKA.HipService.Consent;
-    using In.ProjectEKA.HipService.Consent.Database;
-    using In.ProjectEKA.HipService.DataFlow;
-    using In.ProjectEKA.HipService.DataFlow.Database;
-    using In.ProjectEKA.HipService.Discovery;
-    using In.ProjectEKA.HipService.Discovery.Database;
-    using In.ProjectEKA.HipService.Link;
-    using In.ProjectEKA.HipService.Link.Database;
-    using In.ProjectEKA.HipService.MessagingQueue;
-    using In.ProjectEKA.HipService.Middleware;
+    using Consent;
+    using Consent.Database;
+    using DataFlow;
+    using DataFlow.Database;
+    using DefaultHip.DataFlow;
+    using DefaultHip.Discovery;
+    using DefaultHip.Link;
+    using Discovery;
+    using Discovery.Database;
+    using HipLibrary.Patient;
+    using Link;
+    using Link.Database;
+    using MessagingQueue;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using Middleware;
     using Newtonsoft.Json;
     using Serilog;
 
@@ -55,12 +55,13 @@ namespace In.ProjectEKA.HipService
                 .AddDbContext<ConsentContext>(options =>
                     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
                         x => x.MigrationsAssembly("In.ProjectEKA.HipService")))
-                .AddSingleton<IPatientRepository>(new PatientRepository("Resources/patients.json"))
+                .AddSingleton<IPatientRepository>(new PatientRepository("patients.json"))
                 .AddSingleton<ICollect>(new Collect("../In.ProjectEKA.DefaultHip/Resources/observation.json"))
+                .AddSingleton<IPatientRepository>(new PatientRepository("patients.json"))
                 .AddRabbit(Configuration)
                 .Configure<OtpServiceConfiguration>(Configuration.GetSection("OtpService"))
                 .AddScoped<ILinkPatientRepository, LinkPatientRepository>()
-                .AddSingleton<IMatchingRepository>(new PatientMatchingRepository("Resources/patients.json"))
+                .AddSingleton<IMatchingRepository>(new PatientMatchingRepository("patients.json"))
                 .AddScoped<IDiscoveryRequestRepository, DiscoveryRequestRepository>()
                 .AddScoped<PatientDiscovery>()
                 .AddTransient<IDiscovery, PatientDiscovery>()

@@ -3,6 +3,7 @@ namespace In.ProjectEKA.HipService.MessagingQueue
     using Microsoft.Extensions.ObjectPool;
     using Microsoft.Extensions.Options;
     using RabbitMQ.Client;
+
     public class MessagingQueueModelPooledObjectPolicy : IPooledObjectPolicy<IModel> 
     {
         private readonly MessagingQueueOptions options;
@@ -19,7 +20,7 @@ namespace In.ProjectEKA.HipService.MessagingQueue
             var factory = new ConnectionFactory  
             {  
                 HostName = options.HostName,
-                Port = options.Port,  
+                Port = options.Port  
             };  
   
             return factory.CreateConnection();  

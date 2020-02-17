@@ -5,9 +5,9 @@ namespace In.ProjectEKA.HipService.DataFlow
     using System.Net.Http;
     using System.Text;
     using System.Threading.Tasks;
+    using HipLibrary.Patient;
     using Hl7.Fhir.Serialization;
-    using In.ProjectEKA.HipLibrary.Patient;
-    using In.ProjectEKA.HipService.Logger;
+    using Logger;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
 
