@@ -8,7 +8,7 @@
     
     <ItemGroup>
         <PackageReference Include="Hl7.Fhir.R4" Version="1.5.0" />
-        <PackageReference Include="System.Text.Json" Version="4.7.0" />
+        <PackageReference Include="System.Text.Json" Version="4.7.1" />
         <PackageReference Include="Optional" Version="4.0.0" />
     </ItemGroup>
 </Project>
