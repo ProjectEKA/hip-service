@@ -1,26 +1,33 @@
 namespace In.ProjectEKA.HipServiceTest.DataFlow
 {
     using System;
+    using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
-    using In.ProjectEKA.DefaultHip.DataFlow;
     using In.ProjectEKA.HipService.DataFlow;
-    using In.ProjectEKA.HipServiceTest.DataFlow.Builder;
+    using Builder;
+    using HipLibrary.Patient;
+    using HipLibrary.Patient.Model;
+    using HipService.Common;
+    using Hl7.Fhir.Model;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Options;
     using Moq;
     using Moq.Protected;
+    using Optional;
     using Xunit;
+    using Task = System.Threading.Tasks.Task;
 
     [Collection("Queue Listener Tests")]
     public class DataFlowClientTest
     {
-        private readonly Collect collect = new Collect("observation.json");
-
         [Fact]
-        private async Task ReturnSuccessOnDataFlow()
+        private async Task ShouldReturnDataComponent()
         {
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+            var serviceScopeFactory = new Mock<IServiceScopeFactory>(MockBehavior.Strict);
             handlerMock
                 .Protected()
                 .Setup<Task<HttpResponseMessage>>(
@@ -33,23 +40,26 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                     StatusCode = HttpStatusCode.OK
                 })
                 .Verifiable();
-            var httpClient = new HttpClient(handlerMock.Object)
-            {
-                BaseAddress = new Uri("http://localhost:8003")
-            };
-            var dataRequest = TestBuilder.DataRequest().Generate().Build();
+            var httpClient = new HttpClient(handlerMock.Object);
+            var collect = new Mock<ICollect>();
+            var dataRequest = TestBuilder.DataRequest(TestBuilder.Faker().Random.Hash());
+            collect.Setup(iCollect => iCollect.CollectData(dataRequest))
+                .ReturnsAsync(Option.Some(new Entries(new List<Bundle>())));
 
-            var dataFlowClient = new DataFlowClient(collect, httpClient);
+            var dataFlowClient = new DataFlowClient(collect.Object,
+                httpClient,
+                serviceScopeFactory.Object,
+                new Mock<IOptions<DataFlowConfiguration>>().Object,
+                new Mock<IOptions<HipConfiguration>>().Object);
 
             await dataFlowClient.HandleMessagingQueueResult(dataRequest);
-            var expectedUri = new Uri("http://localhost:8003/data/notification");
+            var expectedUri = new Uri("http://callback/data/notification");
 
             handlerMock.Protected().Verify(
                 "SendAsync",
                 Times.Exactly(1),
-                ItExpr.Is<HttpRequestMessage>(req =>
-                    req.Method == HttpMethod.Post &&
-                    req.RequestUri == expectedUri),
+                ItExpr.Is<HttpRequestMessage>(message => message.Method == HttpMethod.Post
+                                                         && message.RequestUri == expectedUri),
                 ItExpr.IsAny<CancellationToken>()
             );
         }

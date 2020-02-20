@@ -2,12 +2,13 @@
 
 namespace In.ProjectEKA.HipService.DataFlow.Database.Migrations
 {
+    using System;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Infrastructure;
     using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
     [DbContext(typeof(DataFlowContext))]
-    class DataFlowContextModelSnapshot : ModelSnapshot
+    internal class DataFlowContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -18,17 +19,36 @@ namespace In.ProjectEKA.HipService.DataFlow.Database.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("In.ProjectEKA.HipService.DataFlow.Model.DataFlowRequest", b =>
-                {
-                    b.Property<string>("TransactionId")
-                        .HasColumnType("text");
+            {
+                b.Property<string>("TransactionId")
+                    .HasColumnType("text");
 
-                    b.Property<string>("HealthInformationRequest")
-                        .HasColumnType("text");
+                b.Property<string>("HealthInformationRequest")
+                    .HasColumnType("text");
 
-                    b.HasKey("TransactionId");
+                b.HasKey("TransactionId");
 
-                    b.ToTable("DataFlowRequest");
-                });
+                b.ToTable("DataFlowRequest");
+            });
+
+            modelBuilder.Entity("In.ProjectEKA.HipService.DataFlow.Model.LinkData", b =>
+            {
+                b.Property<string>("LinkId")
+                    .HasColumnType("text");
+
+                b.Property<string>("Data")
+                    .HasColumnType("text");
+
+                b.Property<DateTime>("DateCreated")
+                    .HasColumnType("timestamp without time zone");
+
+                b.Property<string>("Token")
+                    .HasColumnType("text");
+
+                b.HasKey("LinkId");
+
+                b.ToTable("LinkData");
+            });
 #pragma warning restore 612, 618
         }
     }
