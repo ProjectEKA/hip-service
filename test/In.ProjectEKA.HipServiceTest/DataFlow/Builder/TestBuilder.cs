@@ -22,7 +22,8 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
                 new HipService.DataFlow.Consent(faker.Random.Hash(),
                     faker.Random.Hash()),
                 new HiDataRange(faker.Random.Hash(), faker.Random.Hash()),
-                faker.Random.Hash());
+                faker.Random.Hash(),
+                TestBuilder.KeyMaterial().Generate().Build());
         }
 
         internal static Faker<ConsentArtefactBuilder> ConsentArtefact()
@@ -33,6 +34,11 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
         internal static Faker<DataRequestBuilder> DataRequest()
         {
             return new Faker<DataRequestBuilder>();
+        }
+        
+        internal static Faker<KeyMaterialBuilder> KeyMaterial()
+        {
+            return new Faker<KeyMaterialBuilder>();
         }
 
         internal static Consent Consent()
