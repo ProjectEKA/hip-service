@@ -34,7 +34,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             }
 
             var dataRequest = new DataRequest(consent.ConsentArtefact.CareContexts, request.HiDataRange,
-                request.CallBackUrl, consent.ConsentArtefact.HiTypes, request.TransactionId);
+                request.CallBackUrl, consent.ConsentArtefact.HiTypes, request.TransactionId, request.KeyMaterial);
             var result = await dataFlowRepository.SaveRequestFor(request.TransactionId, request)
                 .ConfigureAwait(false);
             var (response, errorRepresentation) = result.Map(r =>

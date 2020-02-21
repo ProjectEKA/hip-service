@@ -10,7 +10,7 @@ namespace In.ProjectEKA.HipService.DataFlow
     using Logger;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
-
+    using CryptoHelperInstance = CryptoHelper.CryptoHelper;
     public class DataFlowClient
     {
         private readonly ICollect collect;
@@ -30,7 +30,7 @@ namespace In.ProjectEKA.HipService.DataFlow
                     var serializer = new FhirJsonSerializer(new SerializerSettings());
                     var healthRecordEntries = entries.Bundles
                         .Select(bundle => new Entry(
-                            serializer.SerializeToString(bundle),
+                             EncryptData(dataRequest.KeyMaterial,serializer.SerializeToString(bundle)),
                             "application/json",
                             "MD5"))
                         .ToList();
@@ -38,6 +38,12 @@ namespace In.ProjectEKA.HipService.DataFlow
                         dataRequest.CallBackUrl);
                     return Task.CompletedTask;
                 });
+        }
+
+        private static string EncryptData(HipLibrary.Patient.Model.KeyMaterial keyMaterial, string content)
+        {
+            var encryptedData = CryptoHelperInstance.EncryptData(keyMaterial.DhPublicKey.KeyValue, content);
+            return encryptedData;
         }
 
         private async Task SendDataToHiu(DataResponse dataResponse, string callBackUrl)
@@ -57,7 +63,7 @@ namespace In.ProjectEKA.HipService.DataFlow
         private static string GetAuthToken()
         {
             // TODO : Should be fetched from central registry
-            return "AuthToken";
+            return Convert.ToBase64String(Encoding.UTF8.GetBytes("AuthToken"));
         }
 
         private static HttpContent CreateHttpContent<T>(T content)
