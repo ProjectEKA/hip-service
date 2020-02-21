@@ -10,6 +10,7 @@ namespace In.ProjectEKA.HipService.DataFlow
     using Logger;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
+    using Org.BouncyCastle.Crypto;
     using CryptoHelperInstance = CryptoHelper.CryptoHelper;
     public class DataFlowClient
     {
@@ -24,25 +25,38 @@ namespace In.ProjectEKA.HipService.DataFlow
 
         public async Task HandleMessagingQueueResult(HipLibrary.Patient.Model.DataRequest dataRequest)
         {
+            var senderKeyPair = CryptoHelperInstance.GenerateKeyPair();
+            var randomKeySender = CryptoHelperInstance.GenerateRandomKey();
             (await collect.CollectData(dataRequest))
                 .Map(async entries =>
                 {
                     var serializer = new FhirJsonSerializer(new SerializerSettings());
                     var healthRecordEntries = entries.Bundles
                         .Select(bundle => new Entry(
-                             EncryptData(dataRequest.KeyMaterial,serializer.SerializeToString(bundle)),
+                             EncryptData(dataRequest.KeyMaterial,
+                                 serializer.SerializeToString(bundle), senderKeyPair, randomKeySender),
                             "application/json",
                             "MD5"))
                         .ToList();
-                    await SendDataToHiu(new DataResponse(dataRequest.TransactionId, healthRecordEntries),
+                    var keyMaterial = new KeyMaterial("",
+                        "",
+                        new KeyStructure("",
+                            "",
+                            CryptoHelperInstance.GetPublicKey(senderKeyPair)),
+                        new KeyStructure("",
+                            "",
+                            randomKeySender));                    
+                    await SendDataToHiu(new DataResponse(dataRequest.TransactionId, healthRecordEntries, keyMaterial),
                         dataRequest.CallBackUrl);
                     return Task.CompletedTask;
                 });
         }
 
-        private static string EncryptData(HipLibrary.Patient.Model.KeyMaterial keyMaterial, string content)
+        private static string EncryptData(HipLibrary.Patient.Model.KeyMaterial keyMaterial, string content,
+            AsymmetricCipherKeyPair senderKeyPair, string randomKeySender)
         {
-            var encryptedData = CryptoHelperInstance.EncryptData(keyMaterial.DhPublicKey.KeyValue, content);
+            var encryptedData = CryptoHelperInstance.EncryptData(keyMaterial.DhPublicKey.KeyValue,
+                senderKeyPair, content, randomKeySender, keyMaterial.RandomKey.KeyValue);
             return encryptedData;
         }
 

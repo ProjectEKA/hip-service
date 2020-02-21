@@ -26,8 +26,6 @@ namespace In.ProjectEKA.HipService.DataFlow.CryptoHelper
             csp.Padding = PaddingMode.PKCS7;
             var spec = new Rfc2898DeriveBytes(Encoding.UTF8.GetBytes(password), Encoding.UTF8.GetBytes(Salt), 65536);
             byte[] key = spec.GetBytes(16);
- 
- 
             csp.IV = Encoding.UTF8.GetBytes(Iv);
             csp.Key = key;
             return encrypting ? csp.CreateEncryptor() : csp.CreateDecryptor();
