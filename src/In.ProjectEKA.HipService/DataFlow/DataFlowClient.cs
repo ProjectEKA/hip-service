@@ -43,9 +43,7 @@ namespace In.ProjectEKA.HipService.DataFlow
                         new KeyStructure("",
                             "",
                             CryptoHelperInstance.GetPublicKey(senderKeyPair)),
-                        new KeyStructure("",
-                            "",
-                            randomKeySender));                    
+                        randomKeySender);                    
                     await SendDataToHiu(new DataResponse(dataRequest.TransactionId, healthRecordEntries, keyMaterial),
                         dataRequest.CallBackUrl);
                     return Task.CompletedTask;
@@ -56,7 +54,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             AsymmetricCipherKeyPair senderKeyPair, string randomKeySender)
         {
             var encryptedData = CryptoHelperInstance.EncryptData(keyMaterial.DhPublicKey.KeyValue,
-                senderKeyPair, content, randomKeySender, keyMaterial.RandomKey.KeyValue);
+                senderKeyPair, content, randomKeySender, keyMaterial.RandomKey);
             return encryptedData;
         }
 
