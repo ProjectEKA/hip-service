@@ -1,7 +1,7 @@
 namespace In.ProjectEKA.DefaultHipTest.DataFlow.Builder
 {
     using System.Collections.Generic;
-    using In.ProjectEKA.HipLibrary.Patient.Model;
+    using HipLibrary.Patient.Model;
 
     internal class DataRequestBuilder
     {
@@ -10,10 +10,11 @@ namespace In.ProjectEKA.DefaultHipTest.DataFlow.Builder
         public HiDataRange DataRange;
         public IEnumerable<HiType> HiType;
         public string TransactionId;
+        public KeyMaterial KeyMaterial;
 
         public DataRequest Build()
         {
-            return new DataRequest(CareContexts, DataRange, CallBackUrl, HiType, TransactionId);
+            return new DataRequest(CareContexts, DataRange, CallBackUrl, HiType, TransactionId, KeyMaterial);
         }
     }
 }

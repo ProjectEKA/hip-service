@@ -15,7 +15,6 @@ namespace In.ProjectEKA.HipService.DataFlow.CryptoHelper
 
     public static class CryptoHelper
     {
-
         public static AsymmetricCipherKeyPair GenerateKeyPair()
         {
             var keyGenerationParameters = new KeyGenerationParameters(new SecureRandom(), 192);
@@ -65,12 +64,12 @@ namespace In.ProjectEKA.HipService.DataFlow.CryptoHelper
             }
         }
         
-        private static string GetBase64FromByte(IEnumerable<byte> value)
+        public static string GetBase64FromByte(IEnumerable<byte> value)
         {
             return Encoder.Base64.ToBase64String((byte [])value);
         }
 
-        private static IEnumerable<byte> GetByteFromBase64(string value)
+        public static IEnumerable<byte> GetByteFromBase64(string value)
         {
             return Encoder.Base64.Decode(value);
         }
