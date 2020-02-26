@@ -7,7 +7,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
         private string CryptoAlg;
         private string Curve;
         private KeyStructure DhPublicKey;
-        private KeyStructure RandomKey;
+        private string RandomKey;
         
         public KeyMaterial Build()
         {

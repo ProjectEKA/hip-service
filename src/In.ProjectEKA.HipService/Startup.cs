@@ -5,6 +5,7 @@ namespace In.ProjectEKA.HipService
     using Consent;
     using Consent.Database;
     using DataFlow;
+    using DataFlow.CryptoHelper;
     using DataFlow.Database;
     using DefaultHip.DataFlow;
     using DefaultHip.Discovery;
@@ -73,6 +74,7 @@ namespace In.ProjectEKA.HipService
                 .AddScoped<IPatientVerification, PatientVerification>()
                 .AddScoped<IConsentRepository, ConsentRepository>()
                 .AddHostedService<MessagingQueueListener>()
+                .AddTransient<ICryptoHelper, CryptoHelper>()
                 .AddScoped<IDataFlowRepository, DataFlowRepository>()
                 .AddTransient<IDataFlow, DataFlow.DataFlow>()
                 .AddRouting(options => options.LowercaseUrls = true)

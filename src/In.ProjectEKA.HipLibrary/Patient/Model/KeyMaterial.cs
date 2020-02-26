@@ -5,14 +5,14 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
         public string CryptoAlg { get; }
         public string Curve { get; }
         public KeyStructure DhPublicKey { get; }
-        public string RandomKey { get; }
+        public string Nonce { get; }
 
-        public KeyMaterial(string cryptoAlg, string curve, KeyStructure dhPublicKey, string randomKey)
+        public KeyMaterial(string cryptoAlg, string curve, KeyStructure dhPublicKey, string nonce)
         {
             CryptoAlg = cryptoAlg;
             Curve = curve;
             DhPublicKey = dhPublicKey;
-            RandomKey = randomKey;
+            Nonce = nonce;
         }
     }
 }

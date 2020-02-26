@@ -5,7 +5,12 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
     using In.ProjectEKA.HipService.DataFlow;
     using In.ProjectEKA.HipServiceTest.Common.Builder;
     using Consent = In.ProjectEKA.HipService.Consent.Model.Consent;
-
+    using DataRequestLib = HipLibrary.Patient.Model.DataRequest;
+    using GrantedContextLib = HipLibrary.Patient.Model.GrantedContext;
+    using HiDataRangeLib = HipLibrary.Patient.Model.HiDataRange;
+    using HiTypeLib = HipLibrary.Patient.Model.HiType;
+    using KeyMaterialLib = HipLibrary.Patient.Model.KeyMaterial;
+    using KeyStructureLib = HipLibrary.Patient.Model.KeyStructure;
     public static class TestBuilder
     {
         private static Faker faker;
@@ -49,6 +54,25 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
                 faker.Random.Hash(),
                 ConsentStatus.GRANTED
             );
+        }
+        
+        internal static DataRequestLib DataFlowRequest()
+        {
+            var faker = new Faker();
+            var dataRequest = new DataRequestLib(new[]
+                {
+                    new GrantedContextLib(faker.Random.Hash(),
+                        faker.Random.Hash())
+                },
+                new HiDataRangeLib(faker.Random.Word(),
+                    faker.Random.Word()),
+                faker.Random.Word(),
+                new[] {HiTypeLib.Condition},
+                faker.Random.Hash(),
+                new KeyMaterialLib(faker.Random.Word(), faker.Random.Word(),
+                    new KeyStructureLib(faker.Random.Word(), faker.Random.Word(),
+                        faker.Random.Hash()), faker.Random.Word()));
+            return dataRequest;
         }
     }
 }

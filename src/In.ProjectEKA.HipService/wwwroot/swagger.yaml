@@ -536,7 +536,7 @@ components:
         callBackUrl:
           type: string
         keyMaterial:
-          type: object
+          $ref: '#/components/schemas/keyMaterial'
 
     HealthInformationRequestResponse:
       type: object
@@ -702,3 +702,42 @@ components:
             attribute: true
       xml:
         name: OrganizationResponse
+    keyMaterial:
+      type: object
+      required:
+        - cryptoAlg
+        - curve
+        - DHPublicKey
+        - nonce
+      properties:
+        cryptoAlg:
+          type: string
+          format: string
+          example: ECDHE
+        curve:
+          type: string
+          format: string
+          example: Curve25519
+        dhPublicKey:
+          $ref: '#/components/schemas/keyObject'
+        nonce:
+          type: string
+          format: 32 byte string
+          example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+    keyObject:
+        type: object
+        required:
+          - expiry
+          - parameters
+          - keyValue
+        properties:
+          expiry:
+            type: string
+            format: date-time
+          parameters:
+            type: string
+            format: string
+            example: Curve25519/32byte random key
+          keyValue:
+            type: string
+            format: string
