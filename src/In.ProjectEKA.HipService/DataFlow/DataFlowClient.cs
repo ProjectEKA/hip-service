@@ -45,7 +45,7 @@ namespace In.ProjectEKA.HipService.DataFlow
         {
             try
             {
-                await httpClient.SendAsync(CreateHttpContent(callBackUrl, dataResponse))
+                await httpClient.SendAsync(CreateHttpRequest(callBackUrl, dataResponse))
                     .ConfigureAwait(false);
             }
             catch (Exception exception)
@@ -60,7 +60,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             return "AuthToken";
         }
 
-        private static HttpRequestMessage CreateHttpContent<T>(string callBackUrl, T content)
+        private static HttpRequestMessage CreateHttpRequest<T>(string callBackUrl, T content)
         {
             var json = JsonConvert.SerializeObject(content, new JsonSerializerSettings
             {
@@ -70,14 +70,16 @@ namespace In.ProjectEKA.HipService.DataFlow
                     NamingStrategy = new CamelCaseNamingStrategy()
                 }
             });
-            var httpRequestMessage = new HttpRequestMessage()
+            return new HttpRequestMessage
             {
                 RequestUri = new Uri( $"{callBackUrl}/data/notification"),
                 Method = HttpMethod.Post,
                 Content = new StringContent(json, Encoding.UTF8, "application/json"),
+                Headers =
+                {
+                    { "Authorization", GetAuthToken()}
+                }
             };
-            httpRequestMessage.Headers.Add("Authorization", GetAuthToken());
-            return httpRequestMessage;
         }
     }
 }
