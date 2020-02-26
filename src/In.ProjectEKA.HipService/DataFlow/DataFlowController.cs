@@ -23,7 +23,7 @@ namespace In.ProjectEKA.HipService.DataFlow
         {
             var (healthInformationResponse, error) = await dataFlow
                 .HealthInformationRequestFor(healthInformationRequest);
-            return error != null ? ReturnServerResponse(error) : Ok(healthInformationResponse);
+            return error != null ? ServerResponseFor(error) : Ok(healthInformationResponse);
         }
 
         [HttpGet]
@@ -34,10 +34,10 @@ namespace In.ProjectEKA.HipService.DataFlow
             [FromQuery] string transactionId)
         {
             var (healthInformation, error) = await dataFlow.HealthInformationFor(informationId, token, transactionId);
-            return error != null ? ReturnServerResponse(error) : Ok(healthInformation);
+            return error != null ? ServerResponseFor(error) : Ok(healthInformation);
         }
 
-        private ActionResult ReturnServerResponse(ErrorRepresentation errorResponse)
+        private ActionResult ServerResponseFor(ErrorRepresentation errorResponse)
         {
             return errorResponse.Error.Code switch
             {

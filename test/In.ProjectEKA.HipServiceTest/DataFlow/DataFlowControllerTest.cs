@@ -65,7 +65,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var linkId = TestBuilder.Faker().Random.Hash();
             var transactionId = TestBuilder.Faker().Random.Hash();
             var healthInformationResponse = TestBuilder.HealthInformationResponse(transactionId);
-            const string token = "token";
+            var token = TestBuilder.Faker().Random.String();
 
             dataFlow.Setup(x => x.HealthInformationFor(linkId, token, transactionId))
                 .ReturnsAsync(new Tuple<HealthInformationResponse, ErrorRepresentation>(healthInformationResponse, null));
@@ -84,7 +84,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var transactionId = TestBuilder.Faker().Random.Hash();
             var expectedError = new ErrorRepresentation(
                 new Error(ErrorCode.HealthInformationNotFound, ErrorMessage.HealthInformationNotFound));
-            const string token = "token";
+            var token = TestBuilder.Faker().Random.String();
 
             dataFlow.Setup(x => x.HealthInformationFor(linkId, token, transactionId))
                 .ReturnsAsync(new Tuple<HealthInformationResponse, ErrorRepresentation>(null, expectedError));
@@ -103,13 +103,13 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var transactionId = TestBuilder.Faker().Random.Hash();
             var expectedError = new ErrorRepresentation(
                 new Error(ErrorCode.InvalidToken, ErrorMessage.InvalidToken));
-            const string invalidToken = "invalid-token";
+            var token = TestBuilder.Faker().Random.String();
 
-            dataFlow.Setup(x => x.HealthInformationFor(linkId, invalidToken, transactionId))
+            dataFlow.Setup(x => x.HealthInformationFor(linkId, token, transactionId))
                 .ReturnsAsync(new Tuple<HealthInformationResponse, ErrorRepresentation>(null, expectedError));
 
             var healthInformation = await dataFlowController
-                .HealthInformation(linkId, invalidToken, transactionId) as ObjectResult;
+                .HealthInformation(linkId, token, transactionId) as ObjectResult;
 
             healthInformation.StatusCode.Should().Be(StatusCodes.Status403Forbidden);
             healthInformation.Value.Should().BeEquivalentTo(expectedError);
