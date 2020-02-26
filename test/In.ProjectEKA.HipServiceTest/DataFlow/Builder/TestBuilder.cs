@@ -66,7 +66,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
                 },
                 new HiDataRangeLib(faker.Random.Word(),
                     faker.Random.Word()),
-                faker.Random.Word(),
+                "http://localhost:8003",
                 new[] {HiTypeLib.Condition},
                 faker.Random.Hash(),
                 new KeyMaterialLib(faker.Random.Word(), faker.Random.Word(),

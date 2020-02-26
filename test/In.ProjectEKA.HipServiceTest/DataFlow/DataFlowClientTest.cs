@@ -9,17 +9,14 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
     using HipService.DataFlow.CryptoHelper;
     using In.ProjectEKA.DefaultHip.DataFlow;
     using In.ProjectEKA.HipService.DataFlow;
-    using In.ProjectEKA.HipServiceTest.DataFlow.Builder;
+    using Builder;
     using Moq;
     using Moq.Protected;
-    using Org.BouncyCastle.Asn1.X9;
     using Org.BouncyCastle.Crypto;
     using Org.BouncyCastle.Crypto.EC;
     using Org.BouncyCastle.Crypto.Generators;
     using Org.BouncyCastle.Crypto.Parameters;
-    using Org.BouncyCastle.Math;
     using Org.BouncyCastle.Security;
-    using Org.BouncyCastle.Utilities.Encoders;
     using Xunit;
 
     [Collection("Queue Listener Tests")]
@@ -66,7 +63,6 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                 curve, algorithm)).Returns(faker.Random.Words(32));
             cryptoHelper.Setup(e=>e.GetPublicKey(keyPair)).Returns(faker.Random.Words(32));
             var dataFlowClient = new DataFlowClient(collect, httpClient, cryptoHelper.Object);
-
             await dataFlowClient.HandleMessagingQueueResult(dataRequest);
             var expectedUri = new Uri("http://localhost:8003/data/notification");
             cryptoHelper.Verify();
