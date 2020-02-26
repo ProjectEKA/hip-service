@@ -3,20 +3,20 @@ namespace In.ProjectEKA.HipService.DataFlow.Model
     using System;
     using System.ComponentModel.DataAnnotations;
 
-    public class LinkData
+    public class HealthInformation
     {
-        [Key] public string LinkId { get; set; }
+        [Key] public string InformationId { get; set; }
         public Entry Data { get; set; }
         public DateTime DateCreated { get; set; }
         public string Token { get; set; }
 
-        public LinkData()
+        public HealthInformation()
         {
         }
 
-        public LinkData(string linkId, Entry data, DateTime dateCreated, string token)
+        public HealthInformation(string informationId, Entry data, DateTime dateCreated, string token)
         {
-            LinkId = linkId;
+            InformationId = informationId;
             Data = data;
             DateCreated = dateCreated;
             Token = token;

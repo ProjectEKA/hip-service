@@ -1,7 +1,6 @@
 namespace In.ProjectEKA.HipServiceTest.DataFlow
 {
     using System;
-    using Bogus.DataSets;
     using FluentAssertions;
     using In.ProjectEKA.HipService.DataFlow;
     using Builder;
@@ -19,21 +18,21 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
     {
         private readonly Mock<IDataFlowRepository> dataFlowRepository = new Mock<IDataFlowRepository>();
         private readonly Mock<IConsentRepository> consentRepository = new Mock<IConsentRepository>();
-        private readonly Mock<ILinkDataRepository> linkDataRepository = new Mock<ILinkDataRepository>();
+        private readonly Mock<IHealthInformationRepository> healthInformationRepository =
+            new Mock<IHealthInformationRepository>();
         private readonly Mock<IMessagingQueueManager> messagingQueueManager = new Mock<IMessagingQueueManager>();
-        private readonly IOptions<DataFlowConfiguration> dataFlowConfiguration;
         private readonly DataFlowService dataFlowService;
 
         public DataFlowTest()
         {
             var configuration = new DataFlowConfiguration {DataSizeLimitInMbs = 5, DataLinkTTLInMinutes = 5};
-            dataFlowConfiguration = Options.Create(configuration);
+            var dataFlowConfiguration = Options.Create(configuration);
 
             dataFlowService = new DataFlowService(
                 dataFlowRepository.Object,
                 messagingQueueManager.Object,
                 consentRepository.Object,
-                linkDataRepository.Object,
+                healthInformationRepository.Object,
                 dataFlowConfiguration);
         }
 
@@ -70,25 +69,26 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
         }
 
         [Fact]
-        private async void ShouldGetLinkData()
+        private async void ShouldGetHealthInformation()
         {
             var transactionId = TestBuilder.Faker().Random.Hash();
             var linkId = TestBuilder.Faker().Random.Hash();
             var token = TestBuilder.Faker().Random.Hash();
-            var linkData = TestBuilder.LinkData(token, DateTime.Now);
+            var healthInformation = TestBuilder.HealthInformation(token, DateTime.Now);
 
-            linkDataRepository.Setup(x => x.GetAsync(linkId))
-                .ReturnsAsync(linkData);
+            healthInformationRepository.Setup(x => x.GetAsync(linkId))
+                .ReturnsAsync(healthInformation);
 
-            var (healthInformation, errorRepresentation) =
+            var (healthInformationResponse, errorRepresentation) =
                 await dataFlowService.HealthInformationFor(linkId, token, transactionId);
 
             errorRepresentation.Should().BeNull();
-            healthInformation.Should().BeEquivalentTo(new LinkDataResponse(transactionId, linkData.Data));
+            healthInformationResponse.Should()
+                .BeEquivalentTo(new HealthInformationResponse(transactionId, healthInformation.Data));
         }
 
         [Fact]
-        private async void ShouldGetLinkDataNotFoundOnGetHealthInformation()
+        private async void ShouldGetHealthInformationNotFound()
         {
             var transactionId = TestBuilder.Faker().Random.Hash();
             var linkId = TestBuilder.Faker().Random.Hash();
@@ -96,7 +96,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var (_, errorRepresentation) = await dataFlowService.HealthInformationFor(linkId, "token", transactionId);
 
             var expectedError = new ErrorRepresentation(
-                new Error(ErrorCode.LinkDataNotFound, ErrorMessage.LinkDataNotFound));
+                new Error(ErrorCode.HealthInformationNotFound, ErrorMessage.HealthInformationNotFound));
             errorRepresentation.Should().BeEquivalentTo(expectedError);
         }
 
@@ -106,9 +106,9 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var transactionId = TestBuilder.Faker().Random.Hash();
             var linkId = TestBuilder.Faker().Random.Hash();
             var token = TestBuilder.Faker().Random.Hash();
-            var linkData = TestBuilder.LinkData(token, TestBuilder.Faker().Date.Past());
-            linkDataRepository.Setup(x => x.GetAsync(linkId))
-                .ReturnsAsync(linkData);
+            var healthInformation = TestBuilder.HealthInformation(token, TestBuilder.Faker().Date.Past());
+            healthInformationRepository.Setup(x => x.GetAsync(linkId))
+                .ReturnsAsync(healthInformation);
 
             var (_, errorRepresentation) = await dataFlowService
                 .HealthInformationFor(linkId, "invalid-token", transactionId);
@@ -124,10 +124,10 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var transactionId = TestBuilder.Faker().Random.Hash();
             var linkId = TestBuilder.Faker().Random.Hash();
             var token = TestBuilder.Faker().Random.Hash();
-            var linkData = TestBuilder.LinkData(token, TestBuilder.Faker().Date.Past());
+            var healthInformation = TestBuilder.HealthInformation(token, TestBuilder.Faker().Date.Past());
 
-            linkDataRepository.Setup(x => x.GetAsync(linkId))
-                .ReturnsAsync(linkData);
+            healthInformationRepository.Setup(x => x.GetAsync(linkId))
+                .ReturnsAsync(healthInformation);
 
             var (_, errorRepresentation) =
                 await dataFlowService.HealthInformationFor(linkId, token, transactionId);

@@ -13,23 +13,23 @@ namespace In.ProjectEKA.HipService.DataFlow
         private readonly IMessagingQueueManager messagingQueueManager;
         private readonly IDataFlowRepository dataFlowRepository;
         private readonly IConsentRepository consentRepository;
-        private readonly ILinkDataRepository linkDataRepository;
+        private readonly IHealthInformationRepository healthInformationRepository;
         private readonly IOptions<DataFlowConfiguration> dataFlowConfiguration;
 
         public DataFlow(IDataFlowRepository dataFlowRepository,
             IMessagingQueueManager messagingQueueManager,
             IConsentRepository consentRepository,
-            ILinkDataRepository linkDataRepository,
+            IHealthInformationRepository healthInformationRepository,
             IOptions<DataFlowConfiguration> dataFlowConfiguration)
         {
             this.dataFlowRepository = dataFlowRepository;
             this.messagingQueueManager = messagingQueueManager;
             this.consentRepository = consentRepository;
-            this.linkDataRepository = linkDataRepository;
+            this.healthInformationRepository = healthInformationRepository;
             this.dataFlowConfiguration = dataFlowConfiguration;
         }
 
-        public async Task<Tuple<HealthInformationResponse, ErrorRepresentation>> HealthInformationRequestFor(
+        public async Task<Tuple<HealthInformationTransactionResponse, ErrorRepresentation>> HealthInformationRequestFor(
             HealthInformationRequest request)
         {
             var consent = await consentRepository.GetFor(request.Consent.Id);
@@ -43,37 +43,37 @@ namespace In.ProjectEKA.HipService.DataFlow
             {
                 var errorResponse = new ErrorRepresentation(new Error(ErrorCode.ServerInternalError,
                     ErrorMessage.InternalServerError));
-                return new Tuple<HealthInformationResponse, ErrorRepresentation>(null, errorResponse);
-            }).ValueOr(new Tuple<HealthInformationResponse,
-                ErrorRepresentation>(new HealthInformationResponse(request.TransactionId), null));
+                return new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(null, errorResponse);
+            }).ValueOr(new Tuple<HealthInformationTransactionResponse,
+                ErrorRepresentation>(new HealthInformationTransactionResponse(request.TransactionId), null));
 
             if (errorRepresentation == null)
             {
                 PublishDataRequest(dataRequest);
             }
 
-            return new Tuple<HealthInformationResponse, ErrorRepresentation>(response, errorRepresentation);
+            return new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(response, errorRepresentation);
         }
 
-        private static Tuple<HealthInformationResponse, ErrorRepresentation> ConsentArtefactNotFound()
+        private static Tuple<HealthInformationTransactionResponse, ErrorRepresentation> ConsentArtefactNotFound()
         {
-            return new Tuple<HealthInformationResponse, ErrorRepresentation>(null,
+            return new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(null,
                 new ErrorRepresentation(new Error(ErrorCode.ContextArtefactIdNotFound,
                     ErrorMessage.ContextArtefactIdNotFound)));
         }
 
-        public async Task<Tuple<LinkDataResponse, ErrorRepresentation>> HealthInformationFor(
-            string linkId,
+        public async Task<Tuple<HealthInformationResponse, ErrorRepresentation>> HealthInformationFor(
+            string informationId,
             string token,
             string transactionId)
         {
-            var linkData = await linkDataRepository.GetAsync(linkId);
-            if (linkData == null) return LinkDataNotFound();
-            if (linkData.Token != token) return InvalidToken();
-            if (IsLinkExpired(linkData.DateCreated)) return LinkExpired();
+            var healthInformation = await healthInformationRepository.GetAsync(informationId);
+            if (healthInformation == null) return HealthInformationNotFound();
+            if (healthInformation.Token != token) return InvalidToken();
+            if (IsLinkExpired(healthInformation.DateCreated)) return LinkExpired();
 
-            var linkDataResponse = new LinkDataResponse(transactionId, linkData.Data);
-            return new Tuple<LinkDataResponse, ErrorRepresentation>(linkDataResponse, null);
+            var healthInformationResponse = new HealthInformationResponse(transactionId, healthInformation.Data);
+            return new Tuple<HealthInformationResponse, ErrorRepresentation>(healthInformationResponse, null);
         }
 
         private bool IsLinkExpired(DateTime dateCreated)
@@ -83,25 +83,26 @@ namespace In.ProjectEKA.HipService.DataFlow
             return linkExpirationDateTime < DateTime.Now;
         }
 
-        private static Tuple<LinkDataResponse, ErrorRepresentation> LinkDataNotFound()
+        private static Tuple<HealthInformationResponse, ErrorRepresentation> HealthInformationNotFound()
         {
-            return ErrorResponse(new Error(ErrorCode.LinkDataNotFound, ErrorMessage.LinkDataNotFound));
+            return ErrorResponse(
+                new Error(ErrorCode.HealthInformationNotFound, ErrorMessage.HealthInformationNotFound));
         }
 
-        private static Tuple<LinkDataResponse, ErrorRepresentation> LinkExpired()
+        private static Tuple<HealthInformationResponse, ErrorRepresentation> LinkExpired()
         {
             return ErrorResponse(new Error(ErrorCode.LinkExpired, ErrorMessage.LinkExpired));
         }
 
-        private static Tuple<LinkDataResponse, ErrorRepresentation> InvalidToken()
+        private static Tuple<HealthInformationResponse, ErrorRepresentation> InvalidToken()
         {
             return ErrorResponse(new Error(ErrorCode.InvalidToken, ErrorMessage.InvalidToken));
         }
 
-        private static Tuple<LinkDataResponse, ErrorRepresentation> ErrorResponse(Error error)
+        private static Tuple<HealthInformationResponse, ErrorRepresentation> ErrorResponse(Error error)
         {
             var errorResponse = new ErrorRepresentation(error);
-            return new Tuple<LinkDataResponse, ErrorRepresentation>(null, errorResponse);
+            return new Tuple<HealthInformationResponse, ErrorRepresentation>(null, errorResponse);
         }
 
         private void PublishDataRequest(DataRequest dataRequest)

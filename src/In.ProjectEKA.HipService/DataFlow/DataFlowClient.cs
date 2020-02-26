@@ -106,9 +106,10 @@ namespace In.ProjectEKA.HipService.DataFlow
         private void StoreComponentEntry(string linkId, Entry entry)
         {
             using var serviceScope = serviceScopeFactory.CreateScope();
-            var linkDataRepository = serviceScope.ServiceProvider.GetService<ILinkDataRepository>();
+            var healthInformationRepository = serviceScope.ServiceProvider.GetService<IHealthInformationRepository>();
 
-            linkDataRepository.Add(new LinkData(linkId, entry, DateTime.Now, Guid.NewGuid().ToString()));
+            var token = Guid.NewGuid().ToString();
+            healthInformationRepository.Add(new HealthInformation(linkId, entry, DateTime.Now, token));
         }
 
         private async Task PostTo(string callBackUrl, DataResponse dataResponse)

@@ -3,12 +3,13 @@
 namespace In.ProjectEKA.HipService.DataFlow.Database.Migrations
 {
     using System;
+    using Database;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Infrastructure;
     using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
     [DbContext(typeof(DataFlowContext))]
-    internal class DataFlowContextModelSnapshot : ModelSnapshot
+    class DataFlowContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -31,9 +32,9 @@ namespace In.ProjectEKA.HipService.DataFlow.Database.Migrations
                 b.ToTable("DataFlowRequest");
             });
 
-            modelBuilder.Entity("In.ProjectEKA.HipService.DataFlow.Model.LinkData", b =>
+            modelBuilder.Entity("In.ProjectEKA.HipService.DataFlow.Model.HealthInformation", b =>
             {
-                b.Property<string>("LinkId")
+                b.Property<string>("InformationId")
                     .HasColumnType("text");
 
                 b.Property<string>("Data")
@@ -45,9 +46,9 @@ namespace In.ProjectEKA.HipService.DataFlow.Database.Migrations
                 b.Property<string>("Token")
                     .HasColumnType("text");
 
-                b.HasKey("LinkId");
+                b.HasKey("InformationId");
 
-                b.ToTable("LinkData");
+                b.ToTable("HealthInformation");
             });
 #pragma warning restore 612, 618
         }

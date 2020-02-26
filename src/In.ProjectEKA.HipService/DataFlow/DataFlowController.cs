@@ -27,14 +27,14 @@ namespace In.ProjectEKA.HipService.DataFlow
         }
 
         [HttpGet]
-        [Route("health-information/{linkId}")]
+        [Route("health-information/{informationId}")]
         public async Task<ActionResult> HealthInformation(
-            [FromRoute] string linkId,
+            [FromRoute] string informationId,
             [FromQuery] string token,
             [FromQuery] string transactionId)
         {
-            var (healthInformationResponse, error) = await dataFlow.HealthInformationFor(linkId, token, transactionId);
-            return error != null ? ReturnServerResponse(error) : Ok(healthInformationResponse);
+            var (healthInformation, error) = await dataFlow.HealthInformationFor(informationId, token, transactionId);
+            return error != null ? ReturnServerResponse(error) : Ok(healthInformation);
         }
 
         private ActionResult ReturnServerResponse(ErrorRepresentation errorResponse)
@@ -44,7 +44,7 @@ namespace In.ProjectEKA.HipService.DataFlow
                 ErrorCode.ServerInternalError => StatusCode(StatusCodes.Status500InternalServerError, errorResponse),
                 ErrorCode.ContextArtefactIdNotFound => StatusCode(StatusCodes.Status404NotFound, errorResponse),
                 ErrorCode.InvalidToken => StatusCode(StatusCodes.Status403Forbidden, errorResponse),
-                ErrorCode.LinkDataNotFound => StatusCode(StatusCodes.Status404NotFound, errorResponse),
+                ErrorCode.HealthInformationNotFound => StatusCode(StatusCodes.Status404NotFound, errorResponse),
                 ErrorCode.LinkExpired => StatusCode(StatusCodes.Status403Forbidden, errorResponse),
                 _ => Problem(errorResponse.Error.Message)
             };

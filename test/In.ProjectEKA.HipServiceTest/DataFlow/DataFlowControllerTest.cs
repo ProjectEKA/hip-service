@@ -26,9 +26,9 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
         {
             var transactionId = TestBuilder.Faker().Random.Hash();
             var request = TestBuilder.HealthInformationRequest(transactionId);
-            var expectedResponse = new HealthInformationResponse(transactionId);
+            var expectedResponse = new HealthInformationTransactionResponse(transactionId);
             dataFlow.Setup(d => d.HealthInformationRequestFor(request))
-                .ReturnsAsync(new Tuple<HealthInformationResponse, ErrorRepresentation>(expectedResponse, null));
+                .ReturnsAsync(new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(expectedResponse, null));
 
             var response = await dataFlowController.HealthInformationRequestFor(request);
 
@@ -49,7 +49,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var expectedError = new ErrorRepresentation(new Error(ErrorCode.ServerInternalError,
                 ErrorMessage.InternalServerError));
             dataFlow.Setup(d => d.HealthInformationRequestFor(request))
-                .ReturnsAsync(new Tuple<HealthInformationResponse, ErrorRepresentation>(null, expectedError));
+                .ReturnsAsync(new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(null, expectedError));
 
             var response = await dataFlowController.HealthInformationRequestFor(request) as ObjectResult;
 
@@ -64,30 +64,30 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
         {
             var linkId = TestBuilder.Faker().Random.Hash();
             var transactionId = TestBuilder.Faker().Random.Hash();
-            var linkDataResponse = TestBuilder.LinkDataResponse(transactionId);
+            var healthInformationResponse = TestBuilder.HealthInformationResponse(transactionId);
             const string token = "token";
 
             dataFlow.Setup(x => x.HealthInformationFor(linkId, token, transactionId))
-                .ReturnsAsync(new Tuple<LinkDataResponse, ErrorRepresentation>(linkDataResponse, null));
+                .ReturnsAsync(new Tuple<HealthInformationResponse, ErrorRepresentation>(healthInformationResponse, null));
 
             var healthInformation = await dataFlowController
                 .HealthInformation(linkId, token,transactionId) as OkObjectResult;
 
             healthInformation.StatusCode.Should().Be(StatusCodes.Status200OK);
-            healthInformation.Value.Should().BeEquivalentTo(linkDataResponse);
+            healthInformation.Value.Should().BeEquivalentTo(healthInformationResponse);
         }
 
         [Fact]
-        private async void ShouldGetLinkDataNotFoundOnGetHealthInformation()
+        private async void ShouldGetHealthInformationNotFound()
         {
             var linkId = TestBuilder.Faker().Random.Hash();
             var transactionId = TestBuilder.Faker().Random.Hash();
             var expectedError = new ErrorRepresentation(
-                new Error(ErrorCode.LinkDataNotFound, ErrorMessage.LinkDataNotFound));
+                new Error(ErrorCode.HealthInformationNotFound, ErrorMessage.HealthInformationNotFound));
             const string token = "token";
 
             dataFlow.Setup(x => x.HealthInformationFor(linkId, token, transactionId))
-                .ReturnsAsync(new Tuple<LinkDataResponse, ErrorRepresentation>(null, expectedError));
+                .ReturnsAsync(new Tuple<HealthInformationResponse, ErrorRepresentation>(null, expectedError));
 
             var healthInformation = await dataFlowController
                 .HealthInformation(linkId, token, transactionId) as ObjectResult;
@@ -106,7 +106,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             const string invalidToken = "invalid-token";
 
             dataFlow.Setup(x => x.HealthInformationFor(linkId, invalidToken, transactionId))
-                .ReturnsAsync(new Tuple<LinkDataResponse, ErrorRepresentation>(null, expectedError));
+                .ReturnsAsync(new Tuple<HealthInformationResponse, ErrorRepresentation>(null, expectedError));
 
             var healthInformation = await dataFlowController
                 .HealthInformation(linkId, invalidToken, transactionId) as ObjectResult;
@@ -125,7 +125,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             const string token = "token";
 
             dataFlow.Setup(x => x.HealthInformationFor(linkId, token, transactionId))
-                .ReturnsAsync(new Tuple<LinkDataResponse, ErrorRepresentation>(null, expectedError));
+                .ReturnsAsync(new Tuple<HealthInformationResponse, ErrorRepresentation>(null, expectedError));
 
             var healthInformation = await dataFlowController
                 .HealthInformation(linkId, token, transactionId) as ObjectResult;

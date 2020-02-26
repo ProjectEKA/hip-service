@@ -68,15 +68,15 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
             var checksum = Faker().Random.Hash();
             return new Entry(content, media, checksum, null);
         }
-        internal static LinkData LinkData(string token, DateTime dateTime)
+        internal static HealthInformation HealthInformation(string token, DateTime dateTime)
         {
             var linkId = Faker().Random.Hash();
-            return new LinkData(linkId, Entry(), dateTime, token);
+            return new HealthInformation(linkId, Entry(), dateTime, token);
         }
 
-        internal static LinkDataResponse LinkDataResponse(string transactionId)
+        internal static HealthInformationResponse HealthInformationResponse(string transactionId)
         {
-            return new LinkDataResponse(transactionId, Entry());
+            return new HealthInformationResponse(transactionId, Entry());
         }
     }
 }

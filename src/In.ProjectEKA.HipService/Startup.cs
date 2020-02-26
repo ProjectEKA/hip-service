@@ -77,7 +77,7 @@ namespace In.ProjectEKA.HipService
                 .AddScoped<IConsentRepository, ConsentRepository>()
                 .AddHostedService<MessagingQueueListener>()
                 .AddScoped<IDataFlowRepository, DataFlowRepository>()
-                .AddScoped<ILinkDataRepository, LinkDataRepository>()
+                .AddScoped<IHealthInformationRepository, HealthInformationRepository>()
                 .AddTransient<IDataFlow, DataFlow.DataFlow>()
                 .AddRouting(options => options.LowercaseUrls = true)
                 .AddControllers()

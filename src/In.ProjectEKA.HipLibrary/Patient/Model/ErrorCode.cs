@@ -13,7 +13,7 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
         DiscoveryRequestNotFound,
         ContextArtefactIdNotFound,
         InvalidToken,
-        LinkDataNotFound,
+        HealthInformationNotFound,
         LinkExpired
     }
 }
