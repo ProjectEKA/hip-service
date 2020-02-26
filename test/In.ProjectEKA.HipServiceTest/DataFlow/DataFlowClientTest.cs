@@ -28,7 +28,6 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
     [Collection("Queue Listener Tests")]
     public class DataFlowClientTest
     {
-        private readonly Collect collect = new Collect("observation.json");
         private readonly Mock<ICryptoHelper> cryptoHelper = new Mock<ICryptoHelper>();
 
         [Fact]
