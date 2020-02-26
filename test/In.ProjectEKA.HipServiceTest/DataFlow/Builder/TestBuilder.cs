@@ -1,5 +1,6 @@
 namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
 {
+    using System.Collections.Generic;
     using Bogus;
     using In.ProjectEKA.HipService.Common.Model;
     using In.ProjectEKA.HipService.DataFlow;
@@ -11,6 +12,9 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
     using HiTypeLib = HipLibrary.Patient.Model.HiType;
     using KeyMaterialLib = HipLibrary.Patient.Model.KeyMaterial;
     using KeyStructureLib = HipLibrary.Patient.Model.KeyStructure;
+    using GrantedContext = HipLibrary.Patient.Model.GrantedContext;
+    using HiType = HipLibrary.Patient.Model.HiType;
+
     public static class TestBuilder
     {
         private static Faker faker;
@@ -28,7 +32,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
                     faker.Random.Hash()),
                 new HiDataRange(faker.Random.Hash(), faker.Random.Hash()),
                 faker.Random.Hash(),
-                new KeyMaterial(faker.Random.Word(), faker.Random.Word(), 
+                new KeyMaterial(faker.Random.Word(), faker.Random.Word(),
                     new KeyStructure("", "", faker.Random.Hash()),
                     faker.Random.Hash()));
         }
@@ -38,9 +42,17 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
             return new Faker<ConsentArtefactBuilder>();
         }
 
-        internal static Faker<DataRequestBuilder> DataRequest()
+        internal static HipLibrary.Patient.Model.DataRequest DataRequest(string transactionId)
         {
-            return new Faker<DataRequestBuilder>();
+            var grantedContexts = new List<GrantedContext>();
+            var hiDataRange = new HipLibrary.Patient.Model.HiDataRange("from", "to");
+            var callBackUrl = "http://callback";
+            var hiTypes = new List<HiType>();
+            var keyMaterial = new KeyMaterialLib(faker.Random.Word(), faker.Random.Word(),
+                new KeyStructureLib("", "", faker.Random.Hash()),
+                faker.Random.Hash());
+            return new HipLibrary.Patient.Model.DataRequest(grantedContexts, hiDataRange, callBackUrl, hiTypes,
+                transactionId, keyMaterial);
         }
 
         internal static Consent Consent()
@@ -52,7 +64,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
                 ConsentStatus.GRANTED
             );
         }
-        
+
         internal static DataRequestLib DataFlowRequest()
         {
             var fakerDataRequest = new Faker();

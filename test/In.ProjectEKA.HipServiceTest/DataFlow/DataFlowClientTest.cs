@@ -1,6 +1,7 @@
 namespace In.ProjectEKA.HipServiceTest.DataFlow
 {
     using System;
+    using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
     using System.Threading;
@@ -17,15 +18,21 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
     using Org.BouncyCastle.Crypto.Generators;
     using Org.BouncyCastle.Crypto.Parameters;
     using Org.BouncyCastle.Security;
+    using HipLibrary.Patient;
+    using HipLibrary.Patient.Model;
+    using Hl7.Fhir.Model;
+    using Optional;
     using Xunit;
+    using Task = System.Threading.Tasks.Task;
 
     [Collection("Queue Listener Tests")]
     public class DataFlowClientTest
     {
         private readonly Collect collect = new Collect("observation.json");
         private readonly Mock<ICryptoHelper> cryptoHelper = new Mock<ICryptoHelper>();
+
         [Fact]
-        private async Task ReturnSuccessOnDataFlow()
+        private async Task ShouldReturnDataComponent()
         {
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
             handlerMock
@@ -40,13 +47,12 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                     StatusCode = HttpStatusCode.OK
                 })
                 .Verifiable();
-            var httpClient = new HttpClient(handlerMock.Object)
-            {
-                BaseAddress = new Uri("http://localhost:8003")
-            };
-            var dataRequest = TestBuilder.DataFlowRequest();
             var faker = new Faker();
-            
+            var httpClient = new HttpClient(handlerMock.Object);
+            var collect = new Mock<ICollect>();
+            var dataRequest = TestBuilder.DataRequest(TestBuilder.Faker().Random.Hash());
+            collect.Setup(iCollect => iCollect.CollectData(dataRequest))
+                .ReturnsAsync(Option.Some(new Entries(new List<Bundle>())));
             var curve = "curve25519";
             var algorithm = "ECDH";
             var ecP = CustomNamedCurves.GetByName(curve);
@@ -62,16 +68,17 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                 faker.Random.Words(32), faker.Random.Words(32),
                 curve, algorithm)).Returns(faker.Random.Words(32));
             cryptoHelper.Setup(e=>e.GetPublicKey(keyPair)).Returns(faker.Random.Words(32));
-            var dataFlowClient = new DataFlowClient(collect, httpClient, cryptoHelper.Object);
+            var dataFlowClient = new DataFlowClient(collect.Object,
+                httpClient,cryptoHelper.Object);
+
             await dataFlowClient.HandleMessagingQueueResult(dataRequest);
-            var expectedUri = new Uri("http://localhost:8003/data/notification");
-            cryptoHelper.Verify();
+            var expectedUri = new Uri("http://callback/data/notification");
+
             handlerMock.Protected().Verify(
                 "SendAsync",
                 Times.Exactly(1),
-                ItExpr.Is<HttpRequestMessage>(req =>
-                    req.Method == HttpMethod.Post &&
-                    req.RequestUri == expectedUri),
+                ItExpr.Is<HttpRequestMessage>(message => message.Method == HttpMethod.Post
+                                                         && message.RequestUri == expectedUri),
                 ItExpr.IsAny<CancellationToken>()
             );
         }
