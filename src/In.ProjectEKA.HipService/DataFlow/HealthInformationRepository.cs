@@ -4,6 +4,7 @@ namespace In.ProjectEKA.HipService.DataFlow
     using Database;
     using Microsoft.EntityFrameworkCore;
     using Model;
+    using Optional;
 
     public class HealthInformationRepository: IHealthInformationRepository
     {
@@ -20,9 +21,11 @@ namespace In.ProjectEKA.HipService.DataFlow
             dataFlowContext.SaveChanges();
         }
 
-        public async Task<HealthInformation> GetAsync(string linkId)
+        public async Task<Option<HealthInformation>> GetAsync(string informationId)
         {
-            return await dataFlowContext.HealthInformation.FirstOrDefaultAsync(data => data.InformationId == linkId);
+            var healthInformation = await dataFlowContext.HealthInformation
+                .FirstOrDefaultAsync(data => data.InformationId == informationId);
+            return healthInformation != null ? Option.Some(healthInformation) : Option.None<HealthInformation>();
         }
     }
 }

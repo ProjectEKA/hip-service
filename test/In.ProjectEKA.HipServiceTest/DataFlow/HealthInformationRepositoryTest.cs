@@ -7,6 +7,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
     using HipService.DataFlow;
     using HipService.DataFlow.Database;
     using Microsoft.EntityFrameworkCore;
+    using Optional;
     using Xunit;
 
     public class HealthInformationRepositoryTest
@@ -41,7 +42,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             healthInformationRepository.Add(healthInformation);
             var actual = await healthInformationRepository.GetAsync(healthInformation.InformationId);
 
-            actual.Should().BeEquivalentTo(healthInformation);
+            actual.Should().BeEquivalentTo(Option.Some(healthInformation));
         }
 
         [Fact]
@@ -52,7 +53,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
 
             var actual = await healthInformationRepository.GetAsync("1");
 
-            actual.Should().BeNull();
+            actual.HasValue.Should().BeFalse();
         }
     }
 }

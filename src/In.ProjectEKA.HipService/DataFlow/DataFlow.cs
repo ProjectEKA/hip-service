@@ -7,6 +7,7 @@ namespace In.ProjectEKA.HipService.DataFlow
     using Logger;
     using MessagingQueue;
     using Microsoft.Extensions.Options;
+    using Model;
 
     public class DataFlow : IDataFlow
     {
@@ -68,12 +69,21 @@ namespace In.ProjectEKA.HipService.DataFlow
             string transactionId)
         {
             var healthInformation = await healthInformationRepository.GetAsync(informationId);
-            if (healthInformation == null) return HealthInformationNotFound();
-            if (healthInformation.Token != token) return InvalidToken();
-            if (IsLinkExpired(healthInformation.DateCreated)) return LinkExpired();
+            return healthInformation
+                .Map(information => HealthInformation(token, transactionId, information))
+                .ValueOr(ErrorOf(ErrorResponse.HealthInformationNotFound));
+        }
 
-            var healthInformationResponse = new HealthInformationResponse(transactionId, healthInformation.Data);
-            return new Tuple<HealthInformationResponse, ErrorRepresentation>(healthInformationResponse, null);
+        private Tuple<HealthInformationResponse, ErrorRepresentation> HealthInformation(
+            string token,
+            string transactionId,
+            HealthInformation information)
+        {
+            if (information.Token != token) return ErrorOf(ErrorResponse.InvalidToken);
+            if (IsLinkExpired(information.DateCreated)) return ErrorOf(ErrorResponse.LinkExpired);
+
+            return new Tuple<HealthInformationResponse, ErrorRepresentation>(
+                new HealthInformationResponse(transactionId, information.Data), null);
         }
 
         private bool IsLinkExpired(DateTime dateCreated)
@@ -83,23 +93,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             return linkExpirationDateTime < DateTime.Now;
         }
 
-        private static Tuple<HealthInformationResponse, ErrorRepresentation> HealthInformationNotFound()
-        {
-            return ErrorResponse(
-                new Error(ErrorCode.HealthInformationNotFound, ErrorMessage.HealthInformationNotFound));
-        }
-
-        private static Tuple<HealthInformationResponse, ErrorRepresentation> LinkExpired()
-        {
-            return ErrorResponse(new Error(ErrorCode.LinkExpired, ErrorMessage.LinkExpired));
-        }
-
-        private static Tuple<HealthInformationResponse, ErrorRepresentation> InvalidToken()
-        {
-            return ErrorResponse(new Error(ErrorCode.InvalidToken, ErrorMessage.InvalidToken));
-        }
-
-        private static Tuple<HealthInformationResponse, ErrorRepresentation> ErrorResponse(Error error)
+        private static Tuple<HealthInformationResponse, ErrorRepresentation> ErrorOf(Error error)
         {
             var errorResponse = new ErrorRepresentation(error);
             return new Tuple<HealthInformationResponse, ErrorRepresentation>(null, errorResponse);

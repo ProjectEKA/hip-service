@@ -77,7 +77,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var healthInformation = TestBuilder.HealthInformation(token, DateTime.Now);
 
             healthInformationRepository.Setup(x => x.GetAsync(linkId))
-                .ReturnsAsync(healthInformation);
+                .ReturnsAsync(Option.Some(healthInformation));
 
             var (healthInformationResponse, errorRepresentation) =
                 await dataFlowService.HealthInformationFor(linkId, token, transactionId);
@@ -108,7 +108,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var token = TestBuilder.Faker().Random.Hash();
             var healthInformation = TestBuilder.HealthInformation(token, TestBuilder.Faker().Date.Past());
             healthInformationRepository.Setup(x => x.GetAsync(linkId))
-                .ReturnsAsync(healthInformation);
+                .ReturnsAsync(Option.Some(healthInformation));
 
             var (_, errorRepresentation) = await dataFlowService
                 .HealthInformationFor(linkId, "invalid-token", transactionId);
@@ -127,7 +127,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var healthInformation = TestBuilder.HealthInformation(token, TestBuilder.Faker().Date.Past());
 
             healthInformationRepository.Setup(x => x.GetAsync(linkId))
-                .ReturnsAsync(healthInformation);
+                .ReturnsAsync(Option.Some(healthInformation));
 
             var (_, errorRepresentation) =
                 await dataFlowService.HealthInformationFor(linkId, token, transactionId);
