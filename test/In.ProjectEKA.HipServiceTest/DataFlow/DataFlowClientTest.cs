@@ -25,7 +25,6 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
         private async Task ShouldReturnDataComponent()
         {
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
-            var serviceScopeFactory = new Mock<IServiceScopeFactory>(MockBehavior.Strict);
             handlerMock
                 .Protected()
                 .Setup<Task<HttpResponseMessage>>(
