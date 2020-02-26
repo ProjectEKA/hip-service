@@ -100,7 +100,7 @@ namespace In.ProjectEKA.HipService.DataFlow
         private Link LinkFor(string linkId)
         {
             var link = $"{hipConfiguration.Value.Url}/health-information/{linkId}";
-            return new Link(link, "multipart");
+            return new Link(link);
         }
 
         private void StoreComponentEntry(string linkId, Entry entry)
