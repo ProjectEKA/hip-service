@@ -46,7 +46,7 @@ namespace In.ProjectEKA.HipService.DataFlow
                         new KeyStructure("", "", cryptoHelper.GetPublicKey(senderKeyPair)),
                         randomKeySender);                    
                     await SendDataToHiu(new DataResponse(dataRequest.TransactionId, healthRecordEntries, keyMaterial),
-                        dataRequest.CallBackUrl);
+                        dataRequest.CallBackUrl).ConfigureAwait(false);
                     return Task.CompletedTask;
                 });
         }

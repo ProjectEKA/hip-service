@@ -28,7 +28,9 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
                     faker.Random.Hash()),
                 new HiDataRange(faker.Random.Hash(), faker.Random.Hash()),
                 faker.Random.Hash(),
-                TestBuilder.KeyMaterial().Generate().Build());
+                new KeyMaterial(faker.Random.Word(), faker.Random.Word(), 
+                    new KeyStructure("", "", faker.Random.Hash()),
+                    faker.Random.Hash()));
         }
 
         internal static Faker<ConsentArtefactBuilder> ConsentArtefact()
@@ -39,11 +41,6 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
         internal static Faker<DataRequestBuilder> DataRequest()
         {
             return new Faker<DataRequestBuilder>();
-        }
-        
-        internal static Faker<KeyMaterialBuilder> KeyMaterial()
-        {
-            return new Faker<KeyMaterialBuilder>();
         }
 
         internal static Consent Consent()
@@ -58,20 +55,20 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
         
         internal static DataRequestLib DataFlowRequest()
         {
-            var faker = new Faker();
+            var fakerDataRequest = new Faker();
             var dataRequest = new DataRequestLib(new[]
                 {
-                    new GrantedContextLib(faker.Random.Hash(),
-                        faker.Random.Hash())
+                    new GrantedContextLib(fakerDataRequest.Random.Hash(),
+                        fakerDataRequest.Random.Hash())
                 },
-                new HiDataRangeLib(faker.Random.Word(),
-                    faker.Random.Word()),
+                new HiDataRangeLib(fakerDataRequest.Random.Word(),
+                    fakerDataRequest.Random.Word()),
                 "http://localhost:8003",
                 new[] {HiTypeLib.Condition},
-                faker.Random.Hash(),
-                new KeyMaterialLib(faker.Random.Word(), faker.Random.Word(),
-                    new KeyStructureLib(faker.Random.Word(), faker.Random.Word(),
-                        faker.Random.Hash()), faker.Random.Word()));
+                fakerDataRequest.Random.Hash(),
+                new KeyMaterialLib(fakerDataRequest.Random.Word(), fakerDataRequest.Random.Word(),
+                    new KeyStructureLib(fakerDataRequest.Random.Word(), fakerDataRequest.Random.Word(),
+                        fakerDataRequest.Random.Hash()), fakerDataRequest.Random.Word()));
             return dataRequest;
         }
     }

@@ -109,7 +109,9 @@ namespace In.ProjectEKA.HipService.DataFlow.CryptoHelper
             var randomKeyReceiverBytes = GetByteFromBase64(randomKeyReceiver).ToArray();
             var sb = new byte[randomKeyReceiverBytes.Length];
             for (var i = 0; i < randomKeySenderBytes.Length; i++)
+            {
                 sb[i] = (byte)(randomKeySenderBytes[i] ^ randomKeyReceiverBytes[i % randomKeyReceiverBytes.Length]);
+            }
             return sb;
         }
     }
