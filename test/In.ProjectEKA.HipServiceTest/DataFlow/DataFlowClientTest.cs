@@ -20,9 +20,8 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
     [Collection("Queue Listener Tests")]
     public class DataFlowClientTest
     {
-
         [Fact]
-        private async Task ReturnSuccessOnDataFlow()
+        private async Task ShouldReturnDataComponent()
         {
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
             var collect = new Mock<ICollect>();
@@ -38,25 +37,21 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                     StatusCode = HttpStatusCode.OK
                 })
                 .Verifiable();
-            var httpClient = new HttpClient(handlerMock.Object)
-            {
-                BaseAddress = new Uri("http://localhost:8003")
-            };
-            var dataRequest = TestBuilder.DataRequest().Generate().Build();
-            collect.Setup(a => a.CollectData(dataRequest))
-                .Returns(Task.FromResult(Option.Some(new Entries(new List<Bundle>()))));
-
-            var dataFlowClient = new DataFlowClient(collect.Object, httpClient);
+            var httpClient = new HttpClient(handlerMock.Object);
+            var dataRequest = TestBuilder.DataRequest(TestBuilder.Faker().Random.Hash());
+            collect.Setup(iCollect => iCollect.CollectData(dataRequest))
+                .ReturnsAsync(Option.Some(new Entries(new List<Bundle>())));
+            var dataFlowClient = new DataFlowClient(collect.Object,
+                httpClient);
 
             await dataFlowClient.HandleMessagingQueueResult(dataRequest);
-            var expectedUri = new Uri("http://localhost:8003/data/notification");
 
+            var expectedUri = new Uri("http://callback/data/notification");
             handlerMock.Protected().Verify(
                 "SendAsync",
                 Times.Exactly(1),
-                ItExpr.Is<HttpRequestMessage>(req =>
-                    req.Method == HttpMethod.Post &&
-                    req.RequestUri == expectedUri),
+                ItExpr.Is<HttpRequestMessage>(message => message.Method == HttpMethod.Post
+                                                         && message.RequestUri == expectedUri),
                 ItExpr.IsAny<CancellationToken>()
             );
         }
