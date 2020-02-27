@@ -56,7 +56,7 @@ namespace In.ProjectEKA.HipService
                     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
                         x => x.MigrationsAssembly("In.ProjectEKA.HipService")))
                 .AddSingleton<IPatientRepository>(new PatientRepository("patients.json"))
-                .AddSingleton<ICollect>(new Collect("../In.ProjectEKA.DefaultHip/Resources/observation.json"))
+                .AddSingleton<ICollect>(new Collect("observation.json"))
                 .AddSingleton<IPatientRepository>(new PatientRepository("patients.json"))
                 .AddRabbit(Configuration)
                 .Configure<OtpServiceConfiguration>(Configuration.GetSection("OtpService"))
