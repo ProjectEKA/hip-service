@@ -2,32 +2,37 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
     using In.ProjectEKA.HipService.DataFlow;
     using Builder;
-    using HipLibrary.Patient;
-    using HipLibrary.Patient.Model;
-    using HipService.Common;
-    using Hl7.Fhir.Model;
-    using Microsoft.Extensions.DependencyInjection;
-    using Microsoft.Extensions.Options;
     using Moq;
     using Moq.Protected;
     using Optional;
     using Xunit;
-    using Task = System.Threading.Tasks.Task;
 
-    [Collection("Queue Listener Tests")]
+    [Collection("Data Flow Client Tests")]
     public class DataFlowClientTest
     {
         [Fact]
-        private async Task ShouldReturnDataComponent()
+        private void ShouldReturnDataComponent()
         {
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
-            var serviceScopeFactory = new Mock<IServiceScopeFactory>(MockBehavior.Strict);
+            var httpClient = new HttpClient(handlerMock.Object);
+            var dataRequest = TestBuilder.DataRequest(TestBuilder.Faker().Random.Hash());
+            var content = TestBuilder.Faker().Random.String();
+            var checksum = TestBuilder.Faker().Random.Hash();
+            var entries = Option.Some(new List<Entry>
+                {
+                    new Entry(content, "application/json", checksum, null)
+                }
+                .AsEnumerable());
+            var expectedUri = new Uri("http://callback/data/notification");
+            var dataFlowClient = new DataFlowClient(httpClient);
+
             handlerMock
                 .Protected()
                 .Setup<Task<HttpResponseMessage>>(
@@ -40,20 +45,8 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                     StatusCode = HttpStatusCode.OK
                 })
                 .Verifiable();
-            var httpClient = new HttpClient(handlerMock.Object);
-            var collect = new Mock<ICollect>();
-            var dataRequest = TestBuilder.DataRequest(TestBuilder.Faker().Random.Hash());
-            collect.Setup(iCollect => iCollect.CollectData(dataRequest))
-                .ReturnsAsync(Option.Some(new Entries(new List<Bundle>())));
 
-            var dataFlowClient = new DataFlowClient(collect.Object,
-                httpClient,
-                serviceScopeFactory.Object,
-                new Mock<IOptions<DataFlowConfiguration>>().Object,
-                new Mock<IOptions<HipConfiguration>>().Object);
-
-            await dataFlowClient.HandleMessagingQueueResult(dataRequest);
-            var expectedUri = new Uri("http://callback/data/notification");
+            dataFlowClient.SendDataToHiu(dataRequest, entries);
 
             handlerMock.Protected().Verify(
                 "SendAsync",
