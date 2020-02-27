@@ -1,5 +1,6 @@
 namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
 {
+    using System;
     using System.Collections.Generic;
     using Bogus;
     using HipService.DataFlow.Model;
@@ -59,6 +60,24 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
             return new DataFlowRequest(
                 Faker().Random.Hash(),
                 HealthInformationRequest(Faker().Random.Hash()));
+        }
+
+        internal static Entry Entry()
+        {
+            var content = Faker().Random.String();
+            var media = Faker().Random.String();
+            var checksum = Faker().Random.Hash();
+            return new Entry(content, media, checksum, null);
+        }
+        internal static HealthInformation HealthInformation(string token, DateTime dateTime)
+        {
+            var linkId = Faker().Random.Hash();
+            return new HealthInformation(linkId, Entry(), dateTime, token);
+        }
+
+        internal static HealthInformationResponse HealthInformationResponse(string transactionId)
+        {
+            return new HealthInformationResponse(transactionId, Entry());
         }
     }
 }

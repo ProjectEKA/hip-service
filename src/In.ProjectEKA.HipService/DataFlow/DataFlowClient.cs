@@ -1,47 +1,35 @@
 namespace In.ProjectEKA.HipService.DataFlow
 {
     using System;
-    using System.Linq;
+    using System.Collections.Generic;
     using System.Net.Http;
-    using System.Net.Http.Headers;
     using System.Text;
-    using System.Threading.Tasks;
-    using HipLibrary.Patient;
-    using Hl7.Fhir.Serialization;
     using Logger;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
+    using Optional;
+    using Task = System.Threading.Tasks.Task;
 
     public class DataFlowClient
     {
-        private readonly ICollect collect;
         private readonly HttpClient httpClient;
 
-        public DataFlowClient(ICollect collect, HttpClient httpClient)
+        public DataFlowClient()
         {
-            this.collect = collect;
+        }
+
+        public DataFlowClient(HttpClient httpClient)
+        {
             this.httpClient = httpClient;
         }
 
-        public async Task HandleMessagingQueueResult(HipLibrary.Patient.Model.DataRequest dataRequest)
+        public virtual void SendDataToHiu(HipLibrary.Patient.Model.DataRequest dataRequest, Option<IEnumerable<Entry>> data)
         {
-            (await collect.CollectData(dataRequest))
-                .Map(async entries =>
-                {
-                    var serializer = new FhirJsonSerializer(new SerializerSettings());
-                    var healthRecordEntries = entries.Bundles
-                        .Select(bundle => new Entry(
-                            serializer.SerializeToString(bundle),
-                            "application/json",
-                            "MD5"))
-                        .ToList();
-                    await SendDataToHiu(new DataResponse(dataRequest.TransactionId, healthRecordEntries),
-                        dataRequest.CallBackUrl);
-                    return Task.CompletedTask;
-                });
+            data.Map(async entries => 
+                await PostTo(dataRequest.CallBackUrl, new DataResponse(dataRequest.TransactionId, entries)));
         }
 
-        private async Task SendDataToHiu(DataResponse dataResponse, string callBackUrl)
+        private async Task PostTo(string callBackUrl, DataResponse dataResponse)
         {
             try
             {

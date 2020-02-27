@@ -7,7 +7,6 @@ namespace In.ProjectEKA.HipService.DataFlow
     using Microsoft.AspNetCore.Mvc;
 
     [ApiController]
-    [Route("health-information/request")]
     public class DataFlowController : ControllerBase
     {
         private readonly IDataFlow dataFlow;
@@ -18,20 +17,36 @@ namespace In.ProjectEKA.HipService.DataFlow
         }
 
         [HttpPost]
-        public async Task<ActionResult> HealthInformationRequestFor([FromBody] HealthInformationRequest healthInformationRequest)
+        [Route("health-information/request")]
+        public async Task<ActionResult> HealthInformationRequestFor(
+            [FromBody] HealthInformationRequest healthInformationRequest)
         {
             var (healthInformationResponse, error) = await dataFlow
                 .HealthInformationRequestFor(healthInformationRequest);
-            return error != null ? ReturnServerResponse(error) : Ok(healthInformationResponse);
+            return error != null ? ServerResponseFor(error) : Ok(healthInformationResponse);
         }
-        
-        private ActionResult ReturnServerResponse(ErrorRepresentation errorResponse)
+
+        [HttpGet]
+        [Route("health-information/{informationId}")]
+        public async Task<ActionResult> HealthInformation(
+            [FromRoute] string informationId,
+            [FromQuery] string token,
+            [FromQuery] string transactionId)
+        {
+            var (healthInformation, error) = await dataFlow.HealthInformationFor(informationId, token, transactionId);
+            return error != null ? ServerResponseFor(error) : Ok(healthInformation);
+        }
+
+        private ActionResult ServerResponseFor(ErrorRepresentation errorResponse)
         {
             return errorResponse.Error.Code switch
             {
                 ErrorCode.ServerInternalError => StatusCode(StatusCodes.Status500InternalServerError, errorResponse),
                 ErrorCode.ContextArtefactIdNotFound => StatusCode(StatusCodes.Status404NotFound, errorResponse),
-                _ => NotFound(errorResponse)
+                ErrorCode.InvalidToken => StatusCode(StatusCodes.Status403Forbidden, errorResponse),
+                ErrorCode.HealthInformationNotFound => StatusCode(StatusCodes.Status404NotFound, errorResponse),
+                ErrorCode.LinkExpired => StatusCode(StatusCodes.Status403Forbidden, errorResponse),
+                _ => Problem(errorResponse.Error.Message)
             };
         }
     }
