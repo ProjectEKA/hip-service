@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace In.ProjectEKA.HipService.DataFlow.Database.Migrations
+﻿namespace In.ProjectEKA.HipService.DataFlow.Database.Migrations
 {
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class AddingDataFlowRequestTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -10,7 +10,7 @@ namespace In.ProjectEKA.HipService.DataFlow.Database.Migrations
                 name: "DataFlowRequest",
                 columns: table => new
                 {
-                    TransactionId = table.Column<string>(nullable: false),
+                    TransactionId = table.Column<string>(),
                     HealthInformationRequest = table.Column<string>(nullable: true)
                 },
                 constraints: table =>

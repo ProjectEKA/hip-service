@@ -2,6 +2,11 @@ namespace In.ProjectEKA.HipService
 {
     using System.Net.Http;
     using System.Text.Json;
+    using Consent;
+    using Consent.Database;
+    using DataFlow;
+    using DataFlow.Database;
+    using DefaultHip.DataFlow;
     using DefaultHip.Discovery;
     using DefaultHip.Link;
     using Discovery;
@@ -9,6 +14,7 @@ namespace In.ProjectEKA.HipService
     using HipLibrary.Patient;
     using Link;
     using Link.Database;
+    using MessagingQueue;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;
@@ -16,16 +22,11 @@ namespace In.ProjectEKA.HipService
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Middleware;
-    using DataFlow;
-    using DataFlow.Database;
+    using Newtonsoft.Json;
     using Serilog;
-    using MessagingQueue;
 
     public class Startup
     {
-        private IConfiguration Configuration { get; }
-        private HttpClient HttpClient { get; }
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -36,10 +37,14 @@ namespace In.ProjectEKA.HipService
             HttpClient = new HttpClient(clientHandler);
         }
 
-        public void ConfigureServices(IServiceCollection services) =>
+        private IConfiguration Configuration { get; }
+        private HttpClient HttpClient { get; }
+
+        public void ConfigureServices(IServiceCollection services)
+        {
             services
                 .AddDbContext<LinkPatientContext>(options =>
-                    options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"), 
+                    options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
                         x => x.MigrationsAssembly("In.ProjectEKA.HipService")))
                 .AddDbContext<DiscoveryContext>(options =>
                     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
@@ -47,27 +52,41 @@ namespace In.ProjectEKA.HipService
                 .AddDbContext<DataFlowContext>(options =>
                     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
                         x => x.MigrationsAssembly("In.ProjectEKA.HipService")))
-                .AddSingleton<IPatientRepository>(new PatientRepository("Resources/patients.json"))
+                .AddDbContext<ConsentContext>(options =>
+                    options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
+                        x => x.MigrationsAssembly("In.ProjectEKA.HipService")))
+                .AddSingleton<IPatientRepository>(new PatientRepository("patients.json"))
+                .AddSingleton<ICollect>(new Collect("observation.json"))
+                .AddSingleton<IPatientRepository>(new PatientRepository("patients.json"))
                 .AddRabbit(Configuration)
                 .Configure<OtpServiceConfiguration>(Configuration.GetSection("OtpService"))
                 .AddScoped<ILinkPatientRepository, LinkPatientRepository>()
-                .AddSingleton<IMatchingRepository>(new PatientMatchingRepository("Resources/patients.json"))
+                .AddSingleton<IMatchingRepository>(new PatientMatchingRepository("patients.json"))
                 .AddScoped<IDiscoveryRequestRepository, DiscoveryRequestRepository>()
                 .AddScoped<PatientDiscovery>()
                 .AddTransient<IDiscovery, PatientDiscovery>()
                 .AddScoped<IReferenceNumberGenerator, ReferenceNumberGenerator>()
                 .AddTransient<ILink, LinkPatient>()
                 .AddSingleton(Configuration)
+                .AddSingleton<DataFlowClient>()
                 .AddSingleton(HttpClient)
                 .AddScoped<IPatientVerification, PatientVerification>()
+                .AddScoped<IConsentRepository, ConsentRepository>()
                 .AddHostedService<MessagingQueueListener>()
                 .AddScoped<IDataFlowRepository, DataFlowRepository>()
-                .AddScoped<IConsentArtefactRepository, ConsentArtefactRepository>()
                 .AddTransient<IDataFlow, DataFlow.DataFlow>()
                 .AddRouting(options => options.LowercaseUrls = true)
                 .AddControllers()
-                .AddNewtonsoftJson(options =>{})
-                .AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase);
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                })
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+                    options.JsonSerializerOptions.IgnoreNullValues = true;
+                });
+        }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -87,6 +106,8 @@ namespace In.ProjectEKA.HipService
             discoveryContext.Database.Migrate();
             var dataFlowContext = serviceScope.ServiceProvider.GetService<DataFlowContext>();
             dataFlowContext.Database.Migrate();
+            var consentContext = serviceScope.ServiceProvider.GetService<ConsentContext>();
+            consentContext.Database.Migrate();
         }
     }
 }

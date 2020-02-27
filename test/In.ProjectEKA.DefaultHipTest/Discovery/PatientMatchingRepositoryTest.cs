@@ -15,7 +15,7 @@ namespace In.ProjectEKA.DefaultHipTest.Discovery
         private async void ShouldReturnPatientsBasedOnExpression()
         {
             var patientMatchingRepository = new PatientMatchingRepository("patients.json");
-            var phoneNumberIdentifier = new Identifier(IdentifierType.MOBILE, "+919999999999");
+            var phoneNumberIdentifier = new Identifier(IdentifierType.MOBILE, "+91-9999999999");
             var request = new DiscoveryRequest(
                 new PatientEnquiry(string.Empty,
                     new List<Identifier> {phoneNumberIdentifier},
@@ -23,12 +23,12 @@ namespace In.ProjectEKA.DefaultHipTest.Discovery
                     string.Empty,
                     string.Empty,
                     Gender.F,
-                    DateTime.Now), 
+                    DateTime.Now),
                 string.Empty);
 
             var patientInfo = await patientMatchingRepository.Where(request);
 
-            patientInfo.Count().Should().Be(4);
+            patientInfo.Count().Should().Be(1);
         }
     }
 }

@@ -1,8 +1,8 @@
-namespace In.ProjectEKA.HipService.DataFlow
+namespace In.ProjectEKA.HipService.Common.Model
 {
     using System;
     using System.Collections.Generic;
-    
+
     public class ConsentArtefact
     {
         public string ConsentId { get; }

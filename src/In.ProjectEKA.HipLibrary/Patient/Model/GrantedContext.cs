@@ -1,4 +1,4 @@
-namespace In.ProjectEKA.HipService.DataFlow
+namespace In.ProjectEKA.HipLibrary.Patient.Model
 {
     public class GrantedContext
     {

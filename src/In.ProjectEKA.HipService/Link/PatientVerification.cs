@@ -7,10 +7,10 @@ namespace In.ProjectEKA.HipService.Link
     using System.Text;
     using System.Threading.Tasks;
     using HipLibrary.Patient.Model;
+    using Logger;
     using Microsoft.Extensions.Options;
     using Newtonsoft.Json;
     using Optional;
-    using Logger;
 
     public class PatientVerification : IPatientVerification
     {

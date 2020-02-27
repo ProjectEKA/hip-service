@@ -23,12 +23,13 @@
         <PackageReference Include="Moq" Version="4.13.1" />
         <PackageReference Include="Bogus" Version="28.4.4" />
     </ItemGroup>
+    
     <ItemGroup>
-        <Content Include="..\..\src\In.ProjectEKA.HipService\Resources\patients.json">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-            <Link>patients.json</Link>
+        <Content Include="..\..\src\In.ProjectEKA.DefaultHip\Resources\observation.json">
+          <Link>DataFlow\observation.json</Link>
         </Content>
     </ItemGroup>
+    
     <ItemGroup>
         <ProjectReference Include="..\..\src\In.ProjectEKA.HipLibrary\In.ProjectEKA.HipLibrary.csproj" />
         <ProjectReference Include="..\..\src\In.ProjectEKA.HipService\In.ProjectEKA.HipService.csproj" />

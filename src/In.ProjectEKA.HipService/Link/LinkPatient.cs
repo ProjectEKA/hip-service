@@ -9,7 +9,6 @@ namespace In.ProjectEKA.HipService.Link
     using HipLibrary.Patient.Model;
     using Logger;
     using Microsoft.Extensions.Options;
-    using Patient = HipLibrary.Patient.Model.Patient;
 
     public class LinkPatient : ILink
     {

@@ -1,6 +1,6 @@
 [
   {
-    "phoneNumber": "+919999999999",
+    "phoneNumber": "+91-9999999999",
     "identifier": "1",
     "firstName": "John",
     "lastName": "Doee",
@@ -10,45 +10,16 @@
     "careContexts": [
       {
         "referenceNumber": "123",
-        "name": "Cancer",
-        "description": "National Cancer program"
+        "display": "National Cancer program"
       },
       {
         "referenceNumber": "124",
-        "name": "TB",
-        "description": "National TB program"
+        "display": "National TB program"
       }
     ]
   },
   {
-    "phoneNumber": "+919999999999",
-    "identifier": "10",
-    "firstName": "Jack",
-    "lastName": "Doee",
-    "Gender": "M",
-    "dateOfBirth": "2019-12-06",
-    "email": "zzz@def.com"
-  },
-  {
-    "phoneNumber": "+919999999999",
-    "identifier": "10",
-    "firstName": "Zack",
-    "lastName": "Doey",
-    "Gender": "M",
-    "dateOfBirth": "2019-12-06",
-    "email": "zzz@def.com"
-  },
-  {
-    "phoneNumber": "+919999999999",
-    "identifier": "11",
-    "firstName": "Jill",
-    "lastName": "Doee",
-    "Gender": "F",
-    "dateOfBirth": "2019-12-06",
-    "email": "zzy@def.com"
-  },
-  {
-    "phoneNumber": "+918888888888",
+    "phoneNumber": "+91-8888888888",
     "identifier": "2",
     "email": "ijk@def.com",
     "firstName": "Jane",
@@ -59,18 +30,16 @@
     "careContexts": [
       {
         "referenceNumber": "125",
-        "name": "Cancer",
-        "description": "National Cancer program"
+        "display": "National Cancer program"
       },
       {
         "referenceNumber": "126",
-        "name": "TB",
-        "description": "National TB program"
+        "display": "National TB program"
       }
     ]
   },
   {
-    "phoneNumber": "+9177777777777",
+    "phoneNumber": "+91-77777777777",
     "identifier": "3",
     "email": "def@def.com",
     "firstName": "Olivia",
@@ -81,18 +50,16 @@
     "careContexts": [
       {
         "referenceNumber": "127",
-        "name": "Cancer",
-        "description": "National Cancer program"
+        "display": "National Cancer program"
       },
       {
         "referenceNumber": "128",
-        "name": "TB",
-        "description": "National TB program"
+        "display": "National TB program"
       }
     ]
   },
   {
-    "phoneNumber": "+91666666666666",
+    "phoneNumber": "+91-666666666666",
     "identifier": "4",
     "email": "ghi@def.com",
     "firstName": "Ron",
@@ -103,18 +70,16 @@
     "careContexts": [
       {
         "referenceNumber": "129",
-        "name": "Cancer",
-        "description": "National Cancer program"
+        "display": "National Cancer program"
       },
       {
         "referenceNumber": "130",
-        "name": "TB",
-        "description": "National TB program"
+        "display": "National TB program"
       }
     ]
   },
   {
-    "phoneNumber": "+918340289040",
+    "phoneNumber": "+91-8340289040",
     "identifier": "5",
     "email": "ghi@def.com",
     "firstName": "Ron",
@@ -125,13 +90,12 @@
     "careContexts": [
       {
         "referenceNumber": "131",
-        "name": "Cancer",
-        "description": "National Cancer program"
+        "display": "National Cancer program"
       }
     ]
   },
   {
-    "phoneNumber": "+919611727707",
+    "phoneNumber": "+91-9611727707",
     "identifier": "6",
     "email": "qwe@def.com",
     "firstName": "Jane",
@@ -142,13 +106,12 @@
     "careContexts": [
       {
         "referenceNumber": "132",
-        "name": "Cancer",
-        "description": "National Cancer program"
+        "display": "National Cancer program"
       }
     ]
   },
   {
-    "phoneNumber": "+919620004135",
+    "phoneNumber": "+91-9620004135",
     "identifier": "7",
     "email": "jnh@def.com",
     "firstName": "Philip",
@@ -159,13 +122,11 @@
     "careContexts": [
       {
         "referenceNumber": "133",
-        "name": "Cancer",
-        "description": "National Cancer program"
+        "display": "National Cancer program"
       },
       {
         "referenceNumber": "134",
-        "name": "TB",
-        "description": "National TB program"
+        "display": "National TB program"
       }
     ]
   }
