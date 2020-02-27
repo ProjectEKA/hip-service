@@ -1,7 +1,6 @@
 namespace In.ProjectEKA.HipService.DataFlow
 {
     using System;
-    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
@@ -13,7 +12,6 @@ namespace In.ProjectEKA.HipService.DataFlow
     using Microsoft.Extensions.Options;
     using Model;
     using Optional;
-    using Org.BouncyCastle.Crypto;
 
     public class DataEntryFactory
     {
@@ -70,11 +68,12 @@ namespace In.ProjectEKA.HipService.DataFlow
                         processedEntries.Add(entry);
                     });
                 }
+
                 var keyStructure = new KeyStructure(DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"),
                     dataRequestKeyMaterial.DhPublicKey.Parameters, EncryptorHelper.GetPublicKey(keyPair));
                 var keyMaterial = new KeyMaterial(dataRequestKeyMaterial.CryptoAlg,
-                                                  dataRequestKeyMaterial.Curve,
-                                                  keyStructure, randomKey);
+                    dataRequestKeyMaterial.Curve,
+                    keyStructure, randomKey);
                 return Option.Some(new EncryptedEntries(processedEntries.AsEnumerable(), keyMaterial));
             });
         }

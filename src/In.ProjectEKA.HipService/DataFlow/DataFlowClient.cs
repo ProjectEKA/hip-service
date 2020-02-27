@@ -12,7 +12,7 @@ namespace In.ProjectEKA.HipService.DataFlow
     public class DataFlowClient
     {
         private readonly HttpClient httpClient;
-        
+
         public DataFlowClient()
         {
         }
@@ -60,12 +60,12 @@ namespace In.ProjectEKA.HipService.DataFlow
             });
             return new HttpRequestMessage
             {
-                RequestUri = new Uri( $"{callBackUrl}/data/notification"),
+                RequestUri = new Uri($"{callBackUrl}/data/notification"),
                 Method = HttpMethod.Post,
                 Content = new StringContent(json, Encoding.UTF8, "application/json"),
                 Headers =
                 {
-                    { "Authorization", GetAuthToken()}
+                    {"Authorization", GetAuthToken()}
                 }
             };
         }
