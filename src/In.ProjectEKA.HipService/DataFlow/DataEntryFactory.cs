@@ -1,16 +1,19 @@
 namespace In.ProjectEKA.HipService.DataFlow
 {
     using System;
+    using System.Collections;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     using Common;
+    using Encryptor;
     using HipLibrary.Patient.Model;
     using Hl7.Fhir.Serialization;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Options;
     using Model;
     using Optional;
+    using Org.BouncyCastle.Crypto;
 
     public class DataEntryFactory
     {
@@ -19,6 +22,7 @@ namespace In.ProjectEKA.HipService.DataFlow
         private readonly IServiceScopeFactory serviceScopeFactory;
         private readonly IOptions<DataFlowConfiguration> dataFlowConfiguration;
         private readonly IOptions<HipConfiguration> hipConfiguration;
+        private readonly IEncryptor encryptor;
         private const int MbInBytes = 1000000;
 
         public DataEntryFactory()
@@ -28,21 +32,51 @@ namespace In.ProjectEKA.HipService.DataFlow
         public DataEntryFactory(
             IServiceScopeFactory serviceScopeFactory,
             IOptions<DataFlowConfiguration> dataFlowConfiguration,
-            IOptions<HipConfiguration> hipConfiguration)
+            IOptions<HipConfiguration> hipConfiguration,
+            IEncryptor encryptor)
         {
             this.serviceScopeFactory = serviceScopeFactory;
             this.dataFlowConfiguration = dataFlowConfiguration;
             this.hipConfiguration = hipConfiguration;
+            this.encryptor = encryptor;
         }
 
-        public virtual Option<IEnumerable<Entry>> Process(Option<Entries> data)
+        public Option<EncryptedEntries> Process(Option<Entries> data,
+            HipLibrary.Patient.Model.KeyMaterial dataRequestKeyMaterial)
         {
-            return data.Map(entries => entries.Bundles.Select(bundle =>
+            var keyPair = EncryptorHelper.GenerateKeyPair(dataRequestKeyMaterial.Curve,
+                dataRequestKeyMaterial.CryptoAlg);
+            var randomKey = EncryptorHelper.GenerateRandomKey();
+            return data.FlatMap(entries =>
             {
-                var serializedBundle = Serializer.SerializeToString(bundle);
-                var componentEntry = ComponentEntry(serializedBundle);
-                return Linkable(serializedBundle) ? StoreComponentAndGetLink(componentEntry) : componentEntry;
-            }));
+                var processedEntries = new List<Entry>();
+                foreach (var bundle in entries.Bundles)
+                {
+                    var encryptData =
+                        encryptor.EncryptData(dataRequestKeyMaterial,
+                            keyPair,
+                            Serializer.SerializeToString(bundle),
+                            randomKey);
+                    if (!encryptData.HasValue)
+                    {
+                        return Option.None<EncryptedEntries>();
+                    }
+
+                    encryptData.MatchSome(content =>
+                    {
+                        var entry = IsLinkable(content)
+                            ? StoreComponentAndGetLink(ComponentEntry(content))
+                            : ComponentEntry(content);
+                        processedEntries.Add(entry);
+                    });
+                }
+                var keyStructure = new KeyStructure(DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"),
+                    dataRequestKeyMaterial.DhPublicKey.Parameters, EncryptorHelper.GetPublicKey(keyPair));
+                var keyMaterial = new KeyMaterial(dataRequestKeyMaterial.CryptoAlg,
+                                                  dataRequestKeyMaterial.Curve,
+                                                  keyStructure, randomKey);
+                return Option.Some(new EncryptedEntries(processedEntries.AsEnumerable(), keyMaterial));
+            });
         }
 
         private Entry StoreComponentAndGetLink(Entry componentEntry)
@@ -69,7 +103,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             return EntryWith(serializedBundle, null);
         }
 
-        private bool Linkable(string serializedBundle)
+        private bool IsLinkable(string serializedBundle)
         {
             var byteCount = Encoding.Unicode.GetByteCount(serializedBundle);
             return byteCount >= DataSizeLimitInBytes();

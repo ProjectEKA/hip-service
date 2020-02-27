@@ -3,14 +3,15 @@ namespace In.ProjectEKA.HipService.DataFlow.Encryptor
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Security.Cryptography;
-    using CryptoHelper;
+    using System.Text;
     using Logger;
     using Optional;
     using Org.BouncyCastle.Crypto;
     using Org.BouncyCastle.Crypto.Digests;
     using Org.BouncyCastle.Crypto.EC;
+    using Org.BouncyCastle.Crypto.Engines;
     using Org.BouncyCastle.Crypto.Generators;
+    using Org.BouncyCastle.Crypto.Modes;
     using Org.BouncyCastle.Crypto.Parameters;
     using Org.BouncyCastle.Security;
     using Encoder = Org.BouncyCastle.Utilities.Encoders;
@@ -20,7 +21,7 @@ namespace In.ProjectEKA.HipService.DataFlow.Encryptor
         public Option<string> EncryptData(HipLibrary.Patient.Model.KeyMaterial receivedKeyMaterial, AsymmetricCipherKeyPair senderKeyPair,
             string content, string randomKeySender)
         {
-            var receiverKeyBytes= EncryptorHelper.GetByteFromBase64(receivedKeyMaterial.Nonce);
+            var receiverKeyBytes= EncryptorHelper.GetByteFromBase64(receivedKeyMaterial.DhPublicKey.KeyValue);
             var sharedKey = EncryptorHelper.GetBase64FromByte(GetDeriveKey((byte[])receiverKeyBytes, senderKeyPair,
                 receivedKeyMaterial.Curve, receivedKeyMaterial.CryptoAlg));
             var encryptedContent = Encrypt(sharedKey, content, randomKeySender,
@@ -61,7 +62,7 @@ namespace In.ProjectEKA.HipService.DataFlow.Encryptor
             var aesKey = GenerateAesKey(sharedKey, salt);
             try
             {
-                return AesGcmEncryptor.EncryptDataUseAesGcm(dataToEncrypt, aesKey.ToArray(), iv.ToArray());
+                return EncryptDataUseAesGcm(dataToEncrypt, aesKey.ToArray(), iv.ToArray());
             }
             catch (Exception e)
             {
@@ -80,6 +81,30 @@ namespace In.ProjectEKA.HipService.DataFlow.Encryptor
                 sb[i] = (byte)(randomKeySenderBytes[i] ^ randomKeyReceiverBytes[i % randomKeyReceiverBytes.Length]);
             }
             return sb;
+        }
+        
+        private static string EncryptDataUseAesGcm(string data, byte[] key, byte[] iv)
+        {
+            var encryptedString = string.Empty;
+            try
+            {
+                var plainBytes = Encoding.UTF8.GetBytes(data);
+                var cipher = new GcmBlockCipher(new AesEngine());
+                var parameters = 
+                    new AeadParameters(new KeyParameter(key), 128, iv, null);
+                cipher.Init(true, parameters);
+                var encryptedBytes = new byte[cipher.GetOutputSize(plainBytes.Length)];
+                var retLen = cipher.ProcessBytes
+                    (plainBytes, 0, plainBytes.Length, encryptedBytes, 0);
+                cipher.DoFinal(encryptedBytes, retLen);
+                encryptedString = Convert.ToBase64String(encryptedBytes, Base64FormattingOptions.None);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex.Message);
+                Log.Fatal(ex);
+            }
+            return encryptedString;
         }
     }
 }

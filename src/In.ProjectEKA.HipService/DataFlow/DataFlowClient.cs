@@ -4,34 +4,29 @@ namespace In.ProjectEKA.HipService.DataFlow
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Text;
-    using CryptoHelper;
     using Logger;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
-    using Optional;
     using Task = System.Threading.Tasks.Task;
 
     public class DataFlowClient
     {
         private readonly HttpClient httpClient;
-        private readonly ICryptoHelper cryptoHelper;
-
+        
         public DataFlowClient()
         {
         }
 
-        public DataFlowClient(HttpClient httpClient, ICryptoHelper cryptoHelper)
+        public DataFlowClient(HttpClient httpClient)
         {
             this.httpClient = httpClient;
-            this.cryptoHelper = cryptoHelper;
         }
 
-        public virtual void SendDataToHiu(HipLibrary.Patient.Model.DataRequest dataRequest,
-            Option<IEnumerable<Entry>> data,
+        public virtual async void SendDataToHiu(HipLibrary.Patient.Model.DataRequest dataRequest,
+            IEnumerable<Entry> data,
             KeyMaterial keyMaterial)
         {
-            data.Map(async entries => 
-                await PostTo(dataRequest.CallBackUrl, new DataResponse(dataRequest.TransactionId, entries, keyMaterial)));
+            await PostTo(dataRequest.CallBackUrl, new DataResponse(dataRequest.TransactionId, data, keyMaterial));
         }
 
         private async Task PostTo(string callBackUrl, DataResponse dataResponse)
