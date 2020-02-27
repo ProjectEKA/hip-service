@@ -17,8 +17,8 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
         private void ShouldProcessMessage()
         {
             var collect = new Mock<ICollect>();
-            var dataFlowClient = new Mock<IDataFlowClient>();
-            var dataEntryFactory = new Mock<IDataEntryFactory>();
+            var dataFlowClient = new Mock<DataFlowClient>();
+            var dataEntryFactory = new Mock<DataEntryFactory>();
             var dataFlowMessageHandler =
                 new DataFlowMessageHandler(collect.Object, dataFlowClient.Object, dataEntryFactory.Object);
             var dataRequest = TestBuilder.DataRequest(TestBuilder.Faker().Random.Hash());

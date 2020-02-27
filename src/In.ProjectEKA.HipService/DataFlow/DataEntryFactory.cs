@@ -12,7 +12,7 @@ namespace In.ProjectEKA.HipService.DataFlow
     using Model;
     using Optional;
 
-    public class DataEntryFactory: IDataEntryFactory
+    public class DataEntryFactory
     {
         private static readonly FhirJsonSerializer Serializer = new FhirJsonSerializer(new SerializerSettings());
         private static readonly string FhirMediaType = "application/fhir+json";
@@ -20,6 +20,10 @@ namespace In.ProjectEKA.HipService.DataFlow
         private readonly IOptions<DataFlowConfiguration> dataFlowConfiguration;
         private readonly IOptions<HipConfiguration> hipConfiguration;
         private const int MbInBytes = 1000000;
+
+        public DataEntryFactory()
+        {
+        }
 
         public DataEntryFactory(
             IServiceScopeFactory serviceScopeFactory,
@@ -31,7 +35,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             this.hipConfiguration = hipConfiguration;
         }
 
-        public Option<IEnumerable<Entry>> Process(Option<Entries> data)
+        public virtual Option<IEnumerable<Entry>> Process(Option<Entries> data)
         {
             return data.Map(entries => entries.Bundles.Select(bundle =>
             {

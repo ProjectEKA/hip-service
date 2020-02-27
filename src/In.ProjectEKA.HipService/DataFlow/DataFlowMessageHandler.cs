@@ -6,12 +6,13 @@ namespace In.ProjectEKA.HipService.DataFlow
     public class DataFlowMessageHandler
     {
         private readonly ICollect collect;
-        private readonly IDataFlowClient dataFlowClient;
-        private readonly IDataEntryFactory dataEntryFactory;
+        private readonly DataFlowClient dataFlowClient;
+        private readonly DataEntryFactory dataEntryFactory;
 
         public DataFlowMessageHandler(
             ICollect collect,
-            IDataFlowClient dataFlowClient, IDataEntryFactory dataEntryFactory)
+            DataFlowClient dataFlowClient,
+            DataEntryFactory dataEntryFactory)
         {
             this.collect = collect;
             this.dataFlowClient = dataFlowClient;

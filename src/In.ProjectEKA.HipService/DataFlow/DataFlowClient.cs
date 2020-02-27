@@ -3,7 +3,6 @@ namespace In.ProjectEKA.HipService.DataFlow
     using System;
     using System.Collections.Generic;
     using System.Net.Http;
-    using System.Net.Http.Headers;
     using System.Text;
     using Logger;
     using Newtonsoft.Json;
@@ -11,16 +10,20 @@ namespace In.ProjectEKA.HipService.DataFlow
     using Optional;
     using Task = System.Threading.Tasks.Task;
 
-    public class DataFlowClient: IDataFlowClient
+    public class DataFlowClient
     {
         private readonly HttpClient httpClient;
+
+        public DataFlowClient()
+        {
+        }
 
         public DataFlowClient(HttpClient httpClient)
         {
             this.httpClient = httpClient;
         }
 
-        public void SendDataToHiu(HipLibrary.Patient.Model.DataRequest dataRequest, Option<IEnumerable<Entry>> data)
+        public virtual void SendDataToHiu(HipLibrary.Patient.Model.DataRequest dataRequest, Option<IEnumerable<Entry>> data)
         {
             data.Map(async entries => 
                 await PostTo(dataRequest.CallBackUrl, new DataResponse(dataRequest.TransactionId, entries)));
