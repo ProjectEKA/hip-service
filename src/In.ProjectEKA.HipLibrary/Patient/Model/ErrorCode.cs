@@ -11,6 +11,9 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
         NoLinkRequestFound,
         ServerInternalError,
         DiscoveryRequestNotFound,
-        ContextArtefactIdNotFound
+        ContextArtefactIdNotFound,
+        InvalidToken,
+        HealthInformationNotFound,
+        LinkExpired
     }
 }

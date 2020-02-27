@@ -4,9 +4,10 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
     using In.ProjectEKA.HipService.DataFlow;
     using In.ProjectEKA.HipService.DataFlow.Database;
     using Builder;
+    using HipService.DataFlow.Model;
     using Microsoft.EntityFrameworkCore;
     using Xunit;
-    
+
     [Collection("Data Flow Repository Tests")]
     public class DataFlowRepositoryTest
     {
@@ -27,14 +28,14 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var dbContext = DataFlowContext();
             var dataFlowRepository = new DataFlowRepository(dbContext);
 
-            var result = await dataFlowRepository.SaveRequestFor(transactionId, request);
-            
+            var result = await dataFlowRepository.SaveRequest(transactionId, request);
+
             result.HasValue.Should().BeFalse();
             result.Map(r => r.Should().BeNull());
-            
+
             dbContext.Database.EnsureDeleted();
         }
-        
+
         [Fact]
         private async void ThrowErrorOnSaveOfSamePrimaryKey()
         {
@@ -43,13 +44,12 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var dbContext = DataFlowContext();
             var dataFlowRepository = new DataFlowRepository(dbContext);
 
-            await dataFlowRepository.SaveRequestFor(request.TransactionId, request);
-            var result = await dataFlowRepository.SaveRequestFor(request.TransactionId,
-                request);
-            
+            await dataFlowRepository.SaveRequest(request.TransactionId, request);
+            var result = await dataFlowRepository.SaveRequest(request.TransactionId, request);
+
             result.HasValue.Should().BeTrue();
             result.Map(r => r.Should().NotBeNull());
-            
+
             dbContext.Database.EnsureDeleted();
         }
     }

@@ -1,7 +1,9 @@
 namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
 {
+    using System;
     using System.Collections.Generic;
     using Bogus;
+    using HipService.DataFlow.Model;
     using In.ProjectEKA.HipService.Common.Model;
     using In.ProjectEKA.HipService.DataFlow;
     using In.ProjectEKA.HipServiceTest.Common.Builder;
@@ -82,6 +84,24 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
                     new KeyStructureLib(fakerDataRequest.Random.Word(), fakerDataRequest.Random.Word(),
                         fakerDataRequest.Random.Hash()), fakerDataRequest.Random.Word()));
             return dataRequest;
+        }
+
+        internal static Entry Entry()
+        {
+            var content = Faker().Random.String();
+            var media = Faker().Random.String();
+            var checksum = Faker().Random.Hash();
+            return new Entry(content, media, checksum, null);
+        }
+        internal static HealthInformation HealthInformation(string token, DateTime dateTime)
+        {
+            var linkId = Faker().Random.Hash();
+            return new HealthInformation(linkId, Entry(), dateTime, token);
+        }
+
+        internal static HealthInformationResponse HealthInformationResponse(string transactionId)
+        {
+            return new HealthInformationResponse(transactionId, Entry());
         }
     }
 }

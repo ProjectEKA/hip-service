@@ -15,7 +15,7 @@
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
           <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
         <PackageReference Include="coverlet.collector" Version="1.2.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.2" />
         <PackageReference Include="FluentAssertions" Version="5.10.2" />
@@ -25,7 +25,7 @@
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
         <PackageReference Include="Moq" Version="4.13.1" />
-        <PackageReference Include="Bogus" Version="28.4.4" />
+        <PackageReference Include="Bogus" Version="29.0.1" />
    </ItemGroup>
 
     <ItemGroup>
