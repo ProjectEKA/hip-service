@@ -1,7 +1,7 @@
-using System.Threading.Tasks;
-
 namespace In.ProjectEKA.OtpService.Otp
 {
+    using System.Threading.Tasks;
+
     public class OtpService: IOtpService
     {
         private readonly IOtpRepository otpRepository;

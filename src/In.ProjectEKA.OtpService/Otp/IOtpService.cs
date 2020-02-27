@@ -1,7 +1,7 @@
-using System.Threading.Tasks;
-
 namespace In.ProjectEKA.OtpService.Otp
 {
+    using System.Threading.Tasks;
+
     public interface IOtpService
     { 
         Task<OtpResponse> GenerateOtp(OtpGenerationRequest otpGenerationRequest);

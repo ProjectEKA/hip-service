@@ -9,10 +9,9 @@
 
     <ItemGroup>
         <PackageReference Include="coverlet.msbuild" Version="2.8.0">
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-          <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="health-information-provider-library" Version="0.0.10" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="3.1.0" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
         <PackageReference Include="FluentAssertions" Version="5.10.0" />
@@ -24,13 +23,15 @@
         <PackageReference Include="Moq" Version="4.13.1" />
         <PackageReference Include="Bogus" Version="28.4.4" />
     </ItemGroup>
+    
     <ItemGroup>
-        <Content Include="..\..\src\In.ProjectEKA.HipService\Resources\patients.json">
-          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-          <Link>patients.json</Link>
+        <Content Include="..\..\src\In.ProjectEKA.DefaultHip\Resources\observation.json">
+          <Link>DataFlow\observation.json</Link>
         </Content>
     </ItemGroup>
+    
     <ItemGroup>
-      <ProjectReference Include="..\..\src\In.ProjectEKA.HipService\In.ProjectEKA.HipService.csproj" />
+        <ProjectReference Include="..\..\src\In.ProjectEKA.HipLibrary\In.ProjectEKA.HipLibrary.csproj" />
+        <ProjectReference Include="..\..\src\In.ProjectEKA.HipService\In.ProjectEKA.HipService.csproj" />
     </ItemGroup>
 </Project>

@@ -1,14 +1,14 @@
 namespace In.ProjectEKA.HipServiceTest.Discovery.Builder
 {
     using Bogus;
-    using HipLibrary.Patient.Model.Response;
 
     public static class TestBuilders
     {
         private static Faker faker;
-        internal static Faker<Patient> Patient()
+
+        internal static Faker<HipLibrary.Patient.Model.Patient> Patient()
         {
-            return new Faker<Patient>();
+            return new Faker<HipLibrary.Patient.Model.Patient>();
         }
 
         internal static Faker<IdentifierBuilder> Identifier()

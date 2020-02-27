@@ -3,7 +3,7 @@
     using System;
     using System.Threading.Tasks;
     using HipLibrary.Patient;
-    using HipLibrary.Patient.Model.Request;
+    using HipLibrary.Patient.Model;
     using Microsoft.AspNetCore.Mvc;
 
     [Route("patients/discover/")]

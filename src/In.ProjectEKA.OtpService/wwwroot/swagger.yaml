@@ -1,5 +1,4 @@
 openapi: 3.0.0
-swagger: 2.0
 info:
   version: 0.0.1
   title: Otp server
@@ -13,7 +12,7 @@ tags:
   - name: otp
 
 paths:
-  /otp/link:
+  /otp:
     post:
       tags:
         - otp
@@ -52,11 +51,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/OtpResponse'
                 
-  /otp/verify:
+  /otp/{sessionId}/verify:
     post:
       tags:
         - otp
       summary: Check Validity of otp value against a session id
+      parameters:
+        - $ref: '#/components/parameters/SessionId'
       description: >
         - Return the status about Otp verification
       requestBody:
@@ -104,6 +105,16 @@ paths:
                 $ref: '#/components/schemas/OtpResponse'
 
 components:
+  parameters:
+    SessionId:
+      name: sessionId
+      in: path
+      required: true
+      description: Reference number for Otp generation made earlier.
+      schema:
+        type: string
+        format: uuid
+        example: b2b8c932-2f70-4b1e-a3b5-2cb19b82a18d
   schemas:
     OtpGenerationRequest:
       type: object
@@ -127,9 +138,6 @@ components:
     OtpVerificationRequest:
       type: object
       properties:
-        sessionId:
-          type: string
-          format: uuid
         value:
           type: string
           description: Otp value

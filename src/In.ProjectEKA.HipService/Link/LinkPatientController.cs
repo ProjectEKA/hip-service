@@ -1,35 +1,47 @@
-using System;
-using System.Threading.Tasks;
-using HipLibrary.Patient;
-using HipLibrary.Patient.Model.Response;
-using Microsoft.AspNetCore.Mvc;
-using PatientLinkRequest = In.ProjectEKA.HipService.Link.PatientLinkRequest;
-
 namespace In.ProjectEKA.HipService.Link
 {
+    using System;
+    using System.Threading.Tasks;
+    using Discovery;
+    using HipLibrary.Patient;
+    using HipLibrary.Patient.Model;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
+
     [ApiController]
     [Route("patients/link")]
     public class LinkPatientController : ControllerBase
     {
         private readonly ILink linkPatient;
+        private readonly IDiscoveryRequestRepository discoveryRequestRepository;
 
-        public LinkPatientController(ILink linkPatient)
+        public LinkPatientController(
+            ILink linkPatient,
+            IDiscoveryRequestRepository discoveryRequestRepository)
         {
             this.linkPatient = linkPatient;
+            this.discoveryRequestRepository = discoveryRequestRepository;
         }
 
         [HttpPost]
         public async Task<ActionResult> LinkPatientCareContexts(
             [FromHeader(Name = "X-ConsentManagerID")] string consentManagerId,
-            [FromBody] HipLibrary.Patient.Model.Request.PatientLinkReferenceRequest request)
+            [FromBody] PatientLinkReferenceRequest request)
         {
-            var patient = new HipLibrary.Patient.Model.Request.Link(
+            var patient = new LinkEnquiry(
                 consentManagerId,
                 request.Patient.ConsentManagerUserId,
                 request.Patient.ReferenceNumber,
                 request.Patient.CareContexts);
+            var doesRequestExists = await discoveryRequestRepository.RequestExistsFor(request.TransactionId);
+            if (!doesRequestExists)
+            {
+                return ReturnServerResponse(new ErrorRepresentation(
+                    new Error(ErrorCode.DiscoveryRequestNotFound, ErrorMessage.DiscoveryRequestNotFound)));
+            }
+
             var patientReferenceRequest =
-                new HipLibrary.Patient.Model.Request.PatientLinkReferenceRequest(request.TransactionId, patient);
+                new PatientLinkEnquiry(request.TransactionId, patient);
             var (linkReferenceResponse, error) = await linkPatient.LinkPatients(patientReferenceRequest);
             return error != null ? ReturnServerResponse(error) : Ok(linkReferenceResponse);
         }
@@ -40,22 +52,24 @@ namespace In.ProjectEKA.HipService.Link
             [FromBody] PatientLinkRequest patientLinkRequest)
         {
             var (patientLinkResponse, error) = await linkPatient
-                .VerifyAndLinkCareContext(new HipLibrary.Patient.Model.Request.PatientLinkRequest(patientLinkRequest.Token, linkReferenceNumber));
-        return error != null ? ReturnServerResponse(error) : Ok(patientLinkResponse);
+                .VerifyAndLinkCareContext(new LinkConfirmationRequest(patientLinkRequest.Token,
+                    linkReferenceNumber));
+            return error != null ? ReturnServerResponse(error) : Ok(patientLinkResponse);
         }
-        
-        private ActionResult ReturnServerResponse(ErrorResponse errorResponse)
+
+        private ActionResult ReturnServerResponse(ErrorRepresentation errorResponse)
         {
             return errorResponse.Error.Code switch
             {
                 ErrorCode.OtpExpired => (ActionResult) BadRequest(errorResponse),
                 ErrorCode.MultiplePatientsFound => NotFound(errorResponse),
                 ErrorCode.NoPatientFound => NotFound(errorResponse),
-                ErrorCode.OtpGenerationFailed => BadRequest(errorResponse),
+                ErrorCode.OtpGenerationFailed => StatusCode(StatusCodes.Status500InternalServerError, errorResponse),
                 ErrorCode.OtpInValid => NotFound(errorResponse),
-                ErrorCode.ServerInternalError => BadRequest(errorResponse),
+                ErrorCode.ServerInternalError => StatusCode(StatusCodes.Status500InternalServerError, errorResponse),
                 ErrorCode.CareContextNotFound => NotFound(errorResponse),
                 ErrorCode.NoLinkRequestFound => NotFound(errorResponse),
+                ErrorCode.DiscoveryRequestNotFound => NotFound(errorResponse),
                 _ => NotFound(errorResponse)
             };
         }

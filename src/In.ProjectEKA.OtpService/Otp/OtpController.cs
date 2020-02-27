@@ -1,8 +1,9 @@
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-
 namespace In.ProjectEKA.OtpService.Otp
 {
+    using System.Threading.Tasks;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
+    
     [Route("otp")]
     [ApiController]
     public class OtpController: Controller
@@ -14,17 +15,17 @@ namespace In.ProjectEKA.OtpService.Otp
             this.otpService = otpService;
         }
 
-        [HttpPost("link")]
+        [HttpPost]
         public async Task<ActionResult> GenerateOtp([FromBody] OtpGenerationRequest request)
         {
             var generateOtp = await otpService.GenerateOtp(request);
             return ReturnServerResponse(generateOtp);
         }
 
-        [HttpPost("verify")]
-        public async Task<ActionResult> VerifyOtp([FromBody] OtpVerificationRequest request)
+        [HttpPost("{sessionId}/verify")]
+        public async Task<ActionResult> VerifyOtp([FromRoute] string sessionId, [FromBody] OtpVerificationRequest request)
         {
-            var verifyOtp = await otpService.CheckOtpValue(request.SessionID, request.Value);
+            var verifyOtp = await otpService.CheckOtpValue(sessionId, request.Value);
             return ReturnServerResponse(verifyOtp);
         }
 
@@ -36,8 +37,7 @@ namespace In.ProjectEKA.OtpService.Otp
                 ResponseType.OtpValid => Ok(otpResponse),
                 ResponseType.OtpInvalid => BadRequest(otpResponse),
                 ResponseType.OtpExpired => Unauthorized(otpResponse),
-                ResponseType.OtpGenerationFailed => BadRequest(otpResponse),
-                ResponseType.InternalServerError => BadRequest(otpResponse),
+                ResponseType.InternalServerError => StatusCode(StatusCodes.Status500InternalServerError, otpResponse),
                 _ => NotFound(otpResponse)
             };
         }

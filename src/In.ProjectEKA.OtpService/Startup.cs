@@ -1,15 +1,16 @@
-using System.Text.Json;
-using In.ProjectEKA.OtpService.Otp;
-using In.ProjectEKA.OtpService.Otp.Model;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-
 namespace In.ProjectEKA.OtpService
 {
+    using System.Text.Json;
+    using Otp;
+    using Otp.Model;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using Serilog;
+    
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -41,6 +42,7 @@ namespace In.ProjectEKA.OtpService
                 .UseCustomOpenAPI()
                 .UseIf(!env.IsDevelopment(), x => x.UseHsts())
                 .UseIf(env.IsDevelopment(), x => x.UseDeveloperExceptionPage())
+                .UseSerilogRequestLogging()
                 .UseEndpoints(endpoints => { endpoints.MapControllers(); });
                     
             using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();

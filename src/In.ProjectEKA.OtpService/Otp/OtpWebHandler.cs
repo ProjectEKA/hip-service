@@ -1,11 +1,11 @@
-using System.Collections.Specialized;
-using System.Net;
-using System.Web;
-using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json.Linq;
-
 namespace In.ProjectEKA.OtpService.Otp
 {
+    using System.Collections.Specialized;
+    using System.Net;
+    using System.Web;
+    using Microsoft.Extensions.Configuration;
+    using Newtonsoft.Json.Linq;
+    
     public class OtpWebHandler: IOtpWebHandler
     {
         private readonly IConfiguration configuration;

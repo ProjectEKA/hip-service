@@ -1,11 +1,12 @@
-using System;
-using System.Threading.Tasks;
-using In.ProjectEKA.OtpService.Otp.Model;
-using Microsoft.EntityFrameworkCore;
-using Optional;
-
 namespace In.ProjectEKA.OtpService.Otp
 {
+    using System;
+    using System.Threading.Tasks;
+    using Model;
+    using Microsoft.EntityFrameworkCore;
+    using Optional;
+    using Logger;
+    
     public class OtpRepository: IOtpRepository
     {
         private readonly OtpContext otpContext;
@@ -25,8 +26,9 @@ namespace In.ProjectEKA.OtpService.Otp
                 await otpContext.SaveChangesAsync();
                 return new OtpResponse(ResponseType.Success,"Otp Created");
             }
-            catch (Exception)
+            catch (Exception exception)
             {
+                Log.Fatal(exception, exception.StackTrace);
                 return new OtpResponse(ResponseType.InternalServerError,"OtpGeneration Saving failed");
             }
         }
@@ -39,8 +41,9 @@ namespace In.ProjectEKA.OtpService.Otp
                     o.SessionId == sessionId);
                 return Option.Some(otpRequest);
             }
-            catch (Exception)
+            catch (Exception exception)
             {
+                Log.Fatal(exception, exception.StackTrace);
                 return Option.None<OtpRequest>();
             }
         }

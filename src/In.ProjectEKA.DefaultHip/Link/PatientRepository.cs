@@ -1,12 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using In.ProjectEKA.DefaultHip.Discovery.Helper;
-using In.ProjectEKA.DefaultHip.Discovery.Model;
-using Optional;
-
 namespace In.ProjectEKA.DefaultHip.Link
 {
+    using HipLibrary.Patient;
+    using HipLibrary.Patient.Model;
+    using Patient;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using Optional;
+
     public class PatientRepository : IPatientRepository
     {
         private readonly string filePath;
@@ -30,21 +31,7 @@ namespace In.ProjectEKA.DefaultHip.Link
             }
         }
 
-        public Option<CareContext> ProgramInfoWith(string patientReferenceNumber, string programReferenceNumber)
-        {
-            try
-            {
-                return PatientWith(patientReferenceNumber)
-                    .Map(patient => patient.CareContexts.First(program =>
-                        program.ReferenceNumber == programReferenceNumber));
-            }
-            catch (Exception)
-            {
-                return Option.None<CareContext>();
-            }
-        }
-
-        public IEnumerable<Patient> All()
+        private IEnumerable<Patient> All()
         {
             var patientsInfo = FileReader.ReadJson(filePath);
             return patientsInfo;
