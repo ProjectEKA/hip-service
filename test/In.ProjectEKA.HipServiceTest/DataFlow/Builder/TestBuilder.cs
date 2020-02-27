@@ -41,7 +41,8 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
             var hiDataRange = new HipLibrary.Patient.Model.HiDataRange("from", "to");
             var callBackUrl = "http://callback";
             var hiTypes = new List<HiType>();
-            return new HipLibrary.Patient.Model.DataRequest(grantedContexts, hiDataRange, callBackUrl, hiTypes, transactionId);
+            return new HipLibrary.Patient.Model.DataRequest(grantedContexts, hiDataRange, callBackUrl, hiTypes,
+                transactionId);
         }
 
         internal static Consent Consent()

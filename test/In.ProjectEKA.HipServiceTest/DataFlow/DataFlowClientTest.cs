@@ -45,7 +45,6 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                     StatusCode = HttpStatusCode.OK
                 })
                 .Verifiable();
-
             dataFlowClient.SendDataToHiu(dataRequest, entries);
 
             handlerMock.Protected().Verify(
