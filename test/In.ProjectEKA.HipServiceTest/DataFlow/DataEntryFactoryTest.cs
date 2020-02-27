@@ -20,8 +20,6 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
     public class DataEntryFactoryTest
     {
         private static Mock<IEncryptor> encryptor = new Mock<IEncryptor>();
-        private readonly string curve = "curve25519";
-        private readonly string algorithm = "ECDH";
 
         [Fact]
         private void ShouldGetComponentEntry()

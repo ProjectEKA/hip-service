@@ -13,8 +13,6 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
 
     public class DataFlowMessageHandlerTest
     {
-        private readonly string curve = "curve25519";
-        private readonly string algorithm = "ECDH";
         [Fact]
         private void ShouldProcessMessage()
         {

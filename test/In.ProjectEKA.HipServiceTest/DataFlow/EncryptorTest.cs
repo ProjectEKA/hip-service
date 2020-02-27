@@ -58,7 +58,6 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
         [Fact]
         private void ShouldNotEncryptData()
         {
-            var faker = new Faker();
             var randomKeyFirst = EncryptorHelper.GenerateRandomKey();
             var randomKeySecond = EncryptorHelper.GenerateRandomKey();
             var senderKeyPair = EncryptorHelper.GenerateKeyPair(curve, algorithm);
