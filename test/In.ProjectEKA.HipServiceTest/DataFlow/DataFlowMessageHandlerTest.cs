@@ -13,6 +13,8 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
 
     public class DataFlowMessageHandlerTest
     {
+        private readonly string curve = "curve25519";
+        private readonly string algorithm = "ECDH";
         [Fact]
         private void ShouldProcessMessage()
         {
@@ -25,21 +27,23 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var data = Option.Some(new Entries(new List<Bundle> {new Bundle()}));
             var content = TestBuilder.Faker().Random.String();
             var checksum = TestBuilder.Faker().Random.Hash();
-            var entries = Option.Some(new List<Entry>
+            var entries = new List<Entry>
                 {
                     new Entry(content, "application/json", checksum, null)
-                }
-                .AsEnumerable());
-
+                };
+            var requestKeyMaterial = TestBuilder.KeyMaterialLib();
             collect.Setup(c => c.CollectData(dataRequest)).ReturnsAsync(data);
-            dataEntryFactory.Setup(c => c.Process(data)).Returns(entries);
-            dataFlowClient.Setup(c => c.SendDataToHiu(dataRequest, entries, null)).Verifiable();
+            var keyMaterial = TestBuilder.KeyMaterial();
+            var encryptedEntriesValue = new EncryptedEntries(entries.AsEnumerable(), keyMaterial);
+            var encryptedEntries = Option.Some(encryptedEntriesValue);
+            dataEntryFactory.Setup(e => e.Process(data, requestKeyMaterial))
+                .Returns(encryptedEntries);
+            dataFlowClient.Setup(c => c.SendDataToHiu(dataRequest,
+                encryptedEntriesValue.Entries, encryptedEntriesValue.KeyMaterial)).Verifiable();
 
             dataFlowMessageHandler.HandleDataFlowMessage(dataRequest);
-            
             collect.VerifyAll();
-            dataEntryFactory.VerifyAll();
-            dataFlowClient.VerifyAll();
+            dataEntryFactory.Verify();
         }
     }
 }

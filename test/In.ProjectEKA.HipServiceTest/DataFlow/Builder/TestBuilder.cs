@@ -103,5 +103,19 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
         {
             return new HealthInformationResponse(transactionId, Entry());
         }
+
+        internal static HipLibrary.Patient.Model.KeyMaterial KeyMaterialLib()
+        {
+            return new HipLibrary.Patient.Model.KeyMaterial("ECDH", "curve25519",
+                new HipLibrary.Patient.Model.KeyStructure(Faker().Random.Word(), Faker().Random.Word(),
+                    Faker().Random.Words(32)), Faker().Random.Word());
+        }
+
+        internal static KeyMaterial KeyMaterial()
+        {
+            return new KeyMaterial("ECDH", "curve25519",
+                new KeyStructure(Faker().Random.Word(), Faker().Random.Word(),
+                    Faker().Random.Words(32)), Faker().Random.Word()); 
+        }
     }
 }

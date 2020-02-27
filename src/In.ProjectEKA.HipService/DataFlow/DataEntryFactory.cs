@@ -39,7 +39,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             this.encryptor = encryptor;
         }
 
-        public Option<EncryptedEntries> Process(Option<Entries> data,
+        public virtual Option<EncryptedEntries> Process(Option<Entries> data,
             HipLibrary.Patient.Model.KeyMaterial dataRequestKeyMaterial)
         {
             var keyPair = EncryptorHelper.GenerateKeyPair(dataRequestKeyMaterial.Curve,
