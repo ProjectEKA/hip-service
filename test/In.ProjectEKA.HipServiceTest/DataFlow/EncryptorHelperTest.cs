@@ -11,7 +11,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
         private void ShouldReturn34ByteRandomKey()
         {
             var randomKey = EncryptorHelper.GetByteFromBase64(EncryptorHelper.GenerateRandomKey());
-            
+
             randomKey.Count().Should().Be(32);
         }
 
@@ -22,7 +22,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var randomKey2 = EncryptorHelper.GenerateRandomKey();
             var xorRandom = EncryptorHelper.XorOfRandom(randomKey1,
                 randomKey2);
-            
+
             xorRandom.Count().Should().Be(32);
         }
 

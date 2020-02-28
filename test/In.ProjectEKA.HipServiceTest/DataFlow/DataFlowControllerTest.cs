@@ -28,7 +28,8 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var request = TestBuilder.HealthInformationRequest(transactionId);
             var expectedResponse = new HealthInformationTransactionResponse(transactionId);
             dataFlow.Setup(d => d.HealthInformationRequestFor(request))
-                .ReturnsAsync(new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(expectedResponse, null));
+                .ReturnsAsync(
+                    new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(expectedResponse, null));
 
             var response = await dataFlowController.HealthInformationRequestFor(request);
 
@@ -49,7 +50,8 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var expectedError = new ErrorRepresentation(new Error(ErrorCode.ServerInternalError,
                 ErrorMessage.InternalServerError));
             dataFlow.Setup(d => d.HealthInformationRequestFor(request))
-                .ReturnsAsync(new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(null, expectedError));
+                .ReturnsAsync(
+                    new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(null, expectedError));
 
             var response = await dataFlowController.HealthInformationRequestFor(request) as ObjectResult;
 
@@ -68,10 +70,11 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var token = TestBuilder.Faker().Random.String();
 
             dataFlow.Setup(x => x.HealthInformationFor(linkId, token, transactionId))
-                .ReturnsAsync(new Tuple<HealthInformationResponse, ErrorRepresentation>(healthInformationResponse, null));
+                .ReturnsAsync(
+                    new Tuple<HealthInformationResponse, ErrorRepresentation>(healthInformationResponse, null));
 
             var healthInformation = await dataFlowController
-                .HealthInformation(linkId, token,transactionId) as OkObjectResult;
+                .HealthInformation(linkId, token, transactionId) as OkObjectResult;
 
             healthInformation.StatusCode.Should().Be(StatusCodes.Status200OK);
             healthInformation.Value.Should().BeEquivalentTo(healthInformationResponse);

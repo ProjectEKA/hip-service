@@ -5,7 +5,9 @@ namespace In.ProjectEKA.HipService.DataFlow.Encryptor
 
     public interface IEncryptor
     {
-        Option<string> EncryptData(HipLibrary.Patient.Model.KeyMaterial receivedKeyMaterial, AsymmetricCipherKeyPair senderKeyPair, string content,
+        Option<string> EncryptData(HipLibrary.Patient.Model.KeyMaterial receivedKeyMaterial,
+            AsymmetricCipherKeyPair senderKeyPair,
+            string content,
             string randomKeySender);
     }
 }

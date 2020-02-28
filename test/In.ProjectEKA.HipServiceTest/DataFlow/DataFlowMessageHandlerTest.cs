@@ -26,9 +26,9 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var content = TestBuilder.Faker().Random.String();
             var checksum = TestBuilder.Faker().Random.Hash();
             var entries = new List<Entry>
-                {
-                    new Entry(content, "application/json", checksum, null)
-                };
+            {
+                new Entry(content, "application/json", checksum, null)
+            };
             var requestKeyMaterial = TestBuilder.KeyMaterialLib();
             collect.Setup(c => c.CollectData(dataRequest)).ReturnsAsync(data);
             var keyMaterial = TestBuilder.KeyMaterial();

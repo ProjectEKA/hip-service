@@ -47,7 +47,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                 It.IsAny<AsymmetricCipherKeyPair>(),
                 It.IsAny<string>(),
                 It.IsAny<string>())).Returns(Option.Some("5zGyp5O9GkggioxwWyUGOQ=="));
-            
+
             var entries = dataEntryFactory.Process(Option.Some(dataEntries), keyMaterial);
 
             entries.HasValue.Should().BeTrue();

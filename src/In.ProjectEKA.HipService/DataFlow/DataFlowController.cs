@@ -46,6 +46,7 @@ namespace In.ProjectEKA.HipService.DataFlow
                 ErrorCode.InvalidToken => StatusCode(StatusCodes.Status403Forbidden, errorResponse),
                 ErrorCode.HealthInformationNotFound => StatusCode(StatusCodes.Status404NotFound, errorResponse),
                 ErrorCode.LinkExpired => StatusCode(StatusCodes.Status403Forbidden, errorResponse),
+                ErrorCode.ExpiredKeyPair => StatusCode(StatusCodes.Status400BadRequest, errorResponse),
                 _ => Problem(errorResponse.Error.Message)
             };
         }

@@ -15,6 +15,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
         private readonly string curve = "curve25519";
         private readonly string algorithm = "ECDH";
         private readonly Encryptor encryptor = new Encryptor();
+
         [Fact]
         private void ShouldGenerateKeyPair()
         {
@@ -47,21 +48,24 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var senderKeyPair = EncryptorHelper.GenerateKeyPair(curve, algorithm);
             var receiverPublicKey =
                 "BE7rHCAB0xdU/wTh4PeZhnmLfPSS2CQQo3Loi2D3sWiGBwm9lwsxudMgTyjZ0KUzEqUniuW7zmDr3Vy9JeYI7gA=";
-            var keyMaterial = new KeyMaterial(algorithm, curve, new KeyStructure(It.IsAny<string>(), It.IsAny<string>(), receiverPublicKey), randomKeyFirst);
+            var keyMaterial = new KeyMaterial(algorithm, curve,
+                new KeyStructure(It.IsAny<string>(), It.IsAny<string>(), receiverPublicKey), randomKeyFirst);
 
-            var result = encryptor.EncryptData(keyMaterial, senderKeyPair, new Faker().Random.Word(), randomKeySecond);
+            var result = encryptor.EncryptData(keyMaterial, senderKeyPair, new Faker().Random.Word(),
+                randomKeySecond);
 
             result.HasValue.Should().BeTrue();
             result.MatchSome(data => data.Length.Should().BePositive());
         }
-        
+
         [Fact]
         private void ShouldNotEncryptData()
         {
             var randomKeyFirst = EncryptorHelper.GenerateRandomKey();
             var randomKeySecond = EncryptorHelper.GenerateRandomKey();
             var senderKeyPair = EncryptorHelper.GenerateKeyPair(curve, algorithm);
-            var receiverPublicKey = "BE7rHCAB0xdU/wTh4PeZhnmLfPSS2CQQo3Loi2D3sWiGBwm9lwsxudMgTyjZ0KUzEqUniuW7zmDr3Vy9JeYI7gA=";
+            var receiverPublicKey =
+                "BE7rHCAB0xdU/wTh4PeZhnmLfPSS2CQQo3Loi2D3sWiGBwm9lwsxudMgTyjZ0KUzEqUniuW7zmDr3Vy9JeYI7gA=";
             var keyMaterial = new KeyMaterial(algorithm, curve, new KeyStructure("", "",
                 receiverPublicKey), randomKeyFirst);
             var result = encryptor.EncryptData(keyMaterial, senderKeyPair, null,
