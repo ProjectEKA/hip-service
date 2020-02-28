@@ -8,6 +8,12 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
     using In.ProjectEKA.HipService.DataFlow;
     using In.ProjectEKA.HipServiceTest.Common.Builder;
     using Consent = In.ProjectEKA.HipService.Consent.Model.Consent;
+    using DataRequestLib = HipLibrary.Patient.Model.DataRequest;
+    using GrantedContextLib = HipLibrary.Patient.Model.GrantedContext;
+    using HiDataRangeLib = HipLibrary.Patient.Model.HiDataRange;
+    using HiTypeLib = HipLibrary.Patient.Model.HiType;
+    using KeyMaterialLib = HipLibrary.Patient.Model.KeyMaterial;
+    using KeyStructureLib = HipLibrary.Patient.Model.KeyStructure;
     using GrantedContext = HipLibrary.Patient.Model.GrantedContext;
     using HiType = HipLibrary.Patient.Model.HiType;
 
@@ -22,12 +28,17 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
 
         internal static HealthInformationRequest HealthInformationRequest(string transactionId)
         {
+            var time = new TimeSpan(2, 0, 0, 0);
+            var expiry = DateTime.Now.Add(time).ToUniversalTime().ToString("yyyy-MM-dd'T'HH:mm:ss'Z'");
             return new HealthInformationRequest(
                 transactionId,
                 new HipService.DataFlow.Consent(faker.Random.Hash(),
                     faker.Random.Hash()),
                 new HiDataRange(faker.Random.Hash(), faker.Random.Hash()),
-                faker.Random.Hash());
+                faker.Random.Hash(),
+                new KeyMaterial(faker.Random.Word(), faker.Random.Word(),
+                    new KeyStructure( expiry , "", faker.Random.Hash()),
+                    faker.Random.Hash()));
         }
 
         internal static Faker<ConsentArtefactBuilder> ConsentArtefact()
@@ -41,8 +52,11 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
             var hiDataRange = new HipLibrary.Patient.Model.HiDataRange("from", "to");
             var callBackUrl = "http://callback";
             var hiTypes = new List<HiType>();
+            var keyMaterial = new KeyMaterialLib(faker.Random.Word(), faker.Random.Word(),
+                new KeyStructureLib("", "", faker.Random.Hash()),
+                faker.Random.Hash());
             return new HipLibrary.Patient.Model.DataRequest(grantedContexts, hiDataRange, callBackUrl, hiTypes,
-                transactionId);
+                transactionId, keyMaterial);
         }
 
         internal static Consent Consent()
@@ -55,11 +69,23 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
             );
         }
 
-        internal static DataFlowRequest DataFlowRequest()
+        internal static DataRequestLib DataFlowRequest()
         {
-            return new DataFlowRequest(
-                Faker().Random.Hash(),
-                HealthInformationRequest(Faker().Random.Hash()));
+            var fakerDataRequest = new Faker();
+            var dataRequest = new DataRequestLib(new[]
+                {
+                    new GrantedContextLib(fakerDataRequest.Random.Hash(),
+                        fakerDataRequest.Random.Hash())
+                },
+                new HiDataRangeLib(fakerDataRequest.Random.Word(),
+                    fakerDataRequest.Random.Word()),
+                "http://localhost:8003",
+                new[] {HiTypeLib.Condition},
+                fakerDataRequest.Random.Hash(),
+                new KeyMaterialLib(fakerDataRequest.Random.Word(), fakerDataRequest.Random.Word(),
+                    new KeyStructureLib(fakerDataRequest.Random.Word(), fakerDataRequest.Random.Word(),
+                        fakerDataRequest.Random.Hash()), fakerDataRequest.Random.Word()));
+            return dataRequest;
         }
 
         internal static Entry Entry()
@@ -78,6 +104,20 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
         internal static HealthInformationResponse HealthInformationResponse(string transactionId)
         {
             return new HealthInformationResponse(transactionId, Entry());
+        }
+
+        internal static HipLibrary.Patient.Model.KeyMaterial KeyMaterialLib()
+        {
+            return new HipLibrary.Patient.Model.KeyMaterial("ECDH", "curve25519",
+                new HipLibrary.Patient.Model.KeyStructure(Faker().Random.Word(), Faker().Random.Word(),
+                    Faker().Random.Words(32)), Faker().Random.Word());
+        }
+
+        internal static KeyMaterial KeyMaterial()
+        {
+            return new KeyMaterial("ECDH", "curve25519",
+                new KeyStructure(Faker().Random.Word(), Faker().Random.Word(),
+                    Faker().Random.Words(32)), Faker().Random.Word()); 
         }
     }
 }

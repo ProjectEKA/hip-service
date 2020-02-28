@@ -25,11 +25,11 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var dataRequest = TestBuilder.DataRequest(TestBuilder.Faker().Random.Hash());
             var content = TestBuilder.Faker().Random.String();
             var checksum = TestBuilder.Faker().Random.Hash();
-            var entries = Option.Some(new List<Entry>
+            var entries = new List<Entry>
                 {
                     new Entry(content, "application/json", checksum, null)
                 }
-                .AsEnumerable());
+                .AsEnumerable();
             var expectedUri = new Uri("http://callback/data/notification");
             var dataFlowClient = new DataFlowClient(httpClient);
 
@@ -45,7 +45,8 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                     StatusCode = HttpStatusCode.OK
                 })
                 .Verifiable();
-            dataFlowClient.SendDataToHiu(dataRequest, entries);
+
+            dataFlowClient.SendDataToHiu(dataRequest, entries, null);
 
             handlerMock.Protected().Verify(
                 "SendAsync",

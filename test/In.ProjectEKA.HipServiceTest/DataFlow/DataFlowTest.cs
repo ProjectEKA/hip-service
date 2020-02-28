@@ -18,8 +18,10 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
     {
         private readonly Mock<IDataFlowRepository> dataFlowRepository = new Mock<IDataFlowRepository>();
         private readonly Mock<IConsentRepository> consentRepository = new Mock<IConsentRepository>();
+
         private readonly Mock<IHealthInformationRepository> healthInformationRepository =
             new Mock<IHealthInformationRepository>();
+
         private readonly Mock<IMessagingQueueManager> messagingQueueManager = new Mock<IMessagingQueueManager>();
         private readonly DataFlowService dataFlowService;
 

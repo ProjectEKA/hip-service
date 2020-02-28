@@ -7,7 +7,6 @@ namespace In.ProjectEKA.HipService.DataFlow
     using Logger;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
-    using Optional;
     using Task = System.Threading.Tasks.Task;
 
     public class DataFlowClient
@@ -23,10 +22,11 @@ namespace In.ProjectEKA.HipService.DataFlow
             this.httpClient = httpClient;
         }
 
-        public virtual void SendDataToHiu(HipLibrary.Patient.Model.DataRequest dataRequest, Option<IEnumerable<Entry>> data)
+        public virtual async void SendDataToHiu(HipLibrary.Patient.Model.DataRequest dataRequest,
+            IEnumerable<Entry> data,
+            KeyMaterial keyMaterial)
         {
-            data.Map(async entries => 
-                await PostTo(dataRequest.CallBackUrl, new DataResponse(dataRequest.TransactionId, entries)));
+            await PostTo(dataRequest.CallBackUrl, new DataResponse(dataRequest.TransactionId, data, keyMaterial));
         }
 
         private async Task PostTo(string callBackUrl, DataResponse dataResponse)
@@ -45,7 +45,7 @@ namespace In.ProjectEKA.HipService.DataFlow
         private static string GetAuthToken()
         {
             // TODO : Should be fetched from central registry
-            return "AuthToken";
+            return Convert.ToBase64String(Encoding.UTF8.GetBytes("AuthToken"));
         }
 
         private static HttpRequestMessage CreateHttpRequest<T>(string callBackUrl, T content)
@@ -60,12 +60,12 @@ namespace In.ProjectEKA.HipService.DataFlow
             });
             return new HttpRequestMessage
             {
-                RequestUri = new Uri( $"{callBackUrl}/data/notification"),
+                RequestUri = new Uri($"{callBackUrl}/data/notification"),
                 Method = HttpMethod.Post,
                 Content = new StringContent(json, Encoding.UTF8, "application/json"),
                 Headers =
                 {
-                    { "Authorization", GetAuthToken()}
+                    {"Authorization", GetAuthToken()}
                 }
             };
         }

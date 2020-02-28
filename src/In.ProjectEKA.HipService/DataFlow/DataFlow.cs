@@ -1,6 +1,7 @@
 namespace In.ProjectEKA.HipService.DataFlow
 {
     using System;
+    using System.Globalization;
     using System.Threading.Tasks;
     using HipLibrary.Patient.Model;
     using HipService.Consent;
@@ -37,7 +38,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             if (consent == null) return ConsentArtefactNotFound();
 
             var dataRequest = new DataRequest(consent.ConsentArtefact.CareContexts, request.HiDataRange,
-                request.CallBackUrl, consent.ConsentArtefact.HiTypes, request.TransactionId);
+                request.CallBackUrl, consent.ConsentArtefact.HiTypes, request.TransactionId, request.KeyMaterial);
             var result = await dataFlowRepository.SaveRequest(request.TransactionId, request)
                 .ConfigureAwait(false);
             var (response, errorRepresentation) = result.Map(r =>
@@ -47,12 +48,17 @@ namespace In.ProjectEKA.HipService.DataFlow
                 return new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(null, errorResponse);
             }).ValueOr(new Tuple<HealthInformationTransactionResponse,
                 ErrorRepresentation>(new HealthInformationTransactionResponse(request.TransactionId), null));
-
+            
             if (errorRepresentation == null)
             {
+                if (IsExpired(request.KeyMaterial.DhPublicKey.Expiry))
+                {
+                    var errorResponse = new ErrorRepresentation(new Error(ErrorCode.ExpiredKeyPair,
+                        ErrorMessage.ExpiredKeyPair));
+                    return new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(null, errorResponse);
+                }
                 PublishDataRequest(dataRequest);
             }
-
             return new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(response, errorRepresentation);
         }
 
@@ -97,6 +103,14 @@ namespace In.ProjectEKA.HipService.DataFlow
         {
             var errorResponse = new ErrorRepresentation(error);
             return new Tuple<HealthInformationResponse, ErrorRepresentation>(null, errorResponse);
+        }
+
+        private static bool IsExpired(string expiryDate)
+        {
+            var expiryDateTime =
+                DateTime.ParseExact(expiryDate, "yyyy-MM-dd'T'HH:mm:ss'Z'", CultureInfo.InvariantCulture);
+            var currentDate = DateTime.Today;
+            return expiryDateTime < currentDate;
         }
 
         private void PublishDataRequest(DataRequest dataRequest)

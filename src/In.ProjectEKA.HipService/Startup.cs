@@ -7,6 +7,7 @@ namespace In.ProjectEKA.HipService
     using Consent.Database;
     using DataFlow;
     using DataFlow.Database;
+    using DataFlow.Encryptor;
     using DefaultHip.DataFlow;
     using DefaultHip.Discovery;
     using DefaultHip.Link;
@@ -56,6 +57,7 @@ namespace In.ProjectEKA.HipService
                 .AddDbContext<ConsentContext>(options =>
                     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
                         x => x.MigrationsAssembly("In.ProjectEKA.HipService")))
+                .AddSingleton<IEncryptor, Encryptor>()
                 .AddSingleton<IPatientRepository>(new PatientRepository("patients.json"))
                 .AddSingleton<ICollect>(new Collect("observation.json"))
                 .AddSingleton<IPatientRepository>(new PatientRepository("patients.json"))
