@@ -16,11 +16,11 @@ namespace In.ProjectEKA.DefaultHipTest.Link
             const string patientReferenceNumber = "1";
             var testPatient = new Patient
             {
-                PhoneNumber = "+91-9999999999",
+                PhoneNumber = "+91-9605417827",
                 Identifier = patientReferenceNumber,
-                FirstName = "John",
-                LastName = "Doee",
-                Gender = "M",
+                FirstName = "Anushree",
+                LastName = "Raman",
+                Gender = "F",
                 CareContexts = new []
                 {
                     new CareContextRepresentation("124", "National TB program"),
