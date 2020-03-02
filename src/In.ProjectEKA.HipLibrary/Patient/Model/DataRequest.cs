@@ -8,13 +8,15 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
             HiDataRange dataRange,
             string callBackUrl,
             IEnumerable<HiType> hiType,
-            string transactionId)
+            string transactionId,
+            KeyMaterial keyMaterial)
         {
             CareContexts = careContexts;
             DataRange = dataRange;
             CallBackUrl = callBackUrl;
             HiType = hiType;
             TransactionId = transactionId;
+            KeyMaterial = keyMaterial;
         }
 
         public IEnumerable<GrantedContext> CareContexts { get; }
@@ -22,5 +24,6 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
         public string CallBackUrl { get; }
         public IEnumerable<HiType> HiType { get; }
         public string TransactionId { get; }
+        public KeyMaterial KeyMaterial { get; }
     }
 }

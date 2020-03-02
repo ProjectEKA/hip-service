@@ -2,10 +2,12 @@ namespace In.ProjectEKA.HipService
 {
     using System.Net.Http;
     using System.Text.Json;
+    using Common;
     using Consent;
     using Consent.Database;
     using DataFlow;
     using DataFlow.Database;
+    using DataFlow.Encryptor;
     using DefaultHip.DataFlow;
     using DefaultHip.Discovery;
     using DefaultHip.Link;
@@ -55,11 +57,14 @@ namespace In.ProjectEKA.HipService
                 .AddDbContext<ConsentContext>(options =>
                     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
                         x => x.MigrationsAssembly("In.ProjectEKA.HipService")))
+                .AddSingleton<IEncryptor, Encryptor>()
                 .AddSingleton<IPatientRepository>(new PatientRepository("patients.json"))
                 .AddSingleton<ICollect>(new Collect("observation.json"))
                 .AddSingleton<IPatientRepository>(new PatientRepository("patients.json"))
                 .AddRabbit(Configuration)
                 .Configure<OtpServiceConfiguration>(Configuration.GetSection("OtpService"))
+                .Configure<DataFlowConfiguration>(Configuration.GetSection("dataFlow"))
+                .Configure<HipConfiguration>(Configuration.GetSection("hip"))
                 .AddScoped<ILinkPatientRepository, LinkPatientRepository>()
                 .AddSingleton<IMatchingRepository>(new PatientMatchingRepository("patients.json"))
                 .AddScoped<IDiscoveryRequestRepository, DiscoveryRequestRepository>()
@@ -69,11 +74,14 @@ namespace In.ProjectEKA.HipService
                 .AddTransient<ILink, LinkPatient>()
                 .AddSingleton(Configuration)
                 .AddSingleton<DataFlowClient>()
+                .AddSingleton<DataEntryFactory>()
+                .AddSingleton<DataFlowMessageHandler>()
                 .AddSingleton(HttpClient)
                 .AddScoped<IPatientVerification, PatientVerification>()
                 .AddScoped<IConsentRepository, ConsentRepository>()
                 .AddHostedService<MessagingQueueListener>()
                 .AddScoped<IDataFlowRepository, DataFlowRepository>()
+                .AddScoped<IHealthInformationRepository, HealthInformationRepository>()
                 .AddTransient<IDataFlow, DataFlow.DataFlow>()
                 .AddRouting(options => options.LowercaseUrls = true)
                 .AddControllers()
