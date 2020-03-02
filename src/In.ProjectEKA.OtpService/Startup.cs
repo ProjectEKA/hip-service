@@ -9,6 +9,7 @@ namespace In.ProjectEKA.OtpService
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using Notification;
     using Serilog;
     
     public class Startup
@@ -25,9 +26,11 @@ namespace In.ProjectEKA.OtpService
                 .AddDbContext<OtpContext>(options =>
                     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")))
                 .AddScoped<IOtpRepository, OtpRepository>()
-                .AddScoped<IOtpService, Otp.OtpService>()
+                .AddScoped<IOtpService, OtpService>()
                 .AddScoped<IOtpGenerator, OtpGenerator>()
                 .AddScoped<IOtpWebHandler, OtpWebHandler>()
+                .AddScoped<INotificationWebHandler, NotificationWebHandler>()
+                .AddScoped<INotificationService, NotificationService>()
                 .AddControllers()
                 .AddNewtonsoftJson(options => { })
                 .AddJsonOptions(options =>
@@ -35,8 +38,7 @@ namespace In.ProjectEKA.OtpService
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseHttpsRedirection()
-                .UseRouting()
+            app.UseRouting()
                 .UseAuthorization()
                 .UseStaticFilesWithYaml()
                 .UseCustomOpenAPI()
