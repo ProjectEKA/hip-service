@@ -1,6 +1,7 @@
 namespace In.ProjectEKA.DefaultHip.DataFlow
 {
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
     using Hl7.Fhir.Model;
     using In.ProjectEKA.DefaultHip.Patient;
@@ -10,17 +11,25 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
 
     public class Collect : ICollect
     {
-        private readonly string filePath;
+        private readonly HiTypeDataMap hiTypeDataMap;
 
-        public Collect(string filePath)
+        public Collect(HiTypeDataMap hiTypeDataMap)
         {
-            this.filePath = filePath;
+            this.hiTypeDataMap = hiTypeDataMap;
         }
 
         public async Task<Option<Entries>> CollectData(DataRequest dataRequest)
         {
-            var bundle = await FileReader.ReadJsonAsync<Bundle>(filePath);
-            var bundles = new List<Bundle> {bundle};
+            var bundles = new List<Bundle> {};
+            var map = hiTypeDataMap.GetMap();
+            if (dataRequest.HiType.Contains(HiType.Observation))
+            {
+                bundles.Add(await FileReader.ReadJsonAsync<Bundle>(map.GetValueOrDefault(HiType.Observation)));
+            }
+            else if(dataRequest.HiType.Contains(HiType.DiagnosticReport))
+            {
+                bundles.Add(await FileReader.ReadJsonAsync<Bundle>(map.GetValueOrDefault(HiType.DiagnosticReport)));
+            }
             var entries = new Entries(bundles);
             return Option.Some(entries);
         }

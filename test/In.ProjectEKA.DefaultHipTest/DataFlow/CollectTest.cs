@@ -10,14 +10,14 @@ namespace In.ProjectEKA.DefaultHipTest.DataFlow
     [Collection("Collect Tests")]
     public class CollectTest
     {
+        static readonly HiTypeDataMap HiTypeDataMap = new HiTypeDataMap();
         private readonly Collect collect
-            = new Collect("observation.json");
+            = new Collect(HiTypeDataMap);
 
         [Fact]
         private async void ReturnEntries()
         {
-            var dataRequest = TestBuilder.DataRequest().Generate().Build();
-
+            var dataRequest = TestBuilder.DataRequest(TestBuilder.Faker().Random.Hash());
             var entries = await collect.CollectData(dataRequest);
 
             var bundles = entries.Map(s => s.Bundles);
