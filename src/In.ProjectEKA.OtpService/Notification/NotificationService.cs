@@ -1,25 +1,27 @@
 namespace In.ProjectEKA.OtpService.Notification
 {
     using System.Threading.Tasks;
+    using Clients;
+    using Common;
     using Newtonsoft.Json.Linq;
 
     public class NotificationService : INotificationService
     {
-        private readonly INotificationWebHandler notificationWebHandler;
+        private readonly ISmsClient smsClient;
 
-        public NotificationService(INotificationWebHandler notificationWebHandler)
+        public NotificationService(ISmsClient smsClient)
         {
-            this.notificationWebHandler = notificationWebHandler;
+            this.smsClient = smsClient;
         }
 
-        public async Task<NotificationResponse> SendNotification(Notification notification)
+        public async Task<Response> SendNotification(Notification notification)
         {
             return notification.Action switch
             {
-                Action.ConsentRequestCreated => await notificationWebHandler.Send(
+                Action.ConsentRequestCreated => await smsClient.Send(
                     notification.Communication.Value,
                     GenerateConsentRequestMessage(notification.Content)),
-                _ => new NotificationResponse(ResponseType.InternalServerError, "")
+                _ => new Response(ResponseType.InternalServerError, "")
             };
         }
 

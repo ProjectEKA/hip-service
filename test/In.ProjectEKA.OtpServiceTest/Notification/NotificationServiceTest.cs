@@ -3,12 +3,14 @@ namespace In.ProjectEKA.OtpServiceTest.Notification
     using Builder;
     using FluentAssertions;
     using Moq;
+    using OtpService.Clients;
+    using OtpService.Common;
     using OtpService.Notification;
     using Xunit;
 
     public class NotificationServiceTest
     {
-        private readonly Mock<INotificationWebHandler> notificationWebHandler = new Mock<INotificationWebHandler>();
+        private readonly Mock<ISmsClient> notificationWebHandler = new Mock<ISmsClient>();
         private readonly NotificationService notificationService;
 
         public NotificationServiceTest()
@@ -19,7 +21,7 @@ namespace In.ProjectEKA.OtpServiceTest.Notification
         [Fact]
         private async void ReturnSuccessResponse()
         {
-            var expectedResponse = new NotificationResponse(ResponseType.Success, "Notification sent");
+            var expectedResponse = new Response(ResponseType.Success, "Notification sent");
             notificationWebHandler.Setup(e => e.Send(It.IsAny<string>(),
                     It.IsAny<string>())).ReturnsAsync(expectedResponse);
 
@@ -31,7 +33,7 @@ namespace In.ProjectEKA.OtpServiceTest.Notification
         [Fact]
         private async void ReturnInternalServerError()
         {
-            var expectedResponse = new NotificationResponse(ResponseType.InternalServerError, "Internal server error");
+            var expectedResponse = new Response(ResponseType.InternalServerError, "Internal server error");
             notificationWebHandler.Setup(e => e.Send(It.IsAny<string>(),
                 It.IsAny<string>())).ReturnsAsync(expectedResponse);
 

@@ -1,6 +1,7 @@
 namespace In.ProjectEKA.OtpService.Notification
 {
     using System.Threading.Tasks;
+    using Common;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
 
@@ -21,7 +22,7 @@ namespace In.ProjectEKA.OtpService.Notification
             return ResponseFrom( await notificationService.SendNotification(notification));
         }
         
-        private ActionResult ResponseFrom(NotificationResponse notificationResponse)
+        private ActionResult ResponseFrom(Response notificationResponse)
         {
             return notificationResponse.ResponseType switch
             {

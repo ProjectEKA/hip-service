@@ -5,10 +5,9 @@ namespace In.ProjectEKA.OtpServiceTest.Notification
     using FluentAssertions;
     using Microsoft.AspNetCore.Mvc;
     using Moq;
+    using OtpService.Common;
     using OtpService.Notification;
     using Xunit;
-    using ResponseType = OtpService.Notification.ResponseType;
-
     public class NotificationControllerTest
     {
         private readonly NotificationController notificationController;
@@ -22,7 +21,7 @@ namespace In.ProjectEKA.OtpServiceTest.Notification
         [Fact]
         public async Task ShouldSuccessInNotificationSend()
         {
-            var expectedResponse = new NotificationResponse(ResponseType.Success, "Notification sent");
+            var expectedResponse = new Response(ResponseType.Success, "Notification sent");
             notificationService.Setup(e => e.SendNotification(It.IsAny<Notification>())
             ).ReturnsAsync(expectedResponse);
             

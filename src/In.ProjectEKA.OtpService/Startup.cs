@@ -1,6 +1,7 @@
 namespace In.ProjectEKA.OtpService
 {
     using System.Text.Json;
+    using Clients;
     using Otp;
     using Otp.Model;
     using Microsoft.AspNetCore.Builder;
@@ -25,11 +26,10 @@ namespace In.ProjectEKA.OtpService
             services
                 .AddDbContext<OtpContext>(options =>
                     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")))
+                .AddSingleton<ISmsClient, SmsClient>()
                 .AddScoped<IOtpRepository, OtpRepository>()
                 .AddScoped<IOtpService, OtpService>()
                 .AddScoped<IOtpGenerator, OtpGenerator>()
-                .AddScoped<IOtpWebHandler, OtpWebHandler>()
-                .AddScoped<INotificationWebHandler, NotificationWebHandler>()
                 .AddScoped<INotificationService, NotificationService>()
                 .AddControllers()
                 .AddNewtonsoftJson(options => { })

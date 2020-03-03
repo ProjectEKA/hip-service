@@ -1,9 +1,10 @@
 namespace In.ProjectEKA.OtpService.Notification
 {
     using System.Threading.Tasks;
+    using Common;
 
     public interface INotificationService
     {
-        public Task<NotificationResponse> SendNotification(Notification notification);
+        public Task<Response> SendNotification(Notification notification);
     }
 }

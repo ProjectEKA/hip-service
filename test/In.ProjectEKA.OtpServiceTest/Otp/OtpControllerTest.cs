@@ -9,6 +9,8 @@ using Xunit;
 
 namespace In.ProjectEKA.OtpServiceTest.Otp
 {
+    using OtpService.Common;
+
     [Collection("Otp Controller Tests")]
     public class OtpControllerTest
     {
@@ -26,7 +28,7 @@ namespace In.ProjectEKA.OtpServiceTest.Otp
         {
             var otpRequest = new OtpGenerationRequest(TestBuilder.Faker().Random.Hash()
                 ,new Communication("MOBILE", "+91999999999999"));
-            var expectedResult = new OtpResponse(ResponseType.Success,"Otp Created");
+            var expectedResult = new Response(ResponseType.Success,"Otp Created");
             otpService.Setup(e => e.GenerateOtp(It.IsAny<OtpGenerationRequest>())
                 ).ReturnsAsync(expectedResult);
             
@@ -47,7 +49,7 @@ namespace In.ProjectEKA.OtpServiceTest.Otp
         {
             var otpRequest = new OtpGenerationRequest(TestBuilder.Faker().Random.Hash()
                 ,new Communication("MOBILE", "+91999999999999"));
-            var expectedResult = new OtpResponse(ResponseType.InternalServerError,"OtpGeneration Saving failed");
+            var expectedResult = new Response(ResponseType.InternalServerError,"OtpGeneration Saving failed");
             otpService.Setup(e => e.GenerateOtp(It.IsAny<OtpGenerationRequest>())
             ).ReturnsAsync(expectedResult);
             
@@ -62,7 +64,7 @@ namespace In.ProjectEKA.OtpServiceTest.Otp
         {
             var sessionId = TestBuilder.Faker().Random.Hash();
             var otpRequest = new OtpVerificationRequest("1234");
-            var expectedResult = new OtpResponse(ResponseType.OtpValid,"Valid OTP");
+            var expectedResult = new Response(ResponseType.OtpValid,"Valid OTP");
             otpService.Setup(e => e.CheckOtpValue(sessionId, otpRequest.Value)
             ).ReturnsAsync(expectedResult);
             
@@ -83,7 +85,7 @@ namespace In.ProjectEKA.OtpServiceTest.Otp
         {
             var sessionId = TestBuilder.Faker().Random.Hash();
             var otpRequest = new OtpVerificationRequest("1234");
-            var expectedResult = new OtpResponse(ResponseType.OtpInvalid,"Invalid Otp");
+            var expectedResult = new Response(ResponseType.OtpInvalid,"Invalid Otp");
             otpService.Setup(e => e.CheckOtpValue(sessionId, otpRequest.Value)
             ).ReturnsAsync(expectedResult);
             

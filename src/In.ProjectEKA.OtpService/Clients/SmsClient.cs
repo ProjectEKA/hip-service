@@ -1,23 +1,24 @@
-namespace In.ProjectEKA.OtpService.Notification
+namespace In.ProjectEKA.OtpService.Clients
 {
     using System.Collections.Specialized;
     using System.Net;
     using System.Threading.Tasks;
     using System.Web;
+    using Common;
     using Microsoft.Extensions.Configuration;
     using Newtonsoft.Json.Linq;
-    using Logger;
+    using Notification.Logger;
 
-    public class NotificationWebHandler : INotificationWebHandler
+    public class SmsClient : ISmsClient
     {
         private readonly IConfiguration configuration;
 
-        public NotificationWebHandler(IConfiguration configuration)
+        public SmsClient(IConfiguration configuration)
         {
             this.configuration = configuration;
         }
 
-        public async Task<NotificationResponse> Send(string phoneNumber, string message)
+        public async Task<Response> Send(string phoneNumber, string message)
         {
             var notification = HttpUtility.UrlEncode(message);
             using var webClient = new WebClient();
@@ -31,9 +32,9 @@ namespace In.ProjectEKA.OtpService.Notification
                 });
             var json = JObject.Parse(System.Text.Encoding.UTF8.GetString(response));
             Log.Information((string)json["status"] == "success" ? "Success in sending notification" :
-                                                       (string)json["errors"][0]["message"]);
-            return (string)json["status"] == "success" ? new NotificationResponse(ResponseType.Success,"Notification sent") 
-                : new NotificationResponse(ResponseType.InternalServerError, (string)json["errors"][0]["message"]);
+                (string)json["errors"][0]["message"]);
+            return (string)json["status"] == "success" ?  new Response(ResponseType.Success,"Notification sent") 
+                    :new Response(ResponseType.Success, (string)json["errors"][0]["message"]);
         }
     }
 }
