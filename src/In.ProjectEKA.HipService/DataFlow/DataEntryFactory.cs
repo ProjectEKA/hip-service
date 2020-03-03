@@ -39,43 +39,41 @@ namespace In.ProjectEKA.HipService.DataFlow
             this.encryptor = encryptor;
         }
 
-        public virtual Option<EncryptedEntries> Process(Option<Entries> data,
+        public virtual Option<EncryptedEntries> Process(Entries entries,
             HipLibrary.Patient.Model.KeyMaterial dataRequestKeyMaterial)
         {
             var keyPair = EncryptorHelper.GenerateKeyPair(dataRequestKeyMaterial.Curve,
                 dataRequestKeyMaterial.CryptoAlg);
             var randomKey = EncryptorHelper.GenerateRandomKey();
-            return data.FlatMap(entries =>
-            {
-                var processedEntries = new List<Entry>();
-                foreach (var bundle in entries.Bundles)
-                {
-                    var encryptData =
-                        encryptor.EncryptData(dataRequestKeyMaterial,
-                            keyPair,
-                            Serializer.SerializeToString(bundle),
-                            randomKey);
-                    if (!encryptData.HasValue)
-                    {
-                        return Option.None<EncryptedEntries>();
-                    }
 
-                    encryptData.MatchSome(content =>
-                    {
-                        var entry = IsLinkable(content)
-                            ? StoreComponentAndGetLink(ComponentEntry(content))
-                            : ComponentEntry(content);
-                        processedEntries.Add(entry);
-                    });
+            var processedEntries = new List<Entry>();
+            foreach (var bundle in entries.Bundles)
+            {
+                var encryptData = encryptor.EncryptData(
+                    dataRequestKeyMaterial,
+                    keyPair,
+                    Serializer.SerializeToString(bundle),
+                    randomKey);
+                if (!encryptData.HasValue)
+                {
+                    return Option.None<EncryptedEntries>();
                 }
 
-                var keyStructure = new KeyStructure(DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"),
-                    dataRequestKeyMaterial.DhPublicKey.Parameters, EncryptorHelper.GetPublicKey(keyPair));
-                var keyMaterial = new KeyMaterial(dataRequestKeyMaterial.CryptoAlg,
-                    dataRequestKeyMaterial.Curve,
-                    keyStructure, randomKey);
-                return Option.Some(new EncryptedEntries(processedEntries.AsEnumerable(), keyMaterial));
-            });
+                encryptData.MatchSome(content =>
+                {
+                    var entry = IsLinkable(content)
+                        ? StoreComponentAndGetLink(ComponentEntry(content))
+                        : ComponentEntry(content);
+                    processedEntries.Add(entry);
+                });
+            }
+
+            var keyStructure = new KeyStructure(DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"),
+                dataRequestKeyMaterial.DhPublicKey.Parameters, EncryptorHelper.GetPublicKey(keyPair));
+            var keyMaterial = new KeyMaterial(dataRequestKeyMaterial.CryptoAlg,
+                dataRequestKeyMaterial.Curve,
+                keyStructure, randomKey);
+            return Option.Some(new EncryptedEntries(processedEntries.AsEnumerable(), keyMaterial));
         }
 
         private Entry StoreComponentAndGetLink(Entry componentEntry)
