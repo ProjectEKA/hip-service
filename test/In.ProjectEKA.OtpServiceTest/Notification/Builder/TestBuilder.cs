@@ -15,7 +15,7 @@ namespace In.ProjectEKA.OtpServiceTest.Notification.Builder
             return new NotificationMessage(fakerNotification.Random.Hash(),
                                             new Communication(CommunicationType.Mobile, fakerNotification.Random.Words(10)), 
                                             new JObject(), 
-                                            NotificationAction.ConsentRequest);
+                                            NotificationAction.ConsentRequestCreated);
         }
     }
 }

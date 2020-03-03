@@ -18,10 +18,10 @@ namespace In.ProjectEKA.OtpService.Notification
         [HttpPost]
         public async Task<ActionResult> SendNotification([FromBody] NotificationMessage notificationMessage)
         {
-            return ReturnServerResponse( await notificationService.SendNotification(notificationMessage));
+            return ResponseFrom( await notificationService.SendNotification(notificationMessage));
         }
         
-        private ActionResult ReturnServerResponse(NotificationResponse notificationResponse)
+        private ActionResult ResponseFrom(NotificationResponse notificationResponse)
         {
             return notificationResponse.ResponseType switch
             {

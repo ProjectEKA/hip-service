@@ -16,7 +16,7 @@ namespace In.ProjectEKA.OtpService.Notification
         {
             return notificationMessage.NotificationAction switch
             {
-                NotificationAction.ConsentRequest => notificationWebHandler.Send(
+                NotificationAction.ConsentRequestCreated => await notificationWebHandler.Send(
                     notificationMessage.Communication.Value,
                     GenerateConsentRequestMessage(notificationMessage.NotificationContent)),
                 _ => new NotificationResponse(ResponseType.InternalServerError, "")

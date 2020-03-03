@@ -9,8 +9,10 @@ namespace In.ProjectEKA.OtpService.Notification
         public JObject NotificationContent { get; }
         public NotificationAction NotificationAction { get; }
 
-        public NotificationMessage(string id, Communication communication, JObject notificationContent,
-            NotificationAction notificationAction)
+        public NotificationMessage(string id,
+                                   Communication communication,
+                                   JObject notificationContent,
+                                   NotificationAction notificationAction)
         {
             Id = id;
             Communication = communication;

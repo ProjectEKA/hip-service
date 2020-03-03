@@ -2,6 +2,7 @@ namespace In.ProjectEKA.OtpService.Notification
 {
     using System.Collections.Specialized;
     using System.Net;
+    using System.Threading.Tasks;
     using System.Web;
     using Microsoft.Extensions.Configuration;
     using Newtonsoft.Json.Linq;
@@ -16,11 +17,11 @@ namespace In.ProjectEKA.OtpService.Notification
             this.configuration = configuration;
         }
 
-        public NotificationResponse Send(string phoneNumber, string message)
+        public async Task<NotificationResponse> Send(string phoneNumber, string message)
         {
             var notification = HttpUtility.UrlEncode(message);
-            using var wb = new WebClient();
-            var response = wb.UploadValues("https://api.textlocal.in/send/",
+            using var webClient = new WebClient();
+            var response = await webClient.UploadValuesTaskAsync("https://api.textlocal.in/send/",
                 new NameValueCollection
                 {
                     {"apikey" , configuration.GetConnectionString("TextLocaleApiKey")},

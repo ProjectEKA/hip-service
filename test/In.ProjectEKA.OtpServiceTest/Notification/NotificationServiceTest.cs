@@ -21,7 +21,7 @@ namespace In.ProjectEKA.OtpServiceTest.Notification
         {
             var expectedResponse = new NotificationResponse(ResponseType.Success, "Notification sent");
             notificationWebHandler.Setup(e => e.Send(It.IsAny<string>(),
-                    It.IsAny<string>())).Returns(expectedResponse);
+                    It.IsAny<string>())).ReturnsAsync(expectedResponse);
 
             var response = await notificationService.SendNotification(TestBuilder.GenerateNotificationMessage());
 
@@ -33,7 +33,7 @@ namespace In.ProjectEKA.OtpServiceTest.Notification
         {
             var expectedResponse = new NotificationResponse(ResponseType.InternalServerError, "Internal server error");
             notificationWebHandler.Setup(e => e.Send(It.IsAny<string>(),
-                It.IsAny<string>())).Returns(expectedResponse);
+                It.IsAny<string>())).ReturnsAsync(expectedResponse);
 
             var response = await notificationService.SendNotification(TestBuilder.GenerateNotificationMessage());
 

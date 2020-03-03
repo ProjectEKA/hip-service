@@ -1,7 +1,9 @@
 namespace In.ProjectEKA.OtpService.Notification
 {
+    using System.Threading.Tasks;
+
     public interface INotificationWebHandler
     {
-        public NotificationResponse Send(string phoneNumber, string message);
+        public Task<NotificationResponse> Send(string phoneNumber, string message);
     }
 }
