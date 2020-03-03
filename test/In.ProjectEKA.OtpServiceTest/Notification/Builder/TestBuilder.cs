@@ -9,13 +9,13 @@ namespace In.ProjectEKA.OtpServiceTest.Notification.Builder
         private static Faker faker;
         internal static Faker Faker() => faker ??= new Faker();
 
-        public static NotificationMessage GenerateNotificationMessage()
+        public static Notification GenerateNotificationMessage()
         {
             var fakerNotification = Faker();
-            return new NotificationMessage(fakerNotification.Random.Hash(),
+            return new Notification(fakerNotification.Random.Hash(),
                                             new Communication(CommunicationType.Mobile, fakerNotification.Random.Words(10)), 
                                             new JObject(), 
-                                            NotificationAction.ConsentRequestCreated);
+                                            Action.ConsentRequestCreated);
         }
     }
 }

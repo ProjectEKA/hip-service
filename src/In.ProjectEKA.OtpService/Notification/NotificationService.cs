@@ -12,20 +12,20 @@ namespace In.ProjectEKA.OtpService.Notification
             this.notificationWebHandler = notificationWebHandler;
         }
 
-        public async Task<NotificationResponse> SendNotification(NotificationMessage notificationMessage)
+        public async Task<NotificationResponse> SendNotification(Notification notification)
         {
-            return notificationMessage.NotificationAction switch
+            return notification.Action switch
             {
-                NotificationAction.ConsentRequestCreated => await notificationWebHandler.Send(
-                    notificationMessage.Communication.Value,
-                    GenerateConsentRequestMessage(notificationMessage.NotificationContent)),
+                Action.ConsentRequestCreated => await notificationWebHandler.Send(
+                    notification.Communication.Value,
+                    GenerateConsentRequestMessage(notification.Content)),
                 _ => new NotificationResponse(ResponseType.InternalServerError, "")
             };
         }
 
         private static string GenerateConsentRequestMessage(JObject notificationContent)
         {
-            var content = notificationContent.ToObject<NotificationContent>();
+            var content = notificationContent.ToObject<Content>();
             var message =
                 $"Hello, {content.Requester} is requesting your consent for accessing health data for {content.HiTypes}. On providing" +
                 $" consent, {content.Requester} will get access to all the health data for which you have provided consent. " + 

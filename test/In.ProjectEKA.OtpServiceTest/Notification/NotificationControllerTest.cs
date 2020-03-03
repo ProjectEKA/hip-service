@@ -23,7 +23,7 @@ namespace In.ProjectEKA.OtpServiceTest.Notification
         public async Task ShouldSuccessInNotificationSend()
         {
             var expectedResponse = new NotificationResponse(ResponseType.Success, "Notification sent");
-            notificationService.Setup(e => e.SendNotification(It.IsAny<NotificationMessage>())
+            notificationService.Setup(e => e.SendNotification(It.IsAny<Notification>())
             ).ReturnsAsync(expectedResponse);
             
             var response = await notificationController.SendNotification(TestBuilder.GenerateNotificationMessage());

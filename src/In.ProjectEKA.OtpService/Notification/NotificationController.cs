@@ -16,9 +16,9 @@ namespace In.ProjectEKA.OtpService.Notification
         }
         
         [HttpPost]
-        public async Task<ActionResult> SendNotification([FromBody] NotificationMessage notificationMessage)
+        public async Task<ActionResult> SendNotification([FromBody] Notification notification)
         {
-            return ResponseFrom( await notificationService.SendNotification(notificationMessage));
+            return ResponseFrom( await notificationService.SendNotification(notification));
         }
         
         private ActionResult ResponseFrom(NotificationResponse notificationResponse)

@@ -4,6 +4,6 @@ namespace In.ProjectEKA.OtpService.Notification
 
     public interface INotificationService
     {
-        public Task<NotificationResponse> SendNotification(NotificationMessage notificationMessage);
+        public Task<NotificationResponse> SendNotification(Notification notification);
     }
 }
