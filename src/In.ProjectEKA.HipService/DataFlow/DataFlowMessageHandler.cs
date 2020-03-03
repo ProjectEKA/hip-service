@@ -1,7 +1,5 @@
 namespace In.ProjectEKA.HipService.DataFlow
 {
-    using System;
-    using Encryptor;
     using HipLibrary.Patient;
     using Task = System.Threading.Tasks.Task;
 
@@ -26,9 +24,10 @@ namespace In.ProjectEKA.HipService.DataFlow
             var sentKeyMaterial = dataRequest.KeyMaterial;
 
             var data = await collect.CollectData(dataRequest);
-            var entries = dataEntryFactory.Process(data, sentKeyMaterial);
-            entries.MatchSome(encryptedEntries => dataFlowClient.SendDataToHiu(dataRequest, encryptedEntries.Entries,
-                    encryptedEntries.KeyMaterial));
+            var encryptedEntries = data.FlatMap(entries =>
+                dataEntryFactory.Process(entries, sentKeyMaterial));
+            encryptedEntries.MatchSome(entries =>
+                dataFlowClient.SendDataToHiu(dataRequest, entries.Entries, entries.KeyMaterial));
         }
     }
 }

@@ -48,7 +48,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                 It.IsAny<string>(),
                 It.IsAny<string>())).Returns(Option.Some("5zGyp5O9GkggioxwWyUGOQ=="));
 
-            var entries = dataEntryFactory.Process(Option.Some(dataEntries), keyMaterial);
+            var entries = dataEntryFactory.Process(dataEntries, keyMaterial);
 
             entries.HasValue.Should().BeTrue();
             entries.Map(e => e.Entries.Should().BeEquivalentTo(expectedEntries));
@@ -81,7 +81,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                 It.IsAny<string>(),
                 It.IsAny<string>())).Returns(Option.Some("https://hip/health-information"));
             var entries = dataEntryFactory.Process(
-                Option.Some(new Entries(new List<Bundle> {new Bundle()})), keyMaterialLib);
+                new Entries(new List<Bundle> {new Bundle()}), keyMaterialLib);
 
             entries.HasValue.Should().BeTrue();
             entries.MatchSome(dataEntries =>
