@@ -10,6 +10,7 @@ servers:
 
 tags:
   - name: otp
+  - name: notification
 
 paths:
   /otp:
@@ -34,10 +35,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OtpResponse'
+                $ref: '#/components/schemas/Response'
             application/xml:
               schema:
-                $ref: '#/components/schemas/OtpResponse'
+                $ref: '#/components/schemas/Response'
         '500':
           description: >
             **Causes:**
@@ -46,10 +47,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OtpResponse'
+                $ref: '#/components/schemas/Response'
             application/xml:
               schema:
-                $ref: '#/components/schemas/OtpResponse'
+                $ref: '#/components/schemas/Response'
                 
   /otp/{sessionId}/verify:
     post:
@@ -75,10 +76,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OtpResponse'
+                $ref: '#/components/schemas/Response'
             application/xml:
               schema:
-                $ref: '#/components/schemas/OtpResponse'
+                $ref: '#/components/schemas/Response'
         '400':
           description: >
             **Causes:**
@@ -87,10 +88,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OtpResponse'
+                $ref: '#/components/schemas/Response'
             application/xml:
               schema:
-                $ref: '#/components/schemas/OtpResponse'
+                $ref: '#/components/schemas/Response'
         '500':
           description: >
             **Causes:**
@@ -99,10 +100,48 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OtpResponse'
+                $ref: '#/components/schemas/Response'
             application/xml:
               schema:
-                $ref: '#/components/schemas/OtpResponse'
+                $ref: '#/components/schemas/Response'
+  /notification:
+    post:
+      tags:
+        - notification
+      summary: Send notification to user
+      description: >
+        Return the status about sending notification to users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationRequest'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/NotificationRequest'
+      responses:
+        '200':
+          description: Notification sent sucessfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Response'
+        '500':
+          description: >
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Response'
 
 components:
   parameters:
@@ -144,7 +183,33 @@ components:
       xml:
         name: OtpVerificationRequest
 
-    OtpResponse:
+    NotificationRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        communication:
+          type: object
+          properties:
+            mode:
+              type: string
+              example: MOBILE
+              description: Sharing the mode
+            value:
+              type: string
+              example: "+91XXXXXXXXXX"
+        content:
+          type: object
+          format: Json
+          example: Json object of the content
+        action:
+          type: string
+          format: ConsentRequestCreated
+      xml:
+        name: OtpGenerationRequest
+
+    Response:
       type: object
       properties:
         code:
