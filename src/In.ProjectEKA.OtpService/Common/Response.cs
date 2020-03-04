@@ -1,11 +1,11 @@
-namespace In.ProjectEKA.OtpService.Otp
+namespace In.ProjectEKA.OtpService.Common
 {
-    public class OtpResponse
+    public class Response
     {
         public ResponseType ResponseType { get; }
         public string Message { get; }
-
-        public OtpResponse(ResponseType responseType, string message)
+        
+        public Response(ResponseType responseType, string message)
         {
             ResponseType = responseType;
             Message = message;
