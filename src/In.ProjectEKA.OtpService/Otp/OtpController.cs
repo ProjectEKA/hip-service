@@ -1,6 +1,7 @@
 namespace In.ProjectEKA.OtpService.Otp
 {
     using System.Threading.Tasks;
+    using Common;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     
@@ -29,7 +30,7 @@ namespace In.ProjectEKA.OtpService.Otp
             return ReturnServerResponse(verifyOtp);
         }
 
-        private ActionResult ReturnServerResponse(OtpResponse otpResponse)
+        private ActionResult ReturnServerResponse(Response otpResponse)
         {
             return otpResponse.ResponseType switch
             {

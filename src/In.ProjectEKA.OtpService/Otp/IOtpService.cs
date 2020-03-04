@@ -1,10 +1,11 @@
 namespace In.ProjectEKA.OtpService.Otp
 {
     using System.Threading.Tasks;
+    using Common;
 
     public interface IOtpService
     { 
-        Task<OtpResponse> GenerateOtp(OtpGenerationRequest otpGenerationRequest);
-        Task<OtpResponse> CheckOtpValue(string sessionId, string value);
+        Task<Response> GenerateOtp(OtpGenerationRequest otpGenerationRequest);
+        Task<Response> CheckOtpValue(string sessionId, string value);
     }
 }
