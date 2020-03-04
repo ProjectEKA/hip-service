@@ -1,7 +1,10 @@
 namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
 {
+    using System.Collections.Generic;
     using Bogus;
-    using In.ProjectEKA.DefaultHipTest.DataFlow.Builder;
+    using In.ProjectEKA.HipLibrary.Patient.Model;
+    using KeyMaterialLib = HipLibrary.Patient.Model.KeyMaterial;
+    using KeyStructureLib = HipLibrary.Patient.Model.KeyStructure;
 
     public static class TestBuilder
     {
@@ -12,9 +15,18 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
             return faker ??= new Faker();
         }
 
-        internal static Faker<DataRequestBuilder> DataRequest()
+        internal static HipLibrary.Patient.Model.DataRequest DataRequest(string transactionId)
         {
-            return new Faker<DataRequestBuilder>();
+            var grantedContexts = new List<GrantedContext>();
+            var hiDataRange = new HipLibrary.Patient.Model.HiDataRange("from", "to");
+            var callBackUrl = "http://callback";
+            var hiTypes = new List<HiType>();
+            hiTypes.Add(HiType.Observation);
+            var keyMaterial = new KeyMaterialLib(faker.Random.Word(), faker.Random.Word(),
+                new KeyStructureLib("", "", faker.Random.Hash()),
+                faker.Random.Hash());
+            return new HipLibrary.Patient.Model.DataRequest(grantedContexts, hiDataRange, callBackUrl, hiTypes,
+                transactionId, keyMaterial);
         }
     }
 }

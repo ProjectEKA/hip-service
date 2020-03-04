@@ -21,6 +21,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Resources\diagnosticReport.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>diagnosticReport.json</Link>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="Resources\patients.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <CopyToPublishDirectory>Always</CopyToPublishDirectory>
