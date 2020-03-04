@@ -22,19 +22,20 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var dataFlowMessageHandler =
                 new DataFlowMessageHandler(collect.Object, dataFlowClient.Object, dataEntryFactory.Object);
             var dataRequest = TestBuilder.DataRequest(TestBuilder.Faker().Random.Hash());
-            var data = Option.Some(new Entries(new List<Bundle> {new Bundle()}));
+            var entries = new Entries(new List<Bundle> {new Bundle()});
+            var data = Option.Some(entries);
             var content = TestBuilder.Faker().Random.String();
             var checksum = TestBuilder.Faker().Random.Hash();
-            var entries = new List<Entry>
+            var entriesList = new List<Entry>
             {
                 new Entry(content, "application/json", checksum, null)
             };
             var requestKeyMaterial = TestBuilder.KeyMaterialLib();
             collect.Setup(c => c.CollectData(dataRequest)).ReturnsAsync(data);
             var keyMaterial = TestBuilder.KeyMaterial();
-            var encryptedEntriesValue = new EncryptedEntries(entries.AsEnumerable(), keyMaterial);
+            var encryptedEntriesValue = new EncryptedEntries(entriesList.AsEnumerable(), keyMaterial);
             var encryptedEntries = Option.Some(encryptedEntriesValue);
-            dataEntryFactory.Setup(e => e.Process(data, requestKeyMaterial))
+            dataEntryFactory.Setup(e => e.Process(entries, requestKeyMaterial))
                 .Returns(encryptedEntries);
             dataFlowClient.Setup(c => c.SendDataToHiu(dataRequest,
                 encryptedEntriesValue.Entries, encryptedEntriesValue.KeyMaterial)).Verifiable();
