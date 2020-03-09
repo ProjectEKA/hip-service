@@ -22,13 +22,12 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
         {
             var bundles = new List<Bundle> {};
             var map = hiTypeDataMap.GetMap();
-            if (dataRequest.HiType.Contains(HiType.Observation))
+            foreach (HiType hiType in dataRequest.HiType)
             {
-                bundles.Add(await FileReader.ReadJsonAsync<Bundle>(map.GetValueOrDefault(HiType.Observation)));
-            }
-            else if(dataRequest.HiType.Contains(HiType.DiagnosticReport))
-            {
-                bundles.Add(await FileReader.ReadJsonAsync<Bundle>(map.GetValueOrDefault(HiType.DiagnosticReport)));
+                var dataList = map.GetValueOrDefault(hiType);
+                foreach (string item in dataList) {
+                    bundles.Add(await FileReader.ReadJsonAsync<Bundle>(item));
+                }
             }
             var entries = new Entries(bundles);
             return Option.Some(entries);
