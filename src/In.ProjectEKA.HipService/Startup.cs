@@ -1,5 +1,6 @@
 namespace In.ProjectEKA.HipService
 {
+    using System.Linq;
     using System.Net.Http;
     using System.Text.Json;
     using Common;
@@ -25,9 +26,9 @@ namespace In.ProjectEKA.HipService
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Microsoft.IdentityModel.Tokens;
-    using Middleware;
     using Newtonsoft.Json;
     using Serilog;
+    using Task = System.Threading.Tasks.Task;
 
     public class Startup
     {
@@ -108,11 +109,30 @@ namespace In.ProjectEKA.HipService
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
+                        ValidateLifetime = true,
                         AudienceValidator = (audiences, token, parameters) => true,
                         IssuerValidator = (issuer, token, parameters) => token.Issuer
                     };
                     options.RequireHttpsMetadata = false;
                     options.IncludeErrorDetails = true;
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnTokenValidated = context =>
+                        {
+                            const string claimTypeClientId = "clientId";
+                            if (!context.Principal.HasClaim(claim => claim.Type == claimTypeClientId))
+                            {
+                                context.Fail($"Claim {claimTypeClientId} is not present in the token.");
+                            }
+                            else
+                            {
+                                context.Request.Headers["X-ConsentManagerID"] =
+                                    context.Principal.Claims.First(claim => claim.Type == claimTypeClientId).Value;
+                            }
+
+                            return Task.CompletedTask;
+                        }
+                    };
                 });
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -123,7 +143,6 @@ namespace In.ProjectEKA.HipService
                 .UseIf(env.IsDevelopment(), x => x.UseDeveloperExceptionPage())
                 .UseCustomOpenAPI()
                 .UseSerilogRequestLogging()
-                .UseConsentManagerIdentifierMiddleware()
                 .UseAuthentication()
                 .UseAuthorization()
                 .UseEndpoints(endpoints => { endpoints.MapControllers(); });

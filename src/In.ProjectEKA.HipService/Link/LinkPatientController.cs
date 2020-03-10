@@ -5,9 +5,11 @@ namespace In.ProjectEKA.HipService.Link
     using Discovery;
     using HipLibrary.Patient;
     using HipLibrary.Patient.Model;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
 
+    [Authorize]
     [ApiController]
     [Route("patients/link")]
     public class LinkPatientController : ControllerBase
@@ -24,8 +26,8 @@ namespace In.ProjectEKA.HipService.Link
         }
 
         [HttpPost]
-        public async Task<ActionResult> LinkPatientCareContexts(
-            [FromHeader(Name = "X-ConsentManagerID")] string consentManagerId,
+        public async Task<ActionResult> LinkPatientCareContexts([FromHeader(Name = "X-ConsentManagerID")]
+            string consentManagerId,
             [FromBody] PatientLinkReferenceRequest request)
         {
             var patient = new LinkEnquiry(
