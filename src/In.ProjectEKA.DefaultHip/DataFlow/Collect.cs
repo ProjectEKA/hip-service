@@ -24,7 +24,7 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
             var map = hiTypeDataMap.GetMap();
             foreach (HiType hiType in dataRequest.HiType)
             {
-                var dataList = map.GetValueOrDefault(hiType);
+                var dataList = map.GetValueOrDefault(hiType) ?? new List<string>();
                 foreach (string item in dataList) {
                     bundles.Add(await FileReader.ReadJsonAsync<Bundle>(item));
                 }
