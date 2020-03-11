@@ -17,12 +17,14 @@ namespace In.ProjectEKA.HipService
     using Link;
     using Link.Database;
     using MessagingQueue;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using Microsoft.IdentityModel.Tokens;
     using Middleware;
     using Newtonsoft.Json;
     using Serilog;
@@ -42,8 +44,7 @@ namespace In.ProjectEKA.HipService
         private IConfiguration Configuration { get; }
         private HttpClient HttpClient { get; }
 
-        public void ConfigureServices(IServiceCollection services)
-        {
+        public void ConfigureServices(IServiceCollection services) =>
             services
                 .AddDbContext<LinkPatientContext>(options =>
                     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
@@ -94,8 +95,25 @@ namespace In.ProjectEKA.HipService
                 {
                     options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
                     options.JsonSerializerOptions.IgnoreNullValues = true;
+                })
+                .Services.AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(options =>
+                {
+                    // Need to validate Audience and Issuer properly
+                    options.Authority = Configuration.GetValue<string>("authserver:url");
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        AudienceValidator = (audiences, token, parameters) => true,
+                        IssuerValidator = (issuer, token, parameters) => token.Issuer
+                    };
+                    options.RequireHttpsMetadata = false;
+                    options.IncludeErrorDetails = true;
                 });
-        }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -106,6 +124,8 @@ namespace In.ProjectEKA.HipService
                 .UseCustomOpenAPI()
                 .UseSerilogRequestLogging()
                 .UseConsentManagerIdentifierMiddleware()
+                .UseAuthentication()
+                .UseAuthorization()
                 .UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
             using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
