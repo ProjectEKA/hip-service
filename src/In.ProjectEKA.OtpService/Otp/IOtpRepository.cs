@@ -8,6 +8,7 @@ namespace In.ProjectEKA.OtpService.Otp
     public interface IOtpRepository
     {
         Task<Response> Save(string otp, string sessionId);
+        
         Task<Option<OtpRequest>> GetWith(string sessionId);
     }
 }
