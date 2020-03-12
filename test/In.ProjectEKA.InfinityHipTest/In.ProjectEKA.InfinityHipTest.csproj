@@ -2,6 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
+        <RootNamespace>In.ProjectEKA.DefaultHipTest</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -21,8 +22,8 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\src\In.ProjectEKA.DefaultHip\In.ProjectEKA.DefaultHip.csproj" />
         <ProjectReference Include="..\..\src\In.ProjectEKA.HipLibrary\In.ProjectEKA.HipLibrary.csproj" />
+        <ProjectReference Include="..\..\src\In.ProjectEKA.InfinityHip\In.ProjectEKA.InfinityHip.csproj" />
     </ItemGroup>
 
     <ItemGroup>

@@ -3,14 +3,14 @@ WORKDIR /app
 
 # Copy csproj and restore as distinct layers
 COPY HipServiceSrc.sln ./
-COPY src/In.ProjectEKA.DefaultHip/*.csproj ./src/In.ProjectEKA.DefaultHip/
+COPY src/In.ProjectEKA.InfinityHip/*.csproj ./src/In.ProjectEKA.InfinityHip/
 COPY src/In.ProjectEKA.HipLibrary/*.csproj ./src/In.ProjectEKA.HipLibrary/
 COPY src/In.ProjectEKA.HipService/*.csproj ./src/In.ProjectEKA.HipService/
 RUN dotnet restore
 
 # Copy everything else and build
 COPY . .
-WORKDIR /app/src/In.ProjectEKA.DefaultHip
+WORKDIR /app/src/In.ProjectEKA.InfinityHip
 RUN dotnet build -c Release -o /app
 
 WORKDIR /app/src/In.ProjectEKA.HipService

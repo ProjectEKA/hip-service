@@ -13,18 +13,18 @@ namespace In.ProjectEKA.DefaultHipTest.Link
         [Fact]
         private void ReturnObjectForKnownPatient()
         {
-            const string patientReferenceNumber = "1";
+            const string patientReferenceNumber = "3423";
             var testPatient = new Patient
             {
-                PhoneNumber = "+91-9605417827",
+                PhoneNumber = "+91-9036346499",
                 Identifier = patientReferenceNumber,
-                FirstName = "Anushree",
-                LastName = "Raman",
-                Gender = "F",
+                FirstName = "Sridhar",
+                LastName = "Kalagi",
+                Gender = "M",
                 CareContexts = new []
                 {
-                    new CareContextRepresentation("124", "National TB program"),
-                    new CareContextRepresentation("123", "National Cancer program"), 
+                    new CareContextRepresentation("TBAccount-123", "TB Account"),
+                    new CareContextRepresentation("Diabetes-11", "Diabetes Program"), 
                 }
             };
             

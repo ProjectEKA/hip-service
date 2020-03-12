@@ -1,0 +1,61 @@
+[
+  {
+    "phoneNumber": "+91-9036346499",
+    "identifier": "3423",
+    "firstName": "Sridhar",
+    "lastName": "Kalagi",
+    "Gender": "M",
+    "dateOfBirth": "1990-12-06",
+    "email": "abc@tw.com",
+    "careContexts": [
+      {
+        "referenceNumber": "TBAccount-123",
+        "display": "TB Account"
+      },
+      {
+        "referenceNumber": "Diabetes-11",
+        "display": "Diabetes Program"
+      }
+    ]
+  },
+  {
+    "phoneNumber": "+91-9999999999",
+    "identifier": "2",
+    "email": "ijk@def.com",
+    "firstName": "Jane",
+    "lastName": "Doe",
+    "caseReferenceNumber": "789123",
+    "Gender": "M",
+    "dateOfBirth": "2019-12-05",
+    "careContexts": [
+      {
+        "referenceNumber": "125",
+        "display": "National Cancer program"
+      },
+      {
+        "referenceNumber": "126",
+        "display": "National TB program"
+      }
+    ]
+  },
+  {
+    "phoneNumber": "+91-1111111111",
+    "identifier": "3",
+    "email": "def@def.com",
+    "firstName": "Olivia",
+    "lastName": "Doe",
+    "caseReferenceNumber": "281234",
+    "Gender": "F",
+    "dateOfBirth": "2019-12-04",
+    "careContexts": [
+      {
+        "referenceNumber": "127",
+        "display": "National Cancer program"
+      },
+      {
+        "referenceNumber": "128",
+        "display": "National TB program"
+      }
+    ]
+  }
+]
