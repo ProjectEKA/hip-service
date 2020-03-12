@@ -1,0 +1,35 @@
+{
+  "resourceType": "Bundle",
+  "id": "11123232324",
+  "type": "collection",
+  "entry": [{
+    "fullUrl": "12387re4337483",
+    "resource": {
+      "resourceType": "DiagnosticReport",
+      "id": "gingival-mass",
+      "text": {
+        "status": "additional",
+        "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Unstructured data can be sent here</div>"
+      },
+      "status": "final",
+      "code": {
+        "text": "gingival-mass"
+      },
+      "subject": {
+        "reference": "Patient/example"
+      },
+      "effectiveDateTime": "2012-12-01T12:00:00+01:00",
+      "issued": "2012-12-01T12:00:00+01:00",
+      "performer": [{
+        "reference": "Practitioner/example"
+      }],
+      "conclusion": "gingival-mass: comments",
+      "presentedForm": [{
+        "contentType": "application/pdf",
+        "language": "en",
+        "url": "http://www.africau.edu/images/default/sample.pdf",
+        "title": "LAB ID: P73456090 MAX JONES Biopsy without Microscopic Description (1 Site/Lesion)-Standard"
+      }]
+    }
+  }]
+}
