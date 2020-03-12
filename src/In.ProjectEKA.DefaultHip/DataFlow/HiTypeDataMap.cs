@@ -5,14 +5,16 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
 
     public class HiTypeDataMap
     {
-        private static readonly Dictionary<HiType, string> Map =
-            new Dictionary<HiType, string>
+        private static readonly List<string> obsList = new List<string>() { "observation.json"};
+        private static readonly List<string> diagnosticReportList = new List<string>() { "diagnosticReport.json", "diagnosticReportWithRadiologyImageInline.json"};
+        private static readonly Dictionary<HiType, List<string>> Map =
+            new Dictionary<HiType, List<string>>
             {
-                {HiType.Observation, "observation.json"},
-                {HiType.DiagnosticReport, "diagnosticReport.json"}
+                {HiType.Observation, obsList},
+                {HiType.DiagnosticReport, diagnosticReportList}
             };
 
-        public Dictionary<HiType, string> GetMap()
+        public Dictionary<HiType, List<string>> GetMap()
         {
             return Map;
         }

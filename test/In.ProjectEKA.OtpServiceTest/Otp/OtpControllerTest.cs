@@ -9,32 +9,45 @@ using Xunit;
 
 namespace In.ProjectEKA.OtpServiceTest.Otp
 {
+    using Optional;
+    using OtpService.Clients;
     using OtpService.Common;
+    using OtpService.Otp.Model;
 
     [Collection("Otp Controller Tests")]
     public class OtpControllerTest
     {
         private readonly OtpController otpController;
-        private readonly Mock<IOtpService> otpService;
+        private readonly Mock<IOtpRepository> otpRepository;
+        private readonly Mock<IOtpGenerator> otpGenerator;
+        private readonly Mock<ISmsClient> smsClient;
 
         public OtpControllerTest()
         {
-            otpService = new Mock<IOtpService>();
-            otpController = new OtpController(otpService.Object);
+            otpRepository = new Mock<IOtpRepository>();
+            otpGenerator = new Mock<IOtpGenerator>();
+            smsClient = new Mock<ISmsClient>();
+            var otpService = new OtpSender(otpRepository.Object, otpGenerator.Object, smsClient.Object);
+            var otpServiceFactory = new OtpSenderFactory(otpService, new FakeOtpSender(otpRepository.Object), null);
+            otpController = new OtpController(otpServiceFactory, new OtpVerifier(otpRepository.Object));
         }
 
         [Fact]
         public async Task ShouldSuccessInOtpGeneration()
         {
-            var otpRequest = new OtpGenerationRequest(TestBuilder.Faker().Random.Hash()
-                ,new Communication("MOBILE", "+91999999999999"));
-            var expectedResult = new Response(ResponseType.Success,"Otp Created");
-            otpService.Setup(e => e.GenerateOtp(It.IsAny<OtpGenerationRequest>())
-                ).ReturnsAsync(expectedResult);
-            
+            var sessionId = TestBuilder.Faker().Random.Hash();
+            var otp = TestBuilder.Faker().Random.String();
+            var phoneNumber = TestBuilder.Faker().Random.String();
+            var otpRequest = new OtpGenerationRequest(sessionId, new Communication("MOBILE", phoneNumber));
+            var expectedResult = new Response(ResponseType.Success, "Otp Created");
+            otpGenerator.Setup(e => e.GenerateOtp()).Returns(otp);
+            smsClient.Setup(e => e.Send(phoneNumber, otp)).ReturnsAsync(expectedResult);
+            otpRepository.Setup(e => e.Save(otp, sessionId)).ReturnsAsync(expectedResult);
+
             var response = await otpController.GenerateOtp(otpRequest);
-            
-            otpService.Verify();
+
+            otpGenerator.Verify();
+            smsClient.Verify();
             response.Should()
                 .NotBeNull()
                 .And
@@ -43,55 +56,56 @@ namespace In.ProjectEKA.OtpServiceTest.Otp
                 .Should()
                 .BeEquivalentTo(expectedResult);
         }
-        
+
         [Fact]
         public async Task ReturnOtpGenerationBadRequest()
         {
+            var otp = TestBuilder.Faker().Random.String();
+            var phoneNumber = TestBuilder.Faker().Random.String();
             var otpRequest = new OtpGenerationRequest(TestBuilder.Faker().Random.Hash()
-                ,new Communication("MOBILE", "+91999999999999"));
-            var expectedResult = new Response(ResponseType.InternalServerError,"OtpGeneration Saving failed");
-            otpService.Setup(e => e.GenerateOtp(It.IsAny<OtpGenerationRequest>())
-            ).ReturnsAsync(expectedResult);
-            
+                , new Communication("MOBILE", phoneNumber));
+            var expectedResult = new Response(ResponseType.InternalServerError, "OtpGeneration Saving failed");
+            otpGenerator.Setup(e => e.GenerateOtp()).Returns(otp);
+            smsClient.Setup(e => e.Send(phoneNumber, otp)).ReturnsAsync(expectedResult);
+
             var response = await otpController.GenerateOtp(otpRequest) as ObjectResult;
-            
-            otpService.Verify();
-            response.StatusCode.Should().Be(StatusCodes.Status500InternalServerError);
+
+            otpGenerator.Verify();
+            smsClient.Verify();
+            response.Should().NotBeNull()
+                .And.BeOfType<ObjectResult>()
+                .Which.StatusCode.Should().Be(StatusCodes.Status500InternalServerError);
         }
-        
+
+
         [Fact]
         public async Task ReturnOtpValidResponse()
         {
             var sessionId = TestBuilder.Faker().Random.Hash();
-            var otpRequest = new OtpVerificationRequest("1234");
-            var expectedResult = new Response(ResponseType.OtpValid,"Valid OTP");
-            otpService.Setup(e => e.CheckOtpValue(sessionId, otpRequest.Value)
-            ).ReturnsAsync(expectedResult);
-            
+            var otpToken = TestBuilder.Faker().Random.String();
+            var otpRequest = new OtpVerificationRequest(otpToken);
+            otpRepository.Setup(e => e.GetWith(sessionId))
+                .ReturnsAsync(Option.Some(new OtpRequest(sessionId, "", otpToken)));
+
             var response = await otpController.VerifyOtp(sessionId, otpRequest);
-            
-            otpService.Verify();
-            response.Should()
-                .NotBeNull()
-                .And
-                .Subject.As<OkObjectResult>()
-                .Value
-                .Should()
-                .BeEquivalentTo(expectedResult);
+
+            otpRepository.Verify();
+            response.Should().NotBeNull()
+                .And.Subject.As<OkObjectResult>()
+                .Value.Should().BeEquivalentTo(new Response(ResponseType.OtpValid, "Valid OTP"));
         }
-        
+
         [Fact]
         public async Task ReturnOtpInValidBadRequest()
         {
             var sessionId = TestBuilder.Faker().Random.Hash();
             var otpRequest = new OtpVerificationRequest("1234");
-            var expectedResult = new Response(ResponseType.OtpInvalid,"Invalid Otp");
-            otpService.Setup(e => e.CheckOtpValue(sessionId, otpRequest.Value)
-            ).ReturnsAsync(expectedResult);
-            
+            otpRepository.Setup(e => e.GetWith(sessionId))
+                .ReturnsAsync(Option.Some(new OtpRequest(sessionId, "", "random")));
+
             var response = await otpController.VerifyOtp(sessionId, otpRequest);
-            
-            otpService.Verify();
+
+            otpRepository.Verify();
             response.Should().BeOfType<BadRequestObjectResult>();
         }
     }

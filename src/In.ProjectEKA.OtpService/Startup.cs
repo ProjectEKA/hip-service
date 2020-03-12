@@ -1,5 +1,7 @@
 namespace In.ProjectEKA.OtpService
 {
+    using System.Collections.Generic;
+    using System.Linq;
     using System.Text.Json;
     using Clients;
     using Otp;
@@ -12,7 +14,7 @@ namespace In.ProjectEKA.OtpService
     using Microsoft.Extensions.Hosting;
     using Notification;
     using Serilog;
-    
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -28,9 +30,15 @@ namespace In.ProjectEKA.OtpService
                     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")))
                 .AddSingleton<ISmsClient, SmsClient>()
                 .AddScoped<IOtpRepository, OtpRepository>()
-                .AddScoped<IOtpService, OtpService>()
                 .AddScoped<IOtpGenerator, OtpGenerator>()
                 .AddScoped<INotificationService, NotificationService>()
+                .AddScoped<OtpVerifier, OtpVerifier>()
+                .AddScoped<OtpSender, OtpSender>()
+                .AddScoped<FakeOtpSender, FakeOtpSender>()
+                .AddScoped(serviceProvider =>
+                    new OtpSenderFactory(serviceProvider.GetService<OtpSender>(),
+                        serviceProvider.GetService<FakeOtpSender>(),
+                        Configuration.GetValue<string>("whitelisted:numbers")?.Split(",").ToList()))
                 .AddControllers()
                 .AddNewtonsoftJson(options => { })
                 .AddJsonOptions(options =>
@@ -46,11 +54,10 @@ namespace In.ProjectEKA.OtpService
                 .UseIf(env.IsDevelopment(), x => x.UseDeveloperExceptionPage())
                 .UseSerilogRequestLogging()
                 .UseEndpoints(endpoints => { endpoints.MapControllers(); });
-                    
+
             using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
             var otpContext = serviceScope.ServiceProvider.GetService<OtpContext>();
             otpContext.Database.Migrate();
         }
-            
     }
 }
