@@ -35,4 +35,12 @@
       <Link>patients.json</Link>
     </Content>
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\diagnosticReportWithRadiologyImageInline.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>diagnosticReportWithRadiologyImageInline.json</Link>
+    </Content>
+  </ItemGroup>
 </Project>
