@@ -5,12 +5,8 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
 
     public class Identifier
     {
-        [JsonPropertyName("type")]
-        [XmlElement("type")]
         public IdentifierType Type { get; }
 
-        [JsonPropertyName("value")]
-        [XmlElement("value")]
         public string Value { get; }
 
         public Identifier(IdentifierType type, string value)

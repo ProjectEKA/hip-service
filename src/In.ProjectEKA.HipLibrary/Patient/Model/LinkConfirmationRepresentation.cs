@@ -6,19 +6,14 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
 
     public class LinkConfirmationRepresentation
     {
-        [JsonPropertyName("referenceNumber")]
-        [XmlElement("referenceNumber")]
         public string ReferenceNumber { get; }
-        
-        [JsonPropertyName("display")]
-        [XmlElement("display")]
+
         public string Display { get; }
 
-        [JsonPropertyName("careContexts")]
-        [XmlElement("careContexts")]
         public IEnumerable<CareContextRepresentation> CareContexts { get; }
 
-        public LinkConfirmationRepresentation(string referenceNumber, string display, IEnumerable<CareContextRepresentation> careContexts)
+        public LinkConfirmationRepresentation(string referenceNumber, string display,
+            IEnumerable<CareContextRepresentation> careContexts)
         {
             ReferenceNumber = referenceNumber;
             Display = display;
