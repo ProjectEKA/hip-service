@@ -1,8 +1,8 @@
-namespace In.ProjectEKA.HipLibrary.Patient
+namespace In.ProjectEKA.HipService.Discovery
 {
     using System;
     using System.Threading.Tasks;
-    using Model;
+    using HipLibrary.Patient.Model;
 
     public interface IDiscovery
     {
