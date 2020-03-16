@@ -5,7 +5,6 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
         FirstName,
         LastName,
         Mobile,
-        Mr,
         Gender,
         Empty
     }

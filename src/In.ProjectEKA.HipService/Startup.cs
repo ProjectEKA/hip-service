@@ -141,7 +141,7 @@ namespace In.ProjectEKA.HipService
                 .UseRouting()
                 .UseIf(!env.IsDevelopment(), x => x.UseHsts())
                 .UseIf(env.IsDevelopment(), x => x.UseDeveloperExceptionPage())
-                .UseCustomOpenAPI()
+                .UseCustomOpenApi()
                 .UseSerilogRequestLogging()
                 .UseAuthentication()
                 .UseAuthorization()

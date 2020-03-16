@@ -27,10 +27,10 @@ namespace In.ProjectEKA.HipService
             return predicate ? action(application) : application;
         }
 
-        public static IApplicationBuilder UseCustomOpenAPI(this IApplicationBuilder application)
+        public static IApplicationBuilder UseCustomOpenApi(this IApplicationBuilder application)
         {
-            return application.UseSwaggerUI(options => { options.SwaggerEndpoint("/swagger.yaml", "hip"); })
-                .UseReDoc(options => { options.SpecUrl("/swagger.yaml"); });
+            return application.UseSwaggerUI(options => { options.SwaggerEndpoint("/hip-spec.yaml", "hip"); })
+                .UseReDoc(options => { options.SpecUrl("/hip-spec.yaml"); });
         }
     }
 }
