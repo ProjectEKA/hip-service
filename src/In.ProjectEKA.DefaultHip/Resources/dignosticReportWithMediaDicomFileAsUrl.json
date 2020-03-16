@@ -1,12 +1,12 @@
 {
   "resourceType": "Bundle",
-  "id": "11123232324",
+  "id": "0407ace8-6743-11ea-bc55-0242ac130003",
   "type": "collection",
   "entry": [{
-    "fullUrl": "123efdfzxa87",
+    "fullUrl": "urn:uuid:da3a9ea6-6743-11ea-bc55-0242ac130003",
     "resource": {
       "resourceType": "DiagnosticReport",
-      "id": "ultrasound",
+      "id": "da3a9ea6-6743-11ea-bc55-0242ac130003",
       "text": {
         "status": "additional",
         "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Unstructured data can be sent here</div>"
@@ -16,12 +16,14 @@
         "text": "Abdominal Ultrasound"
       },
       "subject": {
-        "reference": "Patient/example"
+        "reference": "Patient/example",
+        "display": "Example Patient"
       },
       "effectiveDateTime": "2012-12-01T12:00:00+01:00",
       "issued": "2012-12-01T12:00:00+01:00",
       "performer": [{
-        "reference": "Practitioner/example"
+        "reference": "Practitioner/example",
+        "display": "Example Practitioner"
       }],
       "media": [
         {
@@ -36,10 +38,10 @@
     }
   },
     {
-      "fullUrl": "1233444",
+      "fullUrl": "urn:uuid:e9c16044-6743-11ea-bc55-0242ac130003",
       "resource": {
         "resourceType": "Media",
-        "id": "1233444",
+        "id": "e9c16044-6743-11ea-bc55-0242ac130003",
         "text": {
           "status": "additional",
           "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Unstructured data can be sent here</div>"
