@@ -29,8 +29,8 @@ namespace In.ProjectEKA.HipService
 
         public static IApplicationBuilder UseCustomOpenApi(this IApplicationBuilder application)
         {
-            return application.UseSwaggerUI(options => { options.SwaggerEndpoint("/hip-spec.yaml", "hip"); })
-                .UseReDoc(options => { options.SpecUrl("/hip-spec.yaml"); });
+            return application.UseSwaggerUI(options => { options.SwaggerEndpoint("/openapi.yaml", "hip"); })
+                .UseReDoc(options => { options.SpecUrl("/openapi.yaml"); });
         }
     }
 }
