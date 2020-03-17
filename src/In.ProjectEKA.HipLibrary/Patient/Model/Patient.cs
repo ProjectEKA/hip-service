@@ -17,11 +17,13 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
 
         public IEnumerable<CareContextRepresentation> CareContexts { get; set; }
 
-        public PatientEnquiryRepresentation ToPatientEnquiryRepresentation()
+        public PatientEnquiryRepresentation ToPatientEnquiryRepresentation(
+            IEnumerable<CareContextRepresentation> unlinkedCareContexts)
         {
-            return new PatientEnquiryRepresentation(Identifier,
-                FirstName + LastName,
-                CareContexts,
+            return new PatientEnquiryRepresentation(
+                Identifier,
+                FirstName + " " + LastName,
+                unlinkedCareContexts,
                 new[] {Match.ConsentManagerUserId.ToString()});
         }
     }

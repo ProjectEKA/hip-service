@@ -12,29 +12,47 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
     using In.ProjectEKA.HipService.Link.Model;
     using In.ProjectEKA.HipServiceTest.Link.Builder;
     using Moq;
+    using Optional;
     using Xunit;
     using Match = HipLibrary.Patient.Model.Match;
 
     public class PatientDiscoveryTest
     {
+        private readonly Patient testPatient =
+            new Patient
+            {
+                PhoneNumber = "+91666666666666",
+                Identifier = "1",
+                FirstName = "John",
+                LastName = "Doee",
+                Gender = TestBuilder.Faker().Random.Word(),
+                CareContexts = new List<CareContextRepresentation>
+                {
+                    new CareContextRepresentation("123", "National Cancer program"),
+                    new CareContextRepresentation("124", "National TB program")
+                }
+            };
         private readonly Mock<IDiscoveryRequestRepository> discoveryRequestRepository =
             new Mock<IDiscoveryRequestRepository>();
         private readonly Mock<ILinkPatientRepository> linkPatientRepository = new Mock<ILinkPatientRepository>();
         private readonly Mock<IMatchingRepository> matchingRepository = new Mock<IMatchingRepository>();
+        private readonly Mock<IPatientRepository> patientRepository = new Mock<IPatientRepository>();
 
         [Fact]
         private async void ShouldReturnPatient()
         {
-            var patientDiscovery =
-                new PatientDiscovery(matchingRepository.Object, discoveryRequestRepository.Object, linkPatientRepository.Object);
+            var patientDiscovery = new PatientDiscovery(
+                    matchingRepository.Object,
+                    discoveryRequestRepository.Object,
+                    linkPatientRepository.Object,
+                    patientRepository.Object);
             var expectedPatient = new PatientEnquiryRepresentation("1", "John Doee",
                 new List<CareContextRepresentation>
                 {
                     new CareContextRepresentation("124", "National TB program")
                 }, new List<string>
                 {
-                    Match.FirstName.ToString(),
-                    Match.Gender.ToString()
+                    Match.ConsentManagerUserId.ToString(),
                 });
             var verifiedIdentifiers = new List<Identifier>
             {
@@ -58,6 +76,8 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
 
             linkPatientRepository.Setup(e => e.GetLinkedCareContexts(patientId))
                 .ReturnsAsync(new Tuple<LinkRequest, Exception>(testLinkRequest, null));
+            patientRepository.Setup(x => x.PatientWith(testPatient.Identifier))
+                .Returns(Option.Some(testPatient));
             matchingRepository
                 .Setup(repo => repo.Where(discoveryRequest))
                 .Returns(Task.FromResult(new List<HipLibrary.Patient.Model.Patient>
@@ -82,14 +102,18 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             discoveryRequestRepository.Verify(
                 x => x.Add(It.Is<HipService.Discovery.Model.DiscoveryRequest>(
                     r => r.TransactionId == transactionId
-                         && r.ConsentManagerUserId == patientId)), Times.Once);
+                         && r.ConsentManagerUserId == patientId)), Times.Never);
             error.Should().BeNull();
         }
 
         [Fact]
         private async void ShouldGetMultiplePatientsFoundError()
         {
-            var patientDiscovery = new PatientDiscovery(matchingRepository.Object, discoveryRequestRepository.Object, linkPatientRepository.Object);
+            var patientDiscovery = new PatientDiscovery(
+                matchingRepository.Object,
+                discoveryRequestRepository.Object,
+                linkPatientRepository.Object,
+                patientRepository.Object);
             var expectedError =
                 new ErrorRepresentation(new Error(ErrorCode.MultiplePatientsFound, "Multiple patients found"));
             var verifiedIdentifiers = new List<Identifier>
@@ -120,16 +144,23 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
         [Fact]
         private async void ShouldGetNoPatientFoundError()
         {
-            var patientDiscovery = new PatientDiscovery(matchingRepository.Object, discoveryRequestRepository.Object, linkPatientRepository.Object);
+            var patientDiscovery = new PatientDiscovery(
+                matchingRepository.Object,
+                discoveryRequestRepository.Object, 
+                linkPatientRepository.Object,
+                patientRepository.Object);
             var expectedError = new ErrorRepresentation(new Error(ErrorCode.NoPatientFound, "No patient found"));
             var verifiedIdentifiers = new List<Identifier>
             {
                 new Identifier(IdentifierType.MR, "311231231231")
             };
+            var patientId = "cm-1";
             var patientRequest = new PatientEnquiry("cm-1", verifiedIdentifiers,
                 new List<Identifier>(), null, null,
                 Gender.M, new DateTime(2019, 01, 01));
             var discoveryRequest = new DiscoveryRequest(patientRequest, "transaction-id-1");
+            linkPatientRepository.Setup(e => e.GetLinkedCareContexts(patientId))
+                .ReturnsAsync(new Tuple<LinkRequest, Exception>(null, null));
 
             var (discoveryResponse, error) = await patientDiscovery.PatientFor(discoveryRequest);
 

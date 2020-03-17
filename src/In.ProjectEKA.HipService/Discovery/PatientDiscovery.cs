@@ -42,13 +42,15 @@ namespace In.ProjectEKA.HipService.Discovery
 
             if (linkRequest != null)
             {
-                var patientWith = patientRepository.PatientWith(linkRequest.PatientReferenceNumber);
-                patientWith.Map(patient =>
-                {
-                    patient.CareContexts = GetUnlinkedCareContexts(linkRequest, patient);
-                    return new Tuple<DiscoveryRepresentation, ErrorRepresentation>(
-                        new DiscoveryRepresentation(patient.ToPatientEnquiryRepresentation()), null);
-                });
+                return patientRepository.PatientWith(linkRequest.PatientReferenceNumber)
+                    .Map(patient => new Tuple<DiscoveryRepresentation, ErrorRepresentation>(
+                        new DiscoveryRepresentation(patient.ToPatientEnquiryRepresentation(
+                            GetUnlinkedCareContexts(linkRequest, patient))),
+                        null)
+                    ).ValueOr(
+                        new Tuple<DiscoveryRepresentation, ErrorRepresentation>(
+                            null,
+                            new ErrorRepresentation(new Error(ErrorCode.NoPatientFound, ErrorMessage.NoPatientFound))));
             }
 
             var patients = await matchingRepository.Where(request);
@@ -61,7 +63,6 @@ namespace In.ProjectEKA.HipService.Discovery
 
             await discoveryRequestRepository.Add(new Model.DiscoveryRequest(request.TransactionId,
                 request.Patient.Id));
-
             return new Tuple<DiscoveryRepresentation, ErrorRepresentation>(
                 new DiscoveryRepresentation(patientEnquiryRepresentation), null);
         }
