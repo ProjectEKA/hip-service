@@ -86,5 +86,22 @@ namespace In.ProjectEKA.HipServiceTest.Link
             error.Should().NotBeNull();
             dbContext.Database.EnsureDeleted();
         }
+
+        [Fact]
+        private async void ShouldGetLinkedCareContexts()
+        {
+            var faker = TestBuilder.Faker();
+            var dbContext = PatientContext();
+            var linkPatientRepository = new LinkPatientRepository(dbContext);
+            var consentManagerUserId = faker.Random.Hash();
+            var (link, _) = await linkPatientRepository.SaveRequestWith(faker.Random.Hash(), faker.Random.Hash()
+                , consentManagerUserId, faker.Random.Hash(),
+                new[] {(faker.Random.Word())});
+            var (patientFor, _) = await linkPatientRepository.GetLinkedCareContexts(consentManagerUserId);
+
+            link.Should().BeEquivalentTo(patientFor);
+
+            dbContext.Database.EnsureDeleted();
+        }
     }
 }
