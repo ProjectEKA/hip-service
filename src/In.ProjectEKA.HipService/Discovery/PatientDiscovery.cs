@@ -42,15 +42,21 @@ namespace In.ProjectEKA.HipService.Discovery
 
             if (linkRequest != null)
             {
-                return patientRepository.PatientWith(linkRequest.PatientReferenceNumber)
-                    .Map(patient => new Tuple<DiscoveryRepresentation, ErrorRepresentation>(
-                        new DiscoveryRepresentation(patient.ToPatientEnquiryRepresentation(
-                            GetUnlinkedCareContexts(linkRequest, patient))),
-                        null)
-                    ).ValueOr(
-                        new Tuple<DiscoveryRepresentation, ErrorRepresentation>(
-                            null,
-                            new ErrorRepresentation(new Error(ErrorCode.NoPatientFound, ErrorMessage.NoPatientFound))));
+                return await patientRepository.PatientWith(linkRequest.PatientReferenceNumber)
+                    .Map(async patient =>
+                    {
+                        await discoveryRequestRepository.Add(new Model.DiscoveryRequest(request.TransactionId,
+                            request.Patient.Id));
+                        return new Tuple<DiscoveryRepresentation, ErrorRepresentation>(
+                            new DiscoveryRepresentation(patient.ToPatientEnquiryRepresentation(
+                                GetUnlinkedCareContexts(linkRequest, patient))),
+                            null);
+                    }).ValueOr(
+                        Task.FromResult(new Tuple<DiscoveryRepresentation, ErrorRepresentation>(
+                        null,
+                        new ErrorRepresentation(new Error(ErrorCode.NoPatientFound,
+                            ErrorMessage.NoPatientFound))))
+                        );
             }
 
             var patients = await matchingRepository.Where(request);

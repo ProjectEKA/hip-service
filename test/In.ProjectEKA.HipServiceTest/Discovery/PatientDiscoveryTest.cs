@@ -102,7 +102,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             discoveryRequestRepository.Verify(
                 x => x.Add(It.Is<HipService.Discovery.Model.DiscoveryRequest>(
                     r => r.TransactionId == transactionId
-                         && r.ConsentManagerUserId == patientId)), Times.Never);
+                         && r.ConsentManagerUserId == patientId)), Times.Once);
             error.Should().BeNull();
         }
 
