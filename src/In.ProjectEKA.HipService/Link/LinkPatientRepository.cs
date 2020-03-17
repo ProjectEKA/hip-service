@@ -62,5 +62,19 @@ namespace In.ProjectEKA.HipService.Link
                 return new Tuple<LinkRequest, Exception>(null, exception);
             }
         }
+        public async Task<Tuple<LinkRequest, Exception>> GetLinkedCareContexts(string consentManagerUserId)
+        {
+            try
+            {
+                var linkRequest = await linkPatientContext.LinkRequest.Include("CareContexts")
+                    .FirstOrDefaultAsync(request => request.ConsentManagerUserId.Equals(consentManagerUserId));
+                return new Tuple<LinkRequest, Exception>(linkRequest, null);
+            }
+            catch (Exception exception)
+            {
+                Log.Fatal(exception, exception.StackTrace);
+                return new Tuple<LinkRequest, Exception>(null, exception);
+            }
+        }
     }
 }
