@@ -8,10 +8,8 @@ info:
     diagnostic centres, clinics, medical device companies and other such entities 
     as may be identified by regulatory authorities from time to time.
 servers:
-  - url: https://localhost:8001
+  - url: https://ncg-dev.projecteka.in/hip
     description: Dev
-  - url: http://localhost:8000
-    description: local
 
 tags:
   - name: discovery

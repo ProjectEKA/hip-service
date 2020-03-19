@@ -30,10 +30,34 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Resources\dignosticReportWithMediaDicomFileAsUrl.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>dignosticReportWithMediaDicomFileAsUrl.json</Link>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\dignosticReportWithPresentedFormPdfFileAsUrl.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>dignosticReportWithPresentedFormPdfFileAsUrl.json</Link>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="Resources\patients.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <CopyToPublishDirectory>Always</CopyToPublishDirectory>
       <Link>patients.json</Link>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\diagnosticReportWithRadiologyImageInline.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>diagnosticReportWithRadiologyImageInline.json</Link>
     </Content>
   </ItemGroup>
 </Project>

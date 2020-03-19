@@ -29,12 +29,20 @@
     "dateOfBirth": "2019-12-05",
     "careContexts": [
       {
-        "referenceNumber": "125",
+        "referenceNumber": "Cancer-125",
         "display": "National Cancer program"
       },
       {
-        "referenceNumber": "126",
+        "referenceNumber": "TBAccount-126",
         "display": "National TB program"
+      },
+      {
+        "referenceNumber": "Cancer-111",
+        "display": "National Cancer program - Test2"
+      },
+      {
+        "referenceNumber": "Diabetes-11",
+        "display": "Diabetes Program"
       }
     ]
   },

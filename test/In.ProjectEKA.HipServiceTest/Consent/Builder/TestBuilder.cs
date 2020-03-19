@@ -18,7 +18,7 @@ namespace In.ProjectEKA.HipServiceTest.Consent.Builder
                 ConsentStatus.GRANTED);
         }
 
-        internal static Faker<ConsentArtefactBuilder> ConsentArtefact()
+        private static Faker<ConsentArtefactBuilder> ConsentArtefact()
         {
             return new Faker<ConsentArtefactBuilder>();
         }
