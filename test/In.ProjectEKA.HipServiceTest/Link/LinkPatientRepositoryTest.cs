@@ -5,6 +5,7 @@ using Xunit;
 namespace In.ProjectEKA.HipServiceTest.Link
 {
     using System;
+    using System.Linq;
     using Builder;
     using FluentAssertions;
     using HipService.Link;
@@ -99,7 +100,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
                 new[] {(faker.Random.Word())});
             var (patientFor, _) = await linkPatientRepository.GetLinkedCareContexts(consentManagerUserId);
 
-            link.Should().BeEquivalentTo(patientFor);
+            link.Should().BeEquivalentTo(patientFor.First());
 
             dbContext.Database.EnsureDeleted();
         }
