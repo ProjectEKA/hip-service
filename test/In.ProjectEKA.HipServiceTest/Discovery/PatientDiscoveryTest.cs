@@ -32,8 +32,10 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                     new CareContextRepresentation("124", "National TB program")
                 }
             };
+
         private readonly Mock<IDiscoveryRequestRepository> discoveryRequestRepository =
             new Mock<IDiscoveryRequestRepository>();
+
         private readonly Mock<ILinkPatientRepository> linkPatientRepository = new Mock<ILinkPatientRepository>();
         private readonly Mock<IMatchingRepository> matchingRepository = new Mock<IMatchingRepository>();
         private readonly Mock<IPatientRepository> patientRepository = new Mock<IPatientRepository>();
@@ -42,10 +44,10 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
         private async void ShouldReturnPatient()
         {
             var patientDiscovery = new PatientDiscovery(
-                    matchingRepository.Object,
-                    discoveryRequestRepository.Object,
-                    linkPatientRepository.Object,
-                    patientRepository.Object);
+                matchingRepository.Object,
+                discoveryRequestRepository.Object,
+                linkPatientRepository.Object,
+                patientRepository.Object);
             var expectedPatient = new PatientEnquiryRepresentation("1", "John Doee",
                 new List<CareContextRepresentation>
                 {
@@ -73,9 +75,11 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             var testLinkRequest = new LinkRequest("1", sessionId,
                 TestBuilder.Faker().Random.Hash(), TestBuilder.Faker().Random.Hash()
                 , It.IsAny<string>(), linkedCareContext);
+            var linkRequests = new List<LinkRequest>();
+            linkRequests.Add(testLinkRequest);
 
             linkPatientRepository.Setup(e => e.GetLinkedCareContexts(patientId))
-                .ReturnsAsync(new Tuple<LinkRequest, Exception>(testLinkRequest, null));
+                .ReturnsAsync(new Tuple<IEnumerable<LinkRequest>, Exception>(linkRequests, null));
             patientRepository.Setup(x => x.PatientWith(testPatient.Identifier))
                 .Returns(Option.Some(testPatient));
             matchingRepository
@@ -124,8 +128,9 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             var patientRequest = new PatientEnquiry(patientId, verifiedIdentifiers,
                 new List<Identifier>(), null, null, Gender.M, new DateTime(2019, 01, 01));
             var discoveryRequest = new DiscoveryRequest(patientRequest, "transaction-id-1");
+            var linkRequests = new List<LinkRequest>();
             linkPatientRepository.Setup(e => e.GetLinkedCareContexts(patientId))
-                .ReturnsAsync(new Tuple<LinkRequest, Exception>(null, null));
+                .ReturnsAsync(new Tuple<IEnumerable<LinkRequest>, Exception>(linkRequests, null));
             matchingRepository
                 .Setup(repo => repo.Where(discoveryRequest))
                 .Returns(Task.FromResult(new List<HipLibrary.Patient.Model.Patient>
@@ -146,7 +151,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
         {
             var patientDiscovery = new PatientDiscovery(
                 matchingRepository.Object,
-                discoveryRequestRepository.Object, 
+                discoveryRequestRepository.Object,
                 linkPatientRepository.Object,
                 patientRepository.Object);
             var expectedError = new ErrorRepresentation(new Error(ErrorCode.NoPatientFound, "No patient found"));
@@ -159,8 +164,9 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 new List<Identifier>(), null, null,
                 Gender.M, new DateTime(2019, 01, 01));
             var discoveryRequest = new DiscoveryRequest(patientRequest, "transaction-id-1");
+            var linkRequests = new List<LinkRequest>();
             linkPatientRepository.Setup(e => e.GetLinkedCareContexts(patientId))
-                .ReturnsAsync(new Tuple<LinkRequest, Exception>(null, null));
+                .ReturnsAsync(new Tuple<IEnumerable<LinkRequest>, Exception>(linkRequests, null));
 
             var (discoveryResponse, error) = await patientDiscovery.PatientFor(discoveryRequest);
 

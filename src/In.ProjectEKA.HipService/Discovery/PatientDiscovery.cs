@@ -32,7 +32,7 @@ namespace In.ProjectEKA.HipService.Discovery
 
         public async Task<Tuple<DiscoveryRepresentation, ErrorRepresentation>> PatientFor(DiscoveryRequest request)
         {
-            var (linkRequest, exception) = await linkPatientRepository.GetLinkedCareContexts(request.Patient.Id);
+            var (linkRequests, exception) = await linkPatientRepository.GetLinkedCareContexts(request.Patient.Id);
             if (exception != null)
             {
                 return new Tuple<DiscoveryRepresentation, ErrorRepresentation>(null,
@@ -40,23 +40,23 @@ namespace In.ProjectEKA.HipService.Discovery
                         "Failed to get Linked Care Contexts")));
             }
 
-            if (linkRequest != null)
+            if (HasAny(linkRequests))
             {
-                return await patientRepository.PatientWith(linkRequest.PatientReferenceNumber)
+                return await patientRepository.PatientWith(linkRequests.First().PatientReferenceNumber)
                     .Map(async patient =>
                     {
                         await discoveryRequestRepository.Add(new Model.DiscoveryRequest(request.TransactionId,
                             request.Patient.Id));
                         return new Tuple<DiscoveryRepresentation, ErrorRepresentation>(
                             new DiscoveryRepresentation(patient.ToPatientEnquiryRepresentation(
-                                GetUnlinkedCareContexts(linkRequest, patient))),
+                                GetUnlinkedCareContexts(linkRequests, patient))),
                             null);
                     }).ValueOr(
                         Task.FromResult(new Tuple<DiscoveryRepresentation, ErrorRepresentation>(
-                        null,
-                        new ErrorRepresentation(new Error(ErrorCode.NoPatientFound,
-                            ErrorMessage.NoPatientFound))))
-                        );
+                            null,
+                            new ErrorRepresentation(new Error(ErrorCode.NoPatientFound,
+                                ErrorMessage.NoPatientFound))))
+                    );
             }
 
             var patients = await matchingRepository.Where(request);
@@ -73,12 +73,22 @@ namespace In.ProjectEKA.HipService.Discovery
                 new DiscoveryRepresentation(patientEnquiryRepresentation), null);
         }
 
-        private static IEnumerable<CareContextRepresentation> GetUnlinkedCareContexts(LinkRequest linkRequest,
+        private static bool HasAny(IEnumerable<LinkRequest> linkRequests)
+        {
+            return linkRequests.Any(linkRequest => true);
+        }
+
+        private static IEnumerable<CareContextRepresentation> GetUnlinkedCareContexts(
+            IEnumerable<LinkRequest> linkRequests,
             Patient patient)
         {
-            return patient.CareContexts.Where(careContext =>
-                linkRequest.CareContexts.Any(linkedCareContext =>
-                    !linkedCareContext.CareContextNumber.Equals(careContext.ReferenceNumber)));
+            var allLinkedCareContexts = linkRequests
+                .SelectMany(linkRequest => linkRequest.CareContexts)
+                .ToList();
+            return patient.CareContexts
+                .Where(careContext =>
+                    allLinkedCareContexts.Find(linkedCareContext =>
+                        linkedCareContext.CareContextNumber == careContext.ReferenceNumber) == null);
         }
     }
 }
