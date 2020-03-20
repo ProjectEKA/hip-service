@@ -21,7 +21,7 @@ namespace In.ProjectEKA.DefaultHipTest.DataFlow
             var entries = await collect.CollectData(dataRequest);
 
             var bundles = entries.Map(s => s.Bundles);
-            bundles.ValueOrDefault().Count().Should().Be(1);
+            bundles.ValueOrDefault().Count().Should().Be(3);
         }
     }
 }
