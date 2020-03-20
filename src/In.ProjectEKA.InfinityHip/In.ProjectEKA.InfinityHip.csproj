@@ -60,4 +60,13 @@
       <Link>diagnosticReportWithRadiologyImageInline.json</Link>
     </Content>
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\ShriyaInfinitySecondVisitDiagnositicReports.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>ShriyaInfinitySecondVisitDiagnositicReports.json</Link>
+    </Content>
+  </ItemGroup>
+  
 </Project>
