@@ -59,4 +59,40 @@
       <Link>diagnosticReportWithRadiologyImageInline.json</Link>
     </Content>
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\ShriyaTMHFirstVisitConditionAndObs.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>ShriyaTMHFirstVisitConditionAndObs.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\ShriyaTMHFirstVisitDiagnosticReport.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>ShriyaTMHFirstVisitDiagnosticReport.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\ShriyaTMHThirdVisitDiagnosticReports.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>ShriyaTMHThirdVisitDiagnosticReports.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\ShriyaTMHThirdVisitMedication.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>ShriyaTMHThirdVisitMedication.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\ShriyaTMHThirdVisitObsWithRef.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>ShriyaTMHThirdVisitObsWithRef.json</Link>
+    </Content>
+  </ItemGroup>
 </Project>
