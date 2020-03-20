@@ -5,23 +5,31 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
 
     public class HiTypeDataMap
     {
-        private static readonly List<string> ObsList 
-            = new List<string> { 
+        private static readonly List<string> ObsList
+            = new List<string>
+            {
                 "observation.json",
                 "ShriyaTMHFirstVisitConditionAndObs.json",
                 "ShriyaTMHThirdVisitObsWithRef.json"
             };
-        private static readonly List<string> DiagnosticReportList 
-            = new List<string> { 
-                "diagnosticReport.json", 
+
+        private static readonly List<string> DiagnosticReportList
+            = new List<string>
+            {
+                "diagnosticReport.json",
                 "diagnosticReportWithRadiologyImageInline.json",
+                "dignosticReportWithMediaDicomFileAsUrl.json",
+                "dignosticReportWithPresentedFormPdfFileAsUrl.json",
                 "ShriyaTMHFirstVisitDiagnosticReport.json",
                 "ShriyaTMHThirdVisitDiagnosticReports.json"
             };
+
         private static readonly List<string> MedicationRequestList
-            = new List<string> {
+            = new List<string>
+            {
                 "ShriyaTMHThirdVisitMedication.json"
             };
+
         private static readonly Dictionary<HiType, List<string>> Map =
             new Dictionary<HiType, List<string>>
             {

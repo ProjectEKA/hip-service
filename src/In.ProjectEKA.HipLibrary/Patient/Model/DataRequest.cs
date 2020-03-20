@@ -1,6 +1,7 @@
 namespace In.ProjectEKA.HipLibrary.Patient.Model
 {
     using System.Collections.Generic;
+    using System.Linq;
 
     public class DataRequest
     {
@@ -25,5 +26,13 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
         public IEnumerable<HiType> HiType { get; }
         public string TransactionId { get; }
         public KeyMaterial KeyMaterial { get; }
+
+        public override string ToString()
+        {
+            var hiTypes = HiType
+                .Select(hitype => hitype.ToString())
+                .Aggregate("", (source, value) => source + " " + value);
+            return $"Data Request with {hiTypes}";
+        }
     }
 }

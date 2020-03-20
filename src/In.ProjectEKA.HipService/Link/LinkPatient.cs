@@ -131,9 +131,6 @@ namespace In.ProjectEKA.HipService.Link
                     (null, new ErrorRepresentation(new Error(ErrorCode.NoLinkRequestFound, ErrorMessage.NoLinkRequestFound)));
             }
 
-            if (await patientVerification.Verify(request.LinkReferenceNumber, request.Token) != null)
-                return new Tuple<PatientLinkConfirmationRepresentation, ErrorRepresentation>
-                    (null, new ErrorRepresentation(new Error(ErrorCode.OtpInValid, "Otp Invalid")));
             return patientRepository.PatientWith(linkRequest.PatientReferenceNumber)
                 .Map(patient =>
                 {
