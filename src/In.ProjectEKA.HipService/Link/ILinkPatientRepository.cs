@@ -15,5 +15,7 @@ namespace In.ProjectEKA.HipService.Link
             IEnumerable<string> careContextReferenceNumbers);
 
         Task<Tuple<LinkRequest, Exception>> GetPatientFor(string linkReferenceNumber);
+
+        Task<Tuple<IEnumerable<LinkRequest>, Exception>> GetLinkedCareContexts(string consentManagerUserId);
     }
 }

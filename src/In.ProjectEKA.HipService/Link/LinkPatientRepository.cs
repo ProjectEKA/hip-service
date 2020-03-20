@@ -33,7 +33,7 @@ namespace In.ProjectEKA.HipService.Link
                 linkReferenceNumber,
                 consentManagerId,
                 consentManagerUserId,
-                dateTimeStamp, 
+                dateTimeStamp,
                 linkedCareContexts);
             try
             {
@@ -60,6 +60,21 @@ namespace In.ProjectEKA.HipService.Link
             {
                 Log.Fatal(exception, exception.StackTrace);
                 return new Tuple<LinkRequest, Exception>(null, exception);
+            }
+        }
+
+        public async Task<Tuple<IEnumerable<LinkRequest>, Exception>> GetLinkedCareContexts(string consentManagerUserId)
+        {
+            try
+            {
+                var linkRequest = await linkPatientContext.LinkRequest.Include("CareContexts")
+                    .Where(request => request.ConsentManagerUserId.Equals(consentManagerUserId)).ToListAsync();
+                return new Tuple<IEnumerable<LinkRequest>, Exception>(linkRequest, null);
+            }
+            catch (Exception exception)
+            {
+                Log.Fatal(exception, exception.StackTrace);
+                return new Tuple<IEnumerable<LinkRequest>, Exception>(null, exception);
             }
         }
     }

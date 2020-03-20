@@ -2,29 +2,36 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
 {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
-    using Builder;
-    using HipLibrary.Patient;
-    using HipLibrary.Patient.Model;
-    using Hl7.Fhir.Model;
     using In.ProjectEKA.HipService.DataFlow;
+    using Builder;
     using Moq;
     using Moq.Protected;
-    using Optional;
     using Xunit;
-    using Task = System.Threading.Tasks.Task;
 
-    [Collection("Queue Listener Tests")]
+    [Collection("Data Flow Client Tests")]
     public class DataFlowClientTest
     {
         [Fact]
-        private async Task ShouldReturnDataComponent()
+        private void ShouldReturnDataComponent()
         {
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
-            var collect = new Mock<ICollect>();
+            var httpClient = new HttpClient(handlerMock.Object);
+            var dataRequest = TestBuilder.DataRequest(TestBuilder.Faker().Random.Hash());
+            var content = TestBuilder.Faker().Random.String();
+            var checksum = TestBuilder.Faker().Random.Hash();
+            var entries = new List<Entry>
+                {
+                    new Entry(content, "application/json", checksum, null)
+                }
+                .AsEnumerable();
+            var expectedUri = new Uri("http://callback/data/notification");
+            var dataFlowClient = new DataFlowClient(httpClient);
+
             handlerMock
                 .Protected()
                 .Setup<Task<HttpResponseMessage>>(
@@ -37,16 +44,9 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                     StatusCode = HttpStatusCode.OK
                 })
                 .Verifiable();
-            var httpClient = new HttpClient(handlerMock.Object);
-            var dataRequest = TestBuilder.DataRequest(TestBuilder.Faker().Random.Hash());
-            collect.Setup(iCollect => iCollect.CollectData(dataRequest))
-                .ReturnsAsync(Option.Some(new Entries(new List<Bundle>())));
-            var dataFlowClient = new DataFlowClient(collect.Object,
-                httpClient);
 
-            await dataFlowClient.HandleMessagingQueueResult(dataRequest);
+            dataFlowClient.SendDataToHiu(dataRequest, entries, null);
 
-            var expectedUri = new Uri("http://callback/data/notification");
             handlerMock.Protected().Verify(
                 "SendAsync",
                 Times.Exactly(1),

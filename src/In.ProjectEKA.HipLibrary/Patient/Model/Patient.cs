@@ -1,6 +1,7 @@
 namespace In.ProjectEKA.HipLibrary.Patient.Model
 {
     using System.Collections.Generic;
+    using System.Runtime.Serialization;
 
     public class Patient
     {
@@ -15,5 +16,15 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
         public string LastName { get; set; }
 
         public IEnumerable<CareContextRepresentation> CareContexts { get; set; }
+
+        public PatientEnquiryRepresentation ToPatientEnquiryRepresentation(
+            IEnumerable<CareContextRepresentation> unlinkedCareContexts)
+        {
+            return new PatientEnquiryRepresentation(
+                Identifier,
+                FirstName + " " + LastName,
+                unlinkedCareContexts,
+                new[] {Match.ConsentManagerUserId.ToString()});
+        }
     }
 }

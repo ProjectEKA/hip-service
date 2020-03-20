@@ -12,13 +12,15 @@ namespace In.ProjectEKA.HipService.DataFlow
 
     public class MessagingQueueListener : BackgroundService
     {
-        private readonly DataFlowClient dataFlowClient;
+        private readonly DataFlowMessageHandler dataFlowMessageHandler;
         private readonly DefaultObjectPool<IModel> objectPool;
         private IModel channel;
 
-        public MessagingQueueListener(IPooledObjectPolicy<IModel> objectPolicy, DataFlowClient dataFlowClient)
+        public MessagingQueueListener(
+            IPooledObjectPolicy<IModel> objectPolicy,
+            DataFlowMessageHandler dataFlowMessageHandler)
         {
-            this.dataFlowClient = dataFlowClient;
+            this.dataFlowMessageHandler = dataFlowMessageHandler;
             objectPool = new DefaultObjectPool<IModel>(objectPolicy, Environment.ProcessorCount * 2);
             SetupMessagingQueue();
         }
@@ -51,7 +53,7 @@ namespace In.ProjectEKA.HipService.DataFlow
                 var message = Encoding.UTF8.GetString(body);
                 var dataFlowMessage =
                     JsonConvert.DeserializeObject<HipLibrary.Patient.Model.DataRequest>(message);
-                await dataFlowClient.HandleMessagingQueueResult(dataFlowMessage);
+                await dataFlowMessageHandler.HandleDataFlowMessage(dataFlowMessage);
                 channel.BasicAck(ea.DeliveryTag, false);
             };
             channel.BasicConsume(MessagingQueueConstants.DataRequestRoutingKey, false, consumer);

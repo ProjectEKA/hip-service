@@ -2,10 +2,11 @@
 {
     using System;
     using System.Threading.Tasks;
-    using HipLibrary.Patient;
     using HipLibrary.Patient.Model;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
+    [Authorize]
     [Route("patients/discover/")]
     [ApiController]
     public class DiscoveryController : Controller

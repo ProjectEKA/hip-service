@@ -1,35 +1,40 @@
 namespace In.ProjectEKA.OtpService.Otp
 {
     using System.Threading.Tasks;
+    using Common;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-    
+
     [Route("otp")]
     [ApiController]
-    public class OtpController: Controller
+    public class OtpController : Controller
     {
-        private readonly IOtpService otpService;
+        private readonly OtpSenderFactory otpSenderFactory;
+        private readonly OtpVerifier otpVerifier;
 
-        public OtpController(IOtpService otpService)
+        public OtpController(OtpSenderFactory otpSenderFactory, OtpVerifier otpVerifier)
         {
-            this.otpService = otpService;
+            this.otpSenderFactory = otpSenderFactory;
+            this.otpVerifier = otpVerifier;
         }
 
         [HttpPost]
         public async Task<ActionResult> GenerateOtp([FromBody] OtpGenerationRequest request)
         {
+            var otpService = otpSenderFactory.ServiceFor(request?.Communication?.Value);
             var generateOtp = await otpService.GenerateOtp(request);
-            return ReturnServerResponse(generateOtp);
+            return ResultFrom(generateOtp);
         }
 
         [HttpPost("{sessionId}/verify")]
-        public async Task<ActionResult> VerifyOtp([FromRoute] string sessionId, [FromBody] OtpVerificationRequest request)
+        public async Task<ActionResult> VerifyOtp([FromRoute] string sessionId,
+            [FromBody] OtpVerificationRequest request)
         {
-            var verifyOtp = await otpService.CheckOtpValue(sessionId, request.Value);
-            return ReturnServerResponse(verifyOtp);
+            var verifyOtp = await otpVerifier.CheckOtpValue(sessionId, request.Value);
+            return ResultFrom(verifyOtp);
         }
 
-        private ActionResult ReturnServerResponse(OtpResponse otpResponse)
+        private ActionResult ResultFrom(Response otpResponse)
         {
             return otpResponse.ResponseType switch
             {

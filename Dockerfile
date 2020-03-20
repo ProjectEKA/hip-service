@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1.100 AS build-env
 WORKDIR /app
 
 # Copy csproj and restore as distinct layers
@@ -19,7 +19,7 @@ WORKDIR /app/src/In.ProjectEKA.HipService
 RUN dotnet publish -c Release -o /app
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
+FROM mcr.microsoft.com/dotnet/core/aspnet:3.1.2
 WORKDIR /app
 COPY --from=build-env /app .
 ENTRYPOINT ["dotnet", "In.ProjectEKA.HipService.dll"]

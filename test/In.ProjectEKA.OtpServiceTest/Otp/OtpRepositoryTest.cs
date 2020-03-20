@@ -7,6 +7,8 @@ using Xunit;
 
 namespace In.ProjectEKA.OtpServiceTest.Otp
 {
+    using OtpService.Common;
+
     [Collection("Otp Repository Tests")]
     public class OtpRepositoryTest
     {
@@ -26,7 +28,7 @@ namespace In.ProjectEKA.OtpServiceTest.Otp
             var otpRepository = new OtpRepository(dbContext);
             var sessionId = faker.Random.Hash();
             var otpToken = faker.Random.Number().ToString();
-            var testOtpResponse = new OtpResponse(ResponseType.Success, "Otp Created");
+            var testOtpResponse = new Response(ResponseType.Success, "Otp Created");
             
             var response = await otpRepository.Save(otpToken, sessionId);
             
@@ -74,7 +76,7 @@ namespace In.ProjectEKA.OtpServiceTest.Otp
             var otpRepository = new OtpRepository(dbContext);
             var sessionId = TestBuilder.Faker().Random.Hash();
             var otpToken = TestBuilder.Faker().Random.Number().ToString();
-            var testOtpResponse = new OtpResponse(ResponseType.InternalServerError,"OtpGeneration Saving failed");
+            var testOtpResponse = new Response(ResponseType.InternalServerError,"OtpGeneration Saving failed");
 
             await otpRepository.Save(otpToken, sessionId);
             var response = await otpRepository.Save(otpToken, sessionId);
