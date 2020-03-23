@@ -76,7 +76,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
                     patientReferenceRequest.Patient.ConsentManagerId,
                     patientReferenceRequest.Patient.ConsentManagerUserId,
                     patientReferenceRequest.Patient.ReferenceNumber, new[] {programRefNo}))
-                .ReturnsAsync(new Tuple<LinkRequest, Exception>(null, null));
+                .ReturnsAsync(new Tuple<LinkEnquires, Exception>(null, null));
             patientRepository.Setup(x => x.PatientWith(testPatient.Identifier))
                 .Returns(Option.Some(testPatient));
 
@@ -157,7 +157,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
             patientVerification.Setup(e => e.Verify(sessionId, otpToken))
                 .ReturnsAsync((OtpMessage) null);
             linkRepository.Setup(e => e.GetPatientFor(sessionId))
-                .ReturnsAsync(new Tuple<LinkRequest, Exception>(null, new Exception()));
+                .ReturnsAsync(new Tuple<LinkEnquires, Exception>(null, new Exception()));
 
             var (_, error) = await linkPatient.VerifyAndLinkCareContext(patientLinkRequest);
 
@@ -172,16 +172,23 @@ namespace In.ProjectEKA.HipServiceTest.Link
             var sessionId = TestBuilder.Faker().Random.Hash();
             var otpToken = TestBuilder.Faker().Random.Number().ToString();
             var patientLinkRequest = new LinkConfirmationRequest(otpToken, sessionId);
-            ICollection<LinkedCareContext> linkedCareContext = new[] {new LinkedCareContext(programRefNo)};
-            var testLinkRequest = new LinkRequest(testPatient.Identifier, sessionId,
+            ICollection<CareContext> linkedCareContext = new[] {new CareContext(programRefNo)};
+            var testLinkRequest = new LinkEnquires(testPatient.Identifier, sessionId,
                 TestBuilder.Faker().Random.Hash(), TestBuilder.Faker().Random.Hash()
                 , It.IsAny<string>(), linkedCareContext);
+            var testLinkedAccounts = new LinkedAccounts(testLinkRequest.PatientReferenceNumber, testLinkRequest.LinkReferenceNumber,
+                testLinkRequest.ConsentManagerUserId, It.IsAny<string>(), new []{ programRefNo });
             patientVerification.Setup(e => e.Verify(sessionId, otpToken))
                 .ReturnsAsync((OtpMessage) null);
             linkRepository.Setup(e => e.GetPatientFor(sessionId))
-                .ReturnsAsync(new Tuple<LinkRequest, Exception>(testLinkRequest, null));
+                .ReturnsAsync(new Tuple<LinkEnquires, Exception>(testLinkRequest, null));
             patientRepository.Setup(x => x.PatientWith(testPatient.Identifier))
                 .Returns(Option.Some(testPatient));
+            linkRepository.Setup(x => x.Save(testLinkRequest.ConsentManagerUserId,
+                                                                         testLinkRequest.PatientReferenceNumber,
+                                                                         testLinkRequest.LinkReferenceNumber,
+                                                                         new[] {programRefNo}))
+                .ReturnsAsync(Option.Some(testLinkedAccounts));
             var expectedLinkResponse = new PatientLinkConfirmationRepresentation(
                 new LinkConfirmationRepresentation(
                     testPatient.Identifier,

@@ -32,7 +32,7 @@ namespace In.ProjectEKA.HipService.Discovery
 
         public async Task<Tuple<DiscoveryRepresentation, ErrorRepresentation>> PatientFor(DiscoveryRequest request)
         {
-            var (linkRequests, exception) = await linkPatientRepository.GetLinkedCareContexts(request.Patient.Id);
+            var (linkedAccounts, exception) = await linkPatientRepository.GetLinkedCareContexts(request.Patient.Id);
             if (exception != null)
             {
                 return new Tuple<DiscoveryRepresentation, ErrorRepresentation>(null,
@@ -40,16 +40,17 @@ namespace In.ProjectEKA.HipService.Discovery
                         "Failed to get Linked Care Contexts")));
             }
 
-            if (HasAny(linkRequests))
+            var linkedCareContexts = linkedAccounts.ToList();
+            if (HasAny(linkedCareContexts))
             {
-                return await patientRepository.PatientWith(linkRequests.First().PatientReferenceNumber)
+                return await patientRepository.PatientWith(linkedCareContexts.First().PatientReferenceNumber)
                     .Map(async patient =>
                     {
                         await discoveryRequestRepository.Add(new Model.DiscoveryRequest(request.TransactionId,
                             request.Patient.Id));
                         return new Tuple<DiscoveryRepresentation, ErrorRepresentation>(
                             new DiscoveryRepresentation(patient.ToPatientEnquiryRepresentation(
-                                GetUnlinkedCareContexts(linkRequests, patient))),
+                                GetUnlinkedCareContexts(linkedCareContexts, patient))),
                             null);
                     }).ValueOr(
                         Task.FromResult(new Tuple<DiscoveryRepresentation, ErrorRepresentation>(
@@ -73,13 +74,13 @@ namespace In.ProjectEKA.HipService.Discovery
                 new DiscoveryRepresentation(patientEnquiryRepresentation), null);
         }
 
-        private static bool HasAny(IEnumerable<LinkRequest> linkRequests)
+        private static bool HasAny(IEnumerable<LinkedAccounts> linkRequests)
         {
             return linkRequests.Any(linkRequest => true);
         }
 
         private static IEnumerable<CareContextRepresentation> GetUnlinkedCareContexts(
-            IEnumerable<LinkRequest> linkRequests,
+            IEnumerable<LinkedAccounts> linkRequests,
             Patient patient)
         {
             var allLinkedCareContexts = linkRequests
@@ -88,7 +89,7 @@ namespace In.ProjectEKA.HipService.Discovery
             return patient.CareContexts
                 .Where(careContext =>
                     allLinkedCareContexts.Find(linkedCareContext =>
-                        linkedCareContext.CareContextNumber == careContext.ReferenceNumber) == null);
+                        linkedCareContext == careContext.ReferenceNumber) == null);
         }
     }
 }

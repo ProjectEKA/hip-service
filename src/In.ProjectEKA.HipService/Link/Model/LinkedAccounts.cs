@@ -3,38 +3,34 @@ namespace In.ProjectEKA.HipService.Link.Model
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    public class LinkRequest
+    public class LinkedAccounts
     {
-        public LinkRequest()
+        public LinkedAccounts()
         {
         }
 
-        public LinkRequest(
+        public LinkedAccounts(
             string patientReferenceNumber,
             string linkReferenceNumber,
-            string consentManagerId,
             string consentManagerUserId,
             string dateTimeStamp,
-            ICollection<LinkedCareContext> careContexts)
+            IEnumerable<string> careContexts)
         {
             PatientReferenceNumber = patientReferenceNumber;
             LinkReferenceNumber = linkReferenceNumber;
-            ConsentManagerId = consentManagerId;
             ConsentManagerUserId = consentManagerUserId;
             DateTimeStamp = dateTimeStamp;
             CareContexts = careContexts;
         }
 
-        public string PatientReferenceNumber { get; set; }
+        public string ConsentManagerUserId { get; set; }
 
         [Key] public string LinkReferenceNumber { get; set; }
 
-        public string ConsentManagerId { get; set; }
-
-        public string ConsentManagerUserId { get; set; }
+        public string PatientReferenceNumber { get; set; }
         
         public string DateTimeStamp { get; set; }
 
-        public virtual ICollection<LinkedCareContext> CareContexts { get; set; }
+        public IEnumerable<string> CareContexts { get; set; }
     }
 }

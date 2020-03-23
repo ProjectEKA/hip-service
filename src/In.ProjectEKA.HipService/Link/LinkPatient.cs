@@ -1,14 +1,19 @@
 namespace In.ProjectEKA.HipService.Link
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using System.Transactions;
     using Discovery;
     using HipLibrary.Patient;
     using HipLibrary.Patient.Model;
+    using Hl7.Fhir.Model;
     using Logger;
     using Microsoft.Extensions.Options;
+    using Model;
+    using Patient = HipLibrary.Patient.Model.Patient;
+    using Task = System.Threading.Tasks.Task;
 
     public class LinkPatient : ILink
     {
@@ -122,7 +127,7 @@ namespace In.ProjectEKA.HipService.Link
                     (null, new ErrorRepresentation(new Error(ErrorCode.OtpInValid, verifyOtp.Message)));
             }
 
-            var (linkRequest, exception) =
+            var (linkEnquires, exception) =
                 await linkPatientRepository.GetPatientFor(request.LinkReferenceNumber);
 
             if (exception != null)
@@ -131,10 +136,10 @@ namespace In.ProjectEKA.HipService.Link
                     (null, new ErrorRepresentation(new Error(ErrorCode.NoLinkRequestFound, ErrorMessage.NoLinkRequestFound)));
             }
 
-            return patientRepository.PatientWith(linkRequest.PatientReferenceNumber)
-                .Map(patient =>
+            return await patientRepository.PatientWith(linkEnquires.PatientReferenceNumber)
+                .Map( async patient =>
                 {
-                    var representations = linkRequest.CareContexts
+                    var representations = linkEnquires.CareContexts
                         .Where(careContext =>
                             patient.CareContexts.Any(info => info.ReferenceNumber == careContext.CareContextNumber))
                         .Select(context => new CareContextRepresentation(context.CareContextNumber,
@@ -142,12 +147,28 @@ namespace In.ProjectEKA.HipService.Link
                                 .Display));
                     var patientLinkResponse = new PatientLinkConfirmationRepresentation(
                         new LinkConfirmationRepresentation(
-                            linkRequest.PatientReferenceNumber,
+                            linkEnquires.PatientReferenceNumber,
                             $"{patient.FirstName} {patient.LastName}",
                             representations));
-                    return new Tuple<PatientLinkConfirmationRepresentation, ErrorRepresentation>(patientLinkResponse, null);
-                }).ValueOr(new Tuple<PatientLinkConfirmationRepresentation, ErrorRepresentation>(null,
-                    new ErrorRepresentation(new Error(ErrorCode.CareContextNotFound, ErrorMessage.CareContextNotFound))));
+                    return await SaveLinkedAccounts(linkEnquires)
+                        ? new Tuple<PatientLinkConfirmationRepresentation, ErrorRepresentation>(patientLinkResponse,
+                            null)
+                        : new Tuple<PatientLinkConfirmationRepresentation, ErrorRepresentation>(null,
+                            new ErrorRepresentation(new Error(ErrorCode.ServerInternalError,
+                                ErrorMessage.InternalServerError)));
+                }).ValueOr( Task.FromResult(new Tuple<PatientLinkConfirmationRepresentation, ErrorRepresentation>(null,
+                    new ErrorRepresentation(new Error(ErrorCode.CareContextNotFound, ErrorMessage.CareContextNotFound)))));
+        }
+
+        private async Task<bool> SaveLinkedAccounts(LinkEnquires linkEnquires)
+        {
+            var linkedAccount = await linkPatientRepository.Save(
+                    linkEnquires.ConsentManagerUserId, 
+                    linkEnquires.PatientReferenceNumber, 
+                    linkEnquires.LinkReferenceNumber, 
+                    linkEnquires.CareContexts.Select(context => context.CareContextNumber).ToList())
+                .ConfigureAwait(false);
+            return linkedAccount.HasValue;
         }
     }
 }

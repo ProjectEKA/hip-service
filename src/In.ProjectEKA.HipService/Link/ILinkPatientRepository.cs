@@ -4,18 +4,25 @@ namespace In.ProjectEKA.HipService.Link
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Model;
+    using Optional;
 
     public interface ILinkPatientRepository
     {
-        Task<Tuple<LinkRequest, Exception>> SaveRequestWith(
+        Task<Tuple<LinkEnquires, Exception>> SaveRequestWith(
             string linkReferenceNumber,
             string consentManagerId,
             string consentManagerUserId,
             string patientReferenceNumber,
             IEnumerable<string> careContextReferenceNumbers);
 
-        Task<Tuple<LinkRequest, Exception>> GetPatientFor(string linkReferenceNumber);
+        Task<Tuple<LinkEnquires, Exception>> GetPatientFor(string linkReferenceNumber);
 
-        Task<Tuple<IEnumerable<LinkRequest>, Exception>> GetLinkedCareContexts(string consentManagerUserId);
+        Task<Option<LinkedAccounts>> Save(
+            string consentManagerUserId,
+            string patientReferenceNumber,
+            string linkReferenceNumber,
+            IEnumerable<string> careContextReferenceNumbers);
+
+        Task<Tuple<IEnumerable<LinkedAccounts>, Exception>> GetLinkedCareContexts(string consentManagerUserId);
     }
 }

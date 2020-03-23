@@ -71,15 +71,14 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             var discoveryRequest = new DiscoveryRequest(patientRequest, transactionId);
 
             var sessionId = TestBuilder.Faker().Random.Hash();
-            ICollection<LinkedCareContext> linkedCareContext = new[] {new LinkedCareContext("123")};
-            var testLinkRequest = new LinkRequest("1", sessionId,
-                TestBuilder.Faker().Random.Hash(), TestBuilder.Faker().Random.Hash()
+            ICollection<string> linkedCareContext = new[] {"123"};
+            var testLinkAccounts = new LinkedAccounts("1", sessionId, TestBuilder.Faker().Random.Hash()
                 , It.IsAny<string>(), linkedCareContext);
-            var linkRequests = new List<LinkRequest>();
-            linkRequests.Add(testLinkRequest);
+            var linkRequests = new List<LinkedAccounts>();
+            linkRequests.Add(testLinkAccounts);
 
             linkPatientRepository.Setup(e => e.GetLinkedCareContexts(patientId))
-                .ReturnsAsync(new Tuple<IEnumerable<LinkRequest>, Exception>(linkRequests, null));
+                .ReturnsAsync(new Tuple<IEnumerable<LinkedAccounts>, Exception>(linkRequests, null));
             patientRepository.Setup(x => x.PatientWith(testPatient.Identifier))
                 .Returns(Option.Some(testPatient));
             matchingRepository
@@ -128,9 +127,9 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             var patientRequest = new PatientEnquiry(patientId, verifiedIdentifiers,
                 new List<Identifier>(), null, null, Gender.M, new DateTime(2019, 01, 01));
             var discoveryRequest = new DiscoveryRequest(patientRequest, "transaction-id-1");
-            var linkRequests = new List<LinkRequest>();
+            var linkedAccounts = new List<LinkedAccounts>();
             linkPatientRepository.Setup(e => e.GetLinkedCareContexts(patientId))
-                .ReturnsAsync(new Tuple<IEnumerable<LinkRequest>, Exception>(linkRequests, null));
+                .ReturnsAsync(new Tuple<IEnumerable<LinkedAccounts>, Exception>(linkedAccounts, null));
             matchingRepository
                 .Setup(repo => repo.Where(discoveryRequest))
                 .Returns(Task.FromResult(new List<HipLibrary.Patient.Model.Patient>
@@ -164,9 +163,9 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 new List<Identifier>(), null, null,
                 Gender.M, new DateTime(2019, 01, 01));
             var discoveryRequest = new DiscoveryRequest(patientRequest, "transaction-id-1");
-            var linkRequests = new List<LinkRequest>();
+            var linkedAccounts = new List<LinkedAccounts>();
             linkPatientRepository.Setup(e => e.GetLinkedCareContexts(patientId))
-                .ReturnsAsync(new Tuple<IEnumerable<LinkRequest>, Exception>(linkRequests, null));
+                .ReturnsAsync(new Tuple<IEnumerable<LinkedAccounts>, Exception>(linkedAccounts, null));
 
             var (discoveryResponse, error) = await patientDiscovery.PatientFor(discoveryRequest);
 
