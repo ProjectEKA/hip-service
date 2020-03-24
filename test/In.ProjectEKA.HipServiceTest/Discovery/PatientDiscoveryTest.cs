@@ -73,7 +73,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             var sessionId = TestBuilder.Faker().Random.Hash();
             ICollection<string> linkedCareContext = new[] {"123"};
             var testLinkAccounts = new LinkedAccounts("1", sessionId, TestBuilder.Faker().Random.Hash()
-                , It.IsAny<string>(), linkedCareContext);
+                , It.IsAny<string>(), linkedCareContext.ToList());
             var linkRequests = new List<LinkedAccounts>();
             linkRequests.Add(testLinkAccounts);
 

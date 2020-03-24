@@ -39,7 +39,7 @@ namespace In.ProjectEKA.HipService.Link.Database
                 .HasConversion(
                     v => JsonConvert.SerializeObject(v,
                         new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore}),
-                    v => JsonConvert.DeserializeObject<IEnumerable<string>>(v,
+                    v => JsonConvert.DeserializeObject<List<string>>(v,
                         new JsonSerializerSettings {NullValueHandling = NullValueHandling.Ignore}));
         }
     }

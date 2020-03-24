@@ -14,7 +14,7 @@ namespace In.ProjectEKA.HipService.Link.Model
             string linkReferenceNumber,
             string consentManagerUserId,
             string dateTimeStamp,
-            IEnumerable<string> careContexts)
+            List<string> careContexts)
         {
             PatientReferenceNumber = patientReferenceNumber;
             LinkReferenceNumber = linkReferenceNumber;
@@ -31,6 +31,6 @@ namespace In.ProjectEKA.HipService.Link.Model
         
         public string DateTimeStamp { get; set; }
 
-        public IEnumerable<string> CareContexts { get; set; }
+        public List<string> CareContexts { get; set; }
     }
 }

@@ -72,7 +72,7 @@ namespace In.ProjectEKA.HipService.Link
                                                   linkReferenceNumber,
                                                   consentManagerUserId,
                                                   DateTime.Now.ToUniversalTime().ToString(Constants.DateTimeFormat), 
-                                                  careContextReferenceNumbers);
+                                                  careContextReferenceNumbers.ToList());
             try
             {
                 linkPatientContext.LinkedAccounts.Add(linkedAccounts);

@@ -74,17 +74,17 @@ namespace In.ProjectEKA.HipService.Discovery
                 new DiscoveryRepresentation(patientEnquiryRepresentation), null);
         }
 
-        private static bool HasAny(IEnumerable<LinkedAccounts> linkRequests)
+        private static bool HasAny(IEnumerable<LinkedAccounts> linkedAccounts)
         {
-            return linkRequests.Any(linkRequest => true);
+            return linkedAccounts.Any(account => true);
         }
 
         private static IEnumerable<CareContextRepresentation> GetUnlinkedCareContexts(
-            IEnumerable<LinkedAccounts> linkRequests,
+            IEnumerable<LinkedAccounts> linkedAccounts,
             Patient patient)
         {
-            var allLinkedCareContexts = linkRequests
-                .SelectMany(linkRequest => linkRequest.CareContexts)
+            var allLinkedCareContexts = linkedAccounts
+                .SelectMany(account => account.CareContexts)
                 .ToList();
             return patient.CareContexts
                 .Where(careContext =>

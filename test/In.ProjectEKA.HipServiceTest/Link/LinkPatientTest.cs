@@ -7,6 +7,7 @@ using Xunit;
 
 namespace In.ProjectEKA.HipServiceTest.Link
 {
+    using System.Linq;
     using Builder;
     using HipLibrary.Patient;
     using HipLibrary.Patient.Model;
@@ -177,7 +178,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
                 TestBuilder.Faker().Random.Hash(), TestBuilder.Faker().Random.Hash()
                 , It.IsAny<string>(), linkedCareContext);
             var testLinkedAccounts = new LinkedAccounts(testLinkRequest.PatientReferenceNumber, testLinkRequest.LinkReferenceNumber,
-                testLinkRequest.ConsentManagerUserId, It.IsAny<string>(), new []{ programRefNo });
+                testLinkRequest.ConsentManagerUserId, It.IsAny<string>(), new []{ programRefNo }.ToList());
             patientVerification.Setup(e => e.Verify(sessionId, otpToken))
                 .ReturnsAsync((OtpMessage) null);
             linkRepository.Setup(e => e.GetPatientFor(sessionId))
