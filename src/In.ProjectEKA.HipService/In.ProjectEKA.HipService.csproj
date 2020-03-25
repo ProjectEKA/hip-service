@@ -26,7 +26,7 @@
         <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
         <PackageReference Include="Serilog.Settings.AppSettings" Version="2.2.2" />
         <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.1-dev-00216" />
-        <PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="5.1.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="5.2.1" />
         <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="5.2.1" />
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="5.2.1" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.2" />
