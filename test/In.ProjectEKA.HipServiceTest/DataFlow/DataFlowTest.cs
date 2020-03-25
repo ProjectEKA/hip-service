@@ -86,7 +86,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
 
             errorRepresentation.Should().BeNull();
             healthInformationResponse.Should()
-                .BeEquivalentTo(new HealthInformationResponse(transactionId, healthInformation.Data));
+                .BeEquivalentTo(new HealthInformationResponse(transactionId, healthInformation.Data.Content));
         }
 
         [Fact]

@@ -3,12 +3,12 @@ namespace In.ProjectEKA.HipService.DataFlow
     public class HealthInformationResponse
     {
         public string TransactionId { get; }
-        public Entry Entry { get; }
+        public string Content { get; }
 
-        public HealthInformationResponse(string transactionId, Entry entry)
+        public HealthInformationResponse(string transactionId, string content)
         {
             TransactionId = transactionId;
-            Entry = entry;
+            Content = content;
         }
     }
 }

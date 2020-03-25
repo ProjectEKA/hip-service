@@ -79,8 +79,9 @@ namespace In.ProjectEKA.HipService.DataFlow
         private Entry StoreComponentAndGetLink(Entry componentEntry)
         {
             var linkId = Guid.NewGuid().ToString();
-            var linkEntry = LinkEntry(linkId);
-            StoreComponentEntry(linkId, componentEntry);
+            var token = Guid.NewGuid().ToString();
+            var linkEntry = LinkEntry(linkId, token);
+            StoreComponentEntry(linkId, componentEntry, token);
             return linkEntry;
         }
 
@@ -89,9 +90,9 @@ namespace In.ProjectEKA.HipService.DataFlow
             return new Entry(content, FhirMediaType, "MD5", link);
         }
 
-        private Entry LinkEntry(string linkId)
+        private Entry LinkEntry(string linkId, string token)
         {
-            var link = LinkFor(linkId);
+            var link = LinkFor(linkId, token);
             return EntryWith(null, link);
         }
 
@@ -111,18 +112,17 @@ namespace In.ProjectEKA.HipService.DataFlow
             return dataFlowConfiguration.Value.DataSizeLimitInMbs * MbInBytes;
         }
 
-        private Link LinkFor(string linkId)
+        private Link LinkFor(string linkId, string token)
         {
-            var link = $"{hipConfiguration.Value.Url}/health-information/{linkId}";
+            var link = $"{hipConfiguration.Value.Url}/health-information/{linkId}?token={token}";
             return new Link(link);
         }
 
-        private void StoreComponentEntry(string linkId, Entry entry)
+        private void StoreComponentEntry(string linkId, Entry entry, string token)
         {
             using var serviceScope = serviceScopeFactory.CreateScope();
             var healthInformationRepository = serviceScope.ServiceProvider.GetService<IHealthInformationRepository>();
 
-            var token = Guid.NewGuid().ToString();
             healthInformationRepository.Add(new HealthInformation(linkId, entry, DateTime.Now, token));
         }
     }

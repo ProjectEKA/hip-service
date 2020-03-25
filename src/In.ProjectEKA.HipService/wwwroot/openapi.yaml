@@ -284,6 +284,62 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+  /health-information/{informationId}:
+    post:
+      tags:
+        - data flow
+      summary: Health information link data request
+
+      description: >
+        Return data respective to the link
+      parameters:
+        - $ref: '#/components/parameters/InformationId'
+        - $ref: '#/components/parameters/Token'
+        - $ref: '#/components/parameters/TransactionId'
+      responses:
+        '200':
+          description: An Acknowledged data transfer request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthInformationRequestResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/HealthInformationRequestResponse'
+        '400':
+          description: >
+            **Causes:**
+              * Consent Artefact id not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: >
+            **Causes:**
+              * ConsentManagerId is not present
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: >
+            **Causes:**
+              * Downstream system(s) is down.
+              * Unhandled exceptions.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   '/consent/':
     post:
       tags:
@@ -307,6 +363,27 @@ components:
       in: path
       required: true
       description: Reference number for the link request made earlier.
+      schema:
+        $ref: '#/components/schemas/UuidSchema'
+    InformationId:
+      name: informationId
+      in: path
+      required: true
+      description: Information Id for which the link was created
+      schema:
+        $ref: '#/components/schemas/UuidSchema'
+    Token:
+      name: token
+      in: query
+      required: true
+      description: token that was generated for the link
+      schema:
+        $ref: '#/components/schemas/UuidSchema'
+    TransactionId:
+      name: transactionId
+      in: query
+      required: true
+      description: Data flow transaction id
       schema:
         $ref: '#/components/schemas/UuidSchema'
   schemas:
@@ -723,19 +800,19 @@ components:
           format: 32 byte string
           example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
     keyObject:
-        type: object
-        required:
-          - expiry
-          - parameters
-          - keyValue
-        properties:
-          expiry:
-            type: string
-            format: date-time
-          parameters:
-            type: string
-            format: string
-            example: Curve25519/32byte random key
-          keyValue:
-            type: string
-            format: string
+      type: object
+      required:
+        - expiry
+        - parameters
+        - keyValue
+      properties:
+        expiry:
+          type: string
+          format: date-time
+        parameters:
+          type: string
+          format: string
+          example: Curve25519/32byte random key
+        keyValue:
+          type: string
+          format: string

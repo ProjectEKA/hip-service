@@ -89,7 +89,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             if (IsLinkExpired(information.DateCreated)) return ErrorOf(ErrorResponse.LinkExpired);
 
             return new Tuple<HealthInformationResponse, ErrorRepresentation>(
-                new HealthInformationResponse(transactionId, information.Data), null);
+                new HealthInformationResponse(transactionId, information.Data.Content), null);
         }
 
         private bool IsLinkExpired(DateTime dateCreated)
