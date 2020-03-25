@@ -302,10 +302,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HealthInformationRequestResponse'
+                $ref: '#/components/schemas/HealthInformationLinkResponse'
             application/xml:
               schema:
-                $ref: '#/components/schemas/HealthInformationRequestResponse'
+                $ref: '#/components/schemas/HealthInformationLinkResponse'
         '400':
           description: >
             **Causes:**
@@ -620,7 +620,18 @@ components:
       properties:
         transactionId:
           type: string
-
+    HealthInformationLinkResponse:
+      type: object
+      required:
+        - transactionId
+        - content
+      properties:
+        transactionId:
+          $ref: '#/components/schemas/UuidSchema'
+        content:
+          type: string
+          description: Encrypted content
+          example: Encrypted content of data packaged in FHIR bundle
     consent:
       type: object
       required:
