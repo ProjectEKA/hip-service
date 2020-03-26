@@ -103,7 +103,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
 
         internal static HealthInformationResponse HealthInformationResponse(string transactionId)
         {
-            return new HealthInformationResponse(transactionId, Entry().Content);
+            return new HealthInformationResponse(Entry().Content);
         }
 
         internal static HipLibrary.Patient.Model.KeyMaterial KeyMaterialLib()

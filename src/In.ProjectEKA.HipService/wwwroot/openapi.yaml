@@ -253,7 +253,7 @@ paths:
         '400':
           description: >
             **Causes:**
-              * Consent Artefact id not found
+              * Bad request
           content:
             application/json:
               schema:
@@ -261,10 +261,10 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-        '401':
+        '403':
           description: >
             **Causes:**
-              * ConsentManagerId is not present
+              * Token is invalid or Link has expired
           content:
             application/json:
               schema:
