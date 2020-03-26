@@ -9,6 +9,6 @@ namespace In.ProjectEKA.HipService.Discovery
 
         Task Delete(string transactionId, string consentManagerUserId);
 
-        Task<bool> RequestExistsFor(string transactionId);
+        Task<bool> RequestExistsFor(string transactionId, string consentManagerUserId);
     }
 }
