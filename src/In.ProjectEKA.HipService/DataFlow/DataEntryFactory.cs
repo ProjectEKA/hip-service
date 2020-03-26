@@ -40,7 +40,7 @@ namespace In.ProjectEKA.HipService.DataFlow
         }
 
         public virtual Option<EncryptedEntries> Process(Entries entries,
-            HipLibrary.Patient.Model.KeyMaterial dataRequestKeyMaterial)
+            HipLibrary.Patient.Model.KeyMaterial dataRequestKeyMaterial, string transactionId)
         {
             var keyPair = EncryptorHelper.GenerateKeyPair(dataRequestKeyMaterial.Curve,
                 dataRequestKeyMaterial.CryptoAlg);
@@ -62,7 +62,7 @@ namespace In.ProjectEKA.HipService.DataFlow
                 encryptData.MatchSome(content =>
                 {
                     var entry = IsLinkable(content)
-                        ? StoreComponentAndGetLink(ComponentEntry(content))
+                        ? StoreComponentAndGetLink(ComponentEntry(content), transactionId)
                         : ComponentEntry(content);
                     processedEntries.Add(entry);
                 });
@@ -76,11 +76,11 @@ namespace In.ProjectEKA.HipService.DataFlow
             return Option.Some(new EncryptedEntries(processedEntries.AsEnumerable(), keyMaterial));
         }
 
-        private Entry StoreComponentAndGetLink(Entry componentEntry)
+        private Entry StoreComponentAndGetLink(Entry componentEntry, string transactionId)
         {
             var linkId = Guid.NewGuid().ToString();
             var token = Guid.NewGuid().ToString();
-            var linkEntry = LinkEntry(linkId, token);
+            var linkEntry = LinkEntry(linkId, token, transactionId);
             StoreComponentEntry(linkId, componentEntry, token);
             return linkEntry;
         }
@@ -90,9 +90,9 @@ namespace In.ProjectEKA.HipService.DataFlow
             return new Entry(content, FhirMediaType, "MD5", link);
         }
 
-        private Entry LinkEntry(string linkId, string token)
+        private Entry LinkEntry(string linkId, string token, string transactionId)
         {
-            var link = LinkFor(linkId, token);
+            var link = LinkFor(linkId, token, transactionId);
             return EntryWith(null, link);
         }
 
@@ -112,9 +112,10 @@ namespace In.ProjectEKA.HipService.DataFlow
             return dataFlowConfiguration.Value.DataSizeLimitInMbs * MbInBytes;
         }
 
-        private Link LinkFor(string linkId, string token)
+        private Link LinkFor(string linkId, string token, string transactionId)
         {
-            var link = $"{hipConfiguration.Value.Url}/health-information/{linkId}?token={token}";
+            var link = $"{hipConfiguration.Value.Url}/health-information/{linkId}" +
+                       $"?token={token}?transactionId={transactionId}";
             return new Link(link);
         }
 
