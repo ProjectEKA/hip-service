@@ -25,7 +25,7 @@ namespace In.ProjectEKA.HipService.DataFlow
 
             var data = await collect.CollectData(dataRequest);
             var encryptedEntries = data.FlatMap(entries =>
-                dataEntryFactory.Process(entries, sentKeyMaterial));
+                dataEntryFactory.Process(entries, sentKeyMaterial, dataRequest.TransactionId));
             encryptedEntries.MatchSome(entries =>
                 dataFlowClient.SendDataToHiu(dataRequest, entries.Entries, entries.KeyMaterial));
         }

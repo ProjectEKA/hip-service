@@ -23,7 +23,8 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var dataEntryFactory = new Mock<DataEntryFactory>();
             var dataFlowMessageHandler =
                 new DataFlowMessageHandler(collect.Object, dataFlowClient.Object, dataEntryFactory.Object);
-            var dataRequest = TestBuilder.DataRequest(TestBuilder.Faker().Random.Hash());
+            var transactionId = TestBuilder.Faker().Random.Uuid().ToString();
+            var dataRequest = TestBuilder.DataRequest(transactionId);
             var entries = new Entries(new List<Bundle> {new Bundle()});
             var data = Option.Some(entries);
             var content = TestBuilder.Faker().Random.String();
@@ -37,7 +38,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var keyMaterial = TestBuilder.KeyMaterial();
             var encryptedEntriesValue = new EncryptedEntries(entriesList.AsEnumerable(), keyMaterial);
             var encryptedEntries = Option.Some(encryptedEntriesValue);
-            dataEntryFactory.Setup(e => e.Process(entries, requestKeyMaterial))
+            dataEntryFactory.Setup(e => e.Process(entries, requestKeyMaterial, transactionId))
                 .Returns(encryptedEntries);
             dataFlowClient.Setup(c => c.SendDataToHiu(dataRequest,
                 encryptedEntriesValue.Entries, encryptedEntriesValue.KeyMaterial)).Verifiable();
