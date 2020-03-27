@@ -8,10 +8,6 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
     using In.ProjectEKA.HipService.DataFlow;
     using In.ProjectEKA.HipServiceTest.Common.Builder;
     using Consent = In.ProjectEKA.HipService.Consent.Model.Consent;
-    using DataRequestLib = HipLibrary.Patient.Model.DataRequest;
-    using GrantedContextLib = HipLibrary.Patient.Model.GrantedContext;
-    using HiDataRangeLib = HipLibrary.Patient.Model.HiDataRange;
-    using HiTypeLib = HipLibrary.Patient.Model.HiType;
     using KeyMaterialLib = HipLibrary.Patient.Model.KeyMaterial;
     using KeyStructureLib = HipLibrary.Patient.Model.KeyStructure;
     using GrantedContext = HipLibrary.Patient.Model.GrantedContext;
@@ -37,7 +33,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
                 new HiDataRange(faker.Random.Hash(), faker.Random.Hash()),
                 faker.Random.Hash(),
                 new KeyMaterial(faker.Random.Word(), faker.Random.Word(),
-                    new KeyStructure( expiry , "", faker.Random.Hash()),
+                    new KeyStructure(expiry, "", faker.Random.Hash()),
                     faker.Random.Hash()));
         }
 
@@ -50,7 +46,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
         {
             var grantedContexts = new List<GrantedContext>();
             var hiDataRange = new HipLibrary.Patient.Model.HiDataRange("from", "to");
-            var callBackUrl = "http://callback";
+            const string callBackUrl = "http://callback";
             var hiTypes = new List<HiType>();
             var keyMaterial = new KeyMaterialLib(faker.Random.Word(), faker.Random.Word(),
                 new KeyStructureLib("", "", faker.Random.Hash()),
@@ -69,25 +65,6 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
             );
         }
 
-        internal static DataRequestLib DataFlowRequest()
-        {
-            var fakerDataRequest = new Faker();
-            var dataRequest = new DataRequestLib(new[]
-                {
-                    new GrantedContextLib(fakerDataRequest.Random.Hash(),
-                        fakerDataRequest.Random.Hash())
-                },
-                new HiDataRangeLib(fakerDataRequest.Random.Word(),
-                    fakerDataRequest.Random.Word()),
-                "http://localhost:8003",
-                new[] {HiTypeLib.Condition},
-                fakerDataRequest.Random.Hash(),
-                new KeyMaterialLib(fakerDataRequest.Random.Word(), fakerDataRequest.Random.Word(),
-                    new KeyStructureLib(fakerDataRequest.Random.Word(), fakerDataRequest.Random.Word(),
-                        fakerDataRequest.Random.Hash()), fakerDataRequest.Random.Word()));
-            return dataRequest;
-        }
-
         internal static Entry Entry()
         {
             var content = Faker().Random.String();
@@ -95,6 +72,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
             var checksum = Faker().Random.Hash();
             return new Entry(content, media, checksum, null);
         }
+
         internal static HealthInformation HealthInformation(string token, DateTime dateTime)
         {
             var linkId = Faker().Random.Hash();
@@ -117,7 +95,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
         {
             return new KeyMaterial("ECDH", "curve25519",
                 new KeyStructure(Faker().Random.Word(), Faker().Random.Word(),
-                    Faker().Random.Words(32)), Faker().Random.Word()); 
+                    Faker().Random.Words(32)), Faker().Random.Word());
         }
     }
 }

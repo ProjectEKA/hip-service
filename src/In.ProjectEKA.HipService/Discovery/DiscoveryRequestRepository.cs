@@ -30,6 +30,13 @@ namespace In.ProjectEKA.HipService.Discovery
             await discoveryContext.SaveChangesAsync();
         }
 
+        public Task<bool> RequestExistsFor(string transactionId, string consentManagerUserId)
+        {
+            return discoveryContext.DiscoveryRequest
+                .AnyAsync(request => request.TransactionId == transactionId &&
+                                     request.ConsentManagerUserId == consentManagerUserId);
+        }
+
         public Task<bool> RequestExistsFor(string transactionId)
         {
             return discoveryContext.DiscoveryRequest
