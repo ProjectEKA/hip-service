@@ -1,0 +1,68 @@
+{
+	"resourceType": "Bundle",
+	"id": "978433cb-b975-4caf-a4f6-dc318b3d576f",
+	"type": "collection",
+	"entry": [
+        {
+			"fullUrl": "urn:uuid:526ee642-8bd1-4b5a-b588-c5b71150f2d5",
+			"resource": {
+				"resourceType": "DiagnosticReport",
+				"id": "526ee642-8bd1-4b5a-b588-c5b71150f2d5",
+				"status": "final",
+				"code": {
+					"text": "Abdominal Ultrasound"
+				},
+				"subject": {
+					"display": "Riyaz"
+				},
+				"effectiveDateTime": "2019-06-04T12:00:00+01:00",
+				"issued": "2019-06-04T12:00:00+01:00",
+				"performer": [{
+					"display": "Dr.Rajath"
+				}],
+				"imagingStudy": [{
+					"reference": "ImagingStudy/8f39db1a-ff0e-4bc1-9430-70053e3ee676"
+				}],
+				"conclusion": "NA"
+			}
+		},
+		{
+			"fullUrl": "urn:uuid:8f39db1a-ff0e-4bc1-9430-70053e3ee676",
+			"resource": {
+				"resourceType": "ImagingStudy",
+				"id": "8f39db1a-ff0e-4bc1-9430-70053e3ee676",
+				"text": {
+					"status": "generated",
+					"div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">CT Chest.  John Smith (MRN: 09236). Accession: W12342398. Performed: 2011-01-01. 3 series, 12 images.</div>"
+				},
+				"subject": {
+					"display": "Riyaz"
+				},
+				"status": "available",
+				"started": "2019-06-04T12:00:00+01:00",
+				"endpoint": [{
+					"reference": "Endpoint/04bce1e6-caba-4d83-85ef-ee29e7764360"
+				}]
+			}
+		},
+		{
+			"fullUrl": "urn:uuid:04bce1e6-caba-4d83-85ef-ee29e7764360",
+			"resource": {
+				"resourceType": "Endpoint",
+				"id": "04bce1e6-caba-4d83-85ef-ee29e7764360",
+				"status": "active",
+				"connectionType": {
+					"system": "http://terminology.hl7.org/CodeSystem/endpoint-connection-type",
+					"code": "dicom-wado-rs"
+				},
+				"payloadType": [{
+					"text": "DICOM WADO-RS"
+				}],
+				"payloadMimeType": [
+					"application/dicom"
+				],
+				"address": "https://server.dcmjs.org/dcm4chee-arc/aets/DCM4CHEE/rs/studies/1.2.840.113619.2.1.1.322987881.621.736170080.681"
+			}
+		}
+    ]
+}
