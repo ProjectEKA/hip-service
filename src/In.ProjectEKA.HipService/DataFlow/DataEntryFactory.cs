@@ -85,14 +85,14 @@ namespace In.ProjectEKA.HipService.DataFlow
             return linkEntry;
         }
 
-        private Entry EntryWith(string content, Link link)
+        private Entry EntryWith(string content, string link)
         {
             return new Entry(content, FhirMediaType, "MD5", link);
         }
 
         private Entry LinkEntry(string linkId, string token, string transactionId)
         {
-            var link = LinkFor(linkId, token, transactionId);
+            var link = $"{hipConfiguration.Value.Url}/health-information/{linkId}?token={token}";
             return EntryWith(null, link);
         }
 
@@ -110,13 +110,6 @@ namespace In.ProjectEKA.HipService.DataFlow
         private int DataSizeLimitInBytes()
         {
             return dataFlowConfiguration.Value.DataSizeLimitInMbs * MbInBytes;
-        }
-
-        private Link LinkFor(string linkId, string token, string transactionId)
-        {
-            var link = $"{hipConfiguration.Value.Url}/health-information/{linkId}" +
-                       $"?token={token}?transactionId={transactionId}";
-            return new Link(link);
         }
 
         private void StoreComponentEntry(string linkId, Entry entry, string token)

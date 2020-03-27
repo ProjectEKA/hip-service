@@ -91,7 +91,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                 foreach (var entry in dataEntries.Entries)
                 {
                     entry.Content.Should().BeNull();
-                    entry.Link.Href.Should().Contain("https://hip/health-information");
+                    entry.Link.Should().Contain("https://hip/health-information");
                 }
             });
         }
