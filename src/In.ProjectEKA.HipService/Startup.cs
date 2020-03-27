@@ -43,7 +43,6 @@ namespace In.ProjectEKA.HipService
         }
 
         private IConfiguration Configuration { get; }
-        private HttpClient HttpClient { get; }
 
         public void ConfigureServices(IServiceCollection services) =>
             services
@@ -85,6 +84,8 @@ namespace In.ProjectEKA.HipService
                 .AddHostedService<MessagingQueueListener>()
                 .AddScoped<IDataFlowRepository, DataFlowRepository>()
                 .AddScoped<IHealthInformationRepository, HealthInformationRepository>()
+                .AddSingleton(new CentralRegistryClient(HttpClient,
+                    Configuration.GetSection("authServer").Get<CentralRegistryConfiguration>()))
                 .AddTransient<IDataFlow, DataFlow.DataFlow>()
                 .AddRouting(options => options.LowercaseUrls = true)
                 .AddControllers()
@@ -105,7 +106,7 @@ namespace In.ProjectEKA.HipService
                 .AddJwtBearer(options =>
                 {
                     // Need to validate Audience and Issuer properly
-                    options.Authority = Configuration.GetValue<string>("authserver:url");
+                    options.Authority = Configuration.GetValue<string>("authServer:url");
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
@@ -134,6 +135,8 @@ namespace In.ProjectEKA.HipService
                         }
                     };
                 });
+
+        private HttpClient HttpClient { get; }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
