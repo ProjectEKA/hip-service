@@ -6,7 +6,7 @@ namespace In.ProjectEKA.HipService.Discovery
     using System.Threading.Tasks;
     using HipLibrary.Patient;
     using HipLibrary.Patient.Model;
-    using In.ProjectEKA.HipService.Link;
+    using Link;
     using In.ProjectEKA.HipService.Link.Model;
 
     public class PatientDiscovery : IDiscovery
@@ -32,6 +32,12 @@ namespace In.ProjectEKA.HipService.Discovery
 
         public async Task<Tuple<DiscoveryRepresentation, ErrorRepresentation>> PatientFor(DiscoveryRequest request)
         {
+            if (await AlreadyExists(request.TransactionId))
+            {
+                return new Tuple<DiscoveryRepresentation, ErrorRepresentation>(null,
+                    new ErrorRepresentation(new Error(ErrorCode.DuplicateDiscoveryRequest, "Request already exists")));
+            }
+
             var (linkRequests, exception) = await linkPatientRepository.GetLinkedCareContexts(request.Patient.Id);
             if (exception != null)
             {
@@ -71,6 +77,11 @@ namespace In.ProjectEKA.HipService.Discovery
                 request.Patient.Id));
             return new Tuple<DiscoveryRepresentation, ErrorRepresentation>(
                 new DiscoveryRepresentation(patientEnquiryRepresentation), null);
+        }
+
+        private async Task<bool> AlreadyExists(string transactionId)
+        {
+            return await discoveryRequestRepository.RequestExistsFor(transactionId);
         }
 
         private static bool HasAny(IEnumerable<LinkRequest> linkRequests)

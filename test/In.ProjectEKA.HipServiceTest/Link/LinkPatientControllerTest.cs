@@ -57,7 +57,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
                     )
                 ))
                 .ReturnsAsync(new Tuple<PatientLinkEnquiryRepresentation, ErrorRepresentation>(expectedResponse, null));
-            discoveryRequestRepository.Setup(x => x.RequestExistsFor(linkRequest.TransactionId))
+            discoveryRequestRepository.Setup(x => x.RequestExistsFor(linkRequest.TransactionId, consentManagerUserId))
                 .ReturnsAsync(true);
 
             var response =
@@ -122,11 +122,13 @@ namespace In.ProjectEKA.HipServiceTest.Link
                     )
                 ))
                 .ReturnsAsync(new Tuple<PatientLinkEnquiryRepresentation, ErrorRepresentation>(null, expectedError));
-            discoveryRequestRepository.Setup(x => x.RequestExistsFor(linkRequest.TransactionId))
+            discoveryRequestRepository.Setup(x => x.RequestExistsFor(linkRequest.TransactionId,
+                    linkRequest.Patient.ConsentManagerUserId))
                 .ReturnsAsync(true);
-            
-            var response = await linkPatientController.LinkPatientCareContexts(consentManagerId, linkRequest) as ObjectResult;
-            
+
+            var response =
+                await linkPatientController.LinkPatientCareContexts(consentManagerId, linkRequest) as ObjectResult;
+
             link.Verify();
             discoveryRequestRepository.Verify();
             response.StatusCode.Should().Be(StatusCodes.Status500InternalServerError);
@@ -150,11 +152,13 @@ namespace In.ProjectEKA.HipServiceTest.Link
                     )
                 ))
                 .ReturnsAsync(new Tuple<PatientLinkEnquiryRepresentation, ErrorRepresentation>(null, expectedError));
-            discoveryRequestRepository.Setup(x => x.RequestExistsFor(linkRequest.TransactionId))
+            discoveryRequestRepository.Setup(x => x.RequestExistsFor(linkRequest.TransactionId,
+                    linkRequest.Patient.ConsentManagerUserId))
                 .ReturnsAsync(true);
-            
-            var response = await linkPatientController.LinkPatientCareContexts(consentManagerId, linkRequest) as ObjectResult;
-            
+
+            var response =
+                await linkPatientController.LinkPatientCareContexts(consentManagerId, linkRequest) as ObjectResult;
+
             link.Verify();
             discoveryRequestRepository.Verify();
             response.StatusCode.Should().Be(StatusCodes.Status500InternalServerError);
@@ -178,7 +182,8 @@ namespace In.ProjectEKA.HipServiceTest.Link
                     )
                 ))
                 .ReturnsAsync(new Tuple<PatientLinkEnquiryRepresentation, ErrorRepresentation>(null, expectedError));
-            discoveryRequestRepository.Setup(x => x.RequestExistsFor(linkRequest.TransactionId))
+            discoveryRequestRepository.Setup(x => x.RequestExistsFor(linkRequest.TransactionId,
+                    linkRequest.Patient.ConsentManagerUserId))
                 .ReturnsAsync(true);
 
             var response = await linkPatientController.LinkPatientCareContexts(consentManagerId, linkRequest);
@@ -209,7 +214,8 @@ namespace In.ProjectEKA.HipServiceTest.Link
                     )
                 ))
                 .ReturnsAsync(new Tuple<PatientLinkEnquiryRepresentation, ErrorRepresentation>(null, expectedError));
-            discoveryRequestRepository.Setup(x => x.RequestExistsFor(linkRequest.TransactionId))
+            discoveryRequestRepository.Setup(x => x.RequestExistsFor(linkRequest.TransactionId,
+                    linkRequest.Patient.ConsentManagerUserId))
                 .ReturnsAsync(true);
 
             var response = await linkPatientController.LinkPatientCareContexts(consentManagerId, linkRequest);
@@ -240,7 +246,8 @@ namespace In.ProjectEKA.HipServiceTest.Link
                     )
                 ))
                 .ReturnsAsync(new Tuple<PatientLinkEnquiryRepresentation, ErrorRepresentation>(null, expectedError));
-            discoveryRequestRepository.Setup(x => x.RequestExistsFor(linkRequest.TransactionId))
+            discoveryRequestRepository.Setup(x => x.RequestExistsFor(linkRequest.TransactionId,
+                    linkRequest.Patient.ConsentManagerUserId))
                 .ReturnsAsync(true);
 
             var response = await linkPatientController.LinkPatientCareContexts(consentManagerId, linkRequest);
@@ -270,14 +277,17 @@ namespace In.ProjectEKA.HipServiceTest.Link
                         p.Patient.ConsentManagerUserId == linkRequest.Patient.ConsentManagerUserId &&
                         Equals(p.Patient.CareContexts, linkRequest.Patient.CareContexts))))
                 .ReturnsAsync(new Tuple<PatientLinkEnquiryRepresentation, ErrorRepresentation>(null, expectedError));
-            discoveryRequestRepository.Setup(x => x.RequestExistsFor(linkRequest.TransactionId))
+            discoveryRequestRepository.Setup(x => x.RequestExistsFor(linkRequest.TransactionId,
+                    linkRequest.Patient.ConsentManagerUserId))
                 .ReturnsAsync(false);
-            
-            var response = await linkPatientController.LinkPatientCareContexts(consentManagerId, linkRequest) as ObjectResult;
-            
+
+            var response =
+                await linkPatientController.LinkPatientCareContexts(consentManagerId, linkRequest) as ObjectResult;
+
             link.Verify();
             discoveryRequestRepository.Verify();
-            response.StatusCode.Should().Be(StatusCodes.Status404NotFound);
+            response.Should().NotBeNull().And.Subject.As<ObjectResult>()
+                .StatusCode.Should().Be(StatusCodes.Status404NotFound);
         }
     }
 }
