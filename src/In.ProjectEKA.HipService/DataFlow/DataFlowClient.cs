@@ -4,6 +4,7 @@ namespace In.ProjectEKA.HipService.DataFlow
     using System.Collections.Generic;
     using System.Net.Http;
     using System.Text;
+    using Common;
     using Logger;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
@@ -12,14 +13,12 @@ namespace In.ProjectEKA.HipService.DataFlow
     public class DataFlowClient
     {
         private readonly HttpClient httpClient;
+        private readonly CentralRegistryClient centralRegistryClient;
 
-        public DataFlowClient()
-        {
-        }
-
-        public DataFlowClient(HttpClient httpClient)
+        public DataFlowClient(HttpClient httpClient, CentralRegistryClient centralRegistryClient)
         {
             this.httpClient = httpClient;
+            this.centralRegistryClient = centralRegistryClient;
         }
 
         public virtual async void SendDataToHiu(HipLibrary.Patient.Model.DataRequest dataRequest,
@@ -33,22 +32,19 @@ namespace In.ProjectEKA.HipService.DataFlow
         {
             try
             {
-                await httpClient.SendAsync(CreateHttpRequest(callBackUrl, dataResponse))
-                    .ConfigureAwait(false);
+                var token = await centralRegistryClient.Authenticate();
+                token.MatchSome(async accessToken => await httpClient
+                    .SendAsync(CreateHttpRequest(callBackUrl, dataResponse, accessToken))
+                    .ConfigureAwait(false));
+                token.MatchNone(() => Log.Information("Did not post data to HIU"));
             }
             catch (Exception exception)
             {
-                Log.Fatal(exception, exception.StackTrace);
+                Log.Error(exception, exception.StackTrace);
             }
         }
 
-        private static string GetAuthToken()
-        {
-            // TODO : Should be fetched from central registry
-            return Convert.ToBase64String(Encoding.UTF8.GetBytes("AuthToken"));
-        }
-
-        private static HttpRequestMessage CreateHttpRequest<T>(string callBackUrl, T content)
+        private static HttpRequestMessage CreateHttpRequest<T>(string callBackUrl, T content, string token)
         {
             var json = JsonConvert.SerializeObject(content, new JsonSerializerSettings
             {
@@ -65,7 +61,7 @@ namespace In.ProjectEKA.HipService.DataFlow
                 Content = new StringContent(json, Encoding.UTF8, "application/json"),
                 Headers =
                 {
-                    {"Authorization", GetAuthToken()}
+                    {"Authorization", token}
                 }
             };
         }

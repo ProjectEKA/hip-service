@@ -2,9 +2,11 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net.Http;
     using Builder;
     using HipLibrary.Patient;
     using HipLibrary.Patient.Model;
+    using HipService.Common;
     using HipService.DataFlow;
     using Hl7.Fhir.Model;
     using Moq;
@@ -17,7 +19,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
         private void ShouldProcessMessage()
         {
             var collect = new Mock<ICollect>();
-            var dataFlowClient = new Mock<DataFlowClient>();
+            var dataFlowClient = new Mock<DataFlowClient>(MockBehavior.Strict, null, null);
             var dataEntryFactory = new Mock<DataEntryFactory>();
             var dataFlowMessageHandler =
                 new DataFlowMessageHandler(collect.Object, dataFlowClient.Object, dataEntryFactory.Object);
@@ -42,6 +44,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                 encryptedEntriesValue.Entries, encryptedEntriesValue.KeyMaterial)).Verifiable();
 
             dataFlowMessageHandler.HandleDataFlowMessage(dataRequest);
+
             collect.VerifyAll();
             dataEntryFactory.Verify();
         }

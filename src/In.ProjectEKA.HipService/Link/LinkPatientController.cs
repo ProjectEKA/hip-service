@@ -35,17 +35,18 @@ namespace In.ProjectEKA.HipService.Link
                 request.Patient.ConsentManagerUserId,
                 request.Patient.ReferenceNumber,
                 request.Patient.CareContexts);
-            var doesRequestExists = await discoveryRequestRepository.RequestExistsFor(request.TransactionId);
+            var doesRequestExists = await discoveryRequestRepository.RequestExistsFor(request.TransactionId,
+                request.Patient.ConsentManagerUserId);
             if (!doesRequestExists)
             {
-                return ReturnServerResponse(new ErrorRepresentation(
+                return ResponseFrom(new ErrorRepresentation(
                     new Error(ErrorCode.DiscoveryRequestNotFound, ErrorMessage.DiscoveryRequestNotFound)));
             }
 
             var patientReferenceRequest =
                 new PatientLinkEnquiry(request.TransactionId, patient);
             var (linkReferenceResponse, error) = await linkPatient.LinkPatients(patientReferenceRequest);
-            return error != null ? ReturnServerResponse(error) : Ok(linkReferenceResponse);
+            return error != null ? ResponseFrom(error) : Ok(linkReferenceResponse);
         }
 
         [HttpPost("{linkReferenceNumber}")]
@@ -56,10 +57,10 @@ namespace In.ProjectEKA.HipService.Link
             var (patientLinkResponse, error) = await linkPatient
                 .VerifyAndLinkCareContext(new LinkConfirmationRequest(patientLinkRequest.Token,
                     linkReferenceNumber));
-            return error != null ? ReturnServerResponse(error) : Ok(patientLinkResponse);
+            return error != null ? ResponseFrom(error) : Ok(patientLinkResponse);
         }
 
-        private ActionResult ReturnServerResponse(ErrorRepresentation errorResponse)
+        private ActionResult ResponseFrom(ErrorRepresentation errorResponse)
         {
             return errorResponse.Error.Code switch
             {

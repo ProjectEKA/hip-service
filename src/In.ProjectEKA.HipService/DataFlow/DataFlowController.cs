@@ -3,6 +3,7 @@ namespace In.ProjectEKA.HipService.DataFlow
     using System;
     using System.Threading.Tasks;
     using HipLibrary.Patient.Model;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
 
@@ -16,6 +17,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             this.dataFlow = dataFlow;
         }
 
+        [Authorize]
         [HttpPost]
         [Route("health-information/request")]
         public async Task<ActionResult> HealthInformationRequestFor(
