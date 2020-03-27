@@ -16,6 +16,7 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
         HealthInformationNotFound,
         LinkExpired,
         ExpiredKeyPair,
-        FailedToGetLinkedCareContexts
+        FailedToGetLinkedCareContexts,
+        DuplicateDiscoveryRequest
     }
 }

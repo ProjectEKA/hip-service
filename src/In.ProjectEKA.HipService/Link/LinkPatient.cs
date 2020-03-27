@@ -42,8 +42,9 @@ namespace In.ProjectEKA.HipService.Link
             if (error != null)
             {
                 Log.Error(error.Error.Message);
-                return new Tuple<PatientLinkEnquiryRepresentation, ErrorRepresentation>(null, error); 
+                return new Tuple<PatientLinkEnquiryRepresentation, ErrorRepresentation>(null, error);
             }
+
             var linkRefNumber = referenceNumberGenerator.NewGuid();
 
             using var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
@@ -64,6 +65,7 @@ namespace In.ProjectEKA.HipService.Link
                     new ErrorRepresentation(new Error(ErrorCode.ServerInternalError,
                         ErrorMessage.DatabaseStorageError)));
             }
+
             var session = new Session(
                 linkRefNumber,
                 new Communication(CommunicationMode.MOBILE, patient.PhoneNumber));
@@ -73,10 +75,11 @@ namespace In.ProjectEKA.HipService.Link
                 return new Tuple<PatientLinkEnquiryRepresentation, ErrorRepresentation>
                     (null, new ErrorRepresentation(new Error(ErrorCode.OtpGenerationFailed, otpGeneration.Message)));
             }
+
             await discoveryRequestRepository.Delete(request.TransactionId, request.Patient.ConsentManagerUserId)
                 .ConfigureAwait(false);
             scope.Complete();
-            
+
             var time = new TimeSpan(0, 0, otpService.Value.OffsetInMinutes, 0);
             var expiry = DateTime.Now.Add(time).ToUniversalTime().ToString(Constants.DateTimeFormat);
             var meta = new LinkReferenceMeta(nameof(CommunicationMode.MOBILE),
@@ -104,6 +107,7 @@ namespace In.ProjectEKA.HipService.Link
                         (null, new ErrorRepresentation(new Error(ErrorCode.CareContextNotFound,
                             ErrorMessage.CareContextNotFound)));
                     }
+
                     return new Tuple<Patient, ErrorRepresentation>(patient, null);
                 }).ValueOr(
                 new Tuple<Patient, ErrorRepresentation>(
@@ -114,8 +118,7 @@ namespace In.ProjectEKA.HipService.Link
         public async Task<Tuple<PatientLinkConfirmationRepresentation, ErrorRepresentation>> VerifyAndLinkCareContext(
             LinkConfirmationRequest request)
         {
-            var verifyOtp = await patientVerification.Verify(request.LinkReferenceNumber
-                , request.Token);
+            var verifyOtp = await patientVerification.Verify(request.LinkReferenceNumber, request.Token);
             if (verifyOtp != null)
             {
                 return new Tuple<PatientLinkConfirmationRepresentation, ErrorRepresentation>
@@ -128,7 +131,8 @@ namespace In.ProjectEKA.HipService.Link
             if (exception != null)
             {
                 return new Tuple<PatientLinkConfirmationRepresentation, ErrorRepresentation>
-                    (null, new ErrorRepresentation(new Error(ErrorCode.NoLinkRequestFound, ErrorMessage.NoLinkRequestFound)));
+                (null,
+                    new ErrorRepresentation(new Error(ErrorCode.NoLinkRequestFound, ErrorMessage.NoLinkRequestFound)));
             }
 
             return patientRepository.PatientWith(linkRequest.PatientReferenceNumber)
@@ -145,9 +149,11 @@ namespace In.ProjectEKA.HipService.Link
                             linkRequest.PatientReferenceNumber,
                             $"{patient.FirstName} {patient.LastName}",
                             representations));
-                    return new Tuple<PatientLinkConfirmationRepresentation, ErrorRepresentation>(patientLinkResponse, null);
+                    return new Tuple<PatientLinkConfirmationRepresentation, ErrorRepresentation>(patientLinkResponse,
+                        null);
                 }).ValueOr(new Tuple<PatientLinkConfirmationRepresentation, ErrorRepresentation>(null,
-                    new ErrorRepresentation(new Error(ErrorCode.CareContextNotFound, ErrorMessage.CareContextNotFound))));
+                    new ErrorRepresentation(new Error(ErrorCode.CareContextNotFound,
+                        ErrorMessage.CareContextNotFound))));
         }
     }
 }
