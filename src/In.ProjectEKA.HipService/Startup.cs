@@ -71,7 +71,6 @@ namespace In.ProjectEKA.HipService
                 .AddSingleton<IMatchingRepository>(new PatientMatchingRepository("patients.json"))
                 .AddScoped<IDiscoveryRequestRepository, DiscoveryRequestRepository>()
                 .AddScoped<PatientDiscovery>()
-                .AddTransient<IDiscovery, PatientDiscovery>()
                 .AddScoped<IReferenceNumberGenerator, ReferenceNumberGenerator>()
                 .AddTransient<ILink, LinkPatient>()
                 .AddSingleton(Configuration)
