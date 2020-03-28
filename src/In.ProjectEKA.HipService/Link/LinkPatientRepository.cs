@@ -18,7 +18,7 @@ namespace In.ProjectEKA.HipService.Link
             this.linkPatientContext = linkPatientContext;
         }
 
-        public async Task<Tuple<LinkRequest, Exception>> SaveRequestWith(
+        public async Task<ValueTuple<LinkRequest, Exception>> SaveRequestWith(
             string linkReferenceNumber,
             string consentManagerId,
             string consentManagerUserId,
@@ -39,42 +39,43 @@ namespace In.ProjectEKA.HipService.Link
             {
                 linkPatientContext.LinkRequest.Add(linkRequest);
                 await linkPatientContext.SaveChangesAsync();
-                return new Tuple<LinkRequest, Exception>(linkRequest, null);
+                return (linkRequest, null);
             }
             catch (Exception exception)
             {
                 Log.Fatal(exception, exception.StackTrace);
-                return new Tuple<LinkRequest, Exception>(null, exception);
+                return (null, exception);
             }
         }
 
-        public async Task<Tuple<LinkRequest, Exception>> GetPatientFor(string linkReferenceNumber)
+        public async Task<ValueTuple<LinkRequest, Exception>> GetPatientFor(string linkReferenceNumber)
         {
             try
             {
                 var linkRequest = await linkPatientContext.LinkRequest.Include("CareContexts")
                     .FirstAsync(request => request.LinkReferenceNumber == linkReferenceNumber);
-                return new Tuple<LinkRequest, Exception>(linkRequest, null);
+                return (linkRequest, null);
             }
             catch (Exception exception)
             {
                 Log.Fatal(exception, exception.StackTrace);
-                return new Tuple<LinkRequest, Exception>(null, exception);
+                return (null, exception);
             }
         }
 
-        public async Task<Tuple<IEnumerable<LinkRequest>, Exception>> GetLinkedCareContexts(string consentManagerUserId)
+        public async Task<ValueTuple<IEnumerable<LinkRequest>, Exception>> GetLinkedCareContexts(
+            string consentManagerUserId)
         {
             try
             {
                 var linkRequest = await linkPatientContext.LinkRequest.Include("CareContexts")
                     .Where(request => request.ConsentManagerUserId.Equals(consentManagerUserId)).ToListAsync();
-                return new Tuple<IEnumerable<LinkRequest>, Exception>(linkRequest, null);
+                return (linkRequest, null);
             }
             catch (Exception exception)
             {
                 Log.Fatal(exception, exception.StackTrace);
-                return new Tuple<IEnumerable<LinkRequest>, Exception>(null, exception);
+                return (null, exception);
             }
         }
     }

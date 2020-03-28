@@ -2,9 +2,9 @@ namespace In.ProjectEKA.HipService.Link
 {
     using System;
 
-    public class ReferenceNumberGenerator : IReferenceNumberGenerator
+    public class ReferenceNumberGenerator
     {
-        public string NewGuid()
+        public virtual string NewGuid()
         {
             return Guid.NewGuid().ToString();
         }

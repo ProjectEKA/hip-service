@@ -1,9 +1,7 @@
 namespace In.ProjectEKA.HipService.Link
 {
-    using System;
     using System.Threading.Tasks;
     using Discovery;
-    using HipLibrary.Patient;
     using HipLibrary.Patient.Model;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
@@ -14,11 +12,11 @@ namespace In.ProjectEKA.HipService.Link
     [Route("patients/link")]
     public class LinkPatientController : ControllerBase
     {
-        private readonly ILink linkPatient;
+        private readonly LinkPatient linkPatient;
         private readonly IDiscoveryRequestRepository discoveryRequestRepository;
 
         public LinkPatientController(
-            ILink linkPatient,
+            LinkPatient linkPatient,
             IDiscoveryRequestRepository discoveryRequestRepository)
         {
             this.linkPatient = linkPatient;
