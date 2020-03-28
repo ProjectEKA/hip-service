@@ -11,15 +11,16 @@ namespace In.ProjectEKA.HipService.Discovery
         {
             if (!patients.Any())
             {
-                return new ValueTuple<PatientEnquiryRepresentation, ErrorRepresentation>(null,
-                    new ErrorRepresentation(new Error(ErrorCode.NoPatientFound, "No patient found")));
+                return (null, new ErrorRepresentation(new Error(ErrorCode.NoPatientFound, "No patient found")));
             }
 
-            if (patients.Count() <= 1)
-                return new ValueTuple<PatientEnquiryRepresentation, ErrorRepresentation>(patients.First(), null);
-            var errorResponse =
-                new ErrorRepresentation(new Error(ErrorCode.MultiplePatientsFound, "Multiple patients found"));
-            return new ValueTuple<PatientEnquiryRepresentation, ErrorRepresentation>(null, errorResponse);
+            if (patients.Count() == 1)
+            {
+                return (patients.First(), null);
+            }
+
+            return (null,
+                new ErrorRepresentation(new Error(ErrorCode.MultiplePatientsFound, "Multiple patients found")));
         }
     }
 }
