@@ -52,7 +52,7 @@ namespace In.ProjectEKA.HipService.Discovery
                     .Map(async patient =>
                     {
                         await discoveryRequestRepository.Add(new Model.DiscoveryRequest(request.TransactionId,
-                            request.Patient.Id));
+                            request.Patient.Id, patient.Identifier));
                         return new Tuple<DiscoveryRepresentation, ErrorRepresentation>(
                             new DiscoveryRepresentation(patient.ToPatientEnquiryRepresentation(
                                 GetUnlinkedCareContexts(linkRequests, patient))),
@@ -74,7 +74,7 @@ namespace In.ProjectEKA.HipService.Discovery
             }
 
             await discoveryRequestRepository.Add(new Model.DiscoveryRequest(request.TransactionId,
-                request.Patient.Id));
+                request.Patient.Id, patientEnquiryRepresentation.ReferenceNumber));
             return new Tuple<DiscoveryRepresentation, ErrorRepresentation>(
                 new DiscoveryRepresentation(patientEnquiryRepresentation), null);
         }
