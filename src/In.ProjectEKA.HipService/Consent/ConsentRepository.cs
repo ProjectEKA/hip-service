@@ -20,6 +20,14 @@ namespace In.ProjectEKA.HipService.Consent
             await consentContext.SaveChangesAsync();
         }
 
+        public async Task UpdateAsync(Consent consent)
+        {
+            var consentArtefact = await consentContext.ConsentArtefact
+                .FirstOrDefaultAsync(c => c.ConsentArtefactId == consent.ConsentArtefactId);
+            consentArtefact.Status = consent.Status;
+            await consentContext.SaveChangesAsync();
+        }
+
         public async Task<Consent> GetFor(string consentArtefactId)
         {
             return await consentContext.ConsentArtefact

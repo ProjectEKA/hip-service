@@ -32,10 +32,9 @@ namespace In.ProjectEKA.HipService.DataFlow
         [Route("health-information/{informationId}")]
         public async Task<ActionResult> HealthInformation(
             [FromRoute] string informationId,
-            [FromQuery] string token,
-            [FromQuery] string transactionId)
+            [FromQuery] string token)
         {
-            var (healthInformation, error) = await dataFlow.HealthInformationFor(informationId, token, transactionId);
+            var (healthInformation, error) = await dataFlow.HealthInformationFor(informationId, token);
             return error != null ? ServerResponseFor(error) : Ok(healthInformation);
         }
 

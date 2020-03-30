@@ -40,7 +40,7 @@ namespace In.ProjectEKA.HipService.DataFlow
         }
 
         public virtual Option<EncryptedEntries> Process(Entries entries,
-            HipLibrary.Patient.Model.KeyMaterial dataRequestKeyMaterial)
+            HipLibrary.Patient.Model.KeyMaterial dataRequestKeyMaterial, string transactionId)
         {
             var keyPair = EncryptorHelper.GenerateKeyPair(dataRequestKeyMaterial.Curve,
                 dataRequestKeyMaterial.CryptoAlg);
@@ -62,7 +62,7 @@ namespace In.ProjectEKA.HipService.DataFlow
                 encryptData.MatchSome(content =>
                 {
                     var entry = IsLinkable(content)
-                        ? StoreComponentAndGetLink(ComponentEntry(content))
+                        ? StoreComponentAndGetLink(ComponentEntry(content), transactionId)
                         : ComponentEntry(content);
                     processedEntries.Add(entry);
                 });
@@ -76,22 +76,23 @@ namespace In.ProjectEKA.HipService.DataFlow
             return Option.Some(new EncryptedEntries(processedEntries.AsEnumerable(), keyMaterial));
         }
 
-        private Entry StoreComponentAndGetLink(Entry componentEntry)
+        private Entry StoreComponentAndGetLink(Entry componentEntry, string transactionId)
         {
             var linkId = Guid.NewGuid().ToString();
-            var linkEntry = LinkEntry(linkId);
-            StoreComponentEntry(linkId, componentEntry);
+            var token = Guid.NewGuid().ToString();
+            var linkEntry = LinkEntry(linkId, token, transactionId);
+            StoreComponentEntry(linkId, componentEntry, token);
             return linkEntry;
         }
 
-        private Entry EntryWith(string content, Link link)
+        private Entry EntryWith(string content, string link)
         {
             return new Entry(content, FhirMediaType, "MD5", link);
         }
 
-        private Entry LinkEntry(string linkId)
+        private Entry LinkEntry(string linkId, string token, string transactionId)
         {
-            var link = LinkFor(linkId);
+            var link = $"{hipConfiguration.Value.Url}/health-information/{linkId}?token={token}";
             return EntryWith(null, link);
         }
 
@@ -111,18 +112,11 @@ namespace In.ProjectEKA.HipService.DataFlow
             return dataFlowConfiguration.Value.DataSizeLimitInMbs * MbInBytes;
         }
 
-        private Link LinkFor(string linkId)
-        {
-            var link = $"{hipConfiguration.Value.Url}/health-information/{linkId}";
-            return new Link(link);
-        }
-
-        private void StoreComponentEntry(string linkId, Entry entry)
+        private void StoreComponentEntry(string linkId, Entry entry, string token)
         {
             using var serviceScope = serviceScopeFactory.CreateScope();
             var healthInformationRepository = serviceScope.ServiceProvider.GetService<IHealthInformationRepository>();
 
-            var token = Guid.NewGuid().ToString();
             healthInformationRepository.Add(new HealthInformation(linkId, entry, DateTime.Now, token));
         }
     }
