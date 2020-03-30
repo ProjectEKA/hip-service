@@ -25,7 +25,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             var discoveryRequestRepository = new DiscoveryRequestRepository(dbContext);
             const string patientId = "1";
             const string transactionId = "2";
-            var discoveryRequest = new DiscoveryRequest(transactionId, patientId);
+            var discoveryRequest = new DiscoveryRequest(transactionId, patientId, patientId);
 
             var count = await dbContext.DiscoveryRequest.CountAsync();
             count.Should().Be(0);
