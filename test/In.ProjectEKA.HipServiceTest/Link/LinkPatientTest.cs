@@ -41,18 +41,18 @@ namespace In.ProjectEKA.HipServiceTest.Link
 
         private readonly Mock<IPatientRepository> patientRepository = new Mock<IPatientRepository>();
         private readonly Mock<IPatientVerification> patientVerification = new Mock<IPatientVerification>();
-        private readonly Mock<IReferenceNumberGenerator> guidGenerator = new Mock<IReferenceNumberGenerator>();
+        private readonly Mock<ReferenceNumberGenerator> guidGenerator = new Mock<ReferenceNumberGenerator>();
 
         public LinkPatientTest()
         {
-            var otpService = new OtpServiceConfiguration {BaseUrl = "http://localhost:5000",OffsetInMinutes = 5};
+            var otpService = new OtpServiceConfiguration {BaseUrl = "http://localhost:5000", OffsetInMinutes = 5};
             var otpServiceConfigurations = Options.Create(otpService);
             linkPatient = new LinkPatient(linkRepository.Object,
-                                          patientRepository.Object,
-                                          patientVerification.Object,
-                                          guidGenerator.Object,
-                                          discoveryRequestRepository.Object,
-                                          otpServiceConfigurations);
+                patientRepository.Object,
+                patientVerification.Object,
+                guidGenerator.Object,
+                discoveryRequestRepository.Object,
+                otpServiceConfigurations);
         }
 
         [Fact]
@@ -76,7 +76,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
                     patientReferenceRequest.Patient.ConsentManagerId,
                     patientReferenceRequest.Patient.ConsentManagerUserId,
                     patientReferenceRequest.Patient.ReferenceNumber, new[] {programRefNo}))
-                .ReturnsAsync(new Tuple<LinkRequest, Exception>(null, null));
+                .ReturnsAsync((null, null));
             patientRepository.Setup(x => x.PatientWith(testPatient.Identifier))
                 .Returns(Option.Some(testPatient));
 
@@ -157,7 +157,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
             patientVerification.Setup(e => e.Verify(sessionId, otpToken))
                 .ReturnsAsync((OtpMessage) null);
             linkRepository.Setup(e => e.GetPatientFor(sessionId))
-                .ReturnsAsync(new Tuple<LinkRequest, Exception>(null, new Exception()));
+                .ReturnsAsync((null, new Exception()));
 
             var (_, error) = await linkPatient.VerifyAndLinkCareContext(patientLinkRequest);
 
@@ -176,10 +176,8 @@ namespace In.ProjectEKA.HipServiceTest.Link
             var testLinkRequest = new LinkRequest(testPatient.Identifier, sessionId,
                 TestBuilder.Faker().Random.Hash(), TestBuilder.Faker().Random.Hash()
                 , It.IsAny<string>(), linkedCareContext);
-            patientVerification.Setup(e => e.Verify(sessionId, otpToken))
-                .ReturnsAsync((OtpMessage) null);
-            linkRepository.Setup(e => e.GetPatientFor(sessionId))
-                .ReturnsAsync(new Tuple<LinkRequest, Exception>(testLinkRequest, null));
+            patientVerification.Setup(e => e.Verify(sessionId, otpToken)).ReturnsAsync((OtpMessage) null);
+            linkRepository.Setup(e => e.GetPatientFor(sessionId)).ReturnsAsync((testLinkRequest, null));
             patientRepository.Setup(x => x.PatientWith(testPatient.Identifier))
                 .Returns(Option.Some(testPatient));
             var expectedLinkResponse = new PatientLinkConfirmationRepresentation(

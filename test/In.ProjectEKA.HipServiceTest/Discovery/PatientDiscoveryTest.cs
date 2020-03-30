@@ -76,11 +76,10 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             var testLinkRequest = new LinkRequest("1", sessionId,
                 TestBuilder.Faker().Random.Hash(), TestBuilder.Faker().Random.Hash()
                 , It.IsAny<string>(), linkedCareContext);
-            var linkRequests = new List<LinkRequest>();
-            linkRequests.Add(testLinkRequest);
+            var linkRequests = new List<LinkRequest> {testLinkRequest};
 
             linkPatientRepository.Setup(e => e.GetLinkedCareContexts(patientId))
-                .ReturnsAsync(new Tuple<IEnumerable<LinkRequest>, Exception>(linkRequests, null));
+                .ReturnsAsync((linkRequests, null));
             patientRepository.Setup(x => x.PatientWith(testPatient.Identifier))
                 .Returns(Option.Some(testPatient));
             matchingRepository
@@ -130,7 +129,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 new List<Identifier>(), null, null, Gender.M, new DateTime(2019, 01, 01));
             var discoveryRequest = new DiscoveryRequest(patientRequest, "transaction-id-1");
             linkPatientRepository.Setup(e => e.GetLinkedCareContexts(patientId))
-                .ReturnsAsync(new Tuple<IEnumerable<LinkRequest>, Exception>(new List<LinkRequest>(), null));
+                .ReturnsAsync((new List<LinkRequest>(), null));
             matchingRepository
                 .Setup(repo => repo.Where(discoveryRequest))
                 .Returns(Task.FromResult(new List<Patient>
@@ -165,7 +164,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 Gender.M, new DateTime(2019, 01, 01));
             var discoveryRequest = new DiscoveryRequest(patientRequest, "transaction-id-1");
             linkPatientRepository.Setup(e => e.GetLinkedCareContexts(patientId))
-                .ReturnsAsync(new Tuple<IEnumerable<LinkRequest>, Exception>(new List<LinkRequest>(), null));
+                .ReturnsAsync((new List<LinkRequest>(), null));
 
             var (discoveryResponse, error) = await patientDiscovery.PatientFor(discoveryRequest);
 
