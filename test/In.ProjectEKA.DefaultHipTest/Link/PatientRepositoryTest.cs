@@ -8,23 +8,23 @@ namespace In.ProjectEKA.DefaultHipTest.Link
     [Collection("Patient Repository Tests")]
     public class PatientRepositoryTest
     {
-        private readonly PatientRepository patientRepository = new PatientRepository("patients.json");
+        private readonly PatientRepository patientRepository = new PatientRepository("demoPatients.json");
         
         [Fact]
         private void ReturnObjectForKnownPatient()
         {
-            const string patientReferenceNumber = "1";
+            const string patientReferenceNumber = "RVH1002";
             var testPatient = new Patient
             {
-                PhoneNumber = "+91-9605417827",
+                PhoneNumber = "+91-7777777777",
                 Identifier = patientReferenceNumber,
-                FirstName = "Anushree",
-                LastName = "Raman",
+                FirstName = "Navjot",
+                LastName = "Singh",
                 Gender = "F",
                 CareContexts = new []
                 {
-                    new CareContextRepresentation("124", "National TB program"),
-                    new CareContextRepresentation("123", "National Cancer program"), 
+                    new CareContextRepresentation("NCP1007", "National Cancer program"),
+                    new CareContextRepresentation("RV-MHD-01.17.0024", "Dept of Psychiatry - Episode 1"), 
                 }
             };
             

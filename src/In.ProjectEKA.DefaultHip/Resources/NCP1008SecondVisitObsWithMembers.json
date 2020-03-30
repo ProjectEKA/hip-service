@@ -1,0 +1,149 @@
+{
+    "resourceType": "Bundle",
+    "id": "2ea5fc69-35af-4d76-a259-f0d2cac9b6e2",
+    "type": "collection",
+    "entry": [
+        {
+            "fullUrl": "urn:uuid:3092c8b3-75a6-4c1c-a394-7e8d4dcd5b3b",
+            "resource": {
+              "resourceType": "Observation",
+              "id": "3092c8b3-75a6-4c1c-a394-7e8d4dcd5b3b",
+              "status": "final",
+              "code": {
+                "text": "Vital Signs Panel"
+              },
+              "subject": {
+                "display": "Hina Patel"
+              },
+              "effectiveDateTime": "2020-02-15",
+              "hasMember": [
+                {
+                  "reference": "Observation/463eba1b-e80a-4e0a-8ce4-8f803c343763",
+                  "display": "Respiratory Rate"
+                },
+                {
+                  "reference": "Observation/61640d09-85b5-4b0a-a388-780a29ac9415",
+                  "display": "Heart Rate"
+                },
+                {
+                  "reference": "Observation/6b2d8159-9187-4e05-8b6b-4b762227e300",
+                  "display": "Blood Pressure"
+                },
+                {
+                  "reference": "Observation/2119fb9b-e7f4-4508-b81a-4f261a7dc768",
+                  "display": "Body Temperature"
+                }
+              ]
+            }
+        },
+        {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "463eba1b-e80a-4e0a-8ce4-8f803c343763",
+              "status": "final",
+              "code": {
+                "text": "Respiratory rate"
+              },
+              "subject": {
+                "display": "Hina Patel"
+              },
+              "effectiveDateTime": "2020-02-15",
+              "valueString": "26 breaths/minute"
+            }
+        },
+        {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "61640d09-85b5-4b0a-a388-780a29ac9415",
+              "status": "final",
+              "code": {
+                "text": "Heart rate"
+              },
+              "subject": {
+                "display": "Hina Patel"
+              },
+              "effectiveDateTime": "2020-02-15",
+              "valueString": "44 beats/minutee"
+            }
+        },
+        {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "6b2d8159-9187-4e05-8b6b-4b762227e300",
+              "status": "final",
+              "code": {
+                "text": "Blood pressure systolic & diastolic"
+              },
+              "subject": {
+                "display": "Hina Patel"
+              },
+              "effectiveDateTime": "2020-02-15",
+              "interpretation": [
+                {
+                  "text": "Below low normal"
+                }
+              ],
+              "component": [
+                {
+                  "code": {
+                    "text": "Systolic Blood pressure"
+                  },
+                  "valueString": "107 mmHg",
+                  "interpretation": [
+                    {
+                      "text": "Normal"
+                    }
+                  ]
+                },
+                {
+                  "code": {
+                    "text": "Diastolic blood pressure"
+                  },
+                  "valueString": "60 mmHg",
+                  "interpretation": [
+                    {
+                      "text": "Below low normal"
+                    }
+                  ]
+                }
+              ]
+            }
+        },
+        {
+            "resource": {
+              "resourceType": "Observation",
+              "id": "2119fb9b-e7f4-4508-b81a-4f261a7dc768",
+              "status": "final",
+              "code": {
+                "text": "Body temperature"
+              },
+              "subject": {
+                "display": "Hina Patel"
+              },
+              "effectiveDateTime": "2020-02-15",
+              "valueString": "36.5 C"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:990cb4a7-4399-43bb-b181-77eafb5df599",
+            "resource": {
+              "resourceType": "Observation",
+              "id": "990cb4a7-4399-43bb-b181-77eafb5df599",
+              "status": "final",
+              "code": {
+                "text": "Clinical notes"
+              },
+              "subject": {
+                "display": "Hina Patel"
+              },
+              "performer": [
+                {
+                  "display": "Dr.Prajwal"
+                }
+              ],
+              "effectiveDateTime": "2020-02-15T00:00:00+00:00",
+              "valueString": "45 YR OLD LADY,NO ASSOCIATED COMORBIDITIES, H/O OF LOW BACK PAIN, MRI SPINE S/O MULTIPLE BONY METS IN D-L SPINE,HISTOLGY FROM ILIAC BONE-S/O METASTATIC ADENOCA, R/S AFTER BONE SCAN IS DONE"
+            }
+        }
+    ]
+}
