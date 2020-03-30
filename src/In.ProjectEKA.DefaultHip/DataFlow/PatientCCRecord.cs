@@ -5,8 +5,8 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
     public class PatientCCRecord
     {
         public string capturedOn { get; set; }
+        
         public Dictionary<string, List<string>> data { get; set; }
-
     }
 
 }
