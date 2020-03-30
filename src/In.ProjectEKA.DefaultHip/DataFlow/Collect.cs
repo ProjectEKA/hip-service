@@ -1,5 +1,4 @@
 using System;
-using Optional.Collections;
 
 namespace In.ProjectEKA.DefaultHip.DataFlow
 {
@@ -13,7 +12,7 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
     using Newtonsoft.Json;
     using Optional;
     using Serilog;
-
+    
     public class Collect : ICollect
     {
         private readonly HiTypeDataMap hiTypeDataMap;
@@ -75,7 +74,7 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Log.Error("Error Occured while collecting data. {Error}", e);
             }
             return new List<string>();
         }
