@@ -43,7 +43,8 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
             return date >= fromDate && date < toDate;
         }
 
-        public List<string> FindPatientData(DataRequest request) {
+        private List<string> FindPatientData(DataRequest request)
+        {
             try
             {
                 var jsonData = File.ReadAllText("demoPatientCareContextDataMap.json");
