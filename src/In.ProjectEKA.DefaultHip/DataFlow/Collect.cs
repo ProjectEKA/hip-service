@@ -1,4 +1,7 @@
 using System;
+using System.Globalization;
+using System.Linq;
+using Hl7.FhirPath.Sprache;
 
 namespace In.ProjectEKA.DefaultHip.DataFlow
 {
@@ -38,17 +41,28 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
 
         private bool WithinRange(HiDataRange range, DateTime date)
         {
-            var fromDate = DateTime.ParseExact(range.From, "yyyy-MM-dd", null);
-            var toDate = DateTime.ParseExact(range.To, "yyyy-MM-dd", null);
+            var fromDate = ParseDate(range.From);
+            var toDate = ParseDate(range.To);
             return date >= fromDate && date < toDate;
+        }
+
+        private static DateTime ParseDate(string dateString)
+        {
+            var formatStrings = new string[]
+            {
+                "yyyy-MM-dd", "yyyy-MM-dd hh:mm:ss", "yyyy-MM-dd hh:mm:ss tt", "yyyy-MM-ddTHH:mm:ss.fffzzz", 
+                "dd/MM/yyyy", "dd/MM/yyyy hh:mm:ss", "dd/MM/yyyy hh:mm:ss tt", "dd/MM/yyyyTHH:mm:ss.fffzzz" 
+            };
+            DateTime.TryParseExact(dateString, formatStrings, CultureInfo.CurrentCulture, DateTimeStyles.None,
+                out var aDateTime);
+            return aDateTime;
         }
 
         private List<string> FindPatientData(DataRequest request)
         {
             try
             {
-                var serializedDataRequest = JsonConvert.SerializeObject(request);
-                Log.Information($"Serialized data request: {serializedDataRequest}", serializedDataRequest);
+                LogDataRequest(request);
                 var jsonData = File.ReadAllText("demoPatientCareContextDataMap.json");
                 var patientDataMap =
                     JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, List<PatientCCRecord>>>>(
@@ -62,7 +76,7 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
                     if (ccData == null) continue;
                     foreach (var ccRecord in ccData)
                     {
-                        var captureTime = DateTime.ParseExact(ccRecord.capturedOn, "yyyy-MM-dd", null);
+                        var captureTime = ParseDate(ccRecord.capturedOn);
                         if (!WithinRange(request.DataRange, captureTime)) continue;
                         foreach (var hiType in request.HiType)
                         {
@@ -84,6 +98,19 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
             }
 
             return new List<string>();
+        }
+
+        private static void LogDataRequest(DataRequest request)
+        {
+            var ccList = JsonConvert.SerializeObject(request.CareContexts);
+            var requestedHiTypes = string.Join(", ", request.HiType.Select(hiType => hiType.ToString()));
+            var transactionId = request.TransactionId;
+            var from = request.DataRange.From;
+            var to = request.DataRange.To;
+            var callbackUrl = request.CallBackUrl;
+            Log.Information(
+                $"Data request received. transactionId:{transactionId} , CareContexts:{ccList}, HiTypes:{requestedHiTypes}, From date:{from}, To date:{to}, CallbackUrl:{callbackUrl}",
+                transactionId, ccList, requestedHiTypes, from,to, callbackUrl);
         }
     }
 }
