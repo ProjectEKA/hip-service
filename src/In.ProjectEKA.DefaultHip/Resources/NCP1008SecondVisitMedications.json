@@ -23,6 +23,7 @@
                 {
                   "sequence": 1,
                   "text": "22/01/2020 to 07/02/2020",
+                  "patientInstruction": "Don't discontinue",
                   "timing": {
                     "code": {
                       "text": "15 days"
@@ -30,7 +31,6 @@
                   }
                 }
               ],
-              "patientInstruction": "Don't discontinue",
               "note": [
                   {
                       "text" : "Check if the fever returns tomorrow"
