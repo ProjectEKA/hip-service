@@ -20,15 +20,10 @@ namespace In.ProjectEKA.DefaultHipTest.DataFlow
         [Fact]
         private async void ReturnEntries()
         {
-            var grantedContexts = new List<GrantedContext> {new GrantedContext("RVH/NCC-1701", "NCP1006")};
-            var hiDataRange = new HiDataRange("2019-01-01", "2020-01-01");
-            var hiTypes = new List<HiType>
-            {
-                HiType.Condition,
-                HiType.Observation,
-                HiType.DiagnosticReport,
-                HiType.MedicationRequest
-            };
+            var grantedContexts = new List<GrantedContext>() {new GrantedContext("RVH/NCC-1701", "NCP1006")};
+            var hiDataRange = new HiDataRange("2018-07-01T11:47:00.000+0000", "2020-01-02");
+            var hiTypes = new List<HiType>()
+                {HiType.Condition, HiType.Observation, HiType.DiagnosticReport, HiType.MedicationRequest};
             var dataRequest = new DataRequest(grantedContexts, hiDataRange, "/someUrl", hiTypes, "someTxnId", null);
             var entries = await collect.CollectData(dataRequest);
 
