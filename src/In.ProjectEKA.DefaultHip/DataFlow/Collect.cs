@@ -46,6 +46,8 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
         {
             try
             {
+                var serializedDataRequest = JsonConvert.SerializeObject(request);
+                Log.Information($"Serialized data request: {serializedDataRequest}", serializedDataRequest);
                 var jsonData = File.ReadAllText("demoPatientCareContextDataMap.json");
                 var patientDataMap = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, List<PatientCCRecord>>>>(jsonData);
 
