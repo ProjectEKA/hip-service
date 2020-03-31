@@ -12,7 +12,7 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
     using Newtonsoft.Json;
     using Optional;
     using Serilog;
-    
+
     public class Collect : ICollect
     {
         private readonly HiTypeDataMap hiTypeDataMap;
@@ -31,6 +31,7 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
                 Log.Information($"Returning file: {item}");
                 bundles.Add(await FileReader.ReadJsonAsync<Bundle>(item));
             }
+
             var entries = new Entries(bundles);
             return Option.Some(entries);
         }
@@ -49,13 +50,15 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
                 var serializedDataRequest = JsonConvert.SerializeObject(request);
                 Log.Information($"Serialized data request: {serializedDataRequest}", serializedDataRequest);
                 var jsonData = File.ReadAllText("demoPatientCareContextDataMap.json");
-                var patientDataMap = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, List<PatientCCRecord>>>>(jsonData);
+                var patientDataMap =
+                    JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, List<PatientCCRecord>>>>(
+                        jsonData);
 
                 var listOfDataFiles = new List<string>();
                 foreach (var grantedContext in request.CareContexts)
                 {
-                    var refData = patientDataMap[grantedContext.PatientReferenceNumber];
-                    var ccData = refData?[grantedContext.CareContextReferenceNumber];
+                    var refData = patientDataMap[grantedContext.PatientReference];
+                    var ccData = refData?[grantedContext.CareContextReference];
                     if (ccData == null) continue;
                     foreach (var ccRecord in ccData)
                     {
@@ -72,12 +75,14 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
                         }
                     }
                 }
+
                 return listOfDataFiles;
             }
             catch (Exception e)
             {
                 Log.Error("Error Occured while collecting data. {Error}", e);
             }
+
             return new List<string>();
         }
     }
