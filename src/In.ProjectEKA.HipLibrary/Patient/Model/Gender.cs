@@ -4,6 +4,6 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
     {
         M,
         F,
-        U
+        O
     }
 }
