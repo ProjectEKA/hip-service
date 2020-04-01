@@ -43,7 +43,6 @@ namespace In.ProjectEKA.HipService
         }
 
         private IConfiguration Configuration { get; }
-        private HttpClient HttpClient { get; }
 
         public void ConfigureServices(IServiceCollection services) =>
             services
@@ -60,21 +59,20 @@ namespace In.ProjectEKA.HipService
                     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
                         x => x.MigrationsAssembly("In.ProjectEKA.HipService")))
                 .AddSingleton<IEncryptor, Encryptor>()
-                .AddSingleton<IPatientRepository>(new PatientRepository("patients.json"))
+                .AddSingleton<IPatientRepository>(new PatientRepository("demoPatients.json"))
                 .AddSingleton<HiTypeDataMap>()
-                .AddSingleton<ICollect>(new Collect(new HiTypeDataMap()))
-                .AddSingleton<IPatientRepository>(new PatientRepository("patients.json"))
+                .AddSingleton<ICollect>(new Collect())
+                .AddSingleton<IPatientRepository>(new PatientRepository("demoPatients.json"))
                 .AddRabbit(Configuration)
                 .Configure<OtpServiceConfiguration>(Configuration.GetSection("OtpService"))
                 .Configure<DataFlowConfiguration>(Configuration.GetSection("dataFlow"))
                 .Configure<HipConfiguration>(Configuration.GetSection("hip"))
                 .AddScoped<ILinkPatientRepository, LinkPatientRepository>()
-                .AddSingleton<IMatchingRepository>(new PatientMatchingRepository("patients.json"))
+                .AddSingleton<IMatchingRepository>(new PatientMatchingRepository("demoPatients.json"))
                 .AddScoped<IDiscoveryRequestRepository, DiscoveryRequestRepository>()
                 .AddScoped<PatientDiscovery>()
-                .AddTransient<IDiscovery, PatientDiscovery>()
-                .AddScoped<IReferenceNumberGenerator, ReferenceNumberGenerator>()
-                .AddTransient<ILink, LinkPatient>()
+                .AddScoped<LinkPatient>()
+                .AddScoped<ReferenceNumberGenerator>()
                 .AddSingleton(Configuration)
                 .AddSingleton<DataFlowClient>()
                 .AddSingleton<DataEntryFactory>()
@@ -85,6 +83,8 @@ namespace In.ProjectEKA.HipService
                 .AddHostedService<MessagingQueueListener>()
                 .AddScoped<IDataFlowRepository, DataFlowRepository>()
                 .AddScoped<IHealthInformationRepository, HealthInformationRepository>()
+                .AddSingleton(new CentralRegistryClient(HttpClient,
+                    Configuration.GetSection("authServer").Get<CentralRegistryConfiguration>()))
                 .AddTransient<IDataFlow, DataFlow.DataFlow>()
                 .AddRouting(options => options.LowercaseUrls = true)
                 .AddControllers()
@@ -105,7 +105,7 @@ namespace In.ProjectEKA.HipService
                 .AddJwtBearer(options =>
                 {
                     // Need to validate Audience and Issuer properly
-                    options.Authority = Configuration.GetValue<string>("authserver:url");
+                    options.Authority = Configuration.GetValue<string>("authServer:url");
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
@@ -134,6 +134,8 @@ namespace In.ProjectEKA.HipService
                         }
                     };
                 });
+
+        private HttpClient HttpClient { get; }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

@@ -42,13 +42,14 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                     "MD5",
                     null)
             }.AsEnumerable();
+            var transactionId = TestBuilder.Faker().Random.Uuid().ToString();
             var keyMaterial = TestBuilder.KeyMaterialLib();
             encryptor.Setup(e => e.EncryptData(keyMaterial,
                 It.IsAny<AsymmetricCipherKeyPair>(),
                 It.IsAny<string>(),
                 It.IsAny<string>())).Returns(Option.Some("5zGyp5O9GkggioxwWyUGOQ=="));
 
-            var entries = dataEntryFactory.Process(dataEntries, keyMaterial);
+            var entries = dataEntryFactory.Process(dataEntries, keyMaterial, transactionId);
 
             entries.HasValue.Should().BeTrue();
             entries.Map(e => e.Entries.Should().BeEquivalentTo(expectedEntries));
@@ -76,12 +77,13 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             serviceProvider.Setup(x => x.GetService(typeof(IHealthInformationRepository)))
                 .Returns(healthInformationRepository.Object);
             var keyMaterialLib = TestBuilder.KeyMaterialLib();
+            var transactionId = TestBuilder.Faker().Random.Uuid().ToString();
             encryptor.Setup(e => e.EncryptData(keyMaterialLib,
                 It.IsAny<AsymmetricCipherKeyPair>(),
                 It.IsAny<string>(),
                 It.IsAny<string>())).Returns(Option.Some("https://hip/health-information"));
             var entries = dataEntryFactory.Process(
-                new Entries(new List<Bundle> {new Bundle()}), keyMaterialLib);
+                new Entries(new List<Bundle> {new Bundle()}), keyMaterialLib, transactionId);
 
             entries.HasValue.Should().BeTrue();
             entries.MatchSome(dataEntries =>
@@ -89,7 +91,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                 foreach (var entry in dataEntries.Entries)
                 {
                     entry.Content.Should().BeNull();
-                    entry.Link.Href.Should().Contain("https://hip/health-information");
+                    entry.Link.Should().Contain("https://hip/health-information");
                 }
             });
         }

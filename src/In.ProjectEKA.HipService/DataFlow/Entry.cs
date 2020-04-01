@@ -7,9 +7,9 @@ namespace In.ProjectEKA.HipService.DataFlow
         public string Media { get; set; }
 
         public string Checksum { get; set; }
-        public Link Link { get; set; }
+        public string Link { get; set; }
 
-        public Entry(string content, string media, string checksum, Link link)
+        public Entry(string content, string media, string checksum, string link)
         {
             Content = content;
             Media = media;

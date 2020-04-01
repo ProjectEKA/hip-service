@@ -19,11 +19,11 @@
     {
         private readonly DiscoveryController discoveryController;
 
-        private readonly Mock<IDiscovery> discovery;
+        private readonly Mock<PatientDiscovery> discovery;
 
         public PatientsControllerTest()
         {
-            discovery = new Mock<IDiscovery>();
+            discovery = new Mock<PatientDiscovery>(MockBehavior.Strict, null, null, null, null);
             discoveryController = new DiscoveryController(discovery.Object);
         }
 
@@ -53,8 +53,7 @@
                 },
                 new List<string>());
             var expectedResponse = new DiscoveryRepresentation(expectedPatient);
-            discovery.Setup(x => x.PatientFor(discoveryRequest)).ReturnsAsync(
-                new Tuple<DiscoveryRepresentation, ErrorRepresentation>(expectedResponse, null));
+            discovery.Setup(x => x.PatientFor(discoveryRequest)).ReturnsAsync((expectedResponse, null));
 
             var response = await discoveryController.Discover(discoveryRequest);
 
@@ -86,8 +85,7 @@
                     Faker().PickRandom<Gender>(),
                     Faker().Date.Past()), Faker().Random.String());
             var error = new ErrorRepresentation(new Error(ErrorCode.MultiplePatientsFound, "Multiple patients found"));
-            discovery.Setup(x => x.PatientFor(discoveryRequest)).ReturnsAsync(
-                new Tuple<DiscoveryRepresentation, ErrorRepresentation>(null, error));
+            discovery.Setup(x => x.PatientFor(discoveryRequest)).ReturnsAsync((null, error));
 
             var response = await discoveryController.Discover(discoveryRequest);
 

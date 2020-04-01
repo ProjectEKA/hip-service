@@ -1,9 +1,12 @@
 namespace In.ProjectEKA.HipService.Consent
 {
     using System.Threading.Tasks;
+    using In.ProjectEKA.HipService.Common.Model;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Model;
 
+    [Authorize]
     [Route("consent")]
     public class ConsentController : Controller
     {
@@ -20,8 +23,14 @@ namespace In.ProjectEKA.HipService.Consent
             var consent = new Consent(consentArtefactRequest.ConsentDetail.ConsentId,
                 consentArtefactRequest.ConsentDetail,
                 consentArtefactRequest.Signature, consentArtefactRequest.Status);
-            await consentRepository.AddAsync(consent);
-
+            if (consentArtefactRequest.Status == ConsentStatus.GRANTED)
+            {
+                await consentRepository.AddAsync(consent);
+            }
+            else
+            {
+                await consentRepository.UpdateAsync(consent);
+            }
             return Ok();
         }
     }

@@ -14,8 +14,8 @@ namespace In.ProjectEKA.DefaultHipTest.Discovery
         [Fact]
         private async void ShouldReturnPatientsBasedOnExpression()
         {
-            var patientMatchingRepository = new PatientMatchingRepository("patients.json");
-            var phoneNumberIdentifier = new Identifier(IdentifierType.MOBILE, "+91-9999999999");
+            var patientMatchingRepository = new PatientMatchingRepository("demoPatients.json");
+            var phoneNumberIdentifier = new Identifier(IdentifierType.MOBILE, "+91-7777777777");
             var request = new DiscoveryRequest(
                 new PatientEnquiry(string.Empty,
                     new List<Identifier> {phoneNumberIdentifier},

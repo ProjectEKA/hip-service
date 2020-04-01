@@ -8,38 +8,38 @@ namespace In.ProjectEKA.DefaultHipTest.Link
     [Collection("Patient Repository Tests")]
     public class PatientRepositoryTest
     {
-        private readonly PatientRepository patientRepository = new PatientRepository("patients.json");
-        
+        private readonly PatientRepository patientRepository = new PatientRepository("demoPatients.json");
+
         [Fact]
         private void ReturnObjectForKnownPatient()
         {
-            const string patientReferenceNumber = "3423";
+            const string patientReferenceNumber = "RVH1002";
             var testPatient = new Patient
             {
-                PhoneNumber = "+91-9036346499",
+                PhoneNumber = "+91-7777777777",
                 Identifier = patientReferenceNumber,
-                FirstName = "Sridhar",
-                LastName = "Kalagi",
-                Gender = "M",
-                CareContexts = new []
+                FirstName = "Navjot",
+                LastName = "Singh",
+                Gender = "F",
+                CareContexts = new[]
                 {
-                    new CareContextRepresentation("TBAccount-123", "TB Account"),
-                    new CareContextRepresentation("Diabetes-11", "Diabetes Program"), 
+                    new CareContextRepresentation("NCP1007", "National Cancer program"),
+                    new CareContextRepresentation("RV-MHD-01.17.0024", "Dept of Psychiatry - Episode 1"),
                 }
             };
-            
+
             var patient = patientRepository.PatientWith(patientReferenceNumber);
-            
+
             patient.ValueOr(new Patient()).Should().BeEquivalentTo(testPatient);
         }
-        
+
         [Fact]
         private void ReturnNullForUnknownPatient()
         {
             const string patientReferenceNumber = "1234";
-            
+
             var patient = patientRepository.PatientWith(patientReferenceNumber);
-            
+
             patient.ValueOr((Patient) null).Should().BeNull();
         }
     }

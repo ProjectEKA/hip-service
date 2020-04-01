@@ -1,0 +1,35 @@
+{
+    "resourceType": "Bundle",
+    "id": "77c52e43-4a17-470f-b2aa-4a18c6533a89",
+    "type": "collection",
+    "entry": [
+        {
+            "fullUrl": "urn:uuid:977e0e98-ea77-43d5-8c0a-c45e46554d10",
+            "resource": {
+            "resourceType": "Condition",
+            "id": "977e0e98-ea77-43d5-8c0a-c45e46554d10",
+            "clinicalStatus": {
+                "coding": [
+                    {
+                        "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+                        "code": "active"
+                    }
+                ]
+            },
+            "verificationStatus": {
+                "text": "confirmed"
+            },
+            "severity": {
+                "text": "mild"
+            },
+            "code": {
+                "text": "Recurring headache and dizziness"
+            },
+            "subject": {
+                "display": "Hina Patel"
+            },
+            "recordedDate": "2019-06-01"
+            }
+        }
+    ]
+}

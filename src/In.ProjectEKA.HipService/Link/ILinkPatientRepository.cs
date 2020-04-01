@@ -7,15 +7,15 @@ namespace In.ProjectEKA.HipService.Link
 
     public interface ILinkPatientRepository
     {
-        Task<Tuple<LinkRequest, Exception>> SaveRequestWith(
+        Task<ValueTuple<LinkRequest, Exception>> SaveRequestWith(
             string linkReferenceNumber,
             string consentManagerId,
             string consentManagerUserId,
             string patientReferenceNumber,
             IEnumerable<string> careContextReferenceNumbers);
 
-        Task<Tuple<LinkRequest, Exception>> GetPatientFor(string linkReferenceNumber);
+        Task<ValueTuple<LinkRequest, Exception>> GetPatientFor(string linkReferenceNumber);
 
-        Task<Tuple<IEnumerable<LinkRequest>, Exception>> GetLinkedCareContexts(string consentManagerUserId);
+        Task<ValueTuple<IEnumerable<LinkRequest>, Exception>> GetLinkedCareContexts(string consentManagerUserId);
     }
 }
