@@ -194,5 +194,83 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             discoveryResponse.Should().BeNull();
             error.Should().BeEquivalentTo(expectedError);
         }
+        
+        [Fact]
+        private async void ShouldReturnPatientMatchingMobileAndIdentifier()
+        {
+            var patientHina =
+                new Patient
+                {
+                    PhoneNumber = "+91-8888888888",
+                    Identifier = "RVH1003",
+                    FirstName = "Hina",
+                    LastName = "Patel",
+                    Gender = TestBuilder.Faker().Random.Word(),
+                    CareContexts = new List<CareContextRepresentation>
+                    {
+                        new CareContextRepresentation("NCP1008", "National Cancer program"),
+                        new CareContextRepresentation("BI-KTH-12.05.0024", "National TB program")
+                    }
+                };
+            
+            var patientDiscovery = new PatientDiscovery(
+                matchingRepository.Object,
+                discoveryRequestRepository.Object,
+                linkPatientRepository.Object,
+                patientRepository.Object);
+            var expectedPatient = new PatientEnquiryRepresentation("RVH1003", "Hina Patel",
+                new List<CareContextRepresentation>
+                {
+                    new CareContextRepresentation("NCP1008", "National Cancer program"),
+                    new CareContextRepresentation("BI-KTH-12.05.0024", "National TB program")
+                }, new List<string>
+                {
+                    "FirstName", "LastName", "Gender", "MR"
+                });
+            var verifiedIdentifiers = new List<Identifier>
+            {
+                new Identifier(IdentifierType.MOBILE, "+91-8888888888")
+            };
+            var unverifiedIdentifiers = new List<Identifier>
+            {
+                new Identifier(IdentifierType.MR, "RVH1003")
+            };
+            const string patientId = "cm-2";
+            var patientRequest = new PatientEnquiry(patientId, verifiedIdentifiers,
+                unverifiedIdentifiers, "Hina", "Patel", Gender.F, new DateTime(2019, 01, 01));
+            const string transactionId = "transaction-id-1";
+            var discoveryRequest = new DiscoveryRequest(patientRequest, transactionId);
+
+            var sessionId = TestBuilder.Faker().Random.Hash();
+            ICollection<LinkedCareContext> linkedCareContext = new[] {new LinkedCareContext("NCP1008")};
+            patientRepository.Setup(x => x.PatientWith(patientHina.Identifier))
+                .Returns(Option.Some(patientHina));
+            matchingRepository
+                .Setup(repo => repo.Where(discoveryRequest))
+                .Returns(Task.FromResult(new List<Patient>
+                {
+                    new Patient
+                    {
+                        Gender = Gender.F.ToString(),
+                        Identifier = "RVH1003",
+                        FirstName = "Hina",
+                        LastName = "Patel",
+                        CareContexts = new List<CareContextRepresentation>
+                        {
+                            new CareContextRepresentation("NCP1008", "National Cancer program"),
+                            new CareContextRepresentation("BI-KTH-12.05.0024", "National TB program")
+                        }
+                    }
+                }.AsQueryable()));
+
+            var (discoveryResponse, error) = await patientDiscovery.PatientFor(discoveryRequest);
+
+            discoveryResponse.Patient.Should().BeEquivalentTo(expectedPatient);
+            discoveryRequestRepository.Verify(
+                x => x.Add(It.Is<HipService.Discovery.Model.DiscoveryRequest>(
+                    r => r.TransactionId == transactionId
+                         && r.ConsentManagerUserId == patientId)), Times.Once);
+            error.Should().BeNull();
+        }
     }
 }

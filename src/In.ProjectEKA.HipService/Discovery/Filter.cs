@@ -45,9 +45,9 @@ namespace In.ProjectEKA.HipService.Discovery
             return request.Patient.VerifiedIdentifiers
                 .Select(identifier => new IdentifierExt(IdentifierTypeExts.GetValueOrDefault(identifier.Type,
                     IdentifierTypeExt.EMPTY), identifier.Value))
-                .Concat(request.Patient.UnverifiedIdentifiers
+                .Concat(request.Patient.UnverifiedIdentifiers?
                     .Select(identifier => new IdentifierExt(IdentifierTypeExts.GetValueOrDefault(identifier.Type,
-                        IdentifierTypeExt.EMPTY), identifier.Value)))
+                        IdentifierTypeExt.EMPTY), identifier.Value)) ?? new List<IdentifierExt>() )
                 .Append(new IdentifierExt(IdentifierTypeExt.FIRST_NAME, request.Patient.FirstName))
                 .Append(new IdentifierExt(IdentifierTypeExt.LAST_NAME, request.Patient.LastName))
                 .Append(new IdentifierExt(IdentifierTypeExt.GENDER, request.Patient.Gender.ToString()));
@@ -56,8 +56,12 @@ namespace In.ProjectEKA.HipService.Discovery
         public IEnumerable<PatientEnquiryRepresentation> Do(IEnumerable<Patient> patients,
             DiscoveryRequest request)
         {
-            return patients
-                .AsEnumerable()
+            var unverifiedIdMatches = (from unverifiedIdentifier in request.Patient?.UnverifiedIdentifiers ?? new List<Identifier>() 
+                where unverifiedIdentifier.Type == IdentifierType.MR 
+                    from patient in patients.Where(p => p.Identifier?.Equals(unverifiedIdentifier.Value) ?? false) select patient).ToList();
+            var matchedBy = unverifiedIdMatches.Count > 0 ? new List<string>() { "MR" } : new List<string>();  
+            var filteredPatients = unverifiedIdMatches.Count > 0 ? unverifiedIdMatches : patients; 
+            return filteredPatients
                 .Select(patientInfo => RankPatient(patientInfo, request))
                 .GroupBy(rankedPatient => rankedPatient.Rank.Score)
                 .OrderByDescending(rankedPatient => rankedPatient.Key)
@@ -79,7 +83,7 @@ namespace In.ProjectEKA.HipService.Discovery
                     return new PatientEnquiryRepresentation(
                         rankedPatient.Patient.Identifier,
                         $"{rankedPatient.Patient.FirstName} {rankedPatient.Patient.LastName}",
-                        careContexts, rankedPatient.Meta.Select(meta => meta.Field));
+                        careContexts, rankedPatient.Meta.Select(meta => meta.Field).Concat(matchedBy));
                 }));
         }
 
