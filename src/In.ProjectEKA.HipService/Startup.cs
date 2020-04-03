@@ -61,7 +61,7 @@ namespace In.ProjectEKA.HipService
                 .AddSingleton<IEncryptor, Encryptor>()
                 .AddSingleton<IPatientRepository>(new PatientRepository("demoPatients.json"))
                 .AddSingleton<HiTypeDataMap>()
-                .AddSingleton<ICollect>(new Collect())
+                .AddSingleton<ICollect>(new Collect("demoPatientCareContextDataMap.json"))
                 .AddSingleton<IPatientRepository>(new PatientRepository("demoPatients.json"))
                 .AddRabbit(Configuration)
                 .Configure<OtpServiceConfiguration>(Configuration.GetSection("OtpService"))

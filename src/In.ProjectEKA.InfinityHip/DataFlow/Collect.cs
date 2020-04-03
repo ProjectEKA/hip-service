@@ -16,6 +16,13 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
 
     public class Collect : ICollect
     {
+        private readonly string careContextMapFile;
+
+        public Collect(string careContextMapFile)
+        {
+            this.careContextMapFile = careContextMapFile;
+        }
+
         public async Task<Option<Entries>> CollectData(DataRequest dataRequest)
         {
             var bundles = new List<Bundle>();
@@ -30,7 +37,7 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
             return Option.Some(entries);
         }
 
-        private bool WithinRange(HiDataRange range, DateTime date)
+        private static bool WithinRange(HiDataRange range, DateTime date)
         {
             var fromDate = ParseDate(range.From);
             var toDate = ParseDate(range.To);
@@ -54,7 +61,7 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
             try
             {
                 LogDataRequest(request);
-                var jsonData = File.ReadAllText("demoPatientCareContextDataMap.json");
+                var jsonData = File.ReadAllText(careContextMapFile);
                 var patientDataMap =
                     JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, List<PatientCcRecord>>>>(
                         jsonData);

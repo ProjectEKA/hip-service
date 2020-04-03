@@ -25,10 +25,4 @@
         <ProjectReference Include="..\..\src\In.ProjectEKA.HipLibrary\In.ProjectEKA.HipLibrary.csproj" />
         <ProjectReference Include="..\..\src\In.ProjectEKA.InfinityHip\In.ProjectEKA.InfinityHip.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-        <Content Include="..\..\src\In.ProjectEKA.DefaultHip\Resources\observation.json">
-          <Link>observation.json</Link>
-        </Content>
-    </ItemGroup>
 </Project>
