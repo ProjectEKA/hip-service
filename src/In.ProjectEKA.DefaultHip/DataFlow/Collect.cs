@@ -1,33 +1,31 @@
-using System;
-using System.Globalization;
-using System.Linq;
-using Hl7.FhirPath.Sprache;
-
 namespace In.ProjectEKA.DefaultHip.DataFlow
 {
+    using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.IO;
+    using System.Linq;
     using System.Threading.Tasks;
+    using HipLibrary.Patient;
+    using HipLibrary.Patient.Model;
     using Hl7.Fhir.Model;
-    using In.ProjectEKA.DefaultHip.Patient;
-    using In.ProjectEKA.HipLibrary.Patient;
-    using In.ProjectEKA.HipLibrary.Patient.Model;
     using Newtonsoft.Json;
     using Optional;
+    using Patient;
     using Serilog;
 
     public class Collect : ICollect
     {
-        private readonly HiTypeDataMap hiTypeDataMap;
+        private readonly string careContextMapFile;
 
-        public Collect(HiTypeDataMap hiTypeDataMap)
+        public Collect(string careContextMapFile)
         {
-            this.hiTypeDataMap = hiTypeDataMap;
+            this.careContextMapFile = careContextMapFile;
         }
 
         public async Task<Option<Entries>> CollectData(DataRequest dataRequest)
         {
-            var bundles = new List<Bundle> { };
+            var bundles = new List<Bundle>();
             var results = FindPatientData(dataRequest);
             foreach (var item in results)
             {
@@ -39,7 +37,7 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
             return Option.Some(entries);
         }
 
-        private bool WithinRange(HiDataRange range, DateTime date)
+        private static bool WithinRange(HiDataRange range, DateTime date)
         {
             var fromDate = ParseDate(range.From);
             var toDate = ParseDate(range.To);
@@ -48,25 +46,32 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
 
         private static DateTime ParseDate(string dateString)
         {
-            var formatStrings = new string[]
+            var formatStrings = new[]
             {
-                "yyyy-MM-dd", "yyyy-MM-dd hh:mm:ss", "yyyy-MM-dd hh:mm:ss tt", "yyyy-MM-ddTHH:mm:ss.fffzzz", 
-                "dd/MM/yyyy", "dd/MM/yyyy hh:mm:ss", "dd/MM/yyyy hh:mm:ss tt", "dd/MM/yyyyTHH:mm:ss.fffzzz" 
+                "yyyy-MM-dd", "yyyy-MM-dd hh:mm:ss", "yyyy-MM-dd hh:mm:ss tt", "yyyy-MM-ddTHH:mm:ss.fffzzz",
+                "dd/MM/yyyy", "dd/MM/yyyy hh:mm:ss", "dd/MM/yyyy hh:mm:ss tt", "dd/MM/yyyyTHH:mm:ss.fffzzz"
             };
-            DateTime.TryParseExact(dateString, formatStrings, CultureInfo.CurrentCulture, DateTimeStyles.None,
+            var tryParseExact = DateTime.TryParseExact(dateString,
+                formatStrings,
+                CultureInfo.CurrentCulture,
+                DateTimeStyles.None,
                 out var aDateTime);
+            if (!tryParseExact)
+            {
+                Log.Error($"Error parsing date: {dateString}");
+            }
+
             return aDateTime;
         }
 
-        private List<string> FindPatientData(DataRequest request)
+        private IEnumerable<string> FindPatientData(DataRequest request)
         {
             try
             {
                 LogDataRequest(request);
-                var jsonData = File.ReadAllText("demoPatientCareContextDataMap.json");
-                var patientDataMap =
-                    JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, List<PatientCCRecord>>>>(
-                        jsonData);
+                var jsonData = File.ReadAllText(careContextMapFile);
+                var patientDataMap = JsonConvert
+                    .DeserializeObject<Dictionary<string, Dictionary<string, List<CareContextRecord>>>>(jsonData);
 
                 var listOfDataFiles = new List<string>();
                 foreach (var grantedContext in request.CareContexts)
@@ -74,14 +79,15 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
                     var refData = patientDataMap[grantedContext.PatientReference];
                     var ccData = refData?[grantedContext.CareContextReference];
                     if (ccData == null) continue;
+                    // ReSharper disable once ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
                     foreach (var ccRecord in ccData)
                     {
-                        var captureTime = ParseDate(ccRecord.capturedOn);
+                        var captureTime = ParseDate(ccRecord.CapturedOn);
                         if (!WithinRange(request.DataRange, captureTime)) continue;
                         foreach (var hiType in request.HiType)
                         {
                             var hiTypeStr = hiType.ToString().ToLower();
-                            var dataFiles = ccRecord.data.GetValueOrDefault(hiTypeStr) ?? new List<string>();
+                            var dataFiles = ccRecord.Data.GetValueOrDefault(hiTypeStr) ?? new List<string>();
                             if (dataFiles.Count > 0)
                             {
                                 listOfDataFiles.AddRange(dataFiles);
@@ -104,13 +110,13 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
         {
             var ccList = JsonConvert.SerializeObject(request.CareContexts);
             var requestedHiTypes = string.Join(", ", request.HiType.Select(hiType => hiType.ToString()));
-            var transactionId = request.TransactionId;
-            var from = request.DataRange.From;
-            var to = request.DataRange.To;
-            var callbackUrl = request.CallBackUrl;
-            Log.Information(
-                $"Data request received. transactionId:{transactionId} , CareContexts:{ccList}, HiTypes:{requestedHiTypes}, From date:{from}, To date:{to}, CallbackUrl:{callbackUrl}",
-                transactionId, ccList, requestedHiTypes, from,to, callbackUrl);
+            Log.Information("Data request received." +
+                            $" transactionId:{request.TransactionId} , " +
+                            $"CareContexts:{ccList}, " +
+                            $"HiTypes:{requestedHiTypes}," +
+                            $" From date:{request.DataRange.From}," +
+                            $" To date:{request.DataRange.To}, " +
+                            $"CallbackUrl:{request.CallBackUrl}");
         }
     }
 }
