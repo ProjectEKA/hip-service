@@ -4,13 +4,14 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Builder;
     using FluentAssertions;
     using HipLibrary.Patient;
     using HipLibrary.Patient.Model;
     using HipService.Discovery;
-    using In.ProjectEKA.HipService.Link;
-    using In.ProjectEKA.HipService.Link.Model;
-    using In.ProjectEKA.HipServiceTest.Link.Builder;
+    using HipService.Link;
+    using HipService.Link.Model;
+    using Link.Builder;
     using Moq;
     using Optional;
     using Xunit;
@@ -54,7 +55,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                     new CareContextRepresentation("124", "National TB program")
                 }, new List<string>
                 {
-                    Match.ConsentManagerUserId.ToString(),
+                    Match.ConsentManagerUserId.ToString()
                 });
             var verifiedIdentifiers = new List<Identifier>
             {
@@ -75,18 +76,17 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             var testLinkRequest = new LinkRequest("1", sessionId,
                 TestBuilder.Faker().Random.Hash(), TestBuilder.Faker().Random.Hash()
                 , It.IsAny<string>(), linkedCareContext);
-            var linkRequests = new List<LinkRequest>();
-            linkRequests.Add(testLinkRequest);
+            var linkRequests = new List<LinkRequest> {testLinkRequest};
 
             linkPatientRepository.Setup(e => e.GetLinkedCareContexts(patientId))
-                .ReturnsAsync(new Tuple<IEnumerable<LinkRequest>, Exception>(linkRequests, null));
+                .ReturnsAsync((linkRequests, null));
             patientRepository.Setup(x => x.PatientWith(testPatient.Identifier))
                 .Returns(Option.Some(testPatient));
             matchingRepository
                 .Setup(repo => repo.Where(discoveryRequest))
-                .Returns(Task.FromResult(new List<HipLibrary.Patient.Model.Patient>
+                .Returns(Task.FromResult(new List<Patient>
                 {
-                    new HipLibrary.Patient.Model.Patient
+                    new Patient
                     {
                         Gender = Gender.M.ToString(),
                         Identifier = "1",
@@ -124,25 +124,24 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             {
                 new Identifier(IdentifierType.MOBILE, "+919999999999")
             };
-            var patientId = "cm-1";
+            const string patientId = "cm-1";
             var patientRequest = new PatientEnquiry(patientId, verifiedIdentifiers,
                 new List<Identifier>(), null, null, Gender.M, new DateTime(2019, 01, 01));
             var discoveryRequest = new DiscoveryRequest(patientRequest, "transaction-id-1");
-            var linkRequests = new List<LinkRequest>();
             linkPatientRepository.Setup(e => e.GetLinkedCareContexts(patientId))
-                .ReturnsAsync(new Tuple<IEnumerable<LinkRequest>, Exception>(linkRequests, null));
+                .ReturnsAsync((new List<LinkRequest>(), null));
             matchingRepository
                 .Setup(repo => repo.Where(discoveryRequest))
-                .Returns(Task.FromResult(new List<HipLibrary.Patient.Model.Patient>
+                .Returns(Task.FromResult(new List<Patient>
                 {
-                    new HipLibrary.Patient.Model.Patient(),
-                    new HipLibrary.Patient.Model.Patient()
+                    new Patient(),
+                    new Patient()
                 }.AsQueryable()));
 
             var (discoveryResponse, error) = await patientDiscovery.PatientFor(discoveryRequest);
 
             discoveryResponse.Should().BeNull();
-            discoveryRequestRepository.Invocations.Count.Should().Be(0);
+            discoveryRequestRepository.Invocations.Count.Should().Be(1);
             error.Should().BeEquivalentTo(expectedError);
         }
 
@@ -159,19 +158,40 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             {
                 new Identifier(IdentifierType.MR, "311231231231")
             };
-            var patientId = "cm-1";
+            const string patientId = "cm-1";
             var patientRequest = new PatientEnquiry("cm-1", verifiedIdentifiers,
                 new List<Identifier>(), null, null,
                 Gender.M, new DateTime(2019, 01, 01));
             var discoveryRequest = new DiscoveryRequest(patientRequest, "transaction-id-1");
-            var linkRequests = new List<LinkRequest>();
             linkPatientRepository.Setup(e => e.GetLinkedCareContexts(patientId))
-                .ReturnsAsync(new Tuple<IEnumerable<LinkRequest>, Exception>(linkRequests, null));
+                .ReturnsAsync((new List<LinkRequest>(), null));
 
             var (discoveryResponse, error) = await patientDiscovery.PatientFor(discoveryRequest);
 
             discoveryResponse.Should().BeNull();
-            discoveryRequestRepository.Invocations.Count.Should().Be(0);
+            discoveryRequestRepository.Invocations.Count.Should().Be(1);
+            error.Should().BeEquivalentTo(expectedError);
+        }
+
+
+        [Fact]
+        private async void ShouldReturnAnErrorWhenDiscoveryRequestAlreadyExists()
+        {
+            var patientDiscovery = new PatientDiscovery(
+                matchingRepository.Object,
+                discoveryRequestRepository.Object,
+                linkPatientRepository.Object,
+                patientRepository.Object);
+            var expectedError =
+                new ErrorRepresentation(new Error(ErrorCode.DuplicateDiscoveryRequest, "Request already exists"));
+            var transactionId = TestBuilders.RandomString();
+            var discoveryRequest = new DiscoveryRequest(null, transactionId);
+            discoveryRequestRepository.Setup(repository => repository.RequestExistsFor(transactionId))
+                .ReturnsAsync(true);
+
+            var (discoveryResponse, error) = await patientDiscovery.PatientFor(discoveryRequest);
+
+            discoveryResponse.Should().BeNull();
             error.Should().BeEquivalentTo(expectedError);
         }
     }

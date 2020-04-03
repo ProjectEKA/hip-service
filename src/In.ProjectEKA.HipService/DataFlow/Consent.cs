@@ -3,7 +3,8 @@ namespace In.ProjectEKA.HipService.DataFlow
     public class Consent
     {
         public string Id { get; }
-        public string DigitalSignature { get; }
+        // ReSharper disable once InconsistentNaming
+        private string DigitalSignature;
 
         public Consent(string id, string digitalSignature)
         {

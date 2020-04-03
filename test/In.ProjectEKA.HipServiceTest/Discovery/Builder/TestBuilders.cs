@@ -17,5 +17,10 @@ namespace In.ProjectEKA.HipServiceTest.Discovery.Builder
         }
 
         internal static Faker Faker() => faker ??= new Faker();
+
+        public static string RandomString()
+        {
+            return Faker().Random.String();
+        }
     }
 }

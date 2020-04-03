@@ -2,13 +2,14 @@ namespace In.ProjectEKA.HipService.Common.Model
 {
     public class GrantedContext
     {
-        public string PatientReferenceNumber { get; }
-        public string CareContextReferenceNumber { get; }
+        public string PatientReference { get; }
+        
+        public string CareContextReference { get; }
 
-        public GrantedContext(string patientReferenceNumber, string careContextReferenceNumber)
+        public GrantedContext(string patientReference, string careContextReference)
         {
-            PatientReferenceNumber = patientReferenceNumber;
-            CareContextReferenceNumber = careContextReferenceNumber;
+            PatientReference = patientReference;
+            CareContextReference = careContextReference;
         }
     }
 }

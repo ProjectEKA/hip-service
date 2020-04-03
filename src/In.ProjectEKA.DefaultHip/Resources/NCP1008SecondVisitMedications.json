@@ -1,0 +1,217 @@
+{
+    "resourceType": "Bundle",
+    "id": "89fb2983-9cef-4f67-baa2-4304f37c8ec8",
+    "type": "collection",
+    "entry": [
+        {
+            "fullUrl": "urn:uuid:4257e47a-a0dc-4607-a205-d478f55dd600",
+            "resource": {
+              "resourceType": "MedicationRequest",
+              "id": "4257e47a-a0dc-4607-a205-d478f55dd600",
+              "status": "active",
+              "intent": "order",
+              "priority": "stat",
+              "subject": {
+                "display": "Hina Patel"
+              },
+              "medicationReference": {
+                "reference": "Medication/c2b8f3fd-6da0-44ed-bc91-8bb05ff614d2",
+                "display": "IV antibiotics "
+              },
+              "authoredOn": "2020-02-15",
+              "dosageInstruction": [
+                {
+                  "sequence": 1,
+                  "text": "22/01/2020 to 07/02/2020",
+                  "patientInstruction": "Don't discontinue",
+                  "timing": {
+                    "code": {
+                      "text": "15 days"
+                    }
+                  }
+                }
+              ],
+              "note": [
+                  {
+                      "text" : "Check if the fever returns tomorrow"
+                  },
+                  {
+                      "text": "Patient told to take with food"
+                  }
+              ]
+            }
+        },
+        {
+          "fullUrl": "urn:uuid:c2b8f3fd-6da0-44ed-bc91-8bb05ff614d2",
+          "resource": {
+            "resourceType": "Medication",
+            "id": "c2b8f3fd-6da0-44ed-bc91-8bb05ff614d2",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://hl7.org/fhir/sid/ndc",
+                  "code": "76388-713-25",
+                  "display": "Syp. Posaconazole"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "fullUrl": "urn:uuid:7bb436fd-1848-4b11-81ee-66172388e7fd",
+          "resource": {
+            "resourceType": "MedicationRequest",
+            "id": "7bb436fd-1848-4b11-81ee-66172388e7fd",
+            "status": "active",
+            "intent": "order",
+            "subject": {
+              "display": "Hina Patel"
+            },
+            "medicationReference": {
+              "reference": "Medication/4b62be72-6999-4939-ac62-51f1b7b0ee03",
+              "display": "IV antibiotics "
+            },
+            "authoredOn": "2020-02-15",
+            "dosageInstruction": [
+              {
+                "sequence": 1,
+                "text": "16/02/2020 to 25/02/2020",
+                "timing": {
+                  "code": {
+                    "text": "9 days"
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "fullUrl": "urn:uuid:4b62be72-6999-4939-ac62-51f1b7b0ee03",
+          "resource": {
+            "resourceType": "Medication",
+            "id": "4b62be72-6999-4939-ac62-51f1b7b0ee03",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://hl7.org/fhir/sid/ndc",
+                  "code": "76388-713-25",
+                  "display": "Inj. Magnex"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "fullUrl": "urn:uuid:cd261c13-433b-4f82-a5e6-d6ebe8af0c14",
+          "resource": {
+              "resourceType": "MedicationRequest",
+              "id": "cd261c13-433b-4f82-a5e6-d6ebe8af0c14",
+              "contained": [
+                {
+                  "resourceType": "Medication",
+                  "id": "2d9bb075-cb43-476c-8256-a52636ab5fea",
+                  "code": {
+                    "coding": [
+                      {
+                        "system": "http://snomed.info/sct",
+                        "code": "430127000",
+                        "display": "Oral Form Oxycodone"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "identifier": [
+                {
+                  "use": "official",
+                  "system": "http://www.bmc.nl/portal/prescriptions",
+                  "value": "12345689"
+                }
+              ],
+              "status": "active",
+              "intent": "order",
+              "category": [
+                {
+                  "coding": [
+                    {
+                      "system": "http://terminology.hl7.org/CodeSystem/medicationrequest-category",
+                      "code": "inpatient",
+                      "display": "Inpatient"
+                    }
+                  ]
+                }
+              ],
+              "medicationReference": {
+                "reference": "#2d9bb075-cb43-476c-8256-a52636ab5fea"
+              },
+              "subject": {
+                "reference": "Patient/pat1",
+                "display": "Donald Duck"
+              },
+              "supportingInformation": [
+                {
+                  "reference": "Procedure/biopsy"
+                }
+              ],
+              "authoredOn": "2015-01-15",
+              "requester": {
+                "reference": "Practitioner/f007",
+                "display": "Patrick Pump"
+              },
+              "note": [
+                {
+                  "text": "Patient told to take with food"
+                }
+              ],
+              "dosageInstruction": [
+                {
+                  "sequence": 1,
+                  "text": "16/02/2020 to 30/02/2020",
+                  "additionalInstruction": [
+                    {
+                      "coding": [
+                        {
+                          "system": "http://snomed.info/sct",
+                          "code": "418914006",
+                          "display": "Warning. May cause drowsiness. If affected do not drive or operate machinery. Avoid alcoholic drink (qualifier value)"
+                        }
+                      ]
+                    }
+                  ],
+                  "timing": {
+                    "repeat": {
+                      "frequency": 1,
+                      "period": 1,
+                      "periodUnit": "d",
+                      "when": ["ACM"],
+                      "offset": 10
+                    }
+                  },
+                  "route": {
+                    "coding": [
+                      {
+                        "system": "http://snomed.info/sct",
+                        "code": "26643006",
+                        "display": "Oral Route"
+                      }
+                    ]
+                  }
+                }
+              ],
+              "substitution": {
+                "allowedBoolean": true,
+                "reason": {
+                  "coding": [
+                    {
+                      "system": "http://terminology.hl7.org/CodeSystem/v3-ActReason",
+                      "code": "FP",
+                      "display": "formulary policy"
+                    }
+                  ]
+                }
+              }
+            }
+        }
+        
+    ]
+}

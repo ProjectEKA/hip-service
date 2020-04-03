@@ -1,8 +1,6 @@
-using In.ProjectEKA.HipService.Link;
-using PatientLinkReferenceRequest = In.ProjectEKA.HipService.Link.PatientLinkReferenceRequest;
-
 namespace In.ProjectEKA.HipServiceTest.Link.Builder
 {
+    using In.ProjectEKA.HipService.Link;
     using Bogus;
     using HipLibrary.Patient.Model;
 

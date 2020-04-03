@@ -4,7 +4,6 @@ using Xunit;
 
 namespace In.ProjectEKA.HipServiceTest.Link
 {
-    using System;
     using System.Linq;
     using Builder;
     using FluentAssertions;
@@ -15,7 +14,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
     [Collection("Link Patient Repository Tests")]
     public class LinkPatientRepositoryTest
     {
-        public LinkPatientContext PatientContext()
+        private static LinkPatientContext PatientContext()
         {
             var optionsBuilder = new DbContextOptionsBuilder<LinkPatientContext>()
                 .UseInMemoryDatabase(TestBuilder.Faker().Random.String())
@@ -97,7 +96,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
             var consentManagerUserId = faker.Random.Hash();
             var (link, _) = await linkPatientRepository.SaveRequestWith(faker.Random.Hash(), faker.Random.Hash()
                 , consentManagerUserId, faker.Random.Hash(),
-                new[] {(faker.Random.Word())});
+                new[] {faker.Random.Word()});
             var (patientFor, _) = await linkPatientRepository.GetLinkedCareContexts(consentManagerUserId);
 
             link.Should().BeEquivalentTo(patientFor.First());
