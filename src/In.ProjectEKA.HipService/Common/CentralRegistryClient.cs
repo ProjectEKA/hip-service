@@ -1,6 +1,7 @@
 namespace In.ProjectEKA.HipService.Common
 {
     using System;
+    using System.Collections.Generic;
     using System.Net.Http;
     using System.Text;
     using System.Threading.Tasks;
@@ -8,6 +9,7 @@ namespace In.ProjectEKA.HipService.Common
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
     using Optional;
+    using Optional.Unsafe;
 
     public class CentralRegistryClient
     {
@@ -53,6 +55,46 @@ namespace In.ProjectEKA.HipService.Common
             }
         }
 
+        public virtual async Task<Option<string>> GetUrlFor(string id)
+        {
+            try
+            {
+                var token = await Authenticate();
+                var httpRequestMessage = new HttpRequestMessage
+                {
+                    RequestUri = new Uri($"{centralRegistryConfiguration.Url}/api/2.0/providers/{id}"),
+                    Headers =
+                    {
+                        {"Authorization", token.ValueOrDefault()}
+                    },
+                    Method = HttpMethod.Get
+                };
+                var responseMessage = await httpClient.SendAsync(httpRequestMessage)
+                    .ConfigureAwait(false);
+                var response = await responseMessage.Content.ReadAsStringAsync();
+
+                if (!responseMessage.IsSuccessStatusCode)
+                {
+                    var error = await responseMessage.Content.ReadAsStringAsync();
+                    Log.Error(
+                        $"Failure in getting the provider detail {responseMessage.StatusCode} {error}");
+                    return Option.None<string>();
+                }
+
+                var definition = new
+                {
+                    identifier = new List<Identifier>()
+                };
+                var result = JsonConvert.DeserializeAnonymousType(response, definition);
+                return Option.Some($"{result.identifier[0].System}");
+            }
+            catch (Exception exception)
+            {
+                Log.Error(exception, exception.StackTrace);
+                return Option.None<string>();
+            }
+        }
+
         private static HttpRequestMessage CreateHttpRequest<T>(string callBackUrl, T content)
         {
             var json = JsonConvert.SerializeObject(content, new JsonSerializerSettings
@@ -70,5 +112,10 @@ namespace In.ProjectEKA.HipService.Common
                 Content = new StringContent(json, Encoding.UTF8, "application/json"),
             };
         }
+    }
+
+    public class Identifier
+    {
+        public string System { get; set; }
     }
 }

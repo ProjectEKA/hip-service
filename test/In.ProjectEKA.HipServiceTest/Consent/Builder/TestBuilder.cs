@@ -28,7 +28,8 @@ namespace In.ProjectEKA.HipServiceTest.Consent.Builder
             return new Consent(faker.Random.Hash(),
                 ConsentArtefact().Generate().Build(),
                 faker.Random.Hash(),
-                ConsentStatus.GRANTED
+                ConsentStatus.GRANTED,
+                faker.Random.Hash()
             );
         }
     }

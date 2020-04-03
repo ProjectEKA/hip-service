@@ -2,15 +2,17 @@
 using In.ProjectEKA.HipService.Consent.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace In.ProjectEKA.HipService.Consent.Database.Migrations
 {
     [DbContext(typeof(ConsentContext))]
-    partial class ConsentContextModelSnapshot : ModelSnapshot
+    [Migration("20200403080416_addConsentManagerIdenitifier")]
+    partial class addConsentManagerIdenitifier
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

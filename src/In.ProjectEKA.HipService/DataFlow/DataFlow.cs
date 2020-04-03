@@ -32,13 +32,14 @@ namespace In.ProjectEKA.HipService.DataFlow
         }
 
         public async Task<Tuple<HealthInformationTransactionResponse, ErrorRepresentation>> HealthInformationRequestFor(
-            HealthInformationRequest request)
+            HealthInformationRequest request, string consentManagerId)
         {
             var consent = await consentRepository.GetFor(request.Consent.Id);
             if (consent == null) return ConsentArtefactNotFound();
 
             var dataRequest = new DataRequest(consent.ConsentArtefact.CareContexts, request.HiDataRange,
-                request.CallBackUrl, consent.ConsentArtefact.HiTypes, request.TransactionId, request.KeyMaterial);
+                request.CallBackUrl, consent.ConsentArtefact.HiTypes, request.TransactionId, request.KeyMaterial,
+                consentManagerId);
             var result = await dataFlowRepository.SaveRequest(request.TransactionId, request)
                 .ConfigureAwait(false);
             var (response, errorRepresentation) = result.Map(r =>
@@ -48,7 +49,7 @@ namespace In.ProjectEKA.HipService.DataFlow
                 return new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(null, errorResponse);
             }).ValueOr(new Tuple<HealthInformationTransactionResponse,
                 ErrorRepresentation>(new HealthInformationTransactionResponse(request.TransactionId), null));
-            
+
             if (errorRepresentation == null)
             {
                 if (IsExpired(request.KeyMaterial.DhPublicKey.Expiry))
@@ -57,8 +58,10 @@ namespace In.ProjectEKA.HipService.DataFlow
                         ErrorMessage.ExpiredKeyPair));
                     return new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(null, errorResponse);
                 }
+
                 PublishDataRequest(dataRequest);
             }
+
             return new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(response, errorRepresentation);
         }
 

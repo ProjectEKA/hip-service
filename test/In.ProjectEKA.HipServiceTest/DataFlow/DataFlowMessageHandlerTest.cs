@@ -2,11 +2,9 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
 {
     using System.Collections.Generic;
     using System.Linq;
-    using System.Net.Http;
     using Builder;
     using HipLibrary.Patient;
     using HipLibrary.Patient.Model;
-    using HipService.Common;
     using HipService.DataFlow;
     using Hl7.Fhir.Model;
     using Moq;

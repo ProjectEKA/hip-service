@@ -20,13 +20,14 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
             var grantedContexts = new List<GrantedContext>();
             var hiDataRange = new HipLibrary.Patient.Model.HiDataRange("from", "to");
             var callBackUrl = "http://callback";
+            var consentManagerId = "ConsentManagerId";
             var hiTypes = new List<HiType>();
             hiTypes.Add(HiType.Observation);
             var keyMaterial = new KeyMaterialLib(faker.Random.Word(), faker.Random.Word(),
                 new KeyStructureLib("", "", faker.Random.Hash()),
                 faker.Random.Hash());
             return new HipLibrary.Patient.Model.DataRequest(grantedContexts, hiDataRange, callBackUrl, hiTypes,
-                transactionId, keyMaterial);
+                transactionId, keyMaterial, consentManagerId);
         }
     }
 }
