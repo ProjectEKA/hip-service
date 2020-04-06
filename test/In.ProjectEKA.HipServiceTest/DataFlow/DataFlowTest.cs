@@ -82,11 +82,11 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                 .ReturnsAsync(Option.Some(healthInformation));
 
             var (healthInformationResponse, errorRepresentation) =
-                await dataFlowService.HealthInformationFor(linkId, token, transactionId);
+                await dataFlowService.HealthInformationFor(linkId, token);
 
             errorRepresentation.Should().BeNull();
             healthInformationResponse.Should()
-                .BeEquivalentTo(new HealthInformationResponse(transactionId, healthInformation.Data));
+                .BeEquivalentTo(new HealthInformationResponse(healthInformation.Data.Content));
         }
 
         [Fact]
@@ -95,7 +95,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var transactionId = TestBuilder.Faker().Random.Hash();
             var linkId = TestBuilder.Faker().Random.Hash();
 
-            var (_, errorRepresentation) = await dataFlowService.HealthInformationFor(linkId, "token", transactionId);
+            var (_, errorRepresentation) = await dataFlowService.HealthInformationFor(linkId, "token");
 
             var expectedError = new ErrorRepresentation(
                 new Error(ErrorCode.HealthInformationNotFound, ErrorMessage.HealthInformationNotFound));
@@ -113,7 +113,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                 .ReturnsAsync(Option.Some(healthInformation));
 
             var (_, errorRepresentation) = await dataFlowService
-                .HealthInformationFor(linkId, "invalid-token", transactionId);
+                .HealthInformationFor(linkId, "invalid-token");
 
             var expectedError = new ErrorRepresentation(
                 new Error(ErrorCode.InvalidToken, ErrorMessage.InvalidToken));
@@ -132,7 +132,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                 .ReturnsAsync(Option.Some(healthInformation));
 
             var (_, errorRepresentation) =
-                await dataFlowService.HealthInformationFor(linkId, token, transactionId);
+                await dataFlowService.HealthInformationFor(linkId, token);
             var expectedError = new ErrorRepresentation(
                 new Error(ErrorCode.LinkExpired, ErrorMessage.LinkExpired));
             errorRepresentation.Should().BeEquivalentTo(expectedError);

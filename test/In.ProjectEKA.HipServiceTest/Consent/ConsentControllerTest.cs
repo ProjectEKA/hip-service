@@ -30,5 +30,29 @@ namespace In.ProjectEKA.HipServiceTest.Consent
             consentRepository.Verify();
             okObjectResult.StatusCode.Equals(StatusCodes.Status200OK);
         }
+
+        [Fact]
+        async void ShouldUpdateConsentArtefact()
+        {
+            var consentController = new ConsentController(consentRepository.Object);
+
+            var consentArtefactRequest = TestBuilder.ConsentArtefactRequest();
+            consentRepository.Setup(x => x.AddAsync(
+                new Consent(consentArtefactRequest.ConsentDetail.ConsentId,
+                    consentArtefactRequest.ConsentDetail,
+                    consentArtefactRequest.Signature,
+                    ConsentStatus.GRANTED)
+            ));
+            consentRepository.Setup(x => x.UpdateAsync(
+                new Consent(consentArtefactRequest.ConsentDetail.ConsentId,
+                    consentArtefactRequest.ConsentDetail,
+                    consentArtefactRequest.Signature,
+                    ConsentStatus.REVOKED)
+            ));
+            var okObjectResult = await consentController.StoreConsent(consentArtefactRequest) as OkResult;
+
+            consentRepository.Verify();
+            okObjectResult.StatusCode.Equals(StatusCodes.Status200OK);
+        }
     }
 }

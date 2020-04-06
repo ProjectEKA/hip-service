@@ -1,9 +1,7 @@
 namespace In.ProjectEKA.HipService.Link
 {
-    using System;
     using System.Threading.Tasks;
     using Discovery;
-    using HipLibrary.Patient;
     using HipLibrary.Patient.Model;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
@@ -14,11 +12,11 @@ namespace In.ProjectEKA.HipService.Link
     [Route("patients/link")]
     public class LinkPatientController : ControllerBase
     {
-        private readonly ILink linkPatient;
+        private readonly LinkPatient linkPatient;
         private readonly IDiscoveryRequestRepository discoveryRequestRepository;
 
         public LinkPatientController(
-            ILink linkPatient,
+            LinkPatient linkPatient,
             IDiscoveryRequestRepository discoveryRequestRepository)
         {
             this.linkPatient = linkPatient;
@@ -35,17 +33,20 @@ namespace In.ProjectEKA.HipService.Link
                 request.Patient.ConsentManagerUserId,
                 request.Patient.ReferenceNumber,
                 request.Patient.CareContexts);
-            var doesRequestExists = await discoveryRequestRepository.RequestExistsFor(request.TransactionId);
+            var doesRequestExists = await discoveryRequestRepository.RequestExistsFor(
+                request.TransactionId,
+                request.Patient?.ConsentManagerUserId,
+                request.Patient?.ReferenceNumber);
             if (!doesRequestExists)
             {
-                return ReturnServerResponse(new ErrorRepresentation(
+                return ResponseFrom(new ErrorRepresentation(
                     new Error(ErrorCode.DiscoveryRequestNotFound, ErrorMessage.DiscoveryRequestNotFound)));
             }
 
             var patientReferenceRequest =
                 new PatientLinkEnquiry(request.TransactionId, patient);
             var (linkReferenceResponse, error) = await linkPatient.LinkPatients(patientReferenceRequest);
-            return error != null ? ReturnServerResponse(error) : Ok(linkReferenceResponse);
+            return error != null ? ResponseFrom(error) : Ok(linkReferenceResponse);
         }
 
         [HttpPost("{linkReferenceNumber}")]
@@ -56,10 +57,10 @@ namespace In.ProjectEKA.HipService.Link
             var (patientLinkResponse, error) = await linkPatient
                 .VerifyAndLinkCareContext(new LinkConfirmationRequest(patientLinkRequest.Token,
                     linkReferenceNumber));
-            return error != null ? ReturnServerResponse(error) : Ok(patientLinkResponse);
+            return error != null ? ResponseFrom(error) : Ok(patientLinkResponse);
         }
 
-        private ActionResult ReturnServerResponse(ErrorRepresentation errorResponse)
+        private ActionResult ResponseFrom(ErrorRepresentation errorResponse)
         {
             return errorResponse.Error.Code switch
             {

@@ -15,7 +15,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
     [Collection("Link Patient Repository Tests")]
     public class LinkPatientRepositoryTest
     {
-        public LinkPatientContext PatientContext()
+        private static LinkPatientContext PatientContext()
         {
             var optionsBuilder = new DbContextOptionsBuilder<LinkPatientContext>()
                 .UseInMemoryDatabase(TestBuilder.Faker().Random.String())

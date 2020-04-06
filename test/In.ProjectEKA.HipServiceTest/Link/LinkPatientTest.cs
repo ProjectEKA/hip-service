@@ -42,18 +42,18 @@ namespace In.ProjectEKA.HipServiceTest.Link
 
         private readonly Mock<IPatientRepository> patientRepository = new Mock<IPatientRepository>();
         private readonly Mock<IPatientVerification> patientVerification = new Mock<IPatientVerification>();
-        private readonly Mock<IReferenceNumberGenerator> guidGenerator = new Mock<IReferenceNumberGenerator>();
+        private readonly Mock<ReferenceNumberGenerator> guidGenerator = new Mock<ReferenceNumberGenerator>();
 
         public LinkPatientTest()
         {
-            var otpService = new OtpServiceConfiguration {BaseUrl = "http://localhost:5000",OffsetInMinutes = 5};
+            var otpService = new OtpServiceConfiguration {BaseUrl = "http://localhost:5000", OffsetInMinutes = 5};
             var otpServiceConfigurations = Options.Create(otpService);
             linkPatient = new LinkPatient(linkRepository.Object,
-                                          patientRepository.Object,
-                                          patientVerification.Object,
-                                          guidGenerator.Object,
-                                          discoveryRequestRepository.Object,
-                                          otpServiceConfigurations);
+                patientRepository.Object,
+                patientVerification.Object,
+                guidGenerator.Object,
+                discoveryRequestRepository.Object,
+                otpServiceConfigurations);
         }
 
         [Fact]
@@ -78,6 +78,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
                     patientReferenceRequest.Patient.ConsentManagerUserId,
                     patientReferenceRequest.Patient.ReferenceNumber, new[] {programRefNo}))
                 .ReturnsAsync(new Tuple<LinkEnquires, Exception>(null, null));
+
             patientRepository.Setup(x => x.PatientWith(testPatient.Identifier))
                 .Returns(Option.Some(testPatient));
 
@@ -159,6 +160,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
                 .ReturnsAsync((OtpMessage) null);
             linkRepository.Setup(e => e.GetPatientFor(sessionId))
                 .ReturnsAsync(new Tuple<LinkEnquires, Exception>(null, new Exception()));
+
 
             var (_, error) = await linkPatient.VerifyAndLinkCareContext(patientLinkRequest);
 

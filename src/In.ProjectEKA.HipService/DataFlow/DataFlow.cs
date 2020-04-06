@@ -71,25 +71,23 @@ namespace In.ProjectEKA.HipService.DataFlow
 
         public async Task<Tuple<HealthInformationResponse, ErrorRepresentation>> HealthInformationFor(
             string informationId,
-            string token,
-            string transactionId)
+            string token)
         {
             var healthInformation = await healthInformationRepository.GetAsync(informationId);
             return healthInformation
-                .Map(information => HealthInformation(token, transactionId, information))
+                .Map(information => HealthInformation(token, information))
                 .ValueOr(ErrorOf(ErrorResponse.HealthInformationNotFound));
         }
 
         private Tuple<HealthInformationResponse, ErrorRepresentation> HealthInformation(
             string token,
-            string transactionId,
             HealthInformation information)
         {
             if (information.Token != token) return ErrorOf(ErrorResponse.InvalidToken);
             if (IsLinkExpired(information.DateCreated)) return ErrorOf(ErrorResponse.LinkExpired);
 
             return new Tuple<HealthInformationResponse, ErrorRepresentation>(
-                new HealthInformationResponse(transactionId, information.Data), null);
+                new HealthInformationResponse(information.Data.Content), null);
         }
 
         private bool IsLinkExpired(DateTime dateCreated)

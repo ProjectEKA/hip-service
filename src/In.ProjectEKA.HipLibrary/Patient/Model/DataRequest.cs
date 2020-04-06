@@ -30,7 +30,7 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
         public override string ToString()
         {
             var hiTypes = HiType
-                .Select(hitype => hitype.ToString())
+                .Select(hiType => hiType.ToString())
                 .Aggregate("", (source, value) => source + " " + value);
             return $"Data Request with {hiTypes}";
         }

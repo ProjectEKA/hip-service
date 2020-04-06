@@ -1,0 +1,132 @@
+{
+    "resourceType": "Bundle",
+    "id": "49bf4a0f-063e-4a5f-b788-d8196e641455",
+    "type": "collection",
+    "entry": [
+        {
+            "fullUrl": "urn:uuid:71caf571-9307-484a-9e19-00ec92017191",
+            "resource": {
+            "resourceType": "Condition",
+            "id": "71caf571-9307-484a-9e19-00ec92017191",
+            "clinicalStatus": {
+                "coding": [
+                {
+                    "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+                    "code": "active"
+                }
+                ],
+                "text": "active"
+            },
+            "verificationStatus": {
+                "coding": [
+                    {
+                        "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+                        "code": "provisional"
+                    }
+                ]
+            },
+            "severity": {
+                "text": "Mild"
+            },
+            "code": {
+                "text": "tiredness and fatigue"
+            },
+            "subject": {
+                "display": "Hina Patel"
+            },
+            "recordedDate": "2018-02-02",
+            "onsetAge": {
+                "value": 52,
+                "unit": "years",
+                "system": "http://unitsofmeasure.org",
+                "code": "a"
+            }
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:8ee3235c-2b90-41b9-8a8c-08a525996f4c",
+            "resource": {
+                "resourceType": "Condition",
+                "id": "8ee3235c-2b90-41b9-8a8c-08a525996f4c",
+                "verificationStatus": {
+                    "coding": [
+                    {
+                        "system": "http://terminology.hl7.org/CodeSystem/condition-ver-status",
+                        "code": "confirmed"
+                    }
+                    ],
+                    "text": "confirmed"
+                },
+                "category": [
+                        {
+                            "coding": [
+                                {
+                                "system": "http://terminology.hl7.org/CodeSystem/condition-category",
+                                "code": "encounter-diagnosis",
+                                "display": "Encounter Diagnosis"
+                                }
+                            ]
+                        }
+                    ],
+                "severity": {
+                    "text": "Mild"
+                },
+                "code": {
+                    "text": "Weight loss"
+                },
+                "subject": {
+                    "display": "Hina Patel"
+                },
+                "recordedDate": "2019-11-02",
+                "note": [
+                        {
+                        "text": "The patient is anuric."
+                        }
+                ],
+                "onsetString": "About 2 months"
+            }
+        },
+        {
+            "fullUrl": "urn:uuid:d3573f46-0efa-4075-bd3d-d6a7f8fd5e08",
+            "resource": {
+                "resourceType": "Condition",
+                "id": "d3573f46-0efa-4075-bd3d-d6a7f8fd5e08",
+                "verificationStatus": {
+                    "text": "provisional"
+                },
+                "category": [
+                        {
+                            "coding": [
+                                {
+                                "system": "http://terminology.hl7.org/CodeSystem/condition-category",
+                                "code": "encounter-diagnosis",
+                                "display": "Encounter Diagnosis"
+                                }
+                            ]
+                        }
+                    ],
+                "severity": {
+                    "text": "Moderate"
+                },
+                "code": {
+                    "text": "Anxiety and stress"
+                },
+                "subject": {
+                    "display": "Hina Patel"
+                },
+                "recordedDate": "2018-02-02",
+                "note": [
+                    {
+                        "text": "The patient is stressed out."
+                    },
+                    {
+                        "text": "Works in a TB center. She is paranoid and also having family problem."
+                    },
+                    {
+                        "text" : "Advised rest. vacation. Nutritious food"
+                    }
+                ]
+            }
+        }
+    ]
+}

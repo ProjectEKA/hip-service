@@ -1,6 +1,5 @@
 ﻿namespace In.ProjectEKA.HipService.Discovery
 {
-    using System;
     using System.Threading.Tasks;
     using HipLibrary.Patient.Model;
     using Microsoft.AspNetCore.Authorization;
@@ -11,9 +10,9 @@
     [ApiController]
     public class DiscoveryController : Controller
     {
-        private readonly IDiscovery patientDiscovery;
+        private readonly PatientDiscovery patientDiscovery;
 
-        public DiscoveryController(IDiscovery patientDiscovery)
+        public DiscoveryController(PatientDiscovery patientDiscovery)
         {
             this.patientDiscovery = patientDiscovery;
         }
