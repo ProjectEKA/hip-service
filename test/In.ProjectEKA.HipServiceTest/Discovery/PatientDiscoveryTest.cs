@@ -141,9 +141,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 }.AsQueryable()));
 
             var (discoveryResponse, error) = await patientDiscovery.PatientFor(discoveryRequest);
-
             discoveryResponse.Should().BeNull();
-            discoveryRequestRepository.Invocations.Count.Should().Be(1);
             error.Should().BeEquivalentTo(expectedError);
         }
 

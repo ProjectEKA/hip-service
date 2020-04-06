@@ -9,8 +9,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace In.ProjectEKA.HipService.Link.Database.Migrations
 {
     [DbContext(typeof(LinkPatientContext))]
-    [Migration("20200324050519_LinkedRequestMigrations")]
-    partial class LinkedRequestMigrations
+    [Migration("20200324120420_LinkedRequestMigrationsv1")]
+    partial class LinkedRequestMigrationsv1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

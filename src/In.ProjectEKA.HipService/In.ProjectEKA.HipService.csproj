@@ -38,8 +38,4 @@
         <ProjectReference Include="..\In.ProjectEKA.HipLibrary\In.ProjectEKA.HipLibrary.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Link\Database\Migrations" />
-    </ItemGroup>
-
 </Project>
