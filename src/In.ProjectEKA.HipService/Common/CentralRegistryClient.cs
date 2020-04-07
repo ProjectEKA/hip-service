@@ -71,7 +71,7 @@ namespace In.ProjectEKA.HipService.Common
                 };
                 var responseMessage = await httpClient.SendAsync(httpRequestMessage)
                     .ConfigureAwait(false);
-                var response = await responseMessage.Content.ReadAsStringAsync();
+                
 
                 if (!responseMessage.IsSuccessStatusCode)
                 {
