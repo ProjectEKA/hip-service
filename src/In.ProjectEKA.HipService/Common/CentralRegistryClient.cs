@@ -79,7 +79,7 @@ namespace In.ProjectEKA.HipService.Common
                         $"Failure in getting the provider detail {responseMessage.StatusCode} {error}");
                     return Option.None<string>();
                 }
-
+var response = await responseMessage.Content.ReadAsStringAsync();
                 var definition = new
                 {
                     identifier = new List<Identifier>()
