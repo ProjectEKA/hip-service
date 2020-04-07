@@ -33,13 +33,8 @@ namespace In.ProjectEKA.HipService.Discovery
         public virtual async Task<ValueTuple<DiscoveryRepresentation, ErrorRepresentation>> PatientFor(
             DiscoveryRequest request)
         {
-            if (await AlreadyExists(request.TransactionId))
-            {
-                return (null,
-                    new ErrorRepresentation(new Error(ErrorCode.DuplicateDiscoveryRequest, "Request already exists")));
-            }
+            var (linkedAccounts, exception) = await linkPatientRepository.GetLinkedCareContexts(request.Patient.Id);
 
-            var (linkRequests, exception) = await linkPatientRepository.GetLinkedCareContexts(request.Patient.Id);
             if (exception != null)
             {
                 return (null,
@@ -47,21 +42,22 @@ namespace In.ProjectEKA.HipService.Discovery
                         "Failed to get Linked Care Contexts")));
             }
 
-            var linkRequestsArray = linkRequests as LinkRequest[] ?? linkRequests.ToArray();
-            if (HasAny(linkRequestsArray))
+            var linkedCareContexts = linkedAccounts.ToList();
+            if (HasAny(linkedCareContexts))
             {
-                return await patientRepository.PatientWith(linkRequestsArray.First().PatientReferenceNumber)
+                return await patientRepository.PatientWith(linkedCareContexts.First().PatientReferenceNumber)
                     .Map(async patient =>
                     {
                         await discoveryRequestRepository.Add(new Model.DiscoveryRequest(request.TransactionId,
-                            request.Patient.Id,
-                            patient.Identifier));
+                            request.Patient.Id, patient.Identifier));
                         return (new DiscoveryRepresentation(patient.ToPatientEnquiryRepresentation(
-                                GetUnlinkedCareContexts(linkRequestsArray, patient))),
+                                GetUnlinkedCareContexts(linkedCareContexts, patient))),
                             (ErrorRepresentation) null);
-                    }).ValueOr(Task.FromResult(((DiscoveryRepresentation) null,
-                        new ErrorRepresentation(new Error(ErrorCode.NoPatientFound,
-                            ErrorMessage.NoPatientFound)))));
+                    }).ValueOr(
+                        Task.FromResult(((DiscoveryRepresentation) null,
+                                new ErrorRepresentation(new Error(ErrorCode.NoPatientFound,
+                                    ErrorMessage.NoPatientFound))))
+                    );
             }
 
             var patients = await matchingRepository.Where(request);
@@ -82,20 +78,23 @@ namespace In.ProjectEKA.HipService.Discovery
             return await discoveryRequestRepository.RequestExistsFor(transactionId);
         }
 
-        private static bool HasAny(IEnumerable<LinkRequest> linkRequests)
+        private static bool HasAny(IEnumerable<LinkedAccounts> linkedAccounts)
         {
-            return linkRequests.Any(linkRequest => true);
+            return linkedAccounts.Any(account => true);
         }
 
         private static IEnumerable<CareContextRepresentation> GetUnlinkedCareContexts(
-            IEnumerable<LinkRequest> linkRequests,
+            IEnumerable<LinkedAccounts> linkedAccounts,
             Patient patient)
         {
-            var allLinkedCareContexts = linkRequests.SelectMany(linkRequest => linkRequest.CareContexts).ToList();
+            var allLinkedCareContexts = linkedAccounts
+                .SelectMany(account => account.CareContexts)
+                .ToList();
+
             return patient.CareContexts
                 .Where(careContext =>
                     allLinkedCareContexts.Find(linkedCareContext =>
-                        linkedCareContext.CareContextNumber == careContext.ReferenceNumber) == null);
+                        linkedCareContext == careContext.ReferenceNumber) == null);
         }
     }
 }
