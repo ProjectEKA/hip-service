@@ -72,7 +72,6 @@ namespace In.ProjectEKA.HipService.Common
                 var responseMessage = await httpClient.SendAsync(httpRequestMessage)
                     .ConfigureAwait(false);
                 
-
                 if (!responseMessage.IsSuccessStatusCode)
                 {
                     var error = await responseMessage.Content.ReadAsStringAsync();
