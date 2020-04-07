@@ -4,6 +4,7 @@ using Xunit;
 
 namespace In.ProjectEKA.HipServiceTest.Link
 {
+    using System;
     using System.Linq;
     using Builder;
     using FluentAssertions;
@@ -56,14 +57,14 @@ namespace In.ProjectEKA.HipServiceTest.Link
         }
 
         [Fact]
-        private async void ThrowErrorOnSaveOfSamePrimaryKey()
+        private async void ThrowErrorOnSaveOfSamePrimaryKeyLinkEnquires()
         {
             var faker = TestBuilder.Faker();
             var linkReferenceNumber = faker.Random.Hash();
             var dbContext = PatientContext();
             var linkPatientRepository = new LinkPatientRepository(dbContext);
-            var linkedCareContext = new List<LinkedCareContext> {new LinkedCareContext(faker.Random.Word())};
-            var linkRequest = new LinkRequest(faker.Random.Hash(),
+            var linkedCareContext = new List<CareContext> {new CareContext(faker.Random.Word())};
+            var linkRequest = new LinkEnquires(faker.Random.Hash(),
                 linkReferenceNumber,
                 faker.Random.Hash(),
                 faker.Random.Hash(),
@@ -86,6 +87,40 @@ namespace In.ProjectEKA.HipServiceTest.Link
             error.Should().NotBeNull();
             dbContext.Database.EnsureDeleted();
         }
+        
+        [Fact]
+        private async void ShouldSaveLinkedAccounts()
+        {
+            var faker = TestBuilder.Faker();
+            var dbContext = PatientContext();
+            var linkPatientRepository = new LinkPatientRepository(dbContext);
+            var consentManagerUserId = faker.Random.Hash();
+            var link = await linkPatientRepository.Save(consentManagerUserId, faker.Random.Hash()
+                , faker.Random.Hash(), new[] {faker.Random.Word()});
+            var (patientFor, _) = await linkPatientRepository.GetLinkedCareContexts(consentManagerUserId);
+
+            link.MatchSome(l => l.Should().BeEquivalentTo(patientFor.First()));
+
+            dbContext.Database.EnsureDeleted();
+        }
+
+        [Fact]
+        private async void ThrowErrorOnSaveOfSamePrimaryKeyLinkedAccounts()
+        {
+            var faker = TestBuilder.Faker();
+            var dbContext = PatientContext();
+            var linkPatientRepository = new LinkPatientRepository(dbContext);
+            var consentManagerUserId = faker.Random.Hash();
+            var linkReferenceNumber = faker.Random.Hash();
+            await linkPatientRepository.Save(consentManagerUserId, faker.Random.Hash()
+                , linkReferenceNumber, new[] {faker.Random.Word()});
+            var linkedAccount = await linkPatientRepository.Save(consentManagerUserId, faker.Random.Hash()
+                , linkReferenceNumber, new[] {faker.Random.Word()});
+
+            linkedAccount.HasValue.Should().BeFalse();
+            
+            dbContext.Database.EnsureDeleted();
+        }
 
         [Fact]
         private async void ShouldGetLinkedCareContexts()
@@ -94,12 +129,14 @@ namespace In.ProjectEKA.HipServiceTest.Link
             var dbContext = PatientContext();
             var linkPatientRepository = new LinkPatientRepository(dbContext);
             var consentManagerUserId = faker.Random.Hash();
-            var (link, _) = await linkPatientRepository.SaveRequestWith(faker.Random.Hash(), faker.Random.Hash()
-                , consentManagerUserId, faker.Random.Hash(),
-                new[] {(faker.Random.Word())});
+            var linkedAccounts = await linkPatientRepository.Save(consentManagerUserId, faker.Random.Hash(), faker.Random.Hash(),
+                new[] {faker.Random.Word()});
             var (patientFor, _) = await linkPatientRepository.GetLinkedCareContexts(consentManagerUserId);
 
-            link.Should().BeEquivalentTo(patientFor.First());
+            linkedAccounts.MatchSome(l =>
+            {
+                l.Should().BeEquivalentTo(patientFor.First());
+            });
 
             dbContext.Database.EnsureDeleted();
         }
