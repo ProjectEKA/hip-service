@@ -11,8 +11,7 @@ namespace In.ProjectEKA.DefaultHipTest.DataFlow
     [Collection("Collect Tests")]
     public class CollectTest
     {
-        private readonly Collect collect
-            = new Collect("demoPatientCareContextDataMap.json");
+        private readonly Collect collect = new Collect("demoPatientCareContextDataMap.json");
 
         [Fact]
         private async void ReturnEntries()
