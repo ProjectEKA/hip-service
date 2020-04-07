@@ -2,13 +2,13 @@ namespace In.ProjectEKA.HipService.Link.Model
 {
     using System.ComponentModel.DataAnnotations.Schema;
 
-    public class LinkedCareContext
+    public class CareContext
     {
-        public LinkedCareContext()
+        public CareContext()
         {
         }
 
-        public LinkedCareContext(string careContextNumber)
+        public CareContext(string careContextNumber)
         {
             CareContextNumber = careContextNumber;
         }
@@ -17,6 +17,6 @@ namespace In.ProjectEKA.HipService.Link.Model
 
         [ForeignKey("LinkReferenceNumber")] public string LinkReferenceNumber { get; set; }
 
-        public LinkRequest LinkRequest { get; set; }
+        public LinkEnquires LinkEnquires { get; set; }
     }
 }
