@@ -12,6 +12,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
     using KeyStructureLib = HipLibrary.Patient.Model.KeyStructure;
     using GrantedContext = HipLibrary.Patient.Model.GrantedContext;
     using HiType = HipLibrary.Patient.Model.HiType;
+    using Type = In.ProjectEKA.HipService.DataFlow.Type;
 
     public static class TestBuilder
     {
@@ -37,22 +38,36 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
                     faker.Random.Hash()));
         }
 
-        internal static Faker<ConsentArtefactBuilder> ConsentArtefact()
+        private static Faker<ConsentArtefactBuilder> ConsentArtefact()
         {
             return new Faker<ConsentArtefactBuilder>();
         }
 
         internal static HipLibrary.Patient.Model.DataRequest DataRequest(string transactionId)
         {
-            var grantedContexts = new List<GrantedContext>();
+            const string consentManagerId = "ConsentManagerId";
             var hiDataRange = new HipLibrary.Patient.Model.HiDataRange("from", "to");
             const string callBackUrl = "http://callback";
-            var hiTypes = new List<HiType>();
             var keyMaterial = new KeyMaterialLib(faker.Random.Word(), faker.Random.Word(),
                 new KeyStructureLib("", "", faker.Random.Hash()),
                 faker.Random.Hash());
-            return new HipLibrary.Patient.Model.DataRequest(grantedContexts, hiDataRange, callBackUrl, hiTypes,
-                transactionId, keyMaterial);
+            return new HipLibrary.Patient.Model.DataRequest(new List<GrantedContext>(),
+                hiDataRange,
+                callBackUrl,
+                new List<HiType>(),
+                transactionId,
+                keyMaterial,
+                consentManagerId);
+        }
+
+        internal static DataNotificationRequest DataNotificationRequest(string transactionId)
+        {
+            var notifier = new Notifier(Type.HIP, "10000005");
+            var statusNotification = new StatusNotification(
+                SessionStatus.TRANSFERRED,
+                "10000005",
+                new List<StatusResponse>());
+            return new DataNotificationRequest(transactionId, DateTime.Now, notifier, statusNotification);
         }
 
         internal static Consent Consent()
@@ -61,11 +76,12 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
                 faker.Random.Hash(),
                 ConsentArtefact().Generate().Build(),
                 faker.Random.Hash(),
-                ConsentStatus.GRANTED
+                ConsentStatus.GRANTED,
+                "consentMangerId"
             );
         }
 
-        internal static Entry Entry()
+        private static Entry Entry()
         {
             var content = Faker().Random.String();
             var media = Faker().Random.String();
@@ -96,6 +112,11 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
             return new KeyMaterial("ECDH", "curve25519",
                 new KeyStructure(Faker().Random.Word(), Faker().Random.Word(),
                     Faker().Random.Words(32)), Faker().Random.Word());
+        }
+
+        internal static string RandomString()
+        {
+            return Faker().Random.String();
         }
     }
 }

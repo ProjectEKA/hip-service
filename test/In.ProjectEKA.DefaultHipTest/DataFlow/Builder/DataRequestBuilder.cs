@@ -11,10 +11,18 @@ namespace In.ProjectEKA.DefaultHipTest.DataFlow.Builder
         public IEnumerable<HiType> HiType;
         public string TransactionId;
         public KeyMaterial KeyMaterial;
+        public string ConsentManagerId;
+
 
         public DataRequest Build()
         {
-            return new DataRequest(CareContexts, DataRange, CallBackUrl, HiType, TransactionId, KeyMaterial);
+            return new DataRequest(CareContexts,
+                DataRange,
+                CallBackUrl,
+                HiType,
+                TransactionId,
+                KeyMaterial,
+                ConsentManagerId);
         }
     }
 }

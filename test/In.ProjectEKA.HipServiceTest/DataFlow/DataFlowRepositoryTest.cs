@@ -4,7 +4,6 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
     using In.ProjectEKA.HipService.DataFlow;
     using In.ProjectEKA.HipService.DataFlow.Database;
     using Builder;
-    using HipService.DataFlow.Model;
     using Microsoft.EntityFrameworkCore;
     using Xunit;
 
