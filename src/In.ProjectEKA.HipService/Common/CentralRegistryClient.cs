@@ -3,9 +3,11 @@ namespace In.ProjectEKA.HipService.Common
     using System;
     using System.Collections.Generic;
     using System.Net.Http;
+    using System.Net.Mime;
     using System.Text;
     using System.Threading.Tasks;
     using Logger;
+    using Microsoft.Net.Http.Headers;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
     using Optional;
@@ -65,13 +67,13 @@ namespace In.ProjectEKA.HipService.Common
                     RequestUri = new Uri($"{centralRegistryConfiguration.Url}/api/2.0/providers/{id}"),
                     Headers =
                     {
-                        {"Authorization", token.ValueOrDefault()}
+                        {HeaderNames.Authorization, token.ValueOrDefault()}
                     },
                     Method = HttpMethod.Get
                 };
                 var responseMessage = await httpClient.SendAsync(httpRequestMessage)
                     .ConfigureAwait(false);
-                
+
                 if (!responseMessage.IsSuccessStatusCode)
                 {
                     var error = await responseMessage.Content.ReadAsStringAsync();
@@ -79,7 +81,8 @@ namespace In.ProjectEKA.HipService.Common
                         $"Failure in getting the provider detail {responseMessage.StatusCode} {error}");
                     return Option.None<string>();
                 }
-var response = await responseMessage.Content.ReadAsStringAsync();
+
+                var response = await responseMessage.Content.ReadAsStringAsync();
                 var definition = new
                 {
                     identifier = new List<Identifier>()
@@ -108,7 +111,7 @@ var response = await responseMessage.Content.ReadAsStringAsync();
             {
                 RequestUri = new Uri($"{callBackUrl}/api/1.0/sessions"),
                 Method = HttpMethod.Post,
-                Content = new StringContent(json, Encoding.UTF8, "application/json"),
+                Content = new StringContent(json, Encoding.UTF8, MediaTypeNames.Application.Json)
             };
         }
     }

@@ -38,30 +38,35 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
                     faker.Random.Hash()));
         }
 
-        internal static Faker<ConsentArtefactBuilder> ConsentArtefact()
+        private static Faker<ConsentArtefactBuilder> ConsentArtefact()
         {
             return new Faker<ConsentArtefactBuilder>();
         }
 
         internal static HipLibrary.Patient.Model.DataRequest DataRequest(string transactionId)
         {
-            var consentManagerId = "ConsentManagerId";
-            var grantedContexts = new List<GrantedContext>();
+            const string consentManagerId = "ConsentManagerId";
             var hiDataRange = new HipLibrary.Patient.Model.HiDataRange("from", "to");
             const string callBackUrl = "http://callback";
-            var hiTypes = new List<HiType>();
             var keyMaterial = new KeyMaterialLib(faker.Random.Word(), faker.Random.Word(),
                 new KeyStructureLib("", "", faker.Random.Hash()),
                 faker.Random.Hash());
-            return new HipLibrary.Patient.Model.DataRequest(grantedContexts, hiDataRange, callBackUrl, hiTypes,
-                transactionId, keyMaterial, consentManagerId);
+            return new HipLibrary.Patient.Model.DataRequest(new List<GrantedContext>(),
+                hiDataRange,
+                callBackUrl,
+                new List<HiType>(),
+                transactionId,
+                keyMaterial,
+                consentManagerId);
         }
 
         internal static DataNotificationRequest DataNotificationRequest(string transactionId)
         {
             var notifier = new Notifier(Type.HIP, "10000005");
-            List<StatusResponse> statusResponses = new List<StatusResponse>();
-            var statusNotification = new StatusNotification(SessionStatus.TRANSFERRED, "10000005", statusResponses);
+            var statusNotification = new StatusNotification(
+                SessionStatus.TRANSFERRED,
+                "10000005",
+                new List<StatusResponse>());
             return new DataNotificationRequest(transactionId, DateTime.Now, notifier, statusNotification);
         }
 
@@ -76,7 +81,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
             );
         }
 
-        internal static Entry Entry()
+        private static Entry Entry()
         {
             var content = Faker().Random.String();
             var media = Faker().Random.String();

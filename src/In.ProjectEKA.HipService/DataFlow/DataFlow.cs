@@ -32,7 +32,8 @@ namespace In.ProjectEKA.HipService.DataFlow
         }
 
         public async Task<Tuple<HealthInformationTransactionResponse, ErrorRepresentation>> HealthInformationRequestFor(
-            HealthInformationRequest request, string consentManagerId)
+            HealthInformationRequest request,
+            string consentManagerId)
         {
             var consent = await consentRepository.GetFor(request.Consent.Id);
             if (consent == null) return ConsentArtefactNotFound();
@@ -95,8 +96,8 @@ namespace In.ProjectEKA.HipService.DataFlow
 
         private bool IsLinkExpired(DateTime dateCreated)
         {
-            var linkExpirationTTL = dataFlowConfiguration.Value.DataLinkTTLInMinutes;
-            var linkExpirationDateTime = dateCreated.AddMinutes(linkExpirationTTL);
+            var linkExpirationTtl = dataFlowConfiguration.Value.DataLinkTtlInMinutes;
+            var linkExpirationDateTime = dateCreated.AddMinutes(linkExpirationTtl);
             return linkExpirationDateTime < DateTime.Now;
         }
 

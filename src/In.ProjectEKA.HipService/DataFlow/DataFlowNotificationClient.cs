@@ -2,14 +2,15 @@ namespace In.ProjectEKA.HipService.DataFlow
 {
     using System;
     using System.Net.Http;
+    using System.Net.Mime;
     using System.Text;
-    using In.ProjectEKA.HipService.Common;
-    using In.ProjectEKA.HipService.DataFlow.Model;
-    using In.ProjectEKA.HipService.Logger;
+    using System.Threading.Tasks;
+    using Common;
+    using Logger;
+    using Microsoft.Net.Http.Headers;
+    using Model;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
-    using Task = System.Threading.Tasks.Task;
-
 
     public class DataFlowNotificationClient
     {
@@ -26,7 +27,7 @@ namespace In.ProjectEKA.HipService.DataFlow
         {
             await PostTo(url, dataNotificationRequest);
         }
-        
+
         private async Task PostTo(string url, DataNotificationRequest dataNotificationRequest)
         {
             try
@@ -57,10 +58,10 @@ namespace In.ProjectEKA.HipService.DataFlow
             {
                 RequestUri = new Uri($"{url}/health-information/notification"),
                 Method = HttpMethod.Post,
-                Content = new StringContent(json, Encoding.UTF8, "application/json"),
+                Content = new StringContent(json, Encoding.UTF8, MediaTypeNames.Application.Json),
                 Headers =
                 {
-                    {"Authorization", token}
+                    {HeaderNames.Authorization, token}
                 }
             };
         }

@@ -4,6 +4,7 @@ namespace In.ProjectEKA.HipServiceTest.Common
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
+    using System.Net.Mime;
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
@@ -40,7 +41,7 @@ namespace In.ProjectEKA.HipServiceTest.Common
                 .ReturnsAsync(new HttpResponseMessage
                 {
                     StatusCode = HttpStatusCode.OK,
-                    Content = new StringContent(response, Encoding.UTF8, "application/json")
+                    Content = new StringContent(response, Encoding.UTF8, MediaTypeNames.Application.Json)
                 })
                 .Verifiable();
 
@@ -61,8 +62,8 @@ namespace In.ProjectEKA.HipServiceTest.Common
         [Fact]
         private async void ShouldReturnProviderUrl()
         {
-            var id = "consent-manager";
-            var secret = "client-secret";
+            const string id = "consent-manager";
+            const string secret = "client-secret";
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
             var httpClient = new HttpClient(handlerMock.Object);
             const string centralRegistryRootUrl = "https://localhost:8080";
@@ -73,11 +74,7 @@ namespace In.ProjectEKA.HipServiceTest.Common
                 ClientId = id,
                 ClientSecret = secret
             };
-
-            var identifier = new Identifier
-            {
-                System = "http://localhost:8000"
-            };
+            var identifier = new Identifier {System = "http://localhost:8000"};
             var identifiers = new List<Identifier> {identifier};
             var response = JsonConvert.SerializeObject(new {identifier = identifiers});
             handlerMock
@@ -88,15 +85,14 @@ namespace In.ProjectEKA.HipServiceTest.Common
                     ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(new HttpResponseMessage
                 {
-                    Content = new StringContent(authResponse, Encoding.UTF8, "application/json"),
+                    Content = new StringContent(authResponse, Encoding.UTF8, MediaTypeNames.Application.Json),
                     StatusCode = HttpStatusCode.OK
                 })
                 .ReturnsAsync(new HttpResponseMessage
                 {
-                    Content = new StringContent(response, Encoding.UTF8, "application/json"),
+                    Content = new StringContent(response, Encoding.UTF8, MediaTypeNames.Application.Json),
                     StatusCode = HttpStatusCode.OK
                 });
-
             var registryClient = new CentralRegistryClient(httpClient, centralRegistryConfiguration);
 
             var result = await registryClient.GetUrlFor(id);
@@ -130,7 +126,7 @@ namespace In.ProjectEKA.HipServiceTest.Common
                 .ReturnsAsync(new HttpResponseMessage
                 {
                     StatusCode = statusCode,
-                    Content = new StringContent(response, Encoding.UTF8, "application/json")
+                    Content = new StringContent(response, Encoding.UTF8, MediaTypeNames.Application.Json)
                 })
                 .Verifiable();
 

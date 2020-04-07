@@ -2,6 +2,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
 {
     using System.Collections.Generic;
     using System.Linq;
+    using System.Net.Mime;
     using Builder;
     using HipLibrary.Patient;
     using HipLibrary.Patient.Model;
@@ -29,7 +30,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var checksum = TestBuilder.Faker().Random.Hash();
             var entriesList = new List<Entry>
             {
-                new Entry(content, "application/json", checksum, null)
+                new Entry(content, MediaTypeNames.Application.Json, checksum, null)
             };
             var requestKeyMaterial = TestBuilder.KeyMaterialLib();
             collect.Setup(c => c.CollectData(dataRequest)).ReturnsAsync(data);

@@ -27,7 +27,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
 
         public DataFlowTest()
         {
-            var configuration = new DataFlowConfiguration {DataSizeLimitInMbs = 5, DataLinkTTLInMinutes = 5};
+            var configuration = new DataFlowConfiguration {DataSizeLimitInMbs = 5, DataLinkTtlInMinutes = 5};
             var dataFlowConfiguration = Options.Create(configuration);
 
             dataFlowService = new DataFlowService(
@@ -97,7 +97,6 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
         [Fact]
         private async void ShouldGetHealthInformationNotFound()
         {
-            var transactionId = TestBuilder.Faker().Random.Hash();
             var linkId = TestBuilder.Faker().Random.Hash();
 
             var (_, errorRepresentation) = await dataFlowService.HealthInformationFor(linkId, "token");
@@ -128,7 +127,6 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
         [Fact]
         private async void ShouldGetLinkExpiredOnGetHealthInformation()
         {
-            var transactionId = TestBuilder.Faker().Random.Hash();
             var linkId = TestBuilder.Faker().Random.Hash();
             var token = TestBuilder.Faker().Random.Hash();
             var healthInformation = TestBuilder.HealthInformation(token, TestBuilder.Faker().Date.Past());

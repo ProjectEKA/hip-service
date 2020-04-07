@@ -21,7 +21,7 @@ namespace In.ProjectEKA.HipService.Link
         {
             this.httpClient = httpClient;
             httpClient.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
+                new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
             this.otpService = otpService;
         }
 
@@ -47,7 +47,7 @@ namespace In.ProjectEKA.HipService.Link
         private static HttpContent CreateHttpContent<T>(T content)
         {
             var json = JsonConvert.SerializeObject(content);
-            return new StringContent(json, Encoding.UTF8, "application/json");
+            return new StringContent(json, Encoding.UTF8, MediaTypeNames.Application.Json);
         }
 
         private async Task<Option<OtpMessage>> PostCallToOtpServer(Uri serverUrl, HttpContent content)

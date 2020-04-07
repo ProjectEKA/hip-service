@@ -5,6 +5,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
     using System.Linq;
     using System.Net;
     using System.Net.Http;
+    using System.Net.Mime;
     using System.Threading;
     using System.Threading.Tasks;
     using In.ProjectEKA.HipService.DataFlow;
@@ -16,7 +17,6 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
     using Moq.Protected;
     using Optional;
     using Xunit;
-    using Type = In.ProjectEKA.HipService.DataFlow.Type;
 
     [Collection("Data Flow Client Tests")]
     public class DataFlowClientTest
@@ -44,7 +44,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
 
             var entries = new List<Entry>
                 {
-                    new Entry(content, "application/json", checksum, null)
+                    new Entry(content, MediaTypeNames.Application.Json, checksum, null)
                 }
                 .AsEnumerable();
             var expectedUri = new Uri("http://callback/data/notification");

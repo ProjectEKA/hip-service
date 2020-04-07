@@ -4,12 +4,13 @@ namespace In.ProjectEKA.HipService.DataFlow
     using System.Collections.Generic;
     using System.Linq;
     using System.Net.Http;
+    using System.Net.Mime;
     using System.Text;
     using Common;
-    using Hl7.Fhir.Model;
     using In.ProjectEKA.HipLibrary.Patient.Model;
-    using In.ProjectEKA.HipService.DataFlow.Model;
+    using Model;
     using Logger;
+    using Microsoft.Net.Http.Headers;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
     using Task = System.Threading.Tasks.Task;
@@ -41,13 +42,15 @@ namespace In.ProjectEKA.HipService.DataFlow
             url.MatchSome(async providerUrl => await PostTo(providerUrl,
                 dataRequest.CallBackUrl,
                 dataRequest.CareContexts,
-                new DataResponse(dataRequest.TransactionId,
-                    data,
-                    keyMaterial)));
+                new DataResponse(dataRequest.TransactionId, data, keyMaterial)));
         }
 
-        private async Task PostTo(string url, string callBackUrl, IEnumerable<GrantedContext> careContexts, DataResponse dataResponse)
+        private async Task PostTo(string url,
+            string callBackUrl,
+            IEnumerable<GrantedContext> careContexts,
+            DataResponse dataResponse)
         {
+            var grantedContexts = careContexts as GrantedContext[] ?? careContexts.ToArray();
             try
             {
                 var token = await centralRegistryClient.Authenticate();
@@ -56,7 +59,7 @@ namespace In.ProjectEKA.HipService.DataFlow
                     .ConfigureAwait(false));
                 token.MatchNone(() => Log.Information("Did not post data to HIU"));
                 GetDataNotificationRequest(url,
-                    careContexts,
+                    grantedContexts,
                     dataResponse,
                     HiStatus.DELIVERED,
                     SessionStatus.TRANSFERRED,
@@ -66,7 +69,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             {
                 Log.Error(exception, exception.StackTrace);
                 GetDataNotificationRequest(url,
-                    careContexts,
+                    grantedContexts,
                     dataResponse,
                     HiStatus.ERRORED,
                     SessionStatus.FAILED,
@@ -81,10 +84,10 @@ namespace In.ProjectEKA.HipService.DataFlow
             SessionStatus sessionStatus,
             string description)
         {
-            var statusResponses = careContexts.Select(grantedContext =>
-                new StatusResponse(grantedContext.CareContextReference,
-                    hiStatus,
-                    description)).ToList();
+            var statusResponses = careContexts
+                .Select(grantedContext =>
+                    new StatusResponse(grantedContext.CareContextReference, hiStatus, description))
+                .ToList();
 
             dataFlowNotificationClient.NotifyCm(url,
                 new DataNotificationRequest(dataResponse.TransactionId,
@@ -107,10 +110,10 @@ namespace In.ProjectEKA.HipService.DataFlow
             {
                 RequestUri = new Uri($"{callBackUrl}/data/notification"),
                 Method = HttpMethod.Post,
-                Content = new StringContent(json, Encoding.UTF8, "application/json"),
+                Content = new StringContent(json, Encoding.UTF8, MediaTypeNames.Application.Json),
                 Headers =
                 {
-                    {"Authorization", token}
+                    {HeaderNames.Authorization, token}
                 }
             };
         }

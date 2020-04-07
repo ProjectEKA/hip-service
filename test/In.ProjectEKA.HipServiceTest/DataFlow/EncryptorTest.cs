@@ -64,7 +64,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var randomKeyFirst = EncryptorHelper.GenerateRandomKey();
             var randomKeySecond = EncryptorHelper.GenerateRandomKey();
             var senderKeyPair = EncryptorHelper.GenerateKeyPair(curve, algorithm);
-            var receiverPublicKey =
+            const string receiverPublicKey =
                 "BE7rHCAB0xdU/wTh4PeZhnmLfPSS2CQQo3Loi2D3sWiGBwm9lwsxudMgTyjZ0KUzEqUniuW7zmDr3Vy9JeYI7gA=";
             var keyMaterial = new KeyMaterial(algorithm, curve, new KeyStructure("", "",
                 receiverPublicKey), randomKeyFirst);
