@@ -3,19 +3,19 @@ namespace In.ProjectEKA.HipService.Link.Model
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
-    public class LinkRequest
+    public class LinkEnquires
     {
-        public LinkRequest()
+        public LinkEnquires()
         {
         }
 
-        public LinkRequest(
+        public LinkEnquires(
             string patientReferenceNumber,
             string linkReferenceNumber,
             string consentManagerId,
             string consentManagerUserId,
             string dateTimeStamp,
-            ICollection<LinkedCareContext> careContexts)
+            ICollection<CareContext> careContexts)
         {
             PatientReferenceNumber = patientReferenceNumber;
             LinkReferenceNumber = linkReferenceNumber;
@@ -35,6 +35,6 @@ namespace In.ProjectEKA.HipService.Link.Model
         
         public string DateTimeStamp { get; set; }
 
-        public virtual ICollection<LinkedCareContext> CareContexts { get; set; }
+        public virtual ICollection<CareContext> CareContexts { get; set; }
     }
 }

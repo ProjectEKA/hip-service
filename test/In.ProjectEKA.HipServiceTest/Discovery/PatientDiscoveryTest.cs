@@ -72,14 +72,14 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             var discoveryRequest = new DiscoveryRequest(patientRequest, transactionId);
 
             var sessionId = TestBuilder.Faker().Random.Hash();
-            ICollection<LinkedCareContext> linkedCareContext = new[] {new LinkedCareContext("123")};
-            var testLinkRequest = new LinkRequest("1", sessionId,
-                TestBuilder.Faker().Random.Hash(), TestBuilder.Faker().Random.Hash()
-                , It.IsAny<string>(), linkedCareContext);
-            var linkRequests = new List<LinkRequest> {testLinkRequest};
+            ICollection<string> linkedCareContext = new[] {"123"};
+            var testLinkAccounts = new LinkedAccounts("1", sessionId, TestBuilder.Faker().Random.Hash()
+                , It.IsAny<string>(), linkedCareContext.ToList());
+            var linkRequests = new List<LinkedAccounts>();
+            linkRequests.Add(testLinkAccounts);
 
             linkPatientRepository.Setup(e => e.GetLinkedCareContexts(patientId))
-                .ReturnsAsync((linkRequests, null));
+                .ReturnsAsync(new Tuple<IEnumerable<LinkedAccounts>, Exception>(linkRequests, null));
             patientRepository.Setup(x => x.PatientWith(testPatient.Identifier))
                 .Returns(Option.Some(testPatient));
             matchingRepository
@@ -128,8 +128,10 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             var patientRequest = new PatientEnquiry(patientId, verifiedIdentifiers,
                 new List<Identifier>(), null, null, Gender.M, new DateTime(2019, 01, 01));
             var discoveryRequest = new DiscoveryRequest(patientRequest, "transaction-id-1");
+            var linkedAccounts = new List<LinkedAccounts>();
             linkPatientRepository.Setup(e => e.GetLinkedCareContexts(patientId))
-                .ReturnsAsync((new List<LinkRequest>(), null));
+                .ReturnsAsync(new Tuple<IEnumerable<LinkedAccounts>, Exception>(linkedAccounts, null));
+
             matchingRepository
                 .Setup(repo => repo.Where(discoveryRequest))
                 .Returns(Task.FromResult(new List<Patient>
@@ -139,9 +141,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 }.AsQueryable()));
 
             var (discoveryResponse, error) = await patientDiscovery.PatientFor(discoveryRequest);
-
             discoveryResponse.Should().BeNull();
-            discoveryRequestRepository.Invocations.Count.Should().Be(1);
             error.Should().BeEquivalentTo(expectedError);
         }
 
@@ -163,31 +163,10 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 new List<Identifier>(), null, null,
                 Gender.M, new DateTime(2019, 01, 01));
             var discoveryRequest = new DiscoveryRequest(patientRequest, "transaction-id-1");
+            var linkedAccounts = new List<LinkedAccounts>();
+            
             linkPatientRepository.Setup(e => e.GetLinkedCareContexts(patientId))
-                .ReturnsAsync((new List<LinkRequest>(), null));
-
-            var (discoveryResponse, error) = await patientDiscovery.PatientFor(discoveryRequest);
-
-            discoveryResponse.Should().BeNull();
-            discoveryRequestRepository.Invocations.Count.Should().Be(1);
-            error.Should().BeEquivalentTo(expectedError);
-        }
-
-
-        [Fact]
-        private async void ShouldReturnAnErrorWhenDiscoveryRequestAlreadyExists()
-        {
-            var patientDiscovery = new PatientDiscovery(
-                matchingRepository.Object,
-                discoveryRequestRepository.Object,
-                linkPatientRepository.Object,
-                patientRepository.Object);
-            var expectedError =
-                new ErrorRepresentation(new Error(ErrorCode.DuplicateDiscoveryRequest, "Request already exists"));
-            var transactionId = TestBuilders.RandomString();
-            var discoveryRequest = new DiscoveryRequest(null, transactionId);
-            discoveryRequestRepository.Setup(repository => repository.RequestExistsFor(transactionId))
-                .ReturnsAsync(true);
+                .ReturnsAsync(new Tuple<IEnumerable<LinkedAccounts>, Exception>(linkedAccounts, null));
 
             var (discoveryResponse, error) = await patientDiscovery.PatientFor(discoveryRequest);
 
