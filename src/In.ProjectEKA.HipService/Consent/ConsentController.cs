@@ -18,11 +18,15 @@ namespace In.ProjectEKA.HipService.Consent
         }
 
         [HttpPost]
-        public async Task<ActionResult> StoreConsent([FromBody] ConsentArtefactRequest consentArtefactRequest)
+        public async Task<ActionResult> StoreConsent(
+            [FromHeader(Name = "X-ConsentManagerID")] string consentManagerId,
+            [FromBody] ConsentArtefactRequest consentArtefactRequest)
         {
             var consent = new Consent(consentArtefactRequest.ConsentDetail.ConsentId,
                 consentArtefactRequest.ConsentDetail,
-                consentArtefactRequest.Signature, consentArtefactRequest.Status);
+                consentArtefactRequest.Signature,
+                consentArtefactRequest.Status,
+                consentManagerId);
             if (consentArtefactRequest.Status == ConsentStatus.GRANTED)
             {
                 await consentRepository.AddAsync(consent);
@@ -31,6 +35,7 @@ namespace In.ProjectEKA.HipService.Consent
             {
                 await consentRepository.UpdateAsync(consent);
             }
+
             return Ok();
         }
     }

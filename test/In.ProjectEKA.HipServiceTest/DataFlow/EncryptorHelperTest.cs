@@ -37,7 +37,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
         [Fact]
         private void ShouldGenerateBase64String()
         {
-            var testString = "dGhpcyBpcyBhIHN0cmluZwo=";
+            const string testString = "dGhpcyBpcyBhIHN0cmluZwo=";
             var testStringByte = EncryptorHelper.GetByteFromBase64(testString);
 
             EncryptorHelper.GetBase64FromByte(testStringByte).Should().Be(testString);

@@ -17,6 +17,7 @@ namespace In.ProjectEKA.DefaultHipTest.DataFlow
         [Fact]
         private async void ReturnEntries()
         {
+            const string consentManagerId = "ConsentManagerId";
             var grantedContexts = new List<GrantedContext>
             {
                 new GrantedContext("RVH1003", "BI-KTH-12.05.0024"),
@@ -30,7 +31,14 @@ namespace In.ProjectEKA.DefaultHipTest.DataFlow
                 HiType.DiagnosticReport,
                 HiType.MedicationRequest
             };
-            var dataRequest = new DataRequest(grantedContexts, hiDataRange, "/someUrl", hiTypes, "someTxnId", null);
+            var dataRequest = new DataRequest(grantedContexts,
+                hiDataRange,
+                "/someUrl",
+                hiTypes,
+                "someTxnId",
+                null,
+                consentManagerId);
+
             var entries = await collect.CollectData(dataRequest);
 
             var bundles = entries.Map(s => s.Bundles);

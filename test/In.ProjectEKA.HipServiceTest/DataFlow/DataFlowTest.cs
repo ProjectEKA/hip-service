@@ -27,7 +27,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
 
         public DataFlowTest()
         {
-            var configuration = new DataFlowConfiguration {DataSizeLimitInMbs = 5, DataLinkTTLInMinutes = 5};
+            var configuration = new DataFlowConfiguration {DataSizeLimitInMbs = 5, DataLinkTtlInMinutes = 5};
             var dataFlowConfiguration = Options.Create(configuration);
 
             dataFlowService = new DataFlowService(
@@ -41,13 +41,15 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
         [Fact]
         private async void ReturnTransactionIdOnSuccess()
         {
+            var consentMangerId = TestBuilder.Faker().Random.String();
             var transactionId = TestBuilder.Faker().Random.Hash();
             var request = TestBuilder.HealthInformationRequest(transactionId);
             dataFlowRepository.Setup(d => d.SaveRequest(transactionId, request))
                 .ReturnsAsync(Option.None<Exception>());
             consentRepository.Setup(d => d.GetFor(request.Consent.Id)).ReturnsAsync(TestBuilder.Consent());
 
-            var (healthInformationResponse, _) = await dataFlowService.HealthInformationRequestFor(request);
+            var (healthInformationResponse, _) =
+                await dataFlowService.HealthInformationRequestFor(request, consentMangerId);
 
             dataFlowRepository.Verify();
             healthInformationResponse.TransactionId.Should().BeEquivalentTo(transactionId);
@@ -56,15 +58,18 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
         [Fact]
         private async void ReturnErrorOnFailure()
         {
+            var consentMangerId = TestBuilder.Faker().Random.String();
+
             var transactionId = TestBuilder.Faker().Random.Hash();
             var request = TestBuilder.HealthInformationRequest(transactionId);
             dataFlowRepository.Setup(d => d.SaveRequest(transactionId, request))
                 .ReturnsAsync(Option.Some(new Exception()));
             var expectedError = new ErrorRepresentation(new Error(ErrorCode.ServerInternalError,
                 ErrorMessage.InternalServerError));
-            consentRepository.Setup(d => d.GetFor(request.Consent.Id)).ReturnsAsync(TestBuilder.Consent());
+            consentRepository.Setup(d => d.GetFor(request.Consent.Id))
+                .ReturnsAsync(TestBuilder.Consent());
 
-            var (_, errorResponse) = await dataFlowService.HealthInformationRequestFor(request);
+            var (_, errorResponse) = await dataFlowService.HealthInformationRequestFor(request, consentMangerId);
 
             dataFlowRepository.Verify();
             errorResponse.Should().BeEquivalentTo(expectedError);
@@ -92,7 +97,6 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
         [Fact]
         private async void ShouldGetHealthInformationNotFound()
         {
-            var transactionId = TestBuilder.Faker().Random.Hash();
             var linkId = TestBuilder.Faker().Random.Hash();
 
             var (_, errorRepresentation) = await dataFlowService.HealthInformationFor(linkId, "token");
@@ -123,7 +127,6 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
         [Fact]
         private async void ShouldGetLinkExpiredOnGetHealthInformation()
         {
-            var transactionId = TestBuilder.Faker().Random.Hash();
             var linkId = TestBuilder.Faker().Random.Hash();
             var token = TestBuilder.Faker().Random.Hash();
             var healthInformation = TestBuilder.HealthInformation(token, TestBuilder.Faker().Date.Past());
