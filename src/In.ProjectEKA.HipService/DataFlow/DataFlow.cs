@@ -38,11 +38,14 @@ namespace In.ProjectEKA.HipService.DataFlow
             var consent = await consentRepository.GetFor(request.Consent.Id);
             if (consent == null) return ConsentArtefactNotFound();
 
-            var dataRequest = new DataRequest(consent.ConsentArtefact.CareContexts, request.HiDataRange,
-                request.CallBackUrl, consent.ConsentArtefact.HiTypes, request.TransactionId, request.KeyMaterial,
+            var dataRequest = new DataRequest(consent.ConsentArtefact.CareContexts,
+                request.HiDataRange,
+                request.CallBackUrl,
+                consent.ConsentArtefact.HiTypes,
+                request.TransactionId,
+                request.KeyMaterial,
                 consentManagerId);
-            var result = await dataFlowRepository.SaveRequest(request.TransactionId, request)
-                .ConfigureAwait(false);
+            var result = await dataFlowRepository.SaveRequest(request.TransactionId, request).ConfigureAwait(false);
             var (response, errorRepresentation) = result.Map(r =>
             {
                 var errorResponse = new ErrorRepresentation(new Error(ErrorCode.ServerInternalError,
@@ -51,19 +54,20 @@ namespace In.ProjectEKA.HipService.DataFlow
             }).ValueOr(new Tuple<HealthInformationTransactionResponse,
                 ErrorRepresentation>(new HealthInformationTransactionResponse(request.TransactionId), null));
 
-            if (errorRepresentation == null)
+            if (errorRepresentation != null)
             {
-                if (IsExpired(request.KeyMaterial.DhPublicKey.Expiry))
-                {
-                    var errorResponse = new ErrorRepresentation(new Error(ErrorCode.ExpiredKeyPair,
-                        ErrorMessage.ExpiredKeyPair));
-                    return new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(null, errorResponse);
-                }
-
-                PublishDataRequest(dataRequest);
+                return new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(null, errorRepresentation);
             }
 
-            return new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(response, errorRepresentation);
+            if (IsExpired(request.KeyMaterial.DhPublicKey.Expiry))
+            {
+                var errorResponse = new ErrorRepresentation(new Error(ErrorCode.ExpiredKeyPair,
+                    ErrorMessage.ExpiredKeyPair));
+                return new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(null, errorResponse);
+            }
+
+            PublishDataRequest(dataRequest);
+            return new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(response, null);
         }
 
         private static Tuple<HealthInformationTransactionResponse, ErrorRepresentation> ConsentArtefactNotFound()
