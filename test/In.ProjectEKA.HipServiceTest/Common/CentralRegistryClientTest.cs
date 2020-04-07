@@ -1,6 +1,7 @@
 namespace In.ProjectEKA.HipServiceTest.Common
 {
     using System;
+    using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
     using System.Text;
@@ -55,6 +56,53 @@ namespace In.ProjectEKA.HipServiceTest.Common
                 ItExpr.Is<HttpRequestMessage>(message => message.Method == HttpMethod.Post
                                                          && message.RequestUri == expectedUri),
                 ItExpr.IsAny<CancellationToken>());
+        }
+
+        [Fact]
+        private async void ShouldReturnProviderUrl()
+        {
+            var id = "consent-manager";
+            var secret = "client-secret";
+            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+            var httpClient = new HttpClient(handlerMock.Object);
+            const string centralRegistryRootUrl = "https://localhost:8080";
+            var authResponse = JsonConvert.SerializeObject(new {tokenType = "bearer", accessToken = "token"});
+            var centralRegistryConfiguration = new CentralRegistryConfiguration
+            {
+                Url = centralRegistryRootUrl,
+                ClientId = id,
+                ClientSecret = secret
+            };
+
+            var identifier = new Identifier
+            {
+                System = "http://localhost:8000"
+            };
+            var identifiers = new List<Identifier> {identifier};
+            var response = JsonConvert.SerializeObject(new {identifier = identifiers});
+            handlerMock
+                .Protected()
+                .SetupSequence<Task<HttpResponseMessage>>(
+                    "SendAsync",
+                    ItExpr.IsAny<HttpRequestMessage>(),
+                    ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync(new HttpResponseMessage
+                {
+                    Content = new StringContent(authResponse, Encoding.UTF8, "application/json"),
+                    StatusCode = HttpStatusCode.OK
+                })
+                .ReturnsAsync(new HttpResponseMessage
+                {
+                    Content = new StringContent(response, Encoding.UTF8, "application/json"),
+                    StatusCode = HttpStatusCode.OK
+                });
+
+            var registryClient = new CentralRegistryClient(httpClient, centralRegistryConfiguration);
+
+            var result = await registryClient.GetUrlFor(id);
+
+            result.HasValue.Should().BeTrue();
+            result.MatchSome(token => token.Should().BeEquivalentTo("http://localhost:8000"));
         }
 
         [Theory]

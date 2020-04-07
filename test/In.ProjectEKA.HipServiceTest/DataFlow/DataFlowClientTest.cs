@@ -9,12 +9,14 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
     using System.Threading.Tasks;
     using In.ProjectEKA.HipService.DataFlow;
     using Builder;
+    using FluentAssertions;
     using HipService.Common;
     using In.ProjectEKA.HipService.DataFlow.Model;
     using Moq;
     using Moq.Protected;
     using Optional;
     using Xunit;
+    using Type = In.ProjectEKA.HipService.DataFlow.Type;
 
     [Collection("Data Flow Client Tests")]
     public class DataFlowClientTest
@@ -29,7 +31,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var centralRegistryConfiguration = new CentralRegistryConfiguration
             {
                 Url = centralRegistryRootUrl,
-                ClientId = TestBuilder.RandomString(),
+                ClientId = "10000005",
                 ClientSecret = TestBuilder.RandomString()
             };
             var transactionId = "transactionId";
@@ -62,10 +64,23 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                     StatusCode = HttpStatusCode.OK
                 })
                 .Verifiable();
+
             centralRegistryClient.Setup(client => client.Authenticate()).ReturnsAsync(Option.Some("Something"));
-            centralRegistryClient.Setup(client => client.GetUrlFor(id)).ReturnsAsync(Option.Some("http:localhost:8000"));
+            centralRegistryClient.Setup(client => client.GetUrlFor(id))
+                .ReturnsAsync(Option.Some("http://localhost:8000"));
             dataFlowNotificationClient.Setup(client =>
-                client.NotifyCm("ttp:localhost:8000", dataNotificationRequest)).Verifiable();
+                    client.NotifyCm("http://localhost:8000",
+                        It.IsAny<DataNotificationRequest>()))
+                .Callback((string url, DataNotificationRequest request) =>
+                    {
+                        dataNotificationRequest.Should().NotBeNull();
+                        dataNotificationRequest.Notifier.Id.Should().Be(request.Notifier.Id);
+                        dataNotificationRequest.Notifier.Type.Should().Be(request.Notifier.Type);
+                        dataNotificationRequest.TransactionId.Should().Be(request.TransactionId);
+                        dataNotificationRequest.StatusNotification.HipId.Should().Be(request.StatusNotification.HipId);
+                        dataNotificationRequest.StatusNotification.SessionStatus.Should().Be(request.StatusNotification.SessionStatus);
+                        url.Should().Be("http://localhost:8000");
+                    });
 
             dataFlowClient.SendDataToHiu(dataRequest, entries, null);
 
@@ -89,7 +104,8 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                 Url = centralRegistryRootUrl,
                 ClientId = id,
                 ClientSecret = TestBuilder.RandomString()
-            };             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+            };
+            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
             var httpClient = new HttpClient(handlerMock.Object);
             var dataRequest = TestBuilder.DataRequest(TestBuilder.Faker().Random.Hash());
             var entries = new List<Entry>().AsEnumerable();

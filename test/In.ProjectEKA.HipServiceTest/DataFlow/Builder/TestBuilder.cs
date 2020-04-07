@@ -60,8 +60,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
         internal static DataNotificationRequest DataNotificationRequest(string transactionId)
         {
             var notifier = new Notifier(Type.HIP, "10000005");
-            var statusResponse = new StatusResponse("123", HiStatus.DELIVERED, "successfully delivered");
-            IEnumerable<StatusResponse> statusResponses = new[] {statusResponse};
+            List<StatusResponse> statusResponses = new List<StatusResponse>();
             var statusNotification = new StatusNotification(SessionStatus.TRANSFERRED, "10000005", statusResponses);
             return new DataNotificationRequest(transactionId, DateTime.Now, notifier, statusNotification);
         }
