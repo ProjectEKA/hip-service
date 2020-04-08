@@ -33,6 +33,12 @@ namespace In.ProjectEKA.HipService.Discovery
         public virtual async Task<ValueTuple<DiscoveryRepresentation, ErrorRepresentation>> PatientFor(
             DiscoveryRequest request)
         {
+            if (await AlreadyExists(request.TransactionId))
+            {
+                return (null,
+                    new ErrorRepresentation(new Error(ErrorCode.DuplicateDiscoveryRequest, "Request already exists")));
+            }
+            
             var (linkedAccounts, exception) = await linkPatientRepository.GetLinkedCareContexts(request.Patient.Id);
 
             if (exception != null)
