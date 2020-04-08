@@ -15,7 +15,6 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
         [Fact]
         private void ShouldFilterAndReturnAPatientByUnverifiedIdentifier()
         {
-            var filter = new Filter();
             var patientFirstName = Faker().Name.FirstName();
             const string patientPhoneNumber = "99999999999";
             var verifiedIdentifiers = Identifier()
@@ -46,7 +45,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 }).Generate())
                 .Append(Patient().Rules((_, patient) => { patient.PhoneNumber = patientPhoneNumber; }).Generate());
 
-            var filteredPatients = filter.Do(patients, discoveryRequest);
+            var filteredPatients = Filter.Do(patients, discoveryRequest);
 
             filteredPatients.Count().Should().Be(1);
         }
@@ -54,7 +53,6 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
         [Fact]
         private void ShouldFilterAndReturnMultiplePatientsByPhoneNumber()
         {
-            var filter = new Filter();
             const string mobileNumber = "99999999999";
             var verifiedIdentifiers = Identifier()
                 .GenerateLazy(10)
@@ -63,19 +61,31 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             var unverifiedIdentifiers = Identifier()
                 .GenerateLazy(10)
                 .Select(builder => builder.Build());
+            var gender = Faker().PickRandom<Gender>();
+            var name = Faker().Name.FullName();
             var discoveryRequest = new DiscoveryRequest(
                 new PatientEnquiry(new Faker().Random.Hash(), verifiedIdentifiers,
                     unverifiedIdentifiers,
+                    name,
                     null,
-                    null,
-                    Faker().PickRandom<Gender>(),
+                    gender,
                     Faker().Date.Past()), Faker().Random.String());
             var patients = Patient()
                 .GenerateLazy(10)
-                .Append(Patient().Rules((_, patient) => { patient.PhoneNumber = mobileNumber; }).Generate())
-                .Append(Patient().Rules((_, patient) => { patient.PhoneNumber = mobileNumber; }).Generate());
+                .Append(Patient().Rules((_, patient) =>
+                {
+                    patient.PhoneNumber = mobileNumber;
+                    patient.Gender = gender;
+                    patient.FirstName = name;
+                }).Generate())
+                .Append(Patient().Rules((_, patient) =>
+                {
+                    patient.PhoneNumber = mobileNumber;
+                    patient.Gender = gender;
+                    patient.FirstName = name;
+                }).Generate());
 
-            var filteredPatients = filter.Do(patients, discoveryRequest);
+            var filteredPatients = Filter.Do(patients, discoveryRequest);
 
             filteredPatients.Count().Should().Be(2);
         }
@@ -83,7 +93,6 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
         [Fact]
         private void ShouldFilterAndReturnMultiplePatientsByGender()
         {
-            var filter = new Filter();
             const string mobileNumber = "99999999999";
             const Gender patientGender = Gender.F;
             var verifiedIdentifiers = Identifier()
@@ -106,11 +115,11 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 .Append(Patient().Rules((_, patient) =>
                 {
                     patient.PhoneNumber = mobileNumber;
-                    patient.Gender = patientGender.ToString();
+                    patient.Gender = patientGender;
                 }).Generate())
                 .Append(Patient().Rules((_, patient) => { patient.PhoneNumber = mobileNumber; }).Generate());
 
-            var filteredPatients = filter.Do(patients, discoveryRequest);
+            var filteredPatients = Filter.Do(patients, discoveryRequest);
 
             filteredPatients.Count().Should().Be(1);
         }

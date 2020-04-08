@@ -9,7 +9,7 @@ namespace In.ProjectEKA.DefaultHipTest.Link
     public class PatientRepositoryTest
     {
         private readonly PatientRepository patientRepository = new PatientRepository("demoPatients.json");
-        
+
         [Fact]
         private void ReturnObjectForKnownPatient()
         {
@@ -20,26 +20,26 @@ namespace In.ProjectEKA.DefaultHipTest.Link
                 Identifier = patientReferenceNumber,
                 FirstName = "Navjot",
                 LastName = "Singh",
-                Gender = "F",
-                CareContexts = new []
+                Gender = Gender.F,
+                CareContexts = new[]
                 {
                     new CareContextRepresentation("NCP1007", "National Cancer program"),
-                    new CareContextRepresentation("RV-MHD-01.17.0024", "Dept of Psychiatry - Episode 1"), 
+                    new CareContextRepresentation("RV-MHD-01.17.0024", "Dept of Psychiatry - Episode 1"),
                 }
             };
-            
+
             var patient = patientRepository.PatientWith(patientReferenceNumber);
-            
+
             patient.ValueOr(new Patient()).Should().BeEquivalentTo(testPatient);
         }
-        
+
         [Fact]
         private void ReturnNullForUnknownPatient()
         {
             const string patientReferenceNumber = "1234";
-            
+
             var patient = patientRepository.PatientWith(patientReferenceNumber);
-            
+
             patient.ValueOr((Patient) null).Should().BeNull();
         }
     }
