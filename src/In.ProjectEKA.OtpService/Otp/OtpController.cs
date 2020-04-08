@@ -30,7 +30,7 @@ namespace In.ProjectEKA.OtpService.Otp
         public async Task<ActionResult> VerifyOtp([FromRoute] string sessionId,
             [FromBody] OtpVerificationRequest request)
         {
-            var verifyOtp = await otpVerifier.CheckOtpValue(sessionId, request.Value);
+            var verifyOtp = await otpVerifier.VerifyFor(sessionId, request.Value);
             return ResultFrom(verifyOtp);
         }
 

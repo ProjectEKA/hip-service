@@ -44,7 +44,7 @@ namespace In.ProjectEKA.OtpService.Otp
             }
             catch (Exception exception)
             {
-                Log.Fatal(exception, exception.StackTrace);
+                Log.Error(exception, exception.StackTrace);
                 return Option.None<OtpRequest>();
             }
         }

@@ -17,7 +17,7 @@ namespace In.ProjectEKA.OtpServiceTest.Otp
 
         public OtpVerifierTest()
         {
-            otpService = new OtpVerifier(otpRepository.Object);
+            otpService = new OtpVerifier(otpRepository.Object, new OtpProperties(1));
         }
 
 
@@ -28,10 +28,10 @@ namespace In.ProjectEKA.OtpServiceTest.Otp
             var otpToken = TestBuilder.Faker().Random.Number().ToString();
             var testOtpResponse = new Response(ResponseType.OtpValid, "Valid OTP");
             var testOtpRequest = new OtpRequest
-                {SessionId = sessionId, RequestedAt = It.IsAny<DateTime>(), OtpToken = otpToken};
+                {SessionId = sessionId, RequestedAt = DateTime.Now.ToUniversalTime(), OtpToken = otpToken};
             otpRepository.Setup(e => e.GetWith(sessionId)).ReturnsAsync(Option.Some(testOtpRequest));
 
-            var otpResponse = await otpService.CheckOtpValue(sessionId, otpToken);
+            var otpResponse = await otpService.VerifyFor(sessionId, otpToken);
 
             otpResponse.Should().BeEquivalentTo(testOtpResponse);
         }
@@ -46,7 +46,22 @@ namespace In.ProjectEKA.OtpServiceTest.Otp
                 {SessionId = sessionId, RequestedAt = It.IsAny<DateTime>(), OtpToken = faker.Random.String()};
             otpRepository.Setup(e => e.GetWith(sessionId)).ReturnsAsync(Option.Some(testOtpRequest));
 
-            var otpResponse = await otpService.CheckOtpValue(sessionId, faker.Random.Hash());
+            var otpResponse = await otpService.VerifyFor(sessionId, faker.Random.Hash());
+
+            otpResponse.Should().BeEquivalentTo(testOtpResponse);
+        }
+
+        [Fact]
+        private async void ReturnExpiredOtpResponse()
+        {
+            var sessionId = TestBuilder.Faker().Random.Hash();
+            var otpToken = TestBuilder.Faker().Random.Number().ToString();
+            var testOtpResponse = new Response(ResponseType.OtpExpired, "Otp expired");
+            var testOtpRequest = new OtpRequest
+                {SessionId = sessionId, RequestedAt = DateTime.Now.ToUniversalTime().AddSeconds(-60), OtpToken = otpToken};
+            otpRepository.Setup(e => e.GetWith(sessionId)).ReturnsAsync(Option.Some(testOtpRequest));
+
+            var otpResponse = await otpService.VerifyFor(sessionId, otpToken);
 
             otpResponse.Should().BeEquivalentTo(testOtpResponse);
         }

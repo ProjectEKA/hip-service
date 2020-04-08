@@ -1,5 +1,6 @@
 namespace In.ProjectEKA.OtpServiceTest.Otp
 {
+    using System;
     using System.Threading.Tasks;
     using FluentAssertions;
     using In.ProjectEKA.OtpService.Otp;
@@ -28,7 +29,8 @@ namespace In.ProjectEKA.OtpServiceTest.Otp
             smsClient = new Mock<ISmsClient>();
             var otpService = new OtpSender(otpRepository.Object, otpGenerator.Object, smsClient.Object);
             var otpServiceFactory = new OtpSenderFactory(otpService, new FakeOtpSender(otpRepository.Object), null);
-            otpController = new OtpController(otpServiceFactory, new OtpVerifier(otpRepository.Object));
+            otpController = new OtpController(otpServiceFactory,
+                new OtpVerifier(otpRepository.Object, new OtpProperties(1)));
         }
 
         [Fact]
@@ -85,7 +87,12 @@ namespace In.ProjectEKA.OtpServiceTest.Otp
             var otpRequest = new OtpVerificationRequest(otpToken);
             otpRepository
                 .Setup(e => e.GetWith(sessionId))
-                .ReturnsAsync(Option.Some(new OtpRequest {SessionId = sessionId, OtpToken = otpToken}));
+                .ReturnsAsync(Option.Some(new OtpRequest
+                {
+                    SessionId = sessionId,
+                    RequestedAt = DateTime.Now.ToUniversalTime(),
+                    OtpToken = otpToken
+                }));
 
             var response = await otpController.VerifyOtp(sessionId, otpRequest);
 

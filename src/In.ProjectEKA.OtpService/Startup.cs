@@ -29,6 +29,7 @@ namespace In.ProjectEKA.OtpService
                 .AddDbContext<OtpContext>(options =>
                     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")))
                 .AddSingleton<ISmsClient, SmsClient>()
+                .AddSingleton(new OtpProperties(Configuration.GetValue<int>("expiryInMinutes")))
                 .AddScoped<IOtpRepository, OtpRepository>()
                 .AddScoped<IOtpGenerator, OtpGenerator>()
                 .AddScoped<INotificationService, NotificationService>()
