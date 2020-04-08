@@ -16,6 +16,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
     using Optional;
     using Xunit;
     using Match = HipLibrary.Patient.Model.Match;
+    using TestBuilders = Link.Builder.TestBuilders;
 
     public class PatientDiscoveryTest
     {
@@ -26,7 +27,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 Identifier = "1",
                 FirstName = "John",
                 LastName = "Doee",
-                Gender = TestBuilder.Faker().Random.Word(),
+                Gender = TestBuilders.Faker().PickRandom<Gender>(),
                 CareContexts = new List<CareContextRepresentation>
                 {
                     new CareContextRepresentation("123", "National Cancer program"),
@@ -70,9 +71,9 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             var patientRequest = new PatientEnquiry(patientId, verifiedIdentifiers,
                 unverifiedIdentifiers, "John", null, Gender.M, new DateTime(2019, 01, 01));
             var discoveryRequest = new DiscoveryRequest(patientRequest, transactionId);
-            var sessionId = TestBuilder.Faker().Random.Hash();
+            var sessionId = TestBuilders.Faker().Random.Hash();
             ICollection<string> linkedCareContext = new[] {"123"};
-            var testLinkAccounts = new LinkedAccounts("1", sessionId, TestBuilder.Faker().Random.Hash()
+            var testLinkAccounts = new LinkedAccounts("1", sessionId, TestBuilders.Faker().Random.Hash()
                 , It.IsAny<string>(), linkedCareContext.ToList());
             linkPatientRepository.Setup(e => e.GetLinkedCareContexts(patientId))
                 .ReturnsAsync(new Tuple<IEnumerable<LinkedAccounts>, Exception>(
@@ -86,7 +87,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 {
                     new Patient
                     {
-                        Gender = Gender.M.ToString(),
+                        Gender = Gender.M,
                         Identifier = "1",
                         FirstName = "John",
                         LastName = "Doee",
@@ -179,7 +180,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 patientRepository.Object);
             var expectedError =
                 new ErrorRepresentation(new Error(ErrorCode.DuplicateDiscoveryRequest, "Request already exists"));
-            var transactionId = TestBuilders.RandomString();
+            var transactionId = Builder.TestBuilders.RandomString();
             var discoveryRequest = new DiscoveryRequest(null, transactionId);
             discoveryRequestRepository.Setup(repository => repository.RequestExistsFor(transactionId))
                 .ReturnsAsync(true);

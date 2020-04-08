@@ -8,10 +8,10 @@ namespace In.ProjectEKA.HipService.Discovery
     using HipLibrary.Patient.Model;
     using Link;
     using In.ProjectEKA.HipService.Link.Model;
+    using Logger;
 
     public class PatientDiscovery
     {
-        private readonly Filter filter;
         private readonly IMatchingRepository matchingRepository;
         private readonly IDiscoveryRequestRepository discoveryRequestRepository;
         private readonly ILinkPatientRepository linkPatientRepository;
@@ -27,7 +27,6 @@ namespace In.ProjectEKA.HipService.Discovery
             this.discoveryRequestRepository = discoveryRequestRepository;
             this.linkPatientRepository = linkPatientRepository;
             this.patientRepository = patientRepository;
-            filter = new Filter();
         }
 
         public virtual async Task<ValueTuple<DiscoveryRepresentation, ErrorRepresentation>> PatientFor(
@@ -38,11 +37,12 @@ namespace In.ProjectEKA.HipService.Discovery
                 return (null,
                     new ErrorRepresentation(new Error(ErrorCode.DuplicateDiscoveryRequest, "Request already exists")));
             }
-            
+
             var (linkedAccounts, exception) = await linkPatientRepository.GetLinkedCareContexts(request.Patient.Id);
 
             if (exception != null)
             {
+                Log.Error(exception);
                 return (null,
                     new ErrorRepresentation(new Error(ErrorCode.FailedToGetLinkedCareContexts,
                         "Failed to get Linked Care Contexts")));
@@ -59,16 +59,15 @@ namespace In.ProjectEKA.HipService.Discovery
                         return (new DiscoveryRepresentation(patient.ToPatientEnquiryRepresentation(
                                 GetUnlinkedCareContexts(linkedCareContexts, patient))),
                             (ErrorRepresentation) null);
-                    }).ValueOr(
-                        Task.FromResult(((DiscoveryRepresentation) null,
-                                new ErrorRepresentation(new Error(ErrorCode.NoPatientFound,
-                                    ErrorMessage.NoPatientFound))))
-                    );
+                    })
+                    .ValueOr(Task.FromResult(((DiscoveryRepresentation) null,
+                        new ErrorRepresentation(new Error(ErrorCode.NoPatientFound,
+                            ErrorMessage.NoPatientFound)))));
             }
 
             var patients = await matchingRepository.Where(request);
-            var (patientEnquiryRepresentation, error) = DiscoveryUseCase.DiscoverPatient(
-                filter.Do(patients, request).AsQueryable());
+            var (patientEnquiryRepresentation, error) =
+                DiscoveryUseCase.DiscoverPatient(Filter.Do(patients, request).AsQueryable());
             if (patientEnquiryRepresentation == null)
             {
                 return (null, error);

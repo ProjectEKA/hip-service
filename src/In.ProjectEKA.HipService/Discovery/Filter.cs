@@ -3,10 +3,11 @@ namespace In.ProjectEKA.HipService.Discovery
     using System.Collections.Generic;
     using System.Linq;
     using HipLibrary.Patient.Model;
+    using Matcher;
     using Ranker;
     using static Ranker.PatientWithRankBuilder;
 
-    public class Filter
+    public static class Filter
     {
         private static readonly Dictionary<IdentifierTypeExt, IRanker<Patient>> Ranks =
             new Dictionary<IdentifierTypeExt, IRanker<Patient>>
@@ -25,8 +26,7 @@ namespace In.ProjectEKA.HipService.Discovery
                 {IdentifierType.MR, IdentifierTypeExt.MR}
             };
 
-        private PatientWithRank<Patient> RankPatient(Patient patient,
-            DiscoveryRequest request)
+        private static PatientWithRank<Patient> RankPatient(Patient patient, DiscoveryRequest request)
         {
             return RanksFor(request, patient)
                 .Aggregate(EmptyRankWith(patient),
@@ -35,8 +35,9 @@ namespace In.ProjectEKA.HipService.Discovery
 
         private static IEnumerable<PatientWithRank<Patient>> RanksFor(DiscoveryRequest request, Patient patient)
         {
-            return From(request).Select(identifier =>
-                Ranks.GetValueOrDefault(identifier.Type, new EmptyRanker())
+            return From(request)
+                .Select(identifier => Ranks
+                    .GetValueOrDefault(identifier.Type, new EmptyRanker())
                     .Rank(patient, identifier.Value));
         }
 
@@ -53,11 +54,18 @@ namespace In.ProjectEKA.HipService.Discovery
                 .Append(new IdentifierExt(IdentifierTypeExt.GENDER, request.Patient.Gender.ToString()));
         }
 
-        public IEnumerable<PatientEnquiryRepresentation> Do(IEnumerable<Patient> patients,
+        public static IEnumerable<PatientEnquiryRepresentation> Do(IEnumerable<Patient> patients,
             DiscoveryRequest request)
         {
+            static bool IsMatching(string name1, string name2)
+            {
+                return FuzzyNameMatcher.LevenshteinDistance(name1, name2) <= 2;
+            }
+
             return patients
                 .AsEnumerable()
+                .Where(patient => patient.Gender == request.Patient.Gender)
+                .Where(patient => IsMatching(patient.FirstName, request.Patient.FirstName))
                 .Select(patientInfo => RankPatient(patientInfo, request))
                 .GroupBy(rankedPatient => rankedPatient.Rank.Score)
                 .OrderByDescending(rankedPatient => rankedPatient.Key)
@@ -104,10 +112,5 @@ namespace In.ProjectEKA.HipService.Discovery
             public IdentifierTypeExt Type { get; }
             public string Value { get; }
         }
-    }
-
-    public enum MatchLevel
-    {
-        FullMatch
     }
 }
