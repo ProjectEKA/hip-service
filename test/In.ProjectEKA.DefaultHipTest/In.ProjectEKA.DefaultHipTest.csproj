@@ -5,7 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="coverlet.msbuild" Version="2.8.0">
+        <PackageReference Include="coverlet.msbuild" Version="2.8.1">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
@@ -23,11 +23,5 @@
     <ItemGroup>
         <ProjectReference Include="..\..\src\In.ProjectEKA.DefaultHip\In.ProjectEKA.DefaultHip.csproj" />
         <ProjectReference Include="..\..\src\In.ProjectEKA.HipLibrary\In.ProjectEKA.HipLibrary.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Content Include="..\..\src\In.ProjectEKA.DefaultHip\Resources\observation.json">
-          <Link>observation.json</Link>
-        </Content>
     </ItemGroup>
 </Project>

@@ -2,12 +2,14 @@ namespace In.ProjectEKA.HipService.Link
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using System.Threading.Tasks;
     using Database;
     using Logger;
     using Microsoft.EntityFrameworkCore;
     using Model;
+    using Optional;
 
     public class LinkPatientRepository : ILinkPatientRepository
     {
@@ -18,7 +20,8 @@ namespace In.ProjectEKA.HipService.Link
             this.linkPatientContext = linkPatientContext;
         }
 
-        public async Task<ValueTuple<LinkRequest, Exception>> SaveRequestWith(
+
+        public async Task<Tuple<LinkEnquires, Exception>> SaveRequestWith(
             string linkReferenceNumber,
             string consentManagerId,
             string consentManagerUserId,
@@ -27,8 +30,8 @@ namespace In.ProjectEKA.HipService.Link
         {
             var dateTimeStamp = DateTime.Now.ToUniversalTime().ToString(Constants.DateTimeFormat);
             var linkedCareContexts = careContextReferenceNumbers
-                .Select(referenceNumber => new LinkedCareContext(referenceNumber)).ToList();
-            var linkRequest = new LinkRequest(
+                .Select(referenceNumber => new CareContext(referenceNumber)).ToList();
+            var linkRequest = new LinkEnquires(
                 patientReferenceNumber,
                 linkReferenceNumber,
                 consentManagerId,
@@ -37,45 +40,65 @@ namespace In.ProjectEKA.HipService.Link
                 linkedCareContexts);
             try
             {
-                linkPatientContext.LinkRequest.Add(linkRequest);
+                linkPatientContext.LinkEnquires.Add(linkRequest);
                 await linkPatientContext.SaveChangesAsync();
-                return (linkRequest, null);
+                return new Tuple<LinkEnquires, Exception>(linkRequest, null);
             }
             catch (Exception exception)
             {
                 Log.Fatal(exception, exception.StackTrace);
-                return (null, exception);
+                return new Tuple<LinkEnquires, Exception>(null, exception);
             }
         }
 
-        public async Task<ValueTuple<LinkRequest, Exception>> GetPatientFor(string linkReferenceNumber)
+        public async Task<Tuple<LinkEnquires, Exception>> GetPatientFor(string linkReferenceNumber)
         {
             try
             {
-                var linkRequest = await linkPatientContext.LinkRequest.Include("CareContexts")
+                var linkRequest = await linkPatientContext.LinkEnquires.Include("CareContexts")
                     .FirstAsync(request => request.LinkReferenceNumber == linkReferenceNumber);
-                return (linkRequest, null);
+                return new Tuple<LinkEnquires, Exception>(linkRequest, null);
             }
             catch (Exception exception)
             {
                 Log.Fatal(exception, exception.StackTrace);
-                return (null, exception);
+                return new Tuple<LinkEnquires, Exception>(null, exception);
             }
         }
 
-        public async Task<ValueTuple<IEnumerable<LinkRequest>, Exception>> GetLinkedCareContexts(
-            string consentManagerUserId)
+        public async Task<Option<LinkedAccounts>> Save(string consentManagerUserId, string patientReferenceNumber, string linkReferenceNumber,
+            IEnumerable<string> careContextReferenceNumbers)
         {
+            var linkedAccounts = new  LinkedAccounts(patientReferenceNumber, 
+                                                  linkReferenceNumber,
+                                                  consentManagerUserId,
+                                                  DateTime.Now.ToUniversalTime().ToString(Constants.DateTimeFormat), 
+                                                  careContextReferenceNumbers.ToList());
             try
             {
-                var linkRequest = await linkPatientContext.LinkRequest.Include("CareContexts")
-                    .Where(request => request.ConsentManagerUserId.Equals(consentManagerUserId)).ToListAsync();
-                return (linkRequest, null);
+                linkPatientContext.LinkedAccounts.Add(linkedAccounts);
+                await linkPatientContext.SaveChangesAsync();
+                return Option.Some(linkedAccounts);
             }
             catch (Exception exception)
             {
                 Log.Fatal(exception, exception.StackTrace);
-                return (null, exception);
+                return Option.None<LinkedAccounts>();
+            }
+        }
+
+        public async Task<Tuple<IEnumerable<LinkedAccounts>, Exception>> GetLinkedCareContexts(string consentManagerUserId)
+        {
+            try
+            {
+                var linkRequest = await linkPatientContext.LinkedAccounts
+                    .Where(request => request.ConsentManagerUserId.Equals(consentManagerUserId)).ToListAsync();
+                return new Tuple<IEnumerable<LinkedAccounts>, Exception>(linkRequest, null);
+            }
+            catch (Exception exception)
+            {
+                Log.Fatal(exception, exception.StackTrace);
+                return new Tuple<IEnumerable<LinkedAccounts>, Exception>(null, exception);
             }
         }
     }

@@ -25,6 +25,7 @@ namespace In.ProjectEKA.HipService
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using Microsoft.IdentityModel.Logging;
     using Microsoft.IdentityModel.Tokens;
     using Newtonsoft.Json;
     using Serilog;
@@ -60,8 +61,7 @@ namespace In.ProjectEKA.HipService
                         x => x.MigrationsAssembly("In.ProjectEKA.HipService")))
                 .AddSingleton<IEncryptor, Encryptor>()
                 .AddSingleton<IPatientRepository>(new PatientRepository("demoPatients.json"))
-                .AddSingleton<HiTypeDataMap>()
-                .AddSingleton<ICollect>(new Collect(new HiTypeDataMap()))
+                .AddSingleton<ICollect>(new Collect("demoPatientCareContextDataMap.json"))
                 .AddSingleton<IPatientRepository>(new PatientRepository("demoPatients.json"))
                 .AddRabbit(Configuration)
                 .Configure<OtpServiceConfiguration>(Configuration.GetSection("OtpService"))
@@ -75,6 +75,7 @@ namespace In.ProjectEKA.HipService
                 .AddScoped<ReferenceNumberGenerator>()
                 .AddSingleton(Configuration)
                 .AddSingleton<DataFlowClient>()
+                .AddSingleton<DataFlowNotificationClient>()
                 .AddSingleton<DataEntryFactory>()
                 .AddSingleton<DataFlowMessageHandler>()
                 .AddSingleton(HttpClient)
@@ -82,6 +83,7 @@ namespace In.ProjectEKA.HipService
                 .AddScoped<IConsentRepository, ConsentRepository>()
                 .AddHostedService<MessagingQueueListener>()
                 .AddScoped<IDataFlowRepository, DataFlowRepository>()
+                .AddSingleton(Configuration.GetSection("authServer").Get<CentralRegistryConfiguration>())
                 .AddScoped<IHealthInformationRepository, HealthInformationRepository>()
                 .AddSingleton(new CentralRegistryClient(HttpClient,
                     Configuration.GetSection("authServer").Get<CentralRegistryConfiguration>()))

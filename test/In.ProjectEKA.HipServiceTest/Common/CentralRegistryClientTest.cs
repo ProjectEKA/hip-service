@@ -1,8 +1,10 @@
 namespace In.ProjectEKA.HipServiceTest.Common
 {
     using System;
+    using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
+    using System.Net.Mime;
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
@@ -39,7 +41,7 @@ namespace In.ProjectEKA.HipServiceTest.Common
                 .ReturnsAsync(new HttpResponseMessage
                 {
                     StatusCode = HttpStatusCode.OK,
-                    Content = new StringContent(response, Encoding.UTF8, "application/json")
+                    Content = new StringContent(response, Encoding.UTF8, MediaTypeNames.Application.Json)
                 })
                 .Verifiable();
 
@@ -55,6 +57,48 @@ namespace In.ProjectEKA.HipServiceTest.Common
                 ItExpr.Is<HttpRequestMessage>(message => message.Method == HttpMethod.Post
                                                          && message.RequestUri == expectedUri),
                 ItExpr.IsAny<CancellationToken>());
+        }
+
+        [Fact]
+        private async void ShouldReturnProviderUrl()
+        {
+            const string id = "consent-manager";
+            const string secret = "client-secret";
+            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+            var httpClient = new HttpClient(handlerMock.Object);
+            const string centralRegistryRootUrl = "https://localhost:8080";
+            var authResponse = JsonConvert.SerializeObject(new {tokenType = "bearer", accessToken = "token"});
+            var centralRegistryConfiguration = new CentralRegistryConfiguration
+            {
+                Url = centralRegistryRootUrl,
+                ClientId = id,
+                ClientSecret = secret
+            };
+            var identifier = new Identifier {System = "http://localhost:8000"};
+            var identifiers = new List<Identifier> {identifier};
+            var response = JsonConvert.SerializeObject(new {identifier = identifiers});
+            handlerMock
+                .Protected()
+                .SetupSequence<Task<HttpResponseMessage>>(
+                    "SendAsync",
+                    ItExpr.IsAny<HttpRequestMessage>(),
+                    ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync(new HttpResponseMessage
+                {
+                    Content = new StringContent(authResponse, Encoding.UTF8, MediaTypeNames.Application.Json),
+                    StatusCode = HttpStatusCode.OK
+                })
+                .ReturnsAsync(new HttpResponseMessage
+                {
+                    Content = new StringContent(response, Encoding.UTF8, MediaTypeNames.Application.Json),
+                    StatusCode = HttpStatusCode.OK
+                });
+            var registryClient = new CentralRegistryClient(httpClient, centralRegistryConfiguration);
+
+            var result = await registryClient.GetUrlFor(id);
+
+            result.HasValue.Should().BeTrue();
+            result.MatchSome(token => token.Should().BeEquivalentTo("http://localhost:8000"));
         }
 
         [Theory]
@@ -82,7 +126,7 @@ namespace In.ProjectEKA.HipServiceTest.Common
                 .ReturnsAsync(new HttpResponseMessage
                 {
                     StatusCode = statusCode,
-                    Content = new StringContent(response, Encoding.UTF8, "application/json")
+                    Content = new StringContent(response, Encoding.UTF8, MediaTypeNames.Application.Json)
                 })
                 .Verifiable();
 
