@@ -1,5 +1,6 @@
 namespace In.ProjectEKA.OtpServiceTest.Otp
 {
+    using System;
     using Builder;
     using FluentAssertions;
     using Moq;
@@ -26,7 +27,8 @@ namespace In.ProjectEKA.OtpServiceTest.Otp
             var sessionId = TestBuilder.Faker().Random.Hash();
             var otpToken = TestBuilder.Faker().Random.Number().ToString();
             var testOtpResponse = new Response(ResponseType.OtpValid, "Valid OTP");
-            var testOtpRequest = new OtpRequest(sessionId, It.IsAny<string>(), otpToken);
+            var testOtpRequest = new OtpRequest
+                {SessionId = sessionId, RequestedAt = It.IsAny<DateTime>(), OtpToken = otpToken};
             otpRepository.Setup(e => e.GetWith(sessionId)).ReturnsAsync(Option.Some(testOtpRequest));
 
             var otpResponse = await otpService.CheckOtpValue(sessionId, otpToken);
@@ -40,8 +42,8 @@ namespace In.ProjectEKA.OtpServiceTest.Otp
             var faker = TestBuilder.Faker();
             var sessionId = faker.Random.Hash();
             var testOtpResponse = new Response(ResponseType.OtpInvalid, "Invalid Otp");
-            var testOtpRequest = new OtpRequest(sessionId, It.IsAny<string>()
-                , faker.Random.Number().ToString());
+            var testOtpRequest = new OtpRequest
+                {SessionId = sessionId, RequestedAt = It.IsAny<DateTime>(), OtpToken = faker.Random.String()};
             otpRepository.Setup(e => e.GetWith(sessionId)).ReturnsAsync(Option.Some(testOtpRequest));
 
             var otpResponse = await otpService.CheckOtpValue(sessionId, faker.Random.Hash());

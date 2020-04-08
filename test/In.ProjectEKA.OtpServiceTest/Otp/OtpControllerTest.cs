@@ -1,14 +1,13 @@
-using System.Threading.Tasks;
-using FluentAssertions;
-using In.ProjectEKA.OtpService.Otp;
-using In.ProjectEKA.OtpServiceTest.Otp.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Moq;
-using Xunit;
-
 namespace In.ProjectEKA.OtpServiceTest.Otp
 {
+    using System.Threading.Tasks;
+    using FluentAssertions;
+    using In.ProjectEKA.OtpService.Otp;
+    using Builder;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
+    using Moq;
+    using Xunit;
     using Optional;
     using OtpService.Clients;
     using OtpService.Common;
@@ -84,8 +83,9 @@ namespace In.ProjectEKA.OtpServiceTest.Otp
             var sessionId = TestBuilder.Faker().Random.Hash();
             var otpToken = TestBuilder.Faker().Random.String();
             var otpRequest = new OtpVerificationRequest(otpToken);
-            otpRepository.Setup(e => e.GetWith(sessionId))
-                .ReturnsAsync(Option.Some(new OtpRequest(sessionId, "", otpToken)));
+            otpRepository
+                .Setup(e => e.GetWith(sessionId))
+                .ReturnsAsync(Option.Some(new OtpRequest {SessionId = sessionId, OtpToken = otpToken}));
 
             var response = await otpController.VerifyOtp(sessionId, otpRequest);
 
@@ -101,10 +101,8 @@ namespace In.ProjectEKA.OtpServiceTest.Otp
             var sessionId = TestBuilder.Faker().Random.Hash();
             var otpRequest = new OtpVerificationRequest("1234");
             otpRepository.Setup(e => e.GetWith(sessionId))
-                .ReturnsAsync(Option.Some(new OtpRequest(sessionId, "", "random")));
-
+                .ReturnsAsync(Option.Some(new OtpRequest {SessionId = sessionId, OtpToken = "random"}));
             var response = await otpController.VerifyOtp(sessionId, otpRequest);
-
             otpRepository.Verify();
             response.Should().BeOfType<BadRequestObjectResult>();
         }
