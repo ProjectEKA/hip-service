@@ -8,7 +8,7 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
 
         public string Display { get; }
 
-        public IEnumerable<CareContextRepresentation> CareContexts { get; set; }
+        public IEnumerable<CareContextRepresentation> CareContexts { get; }
 
         public IEnumerable<string> MatchedBy { get; }
 

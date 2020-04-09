@@ -14,6 +14,8 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
 
         public string LastName { get; set; }
 
+        public ushort YearOfBirth { get; set; }
+
         public IEnumerable<CareContextRepresentation> CareContexts { get; set; }
 
         public PatientEnquiryRepresentation ToPatientEnquiryRepresentation(

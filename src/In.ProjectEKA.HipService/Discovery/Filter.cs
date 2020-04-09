@@ -66,6 +66,14 @@ namespace In.ProjectEKA.HipService.Discovery
                 .AsEnumerable()
                 .Where(patient => patient.Gender == request.Patient.Gender)
                 .Where(patient => IsMatching(patient.FirstName, request.Patient.FirstName))
+                .Where(patient =>
+                {
+                    var ageGroupMatcher = new AgeGroupMatcher(3);
+                    return request.Patient.DateOfBirth == null ||
+                           ageGroupMatcher.IsMatching(
+                               AgeCalculator.From((ushort) request.Patient.DateOfBirth.Value.Year),
+                               AgeCalculator.From(patient.YearOfBirth));
+                })
                 .Select(patientInfo => RankPatient(patientInfo, request))
                 .GroupBy(rankedPatient => rankedPatient.Rank.Score)
                 .OrderByDescending(rankedPatient => rankedPatient.Key)
