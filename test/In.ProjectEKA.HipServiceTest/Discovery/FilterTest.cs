@@ -28,20 +28,24 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             var unverifiedIdentifiers = Identifier()
                 .GenerateLazy(10)
                 .Select(builder => builder.Build());
+            var dateOfBirth = Faker().Date.Past();
+            var patientGender = Faker().PickRandom<Gender>();
             var discoveryRequest = new DiscoveryRequest(
                 new PatientEnquiry(Faker().Random.Hash(),
                     verifiedIdentifiers,
                     unverifiedIdentifiers,
                     patientFirstName,
                     Faker().Name.FirstName(),
-                    Faker().PickRandom<Gender>(),
-                    Faker().Date.Past()), Faker().Random.String());
+                    patientGender,
+                    dateOfBirth), Faker().Random.String());
             var patients = Patient()
                 .GenerateLazy(10)
                 .Append(Patient().Rules((_, patient) =>
                 {
                     patient.PhoneNumber = patientPhoneNumber;
                     patient.FirstName = patientFirstName;
+                    patient.YearOfBirth = (ushort) dateOfBirth.Year;
+                    patient.Gender = patientGender;
                 }).Generate())
                 .Append(Patient().Rules((_, patient) => { patient.PhoneNumber = patientPhoneNumber; }).Generate());
 
@@ -62,6 +66,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 .GenerateLazy(10)
                 .Select(builder => builder.Build());
             var gender = Faker().PickRandom<Gender>();
+            var dateOfBirth = Faker().Date.Past();
             var name = Faker().Name.FullName();
             var discoveryRequest = new DiscoveryRequest(
                 new PatientEnquiry(new Faker().Random.Hash(), verifiedIdentifiers,
@@ -69,7 +74,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                     name,
                     null,
                     gender,
-                    Faker().Date.Past()), Faker().Random.String());
+                    dateOfBirth), Faker().Random.String());
             var patients = Patient()
                 .GenerateLazy(10)
                 .Append(Patient().Rules((_, patient) =>
@@ -77,12 +82,14 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                     patient.PhoneNumber = mobileNumber;
                     patient.Gender = gender;
                     patient.FirstName = name;
+                    patient.YearOfBirth = (ushort) dateOfBirth.Year;
                 }).Generate())
                 .Append(Patient().Rules((_, patient) =>
                 {
                     patient.PhoneNumber = mobileNumber;
                     patient.Gender = gender;
                     patient.FirstName = name;
+                    patient.YearOfBirth = (ushort) dateOfBirth.Year;
                 }).Generate());
 
             var filteredPatients = Filter.Do(patients, discoveryRequest);
@@ -109,7 +116,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                     null,
                     null,
                     patientGender,
-                    Faker().Date.Past()), Faker().Random.String());
+                    null), Faker().Random.String());
             var patients = Patient()
                 .GenerateLazy(10)
                 .Append(Patient().Rules((_, patient) =>

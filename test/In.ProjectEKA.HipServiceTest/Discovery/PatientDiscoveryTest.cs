@@ -124,8 +124,9 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 new Identifier(IdentifierType.MOBILE, "+919999999999")
             };
             const string patientId = "cm-1";
+            var dateOfBirth = new DateTime(2019, 01, 01);
             var patientRequest = new PatientEnquiry(patientId, verifiedIdentifiers,
-                new List<Identifier>(), null, null, Gender.M, new DateTime(2019, 01, 01));
+                new List<Identifier>(), null, null, Gender.M, dateOfBirth);
             var discoveryRequest = new DiscoveryRequest(patientRequest, "transaction-id-1");
             linkPatientRepository.Setup(e => e.GetLinkedCareContexts(patientId))
                 .ReturnsAsync(new Tuple<IEnumerable<LinkedAccounts>, Exception>(new List<LinkedAccounts>(), null));
@@ -134,8 +135,8 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 .Setup(repo => repo.Where(discoveryRequest))
                 .Returns(Task.FromResult(new List<Patient>
                 {
-                    new Patient(),
-                    new Patient()
+                    new Patient {YearOfBirth = (ushort) dateOfBirth.Year},
+                    new Patient {YearOfBirth = (ushort) dateOfBirth.Year}
                 }.AsQueryable()));
 
             var (discoveryResponse, error) = await patientDiscovery.PatientFor(discoveryRequest);
