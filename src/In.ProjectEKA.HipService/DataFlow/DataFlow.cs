@@ -40,7 +40,7 @@ namespace In.ProjectEKA.HipService.DataFlow
 
             var dataRequest = new DataRequest(consent.ConsentArtefact.CareContexts,
                 request.HiDataRange,
-                request.CallBackUrl,
+                request.DataPushUrl,
                 consent.ConsentArtefact.HiTypes,
                 request.TransactionId,
                 request.KeyMaterial,

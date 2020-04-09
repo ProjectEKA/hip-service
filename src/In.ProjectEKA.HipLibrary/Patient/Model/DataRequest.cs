@@ -7,7 +7,7 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
     {
         public DataRequest(IEnumerable<GrantedContext> careContexts,
             HiDataRange dataRange,
-            string callBackUrl,
+            string dataPushUrl,
             IEnumerable<HiType> hiType,
             string transactionId,
             KeyMaterial keyMaterial,
@@ -15,7 +15,7 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
         {
             CareContexts = careContexts;
             DataRange = dataRange;
-            CallBackUrl = callBackUrl;
+            DataPushUrl = dataPushUrl;
             HiType = hiType;
             TransactionId = transactionId;
             KeyMaterial = keyMaterial;
@@ -24,7 +24,7 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
 
         public IEnumerable<GrantedContext> CareContexts { get; }
         public HiDataRange DataRange { get; }
-        public string CallBackUrl { get; }
+        public string DataPushUrl { get; }
         public IEnumerable<HiType> HiType { get; }
         public string TransactionId { get; }
         public KeyMaterial KeyMaterial { get; }

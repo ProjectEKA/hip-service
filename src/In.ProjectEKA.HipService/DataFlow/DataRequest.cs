@@ -7,7 +7,7 @@ namespace In.ProjectEKA.HipService.DataFlow
     {
         public IEnumerable<GrantedContext> CareContexts { get; }
         public HiDataRange DataRange { get; }
-        public string CallBackUrl { get; }
+        public string DataPushUrl { get; }
         public IEnumerable<HiType> HiType { get; }
         public string TransactionId { get; }
         public KeyMaterial KeyMaterial { get; }
@@ -16,7 +16,7 @@ namespace In.ProjectEKA.HipService.DataFlow
 
         public DataRequest(IEnumerable<GrantedContext> careContexts,
             HiDataRange dataRange,
-            string callBackUrl,
+            string dataPushUrl,
             IEnumerable<HiType> hiType,
             string transactionId,
             KeyMaterial keyMaterial,
@@ -24,7 +24,7 @@ namespace In.ProjectEKA.HipService.DataFlow
         {
             CareContexts = careContexts;
             DataRange = dataRange;
-            CallBackUrl = callBackUrl;
+            DataPushUrl = dataPushUrl;
             HiType = hiType;
             TransactionId = transactionId;
             KeyMaterial = keyMaterial;
