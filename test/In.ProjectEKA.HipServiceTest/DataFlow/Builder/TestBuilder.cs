@@ -47,7 +47,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
         {
             const string consentManagerId = "ConsentManagerId";
             var hiDataRange = new HipLibrary.Patient.Model.HiDataRange("from", "to");
-            const string callBackUrl = "http://callback";
+            const string callBackUrl = "http://callback/data/notification";
             var keyMaterial = new KeyMaterialLib(faker.Random.Word(), faker.Random.Word(),
                 new KeyStructureLib("", "", faker.Random.Hash()),
                 faker.Random.Hash());

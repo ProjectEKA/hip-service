@@ -598,7 +598,7 @@ components:
       required:
         - transactionId
         - consent
-        - callBackUrl
+        - dataPushUrl
         - keyMaterial
         - hiDataRange
       properties:
@@ -608,7 +608,7 @@ components:
           $ref: '#/components/schemas/consent'
         hiDataRange:
           $ref: '#/components/schemas/hiDataRange'
-        callBackUrl:
+        dataPushUrl:
           type: string
         keyMaterial:
           $ref: '#/components/schemas/keyMaterial'
