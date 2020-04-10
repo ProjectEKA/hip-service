@@ -17,7 +17,8 @@ namespace In.ProjectEKA.HipService.Common.Model
 
         public ConsentArtefact(string consentId, DateTime createdAt, ConsentPurpose purpose, PatientReference patient,
             HIPReference hip, IEnumerable<HiType> hiTypes, ConsentPermission permission,
-            IEnumerable<GrantedContext> careContexts, OrganizationReference consentManager)
+            IEnumerable<GrantedContext> careContexts,
+            OrganizationReference consentManager)
         {
             ConsentId = consentId;
             CreatedAt = createdAt;
