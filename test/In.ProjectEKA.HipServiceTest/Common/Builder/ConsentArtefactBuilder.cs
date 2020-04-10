@@ -14,10 +14,13 @@ namespace In.ProjectEKA.HipServiceTest.Common.Builder
         public IEnumerable<HiType> HiTypes;
         public ConsentPermission Permission;
         public IEnumerable<GrantedContext> CareContexts;
+        public OrganizationReference ConsentManager;
         
         public ConsentArtefact Build()
         {
-            return new ConsentArtefact(ConsentId, CreatedAt, Purpose, Patient, Hip, HiTypes, Permission, CareContexts);
+            return new ConsentArtefact(ConsentId, CreatedAt, Purpose, Patient, Hip, HiTypes, Permission, CareContexts, ConsentManager);
         }
+
+        
     }
 }
