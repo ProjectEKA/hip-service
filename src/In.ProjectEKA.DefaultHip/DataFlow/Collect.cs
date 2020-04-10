@@ -116,7 +116,7 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
                             $"HiTypes:{requestedHiTypes}," +
                             $" From date:{request.DataRange.From}," +
                             $" To date:{request.DataRange.To}, " +
-                            $"CallbackUrl:{request.CallBackUrl}");
+                            $"CallbackUrl:{request.DataPushUrl}");
         }
     }
 }
