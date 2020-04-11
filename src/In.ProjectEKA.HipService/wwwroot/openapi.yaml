@@ -693,6 +693,12 @@ components:
                 - $ref: '#/components/schemas/OrganizationRepresentation'
                 - xml:
                     name: hip
+            consentManager:
+              type: object
+              allOf:
+                - $ref: '#/components/schemas/OrganizationReference'
+                - xml:
+                    name: consentManager
             hiTypes:
               type: array
               items:
@@ -788,6 +794,17 @@ components:
             attribute: true
       xml:
         name: OrganizationResponse
+    OrganizationReference:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          xml:
+            attribute: true
+      xml:
+        name: OrganizationReference
     keyMaterial:
       type: object
       required:
