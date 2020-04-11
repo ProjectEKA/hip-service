@@ -5,6 +5,7 @@ namespace In.ProjectEKA.HipService.Common.Model
 
     public class ConsentArtefact
     {
+        public string SchemaVersion { get; }
         public string ConsentId { get; }
         public DateTime CreatedAt { get; }
         public ConsentPurpose Purpose { get; }
@@ -15,7 +16,8 @@ namespace In.ProjectEKA.HipService.Common.Model
         public ConsentPermission Permission { get; }
         public IEnumerable<GrantedContext> CareContexts { get; }
 
-        public ConsentArtefact(string consentId, DateTime createdAt, ConsentPurpose purpose, PatientReference patient,
+        public ConsentArtefact(string schemaVersion, string consentId, DateTime createdAt, ConsentPurpose purpose,
+            PatientReference patient,
             HIPReference hip, IEnumerable<HiType> hiTypes, ConsentPermission permission,
             IEnumerable<GrantedContext> careContexts,
             OrganizationReference consentManager)
