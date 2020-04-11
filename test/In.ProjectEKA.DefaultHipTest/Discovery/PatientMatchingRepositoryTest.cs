@@ -21,9 +21,8 @@ namespace In.ProjectEKA.DefaultHipTest.Discovery
                     new List<Identifier> {phoneNumberIdentifier},
                     null,
                     string.Empty,
-                    string.Empty,
                     Gender.F,
-                    DateTime.Now),
+                    DateTime.Now.Year),
                 string.Empty);
 
             var patientInfo = await patientMatchingRepository.Where(request);

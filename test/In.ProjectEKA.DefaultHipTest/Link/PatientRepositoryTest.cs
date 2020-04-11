@@ -18,8 +18,7 @@ namespace In.ProjectEKA.DefaultHipTest.Link
             {
                 PhoneNumber = "+91-7777777777",
                 Identifier = patientReferenceNumber,
-                FirstName = "Navjot",
-                LastName = "Singh",
+                Name = "Navjot",
                 Gender = "F",
                 CareContexts = new []
                 {
