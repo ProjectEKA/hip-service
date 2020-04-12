@@ -6,7 +6,7 @@
     using Microsoft.AspNetCore.Mvc;
 
     [Authorize]
-    [Route("patients/discover/")]
+    [Route("patients/discover/carecontexts")]
     [ApiController]
     public class DiscoveryController : Controller
     {
