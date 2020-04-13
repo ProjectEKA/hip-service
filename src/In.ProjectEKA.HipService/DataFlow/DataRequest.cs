@@ -6,7 +6,7 @@ namespace In.ProjectEKA.HipService.DataFlow
     public class DataRequest
     {
         public IEnumerable<GrantedContext> CareContexts { get; }
-        public HiDataRange DataRange { get; }
+        public DateRange DataRange { get; }
         public string DataPushUrl { get; }
         public IEnumerable<HiType> HiType { get; }
         public string TransactionId { get; }
@@ -15,7 +15,7 @@ namespace In.ProjectEKA.HipService.DataFlow
         public string ConsentManagerId { get; }
 
         public DataRequest(IEnumerable<GrantedContext> careContexts,
-            HiDataRange dataRange,
+            DateRange dataRange,
             string dataPushUrl,
             IEnumerable<HiType> hiType,
             string transactionId,
