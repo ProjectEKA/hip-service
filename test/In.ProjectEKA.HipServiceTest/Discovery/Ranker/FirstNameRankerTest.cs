@@ -12,7 +12,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery.Ranker
         [Fact]
         private void ShouldHaveHighestScore()
         {
-            var patient = new HipLibrary.Patient.Model.Patient {FirstName = "zack  "};
+            var patient = new HipLibrary.Patient.Model.Patient {Name = "zack  "};
             var patientWithRank = new FirstNameRanker().Rank(patient, "Zack");
             patientWithRank.Meta.Should().BeEquivalentTo(FullMatchMeta(Match.FirstName));
             patientWithRank.Rank.Score.Should().Be(10);
@@ -21,7 +21,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery.Ranker
         [Fact]
         private void ShouldHaveHighScore()
         {
-            var patient = new HipLibrary.Patient.Model.Patient {FirstName = "Jack"};
+            var patient = new HipLibrary.Patient.Model.Patient {Name = "Jack"};
             var patientWithRank = new FirstNameRanker().Rank(patient, "Zack");
             patientWithRank.Meta.Should().BeEquivalentTo(FullMatchMeta(Match.FirstName));
             patientWithRank.Rank.Score.Should().Be(8);
@@ -31,7 +31,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery.Ranker
         [Fact]
         private void ShouldHavePoorScore()
         {
-            var patient = new HipLibrary.Patient.Model.Patient {FirstName = "Jackie"};
+            var patient = new HipLibrary.Patient.Model.Patient {Name = "Jackie"};
             var patientWithRank = new FirstNameRanker().Rank(patient, "Zackey");
             patientWithRank.Meta.Should().BeEquivalentTo(FullMatchMeta(Match.Empty));
             patientWithRank.Rank.Score.Should().Be(0);

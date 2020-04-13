@@ -149,7 +149,7 @@ namespace In.ProjectEKA.HipService.Link
                     var patientLinkResponse = new PatientLinkConfirmationRepresentation(
                         new LinkConfirmationRepresentation(
                             linkEnquires.PatientReferenceNumber,
-                            $"{patient.FirstName} {patient.LastName}",
+                            $"{patient.Name}",
                             representations));
                     return await SaveLinkedAccounts(linkEnquires)
                         ? (patientLinkResponse, (ErrorRepresentation) null)

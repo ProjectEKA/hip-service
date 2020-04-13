@@ -16,7 +16,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
         private void ShouldFilterAndReturnAPatientByUnverifiedIdentifier()
         {
             var filter = new Filter();
-            var patientFirstName = Faker().Name.FirstName();
+            var patientName = Faker().Name.FullName();
             const string patientPhoneNumber = "99999999999";
             var verifiedIdentifiers = Identifier()
                 .GenerateLazy(10)
@@ -33,16 +33,15 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 new PatientEnquiry(Faker().Random.Hash(),
                     verifiedIdentifiers,
                     unverifiedIdentifiers,
-                    patientFirstName,
-                    Faker().Name.FirstName(),
+                    patientName,
                     Faker().PickRandom<Gender>(),
-                    Faker().Date.Past()), Faker().Random.String());
+                    Faker().Date.Past().Year), Faker().Random.String());
             var patients = Patient()
                 .GenerateLazy(10)
                 .Append(Patient().Rules((_, patient) =>
                 {
                     patient.PhoneNumber = patientPhoneNumber;
-                    patient.FirstName = patientFirstName;
+                    patient.Name = patientName;
                 }).Generate())
                 .Append(Patient().Rules((_, patient) => { patient.PhoneNumber = patientPhoneNumber; }).Generate());
 
@@ -67,9 +66,8 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 new PatientEnquiry(new Faker().Random.Hash(), verifiedIdentifiers,
                     unverifiedIdentifiers,
                     null,
-                    null,
                     Faker().PickRandom<Gender>(),
-                    Faker().Date.Past()), Faker().Random.String());
+                    Faker().Date.Past().Year), Faker().Random.String());
             var patients = Patient()
                 .GenerateLazy(10)
                 .Append(Patient().Rules((_, patient) => { patient.PhoneNumber = mobileNumber; }).Generate())
@@ -98,9 +96,9 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                     verifiedIdentifiers,
                     unverifiedIdentifiers,
                     null,
-                    null,
                     patientGender,
-                    Faker().Date.Past()), Faker().Random.String());
+                    Faker().Date.Past().Year),
+                Faker().Random.String());
             var patients = Patient()
                 .GenerateLazy(10)
                 .Append(Patient().Rules((_, patient) =>

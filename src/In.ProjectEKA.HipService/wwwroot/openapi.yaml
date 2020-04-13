@@ -418,18 +418,15 @@ components:
               xml:
                 name: unverifiedIdentifiers
                 wrapped: true
-            firstName:
+            name:
               type: string
-              example: "chandler"
-            lastName:
-              type: string
-              example: "bing"
+              example: "chandler bing"
             gender:
               type: string
               enum: [M, F, O]
-            dateOfBirth:
-              type: string
-              format: date
+            yearOfBirth:
+              type: integer
+              example: 2000
       xml:
         name: PatientDiscoveryRequest
 
