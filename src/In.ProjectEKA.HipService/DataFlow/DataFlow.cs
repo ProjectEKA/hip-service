@@ -39,7 +39,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             if (consent == null) return ConsentArtefactNotFound();
 
             var dataRequest = new DataRequest(consent.ConsentArtefact.CareContexts,
-                request.HiDataRange,
+                request.DateRange,
                 request.DataPushUrl,
                 consent.ConsentArtefact.HiTypes,
                 request.TransactionId,

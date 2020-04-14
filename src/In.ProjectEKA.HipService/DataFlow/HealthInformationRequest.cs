@@ -6,7 +6,7 @@ namespace In.ProjectEKA.HipService.DataFlow
 
         public Consent Consent { get; }
 
-        public HiDataRange HiDataRange { get; }
+        public DateRange DateRange { get; }
 
         public string DataPushUrl { get; }
 
@@ -14,13 +14,13 @@ namespace In.ProjectEKA.HipService.DataFlow
 
         public HealthInformationRequest(string transactionId,
             Consent consent,
-            HiDataRange hiDataRange,
+            DateRange dateRange,
             string dataPushUrl,
             KeyMaterial keyMaterial)
         {
             TransactionId = transactionId;
             Consent = consent;
-            HiDataRange = hiDataRange;
+            DateRange = dateRange;
             DataPushUrl = dataPushUrl;
             KeyMaterial = keyMaterial;
         }

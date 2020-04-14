@@ -31,7 +31,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
                 transactionId,
                 new HipService.DataFlow.Consent(faker.Random.Hash(),
                     faker.Random.Hash()),
-                new HiDataRange(faker.Random.Hash(), faker.Random.Hash()),
+                new DateRange(faker.Random.Hash(), faker.Random.Hash()),
                 faker.Random.Hash(),
                 new KeyMaterial(faker.Random.Word(), faker.Random.Word(),
                     new KeyStructure(expiry, "", faker.Random.Hash()),
@@ -46,13 +46,13 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
         internal static HipLibrary.Patient.Model.DataRequest DataRequest(string transactionId)
         {
             const string consentManagerId = "ConsentManagerId";
-            var hiDataRange = new HipLibrary.Patient.Model.HiDataRange("from", "to");
+            var dateRange = new HipLibrary.Patient.Model.DateRange("from", "to");
             const string callBackUrl = "http://callback/data/notification";
             var keyMaterial = new KeyMaterialLib(faker.Random.Word(), faker.Random.Word(),
                 new KeyStructureLib("", "", faker.Random.Hash()),
                 faker.Random.Hash());
             return new HipLibrary.Patient.Model.DataRequest(new List<GrantedContext>(),
-                hiDataRange,
+                dateRange,
                 callBackUrl,
                 new List<HiType>(),
                 transactionId,
