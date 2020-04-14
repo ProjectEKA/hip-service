@@ -25,8 +25,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
             {
                 PhoneNumber = "+91666666666666",
                 Identifier = "4",
-                FirstName = TestBuilder.Faker().Random.Word(),
-                LastName = TestBuilder.Faker().Random.Word(),
+                Name = TestBuilder.Faker().Random.Word(),
                 Gender = TestBuilder.Faker().Random.Word(),
                 CareContexts = new List<CareContextRepresentation>
                 {
@@ -195,7 +194,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
             var expectedLinkResponse = new PatientLinkConfirmationRepresentation(
                 new LinkConfirmationRepresentation(
                     testPatient.Identifier,
-                    $"{testPatient.FirstName} {testPatient.LastName}",
+                    $"{testPatient.Name}",
                     new[] {new CareContextRepresentation("129", "National Cancer program")}));
 
             var (response, _) = await linkPatient.VerifyAndLinkCareContext(patientLinkRequest);
