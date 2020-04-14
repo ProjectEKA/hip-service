@@ -10,9 +10,12 @@ using Xunit;
 
 namespace In.ProjectEKA.HipServiceTest.Link
 {
+    using Bogus;
     using Builder;
     using FluentAssertions;
+    using HipService.Common;
     using HipService.Link;
+    using Optional;
 
     [Collection("Patient Verification Tests")]
     public class PatientVerificationTest
@@ -28,6 +31,8 @@ namespace In.ProjectEKA.HipServiceTest.Link
         [Fact]
         private async void ReturnFailureOnOtpCreation()
         {
+            const string centralRegistryRootUrl = "https://root/central-registry";
+            var centralRegistryClient = new Mock<CentralRegistryClient>(MockBehavior.Strict, null, null);
             var session = new Session(TestBuilder.Faker().Random.Hash()
                 , new Communication(CommunicationMode.MOBILE, "+91666666666666"));
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
@@ -48,7 +53,9 @@ namespace In.ProjectEKA.HipServiceTest.Link
             {
                 BaseAddress = new Uri("http://localhost:5000/otp/link"),
             };
-            var patientVerification = new PatientVerification(httpClient, otpServiceConfigurations);
+            centralRegistryClient.Setup(client => client.Authenticate()).ReturnsAsync(Option.Some("Something"));
+            var patientVerification = new PatientVerification(httpClient, otpServiceConfigurations,
+                centralRegistryClient.Object);
 
             var result = await patientVerification.SendTokenFor(session);
 
@@ -59,6 +66,8 @@ namespace In.ProjectEKA.HipServiceTest.Link
         [Fact]
         private async void ReturnSuccessOnOtpCreation()
         {
+            const string centralRegistryRootUrl = "https://root/central-registry";
+            var centralRegistryClient = new Mock<CentralRegistryClient>(MockBehavior.Strict, null, null);
             var session = new Session(TestBuilder.Faker().Random.Hash()
                 , new Communication(CommunicationMode.MOBILE, "+91666666666666"));
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
@@ -79,7 +88,9 @@ namespace In.ProjectEKA.HipServiceTest.Link
             {
                 BaseAddress = new Uri("http://localhost:5000/otp/link"),
             };
-            var patientVerification = new PatientVerification(httpClient, otpServiceConfigurations);
+            centralRegistryClient.Setup(client => client.Authenticate()).ReturnsAsync(Option.Some("Something"));
+            var patientVerification = new PatientVerification(httpClient, otpServiceConfigurations,
+                centralRegistryClient.Object);
 
             var result = await patientVerification.SendTokenFor(session);
 
