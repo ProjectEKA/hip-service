@@ -12,8 +12,7 @@ namespace In.ProjectEKA.HipService.Discovery
             new Dictionary<IdentifierTypeExt, IRanker<Patient>>
             {
                 {IdentifierTypeExt.MOBILE, new MobileRanker()},
-                {IdentifierTypeExt.FIRST_NAME, new FirstNameRanker()},
-                {IdentifierTypeExt.LAST_NAME, new LastNameRanker()},
+                {IdentifierTypeExt.NAME, new FirstNameRanker()},
                 {IdentifierTypeExt.GENDER, new GenderRanker()},
                 {IdentifierTypeExt.EMPTY, new EmptyRanker()}
             };
@@ -48,8 +47,7 @@ namespace In.ProjectEKA.HipService.Discovery
                 .Concat(request.Patient.UnverifiedIdentifiers
                     .Select(identifier => new IdentifierExt(IdentifierTypeExts.GetValueOrDefault(identifier.Type,
                         IdentifierTypeExt.EMPTY), identifier.Value)))
-                .Append(new IdentifierExt(IdentifierTypeExt.FIRST_NAME, request.Patient.FirstName))
-                .Append(new IdentifierExt(IdentifierTypeExt.LAST_NAME, request.Patient.LastName))
+                .Append(new IdentifierExt(IdentifierTypeExt.NAME, request.Patient.Name))
                 .Append(new IdentifierExt(IdentifierTypeExt.GENDER, request.Patient.Gender.ToString()));
         }
 
@@ -78,7 +76,7 @@ namespace In.ProjectEKA.HipService.Discovery
 
                     return new PatientEnquiryRepresentation(
                         rankedPatient.Patient.Identifier,
-                        $"{rankedPatient.Patient.FirstName} {rankedPatient.Patient.LastName}",
+                        $"{rankedPatient.Patient.Name}",
                         careContexts, rankedPatient.Meta.Select(meta => meta.Field));
                 }));
         }
@@ -86,8 +84,7 @@ namespace In.ProjectEKA.HipService.Discovery
         private enum IdentifierTypeExt
         {
             MOBILE,
-            FIRST_NAME,
-            LAST_NAME,
+            NAME,
             MR,
             GENDER,
             EMPTY
