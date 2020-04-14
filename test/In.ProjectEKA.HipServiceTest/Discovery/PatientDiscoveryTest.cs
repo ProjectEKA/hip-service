@@ -4,14 +4,12 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using Builder;
     using FluentAssertions;
     using HipLibrary.Patient;
     using HipLibrary.Patient.Model;
     using HipService.Discovery;
     using HipService.Link;
     using HipService.Link.Model;
-    using Link.Builder;
     using Moq;
     using Optional;
     using Xunit;
@@ -25,9 +23,8 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             {
                 PhoneNumber = "+91666666666666",
                 Identifier = "1",
-                FirstName = "John",
-                LastName = "Doee",
                 Gender = TestBuilders.Faker().PickRandom<Gender>(),
+                Name = "John",
                 CareContexts = new List<CareContextRepresentation>
                 {
                     new CareContextRepresentation("123", "National Cancer program"),
@@ -50,7 +47,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 discoveryRequestRepository.Object,
                 linkPatientRepository.Object,
                 patientRepository.Object);
-            var expectedPatient = new PatientEnquiryRepresentation("1", "John Doee",
+            var expectedPatient = new PatientEnquiryRepresentation("1", "John",
                 new List<CareContextRepresentation>
                 {
                     new CareContextRepresentation("124", "National TB program")
@@ -69,7 +66,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             const string patientId = "cm-1";
             const string transactionId = "transaction-id-1";
             var patientRequest = new PatientEnquiry(patientId, verifiedIdentifiers,
-                unverifiedIdentifiers, "John", null, Gender.M, new DateTime(2019, 01, 01));
+                unverifiedIdentifiers, "John", Gender.M, 2019);
             var discoveryRequest = new DiscoveryRequest(patientRequest, transactionId);
             var sessionId = TestBuilders.Faker().Random.Hash();
             ICollection<string> linkedCareContext = new[] {"123"};
@@ -89,8 +86,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                     {
                         Gender = Gender.M,
                         Identifier = "1",
-                        FirstName = "John",
-                        LastName = "Doee",
+                        Name = "John",
                         CareContexts = new List<CareContextRepresentation>
                         {
                             new CareContextRepresentation("123", "National Cancer program"),
@@ -125,8 +121,12 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             };
             const string patientId = "cm-1";
             var dateOfBirth = new DateTime(2019, 01, 01);
-            var patientRequest = new PatientEnquiry(patientId, verifiedIdentifiers,
-                new List<Identifier>(), null, null, Gender.M, dateOfBirth);
+            var patientRequest = new PatientEnquiry(patientId,
+                verifiedIdentifiers,
+                new List<Identifier>(),
+                null,
+                Gender.M,
+                (ushort) dateOfBirth.Year);
             var discoveryRequest = new DiscoveryRequest(patientRequest, "transaction-id-1");
             linkPatientRepository.Setup(e => e.GetLinkedCareContexts(patientId))
                 .ReturnsAsync(new Tuple<IEnumerable<LinkedAccounts>, Exception>(new List<LinkedAccounts>(), null));
@@ -159,8 +159,8 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             };
             const string patientId = "cm-1";
             var patientRequest = new PatientEnquiry("cm-1", verifiedIdentifiers,
-                new List<Identifier>(), null, null,
-                Gender.M, new DateTime(2019, 01, 01));
+                new List<Identifier>(), null,
+                Gender.M, 2019);
             var discoveryRequest = new DiscoveryRequest(patientRequest, "transaction-id-1");
             linkPatientRepository.Setup(e => e.GetLinkedCareContexts(patientId))
                 .ReturnsAsync(new Tuple<IEnumerable<LinkedAccounts>, Exception>(new List<LinkedAccounts>(), null));

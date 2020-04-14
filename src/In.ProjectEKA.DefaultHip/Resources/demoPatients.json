@@ -3,11 +3,10 @@
     "phoneNumber": "+91-6666666666",
     "identifier": "RVH/NCC-1701",
     "email": "jdas17@eka.in",
-    "firstName": "Janki",
-    "lastName": "Das",
+    "name": "Janki Das",
     "caseReferenceNumber": "1001",
     "Gender": "M",
-    "yearOfBirth": "1951",
+    "yearOfBirth": 1951,
     "careContexts": [
       {
         "referenceNumber": "SC1701",
@@ -23,11 +22,10 @@
     "phoneNumber": "+91-7777777777",
     "identifier": "RVH1002",
     "email": "navjs@acme.com",
-    "firstName": "Navjot",
-    "lastName": "Singh",
+    "name": "Navjot Singh",
     "caseReferenceNumber": "1002",
     "Gender": "F",
-    "yearOfBirth": "2001",
+    "yearOfBirth": 2001,
     "careContexts": [
       {
         "referenceNumber": "NCP1007",
@@ -43,11 +41,10 @@
     "phoneNumber": "+91-8888888888",
     "identifier": "RVH1003",
     "email": "hinapatel83@acme.com",
-    "firstName": "Hina",
-    "lastName": "Patel",
+    "name": "Hina Patel",
     "caseReferenceNumber": "1003",
     "Gender": "F",
-    "yearOfBirth": "1979",
+    "yearOfBirth": 1979,
     "careContexts": [
       {
         "referenceNumber": "NCP1008",
@@ -63,11 +60,10 @@
     "phoneNumber": "+91-9999999999",
     "identifier": "RVH1004",
     "email": "johndoe@eka.in",
-    "firstName": "John",
-    "lastName": "Doe",
+    "name": "John Doe",
     "caseReferenceNumber": "1004",
     "Gender": "M",
-    "yearOfBirth": "1966",
+    "yearOfBirth": 1966,
     "careContexts": [
       {
         "referenceNumber": "NCP10091",
@@ -87,11 +83,10 @@
     "phoneNumber": "+91-8888888888",
     "identifier": "RVH1005",
     "email": "niteshpatel83@acme.com",
-    "firstName": "Nitesh",
-    "lastName": "Patel",
+    "name": "Nitesh Patel",
     "caseReferenceNumber": "1003",
     "Gender": "M",
-    "yearOfBirth": "1976",
+    "dateOfBirth": 1976,
     "careContexts": [
       {
         "referenceNumber": "NCP1031",

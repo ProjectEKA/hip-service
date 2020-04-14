@@ -13,9 +13,9 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
     public class FilterTest
     {
         [Fact]
-        private void ShouldFilterAndReturnAPatientByUnverifiedIdentifier()
+        private void ShouldFilterAndReturnAPatientByVerifiedIdentifierGenderAgeName()
         {
-            var patientFirstName = Faker().Name.FirstName();
+            var patientName = Faker().Name.FullName();
             const string patientPhoneNumber = "99999999999";
             var verifiedIdentifiers = Identifier()
                 .GenerateLazy(10)
@@ -28,24 +28,24 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             var unverifiedIdentifiers = Identifier()
                 .GenerateLazy(10)
                 .Select(builder => builder.Build());
-            var dateOfBirth = Faker().Date.Past();
+            var yearOfBirth = (ushort) Faker().Date.Past().Year;
             var patientGender = Faker().PickRandom<Gender>();
             var discoveryRequest = new DiscoveryRequest(
                 new PatientEnquiry(Faker().Random.Hash(),
                     verifiedIdentifiers,
                     unverifiedIdentifiers,
-                    patientFirstName,
-                    Faker().Name.FirstName(),
+                    patientName,
                     patientGender,
-                    dateOfBirth), Faker().Random.String());
+                    yearOfBirth),
+                Faker().Random.String());
             var patients = Patient()
                 .GenerateLazy(10)
                 .Append(Patient().Rules((_, patient) =>
                 {
                     patient.PhoneNumber = patientPhoneNumber;
-                    patient.FirstName = patientFirstName;
-                    patient.YearOfBirth = (ushort) dateOfBirth.Year;
+                    patient.YearOfBirth = yearOfBirth;
                     patient.Gender = patientGender;
+                    patient.Name = patientName;
                 }).Generate())
                 .Append(Patient().Rules((_, patient) => { patient.PhoneNumber = patientPhoneNumber; }).Generate());
 
@@ -66,30 +66,31 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 .GenerateLazy(10)
                 .Select(builder => builder.Build());
             var gender = Faker().PickRandom<Gender>();
-            var dateOfBirth = Faker().Date.Past();
+            var dateOfBirth = (ushort) Faker().Date.Past().Year;
             var name = Faker().Name.FullName();
             var discoveryRequest = new DiscoveryRequest(
-                new PatientEnquiry(new Faker().Random.Hash(), verifiedIdentifiers,
+                new PatientEnquiry(new Faker().Random.Hash(),
+                    verifiedIdentifiers,
                     unverifiedIdentifiers,
                     name,
-                    null,
                     gender,
-                    dateOfBirth), Faker().Random.String());
+                    dateOfBirth),
+                Faker().Random.String());
             var patients = Patient()
                 .GenerateLazy(10)
                 .Append(Patient().Rules((_, patient) =>
                 {
                     patient.PhoneNumber = mobileNumber;
                     patient.Gender = gender;
-                    patient.FirstName = name;
-                    patient.YearOfBirth = (ushort) dateOfBirth.Year;
+                    patient.Name = name;
+                    patient.YearOfBirth = dateOfBirth;
                 }).Generate())
                 .Append(Patient().Rules((_, patient) =>
                 {
                     patient.PhoneNumber = mobileNumber;
                     patient.Gender = gender;
-                    patient.FirstName = name;
-                    patient.YearOfBirth = (ushort) dateOfBirth.Year;
+                    patient.Name = name;
+                    patient.YearOfBirth = dateOfBirth;
                 }).Generate());
 
             var filteredPatients = Filter.Do(patients, discoveryRequest);
@@ -98,7 +99,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
         }
 
         [Fact]
-        private void ShouldFilterAndReturnMultiplePatientsByGender()
+        private void ShouldFilterAndReturnAPatientWhenNameAndAgeAreNull()
         {
             const string mobileNumber = "99999999999";
             const Gender patientGender = Gender.F;
@@ -113,7 +114,6 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 new PatientEnquiry(Faker().Random.Hash(),
                     verifiedIdentifiers,
                     unverifiedIdentifiers,
-                    null,
                     null,
                     patientGender,
                     null), Faker().Random.String());

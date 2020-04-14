@@ -10,9 +10,7 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
 
         public string PhoneNumber { get; set; }
 
-        public string FirstName { get; set; }
-
-        public string LastName { get; set; }
+        public string Name { get; set; }
 
         public ushort YearOfBirth { get; set; }
 
@@ -23,7 +21,7 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
         {
             return new PatientEnquiryRepresentation(
                 Identifier,
-                FirstName + " " + LastName,
+                Name,
                 unlinkedCareContexts,
                 new[] {Match.ConsentManagerUserId.ToString()});
         }
