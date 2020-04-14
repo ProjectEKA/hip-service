@@ -6,6 +6,7 @@ namespace In.ProjectEKA.HipServiceTest.Common.Builder
 
     internal class ConsentArtefactBuilder
     {
+        public string SchemaVersion; 
         public string ConsentId; 
         public DateTime CreatedAt;
         public ConsentPurpose Purpose;
@@ -18,7 +19,7 @@ namespace In.ProjectEKA.HipServiceTest.Common.Builder
         
         public ConsentArtefact Build()
         {
-            return new ConsentArtefact(ConsentId, CreatedAt, Purpose, Patient, Hip, HiTypes, Permission, CareContexts, ConsentManager);
+            return new ConsentArtefact(SchemaVersion, ConsentId, CreatedAt, Purpose, Patient, Hip, HiTypes, Permission, CareContexts, ConsentManager);
         }
 
         

@@ -660,6 +660,9 @@ components:
         consentDetail:
           type: object
           properties:
+            schemaVersion:
+              type: string
+              format: string
             consentId:
               type: string
               format: uuid
