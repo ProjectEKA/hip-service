@@ -11,7 +11,6 @@ namespace In.ProjectEKA.HipService.Discovery
 
     public static class Filter
     {
-
         private static readonly Dictionary<IdentifierType, IdentifierTypeExt> IdentifierTypeExts =
             new Dictionary<IdentifierType, IdentifierTypeExt>
             {
@@ -49,7 +48,6 @@ namespace In.ProjectEKA.HipService.Discovery
                 .Append(new IdentifierExt(IdentifierTypeExt.Gender, request.Patient.Gender.ToString()));
         }
 
-
         public static IEnumerable<PatientEnquiryRepresentation> Do(IEnumerable<Patient> patients,
             DiscoveryRequest request)
         {
@@ -58,7 +56,9 @@ namespace In.ProjectEKA.HipService.Discovery
                 return FuzzyNameMatcher.LevenshteinDistance(name1, name2) <= 2;
             }
 
-            var expression = GetUnVerifiedExpression(request.Patient.UnverifiedIdentifiers ?? new List<Identifier>());
+            var unverifiedExpression =
+                GetUnVerifiedExpression(request.Patient.UnverifiedIdentifiers ?? new List<Identifier>());
+
             return patients
                 .AsEnumerable()
                 .Where(patient => patient.Gender == request.Patient.Gender)
@@ -71,7 +71,7 @@ namespace In.ProjectEKA.HipService.Discovery
                                AgeCalculator.From(request.Patient.YearOfBirth.Value),
                                AgeCalculator.From(patient.YearOfBirth));
                 })
-                .Where(expression.Compile())
+                .Where(unverifiedExpression.Compile())
                 .Select(patientInfo => RankPatient(patientInfo, request))
                 .GroupBy(rankedPatient => rankedPatient.Rank.Score)
                 .OrderByDescending(rankedPatient => rankedPatient.Key)
