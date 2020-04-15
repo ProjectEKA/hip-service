@@ -5,6 +5,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
     using System.Linq;
     using System.Threading.Tasks;
     using FluentAssertions;
+    using HipLibrary.Matcher;
     using HipLibrary.Patient;
     using HipLibrary.Patient.Model;
     using HipService.Discovery;
@@ -40,7 +41,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
         private readonly Mock<IPatientRepository> patientRepository = new Mock<IPatientRepository>();
 
         [Fact]
-        private async void ShouldReturnPatient()
+        private async void ShouldReturnPatientForAlreadyLinkedPatient()
         {
             var patientDiscovery = new PatientDiscovery(
                 matchingRepository.Object,
@@ -78,22 +79,6 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                     null));
             patientRepository.Setup(x => x.PatientWith(testPatient.Identifier))
                 .Returns(Option.Some(testPatient));
-            matchingRepository
-                .Setup(repo => repo.Where(discoveryRequest))
-                .Returns(Task.FromResult(new List<Patient>
-                {
-                    new Patient
-                    {
-                        Gender = Gender.M,
-                        Identifier = "1",
-                        Name = "John",
-                        CareContexts = new List<CareContextRepresentation>
-                        {
-                            new CareContextRepresentation("123", "National Cancer program"),
-                            new CareContextRepresentation("124", "National TB program")
-                        }
-                    }
-                }.AsQueryable()));
 
             var (discoveryResponse, error) = await patientDiscovery.PatientFor(discoveryRequest);
 
@@ -102,6 +87,72 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 x => x.Add(It.Is<HipService.Discovery.Model.DiscoveryRequest>(
                     r => r.TransactionId == transactionId
                          && r.ConsentManagerUserId == patientId)), Times.Once);
+            error.Should().BeNull();
+        }
+
+        [Fact]
+        private async void ShouldReturnPatient()
+        {
+            var patientDiscovery = new PatientDiscovery(
+                matchingRepository.Object,
+                discoveryRequestRepository.Object,
+                linkPatientRepository.Object,
+                patientRepository.Object);
+            const string referenceNumber = "1";
+            var expectedPatient = new PatientEnquiryRepresentation(referenceNumber, "John",
+                new List<CareContextRepresentation>
+                {
+                    new CareContextRepresentation("124", "National TB program"),
+                    new CareContextRepresentation("123", "National Cancer program")
+                }, new List<string>
+                {
+                    Match.Mobile.ToString(),
+                    Match.Name.ToString(),
+                    Match.Gender.ToString(),
+                    Match.Mr.ToString()
+                });
+            var verifiedIdentifiers = new List<Identifier>
+            {
+                new Identifier(IdentifierType.MOBILE, "+919999999999")
+            };
+            var unverifiedIdentifiers = new List<Identifier>
+            {
+                new Identifier(IdentifierType.MR, referenceNumber)
+            };
+            const string patientId = "cm-1";
+            const string transactionId = "transaction-id-1";
+            const ushort yearOfBirth = 2019;
+            var patientRequest = new PatientEnquiry(patientId, verifiedIdentifiers,
+                unverifiedIdentifiers, "John", Gender.M, yearOfBirth);
+            var discoveryRequest = new DiscoveryRequest(patientRequest, transactionId);
+            linkPatientRepository.Setup(e => e.GetLinkedCareContexts(patientId))
+                .ReturnsAsync(new Tuple<IEnumerable<LinkedAccounts>, Exception>(new List<LinkedAccounts>(), null));
+            matchingRepository
+                .Setup(repo => repo.Where(discoveryRequest))
+                .Returns(Task.FromResult(new List<Patient>
+                {
+                    new Patient
+                    {
+                        Gender = Gender.M,
+                        Identifier = referenceNumber,
+                        Name = "John",
+                        CareContexts = new List<CareContextRepresentation>
+                        {
+                            new CareContextRepresentation("123", "National Cancer program"),
+                            new CareContextRepresentation("124", "National TB program")
+                        },
+                        PhoneNumber = "+919999999999",
+                        YearOfBirth = yearOfBirth
+                    }
+                }.AsQueryable()));
+
+            var (discoveryResponse, error) = await patientDiscovery.PatientFor(discoveryRequest);
+
+            discoveryResponse.Patient.Should().BeEquivalentTo(expectedPatient);
+            discoveryRequestRepository.Verify(
+                x => x.Add(It.Is<HipService.Discovery.Model.DiscoveryRequest>(
+                    r => r.TransactionId == transactionId && r.ConsentManagerUserId == patientId)),
+                Times.Once);
             error.Should().BeNull();
         }
 
@@ -140,6 +191,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 }.AsQueryable()));
 
             var (discoveryResponse, error) = await patientDiscovery.PatientFor(discoveryRequest);
+
             discoveryResponse.Should().BeNull();
             error.Should().BeEquivalentTo(expectedError);
         }

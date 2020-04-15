@@ -14,6 +14,7 @@ namespace In.ProjectEKA.HipService
     using DefaultHip.Link;
     using Discovery;
     using Discovery.Database;
+    using HipLibrary.Matcher;
     using HipLibrary.Patient;
     using Link;
     using Link.Database;

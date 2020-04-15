@@ -1,6 +1,9 @@
 ﻿namespace In.ProjectEKA.HipService.Discovery.Ranker
 {
-    public static class RankBuilder
+    using System.Collections.Generic;
+    using HipLibrary.Patient.Model;
+
+    public class RankBuilder
     {
         public static Rank EmptyRank => Rank(0);
 
@@ -12,5 +15,15 @@
         {
             return new Rank(score);
         }
+
+        internal static readonly Dictionary<Filter.IdentifierTypeExt, IRanker<Patient>> Ranks =
+            new Dictionary<Filter.IdentifierTypeExt, IRanker<Patient>>
+            {
+                {Filter.IdentifierTypeExt.Mobile, new MobileRanker()},
+                {Filter.IdentifierTypeExt.Name, new NameRanker()},
+                {Filter.IdentifierTypeExt.Gender, new GenderRanker()},
+                {Filter.IdentifierTypeExt.Mr, new MedicalRecordRanker()},
+                {Filter.IdentifierTypeExt.Empty, new EmptyRanker()}
+            };
     }
 }

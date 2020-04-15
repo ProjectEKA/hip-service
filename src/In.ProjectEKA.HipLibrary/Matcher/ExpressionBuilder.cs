@@ -1,10 +1,15 @@
-namespace In.ProjectEKA.DefaultHip.Discovery
+namespace In.ProjectEKA.HipLibrary.Matcher
 {
     using System;
     using System.Linq.Expressions;
 
     public static class ExpressionBuilder
     {
+        public static Expression<Func<T, bool>> True<T>()
+        {
+            return f => true;
+        }
+
         public static Expression<Func<T, bool>> False<T>()
         {
             return f => false;
