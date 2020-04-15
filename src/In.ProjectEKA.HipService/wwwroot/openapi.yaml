@@ -597,14 +597,14 @@ components:
         - consent
         - dataPushUrl
         - keyMaterial
-        - hiDataRange
+        - dateRange
       properties:
         transactionId:
           $ref: '#/components/schemas/UuidSchema'
         consent:
           $ref: '#/components/schemas/consent'
-        hiDataRange:
-          $ref: '#/components/schemas/hiDataRange'
+        dateRange:
+          $ref: '#/components/schemas/dateRange'
         dataPushUrl:
           type: string
         keyMaterial:
@@ -640,7 +640,7 @@ components:
         digitalSignature:
           type: string
 
-    hiDataRange:
+    dateRange:
       type: object
       required:
         - from
@@ -660,6 +660,9 @@ components:
         consentDetail:
           type: object
           properties:
+            schemaVersion:
+              type: string
+              format: string
             consentId:
               type: string
               format: uuid
@@ -761,7 +764,7 @@ components:
             to:
               type: string
               format: date-time
-        dataExpiryAt:
+        dataEraseAt:
           type: string
           format: date-time
         frequency:

@@ -37,7 +37,7 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
             return Option.Some(entries);
         }
 
-        private static bool WithinRange(HiDataRange range, DateTime date)
+        private static bool WithinRange(DateRange range, DateTime date)
         {
             var fromDate = ParseDate(range.From);
             var toDate = ParseDate(range.To);
@@ -83,7 +83,7 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
                     foreach (var ccRecord in ccData)
                     {
                         var captureTime = ParseDate(ccRecord.CapturedOn);
-                        if (!WithinRange(request.DataRange, captureTime)) continue;
+                        if (!WithinRange(request.DateRange, captureTime)) continue;
                         foreach (var hiType in request.HiType)
                         {
                             var hiTypeStr = hiType.ToString().ToLower();
@@ -114,8 +114,8 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
                             $" transactionId:{request.TransactionId} , " +
                             $"CareContexts:{ccList}, " +
                             $"HiTypes:{requestedHiTypes}," +
-                            $" From date:{request.DataRange.From}," +
-                            $" To date:{request.DataRange.To}, " +
+                            $" From date:{request.DateRange.From}," +
+                            $" To date:{request.DateRange.To}, " +
                             $"CallbackUrl:{request.DataPushUrl}");
         }
     }

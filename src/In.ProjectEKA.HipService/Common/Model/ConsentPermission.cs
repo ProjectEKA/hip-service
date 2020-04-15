@@ -7,15 +7,17 @@ namespace In.ProjectEKA.HipService.Common.Model
         public AccessMode AccessMode { get; }
         public AccessPeriod DateRange { get; }
         public DataFrequency Frequency { get; }
-        public DateTime DataExpiryAt { get; }
+        public DateTime DataEraseAt { get; }
 
-        public ConsentPermission(AccessMode accessMode, AccessPeriod dateRange, DataFrequency frequency,
-            DateTime dataExpiryAt)
+        public ConsentPermission(AccessMode accessMode,
+            AccessPeriod dateRange,
+            DataFrequency frequency,
+            DateTime dataEraseAt)
         {
             AccessMode = accessMode;
             DateRange = dateRange;
             Frequency = frequency;
-            DataExpiryAt = dataExpiryAt;
+            DataEraseAt = dataEraseAt;
         }
     }
 }

@@ -6,7 +6,7 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
     public class DataRequest
     {
         public DataRequest(IEnumerable<GrantedContext> careContexts,
-            HiDataRange dataRange,
+            DateRange dateRange,
             string dataPushUrl,
             IEnumerable<HiType> hiType,
             string transactionId,
@@ -14,7 +14,7 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
             string consentManagerId)
         {
             CareContexts = careContexts;
-            DataRange = dataRange;
+            DateRange = dateRange;
             DataPushUrl = dataPushUrl;
             HiType = hiType;
             TransactionId = transactionId;
@@ -23,7 +23,7 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
         }
 
         public IEnumerable<GrantedContext> CareContexts { get; }
-        public HiDataRange DataRange { get; }
+        public DateRange DateRange { get; }
         public string DataPushUrl { get; }
         public IEnumerable<HiType> HiType { get; }
         public string TransactionId { get; }
