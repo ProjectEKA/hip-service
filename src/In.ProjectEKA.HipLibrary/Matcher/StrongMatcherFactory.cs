@@ -9,6 +9,10 @@
 
     public class StrongMatcherFactory
     {
+        private StrongMatcherFactory()
+        {
+        }
+
         private static readonly Dictionary<IdentifierType, IIdentifierMatcher> Matchers =
             new Dictionary<IdentifierType, IIdentifierMatcher>
             {

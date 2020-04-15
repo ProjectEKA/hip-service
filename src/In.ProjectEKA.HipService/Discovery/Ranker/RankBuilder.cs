@@ -5,6 +5,10 @@
 
     public class RankBuilder
     {
+        private RankBuilder()
+        {
+        }
+
         public static Rank EmptyRank => Rank(0);
 
         public static Rank StrongMatchRank => Rank(10);
