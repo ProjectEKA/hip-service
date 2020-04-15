@@ -9,12 +9,14 @@ namespace In.ProjectEKA.HipService.Discovery.Ranker
         {
             var diff = FuzzyNameMatcher.LevenshteinDistance(patient.Name, firstName);
             if (diff == 0)
+            {
                 return new PatientWithRank<Patient>(patient, RankBuilder.StrongMatchRank,
                     MetaBuilder.FullMatchMeta(Match.FirstName));
-            if (diff <= 2)
-                return new PatientWithRank<Patient>(patient, new Rank(8), MetaBuilder.FullMatchMeta(Match.FirstName));
+            }
 
-            return new PatientWithRank<Patient>(patient, RankBuilder.EmptyRank, MetaBuilder.EmptyMeta);
+            return diff <= 2
+                ? new PatientWithRank<Patient>(patient, new Rank(8), MetaBuilder.FullMatchMeta(Match.FirstName))
+                : new PatientWithRank<Patient>(patient, RankBuilder.EmptyRank, MetaBuilder.EmptyMeta);
         }
     }
 }

@@ -28,7 +28,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
         [Fact]
         private async void ReturnFailureOnOtpCreation()
         {
-            var session = new Session(TestBuilder.Faker().Random.Hash()
+            var session = new Session(TestBuilders.Faker().Random.Hash()
                 , new Communication(CommunicationMode.MOBILE, "+91666666666666"));
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
             handlerMock
@@ -59,7 +59,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
         [Fact]
         private async void ReturnSuccessOnOtpCreation()
         {
-            var session = new Session(TestBuilder.Faker().Random.Hash()
+            var session = new Session(TestBuilders.Faker().Random.Hash()
                 , new Communication(CommunicationMode.MOBILE, "+91666666666666"));
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
             handlerMock

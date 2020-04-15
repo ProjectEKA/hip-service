@@ -16,6 +16,7 @@ namespace In.ProjectEKA.DefaultHip.Discovery
         {
             this.patientFilePath = patientFilePath;
         }
+        
         public async Task<IQueryable<Patient>> Where(DiscoveryRequest request)
         {
             var expression = GetExpression(request.Patient.VerifiedIdentifiers);

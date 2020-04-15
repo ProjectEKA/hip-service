@@ -11,7 +11,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
 {
     using HipLibrary.Patient.Model;
     using HipService.Discovery;
-    using static TestBuilder;
+    using static TestBuilders;
 
     [Collection("Link Patient Controller Tests")]
     public class LinkPatientControllerTest
