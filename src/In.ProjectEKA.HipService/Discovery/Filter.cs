@@ -5,7 +5,6 @@ namespace In.ProjectEKA.HipService.Discovery
     using HipLibrary.Patient.Model;
     using Matcher;
     using Ranker;
-    using static Ranker.PatientWithRankBuilder;
     using static HipLibrary.Matcher.StrongMatcherFactory;
     using static Ranker.RankBuilder;
 
@@ -21,7 +20,7 @@ namespace In.ProjectEKA.HipService.Discovery
         private static PatientWithRank<Patient> RankPatient(Patient patient, DiscoveryRequest request)
         {
             return RanksFor(request, patient)
-                .Aggregate(EmptyRankWith(patient), (rank, withRank) => rank + withRank);
+                .Aggregate((rank, withRank) => rank + withRank);
         }
 
         private static IEnumerable<PatientWithRank<Patient>> RanksFor(DiscoveryRequest request, Patient patient)
@@ -34,16 +33,18 @@ namespace In.ProjectEKA.HipService.Discovery
 
         private static IEnumerable<IdentifierExt> From(DiscoveryRequest request)
         {
+            static IdentifierExt ToExtension(Identifier identifier)
+            {
+                return new IdentifierExt(
+                    IdentifierTypeExts.GetValueOrDefault(identifier.Type, IdentifierTypeExt.Empty),
+                    identifier.Value);
+            }
+
             var verifiedIdentifiers = request.Patient.VerifiedIdentifiers ?? new List<Identifier>();
             var unVerifiedIdentifiers = request.Patient.UnverifiedIdentifiers ?? new List<Identifier>();
             return verifiedIdentifiers
-                .Select(identifier => new IdentifierExt(
-                    IdentifierTypeExts.GetValueOrDefault(identifier.Type, IdentifierTypeExt.Empty),
-                    identifier.Value))
-                .Concat(unVerifiedIdentifiers
-                    .Select(identifier => new IdentifierExt(
-                        IdentifierTypeExts.GetValueOrDefault(identifier.Type, IdentifierTypeExt.Empty),
-                        identifier.Value)))
+                .Select(ToExtension)
+                .Concat(unVerifiedIdentifiers.Select(ToExtension))
                 .Append(new IdentifierExt(IdentifierTypeExt.Name, request.Patient.Name))
                 .Append(new IdentifierExt(IdentifierTypeExt.Gender, request.Patient.Gender.ToString()));
         }
