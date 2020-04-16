@@ -18,7 +18,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
         private static LinkPatientContext PatientContext()
         {
             var optionsBuilder = new DbContextOptionsBuilder<LinkPatientContext>()
-                .UseInMemoryDatabase(TestBuilder.Faker().Random.String())
+                .UseInMemoryDatabase(TestBuilders.Faker().Random.String())
                 .Options;
             return new LinkPatientContext(optionsBuilder);
         }
@@ -26,7 +26,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
         [Fact]
         private async void ShouldSaveLinkRequest()
         {
-            var faker = TestBuilder.Faker();
+            var faker = TestBuilders.Faker();
             var dbContext = PatientContext();
             var linkPatientRepository = new LinkPatientRepository(dbContext);
             var linkReferenceNumber = faker.Random.Hash();
@@ -43,7 +43,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
         [Fact]
         private async void ReturnNullUnknownReferenceNumber()
         {
-            var faker = TestBuilder.Faker();
+            var faker = TestBuilders.Faker();
             var linkReferenceNumber = faker.Random.Hash();
             var dbContext = PatientContext();
             var linkPatientRepository = new LinkPatientRepository(dbContext);
@@ -59,7 +59,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
         [Fact]
         private async void ThrowErrorOnSaveOfSamePrimaryKeyLinkEnquires()
         {
-            var faker = TestBuilder.Faker();
+            var faker = TestBuilders.Faker();
             var linkReferenceNumber = faker.Random.Hash();
             var dbContext = PatientContext();
             var linkPatientRepository = new LinkPatientRepository(dbContext);
@@ -91,7 +91,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
         [Fact]
         private async void ShouldSaveLinkedAccounts()
         {
-            var faker = TestBuilder.Faker();
+            var faker = TestBuilders.Faker();
             var dbContext = PatientContext();
             var linkPatientRepository = new LinkPatientRepository(dbContext);
             var consentManagerUserId = faker.Random.Hash();
@@ -107,7 +107,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
         [Fact]
         private async void ThrowErrorOnSaveOfSamePrimaryKeyLinkedAccounts()
         {
-            var faker = TestBuilder.Faker();
+            var faker = TestBuilders.Faker();
             var dbContext = PatientContext();
             var linkPatientRepository = new LinkPatientRepository(dbContext);
             var consentManagerUserId = faker.Random.Hash();
@@ -125,7 +125,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
         [Fact]
         private async void ShouldGetLinkedCareContexts()
         {
-            var faker = TestBuilder.Faker();
+            var faker = TestBuilders.Faker();
             var dbContext = PatientContext();
             var linkPatientRepository = new LinkPatientRepository(dbContext);
             var consentManagerUserId = faker.Random.Hash();

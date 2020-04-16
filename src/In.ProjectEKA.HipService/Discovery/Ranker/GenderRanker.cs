@@ -6,7 +6,7 @@ namespace In.ProjectEKA.HipService.Discovery.Ranker
     {
         public PatientWithRank<Patient> Rank(Patient patient, string gender)
         {
-            return patient.Gender == gender
+            return patient.Gender.ToString() == gender
                 ? new PatientWithRank<Patient>(patient, RankBuilder.WeakMatchRank,
                     MetaBuilder.FullMatchMeta(Match.Gender))
                 : new PatientWithRank<Patient>(patient, RankBuilder.EmptyRank, MetaBuilder.EmptyMeta);

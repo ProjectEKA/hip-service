@@ -1,12 +1,11 @@
-using System;
-using System.Collections.Generic;
-using FluentAssertions;
-using Moq;
-using Optional;
-using Xunit;
-
 namespace In.ProjectEKA.HipServiceTest.Link
 {
+    using System;
+    using System.Collections.Generic;
+    using FluentAssertions;
+    using Moq;
+    using Optional;
+    using Xunit;
     using System.Linq;
     using Builder;
     using HipLibrary.Patient;
@@ -25,8 +24,8 @@ namespace In.ProjectEKA.HipServiceTest.Link
             {
                 PhoneNumber = "+91666666666666",
                 Identifier = "4",
-                Name = TestBuilder.Faker().Random.Word(),
-                Gender = TestBuilder.Faker().Random.Word(),
+                Gender = TestBuilders.Faker().PickRandom<Gender>(),
+                Name = TestBuilders.Faker().Random.Word(),
                 CareContexts = new List<CareContextRepresentation>
                 {
                     new CareContextRepresentation("129", "National Cancer program")
@@ -64,9 +63,9 @@ namespace In.ProjectEKA.HipServiceTest.Link
             const string medium = "MOBILE";
 
             IEnumerable<CareContextEnquiry> careContexts = new[] {new CareContextEnquiry(programRefNo)};
-            var patient = new LinkEnquiry(TestBuilder.Faker().Random.Hash(),
-                TestBuilder.Faker().Random.Hash(), testPatient.Identifier, careContexts);
-            var patientReferenceRequest = new PatientLinkEnquiry(TestBuilder.Faker().Random.Hash(), patient);
+            var patient = new LinkEnquiry(TestBuilders.Faker().Random.Hash(),
+                TestBuilders.Faker().Random.Hash(), testPatient.Identifier, careContexts);
+            var patientReferenceRequest = new PatientLinkEnquiry(TestBuilders.Faker().Random.Hash(), patient);
             guidGenerator.Setup(x => x.NewGuid()).Returns(linkReferenceNumber);
             patientVerification.Setup(x => x.SendTokenFor(new Session(linkReferenceNumber
                     , new Communication(CommunicationMode.MOBILE, testPatient.PhoneNumber))))
@@ -99,9 +98,9 @@ namespace In.ProjectEKA.HipServiceTest.Link
         private async void ShouldReturnPatientNotFoundError()
         {
             IEnumerable<CareContextEnquiry> careContexts = new[] {new CareContextEnquiry("129")};
-            var patient = new LinkEnquiry(TestBuilder.Faker().Random.Hash(),
-                TestBuilder.Faker().Random.Hash(), "1234", careContexts);
-            var patientReferenceRequest = new PatientLinkEnquiry(TestBuilder.Faker().Random.Hash(), patient);
+            var patient = new LinkEnquiry(TestBuilders.Faker().Random.Hash(),
+                TestBuilders.Faker().Random.Hash(), "1234", careContexts);
+            var patientReferenceRequest = new PatientLinkEnquiry(TestBuilders.Faker().Random.Hash(), patient);
 
             var expectedError =
                 new ErrorRepresentation(new Error(ErrorCode.NoPatientFound, ErrorMessage.NoPatientFound));
@@ -114,9 +113,9 @@ namespace In.ProjectEKA.HipServiceTest.Link
         private async void ShouldReturnCareContextNotFoundError()
         {
             IEnumerable<CareContextEnquiry> careContexts = new[] {new CareContextEnquiry("1234")};
-            var patient = new LinkEnquiry(TestBuilder.Faker().Random.Hash(),
-                TestBuilder.Faker().Random.Hash(), "4", careContexts);
-            var patientReferenceRequest = new PatientLinkEnquiry(TestBuilder.Faker().Random.Hash(), patient);
+            var patient = new LinkEnquiry(TestBuilders.Faker().Random.Hash(),
+                TestBuilders.Faker().Random.Hash(), "4", careContexts);
+            var patientReferenceRequest = new PatientLinkEnquiry(TestBuilders.Faker().Random.Hash(), patient);
             patientRepository.Setup(e => e.PatientWith(testPatient.Identifier))
                 .Returns(Option.Some(testPatient));
             var expectedError = new ErrorRepresentation(
@@ -132,8 +131,8 @@ namespace In.ProjectEKA.HipServiceTest.Link
         [Fact]
         private async void ReturnOtpInvalidOnWrongOtp()
         {
-            var sessionId = TestBuilder.Faker().Random.Hash();
-            var otpToken = TestBuilder.Faker().Random.Number().ToString();
+            var sessionId = TestBuilders.Faker().Random.Hash();
+            var otpToken = TestBuilders.Faker().Random.Number().ToString();
             var testOtpMessage = new OtpMessage("1001", "Invalid Otp");
             var patientLinkRequest = new LinkConfirmationRequest(otpToken, sessionId);
             var expectedErrorResponse =
@@ -150,8 +149,8 @@ namespace In.ProjectEKA.HipServiceTest.Link
         [Fact]
         private async void ErrorOnInvalidLinkReferenceNumber()
         {
-            var sessionId = TestBuilder.Faker().Random.Hash();
-            var otpToken = TestBuilder.Faker().Random.Number().ToString();
+            var sessionId = TestBuilders.Faker().Random.Hash();
+            var otpToken = TestBuilders.Faker().Random.Number().ToString();
             var patientLinkRequest = new LinkConfirmationRequest(otpToken, sessionId);
             var expectedErrorResponse =
                 new ErrorRepresentation(new Error(ErrorCode.NoLinkRequestFound, "No request found"));
@@ -171,15 +170,16 @@ namespace In.ProjectEKA.HipServiceTest.Link
         private async void SuccessLinkPatientForValidOtp()
         {
             const string programRefNo = "129";
-            var sessionId = TestBuilder.Faker().Random.Hash();
-            var otpToken = TestBuilder.Faker().Random.Number().ToString();
+            var sessionId = TestBuilders.Faker().Random.Hash();
+            var otpToken = TestBuilders.Faker().Random.Number().ToString();
             var patientLinkRequest = new LinkConfirmationRequest(otpToken, sessionId);
             ICollection<CareContext> linkedCareContext = new[] {new CareContext(programRefNo)};
             var testLinkRequest = new LinkEnquires(testPatient.Identifier, sessionId,
-                TestBuilder.Faker().Random.Hash(), TestBuilder.Faker().Random.Hash()
+                TestBuilders.Faker().Random.Hash(), TestBuilders.Faker().Random.Hash()
                 , It.IsAny<string>(), linkedCareContext);
-            var testLinkedAccounts = new LinkedAccounts(testLinkRequest.PatientReferenceNumber, testLinkRequest.LinkReferenceNumber,
-                testLinkRequest.ConsentManagerUserId, It.IsAny<string>(), new []{ programRefNo }.ToList());
+            var testLinkedAccounts = new LinkedAccounts(testLinkRequest.PatientReferenceNumber,
+                testLinkRequest.LinkReferenceNumber,
+                testLinkRequest.ConsentManagerUserId, It.IsAny<string>(), new[] {programRefNo}.ToList());
             patientVerification.Setup(e => e.Verify(sessionId, otpToken))
                 .ReturnsAsync((OtpMessage) null);
             linkRepository.Setup(e => e.GetPatientFor(sessionId))
@@ -187,9 +187,9 @@ namespace In.ProjectEKA.HipServiceTest.Link
             patientRepository.Setup(x => x.PatientWith(testPatient.Identifier))
                 .Returns(Option.Some(testPatient));
             linkRepository.Setup(x => x.Save(testLinkRequest.ConsentManagerUserId,
-                                                                         testLinkRequest.PatientReferenceNumber,
-                                                                         testLinkRequest.LinkReferenceNumber,
-                                                                         new[] {programRefNo}))
+                    testLinkRequest.PatientReferenceNumber,
+                    testLinkRequest.LinkReferenceNumber,
+                    new[] {programRefNo}))
                 .ReturnsAsync(Option.Some(testLinkedAccounts));
             var expectedLinkResponse = new PatientLinkConfirmationRepresentation(
                 new LinkConfirmationRepresentation(

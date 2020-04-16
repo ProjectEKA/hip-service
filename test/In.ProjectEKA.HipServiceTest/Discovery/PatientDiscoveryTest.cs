@@ -4,18 +4,17 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
-    using Builder;
     using FluentAssertions;
     using HipLibrary.Patient;
     using HipLibrary.Patient.Model;
     using HipService.Discovery;
     using HipService.Link;
     using HipService.Link.Model;
-    using Link.Builder;
     using Moq;
     using Optional;
     using Xunit;
     using Match = HipLibrary.Patient.Model.Match;
+    using TestBuilders = Link.Builder.TestBuilders;
 
     public class PatientDiscoveryTest
     {
@@ -24,8 +23,8 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             {
                 PhoneNumber = "+91666666666666",
                 Identifier = "1",
+                Gender = TestBuilders.Faker().PickRandom<Gender>(),
                 Name = "John",
-                Gender = TestBuilder.Faker().Random.Word(),
                 CareContexts = new List<CareContextRepresentation>
                 {
                     new CareContextRepresentation("123", "National Cancer program"),
@@ -69,9 +68,9 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             var patientRequest = new PatientEnquiry(patientId, verifiedIdentifiers,
                 unverifiedIdentifiers, "John", Gender.M, 2019);
             var discoveryRequest = new DiscoveryRequest(patientRequest, transactionId);
-            var sessionId = TestBuilder.Faker().Random.Hash();
+            var sessionId = TestBuilders.Faker().Random.Hash();
             ICollection<string> linkedCareContext = new[] {"123"};
-            var testLinkAccounts = new LinkedAccounts("1", sessionId, TestBuilder.Faker().Random.Hash()
+            var testLinkAccounts = new LinkedAccounts("1", sessionId, TestBuilders.Faker().Random.Hash()
                 , It.IsAny<string>(), linkedCareContext.ToList());
             linkPatientRepository.Setup(e => e.GetLinkedCareContexts(patientId))
                 .ReturnsAsync(new Tuple<IEnumerable<LinkedAccounts>, Exception>(
@@ -85,7 +84,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 {
                     new Patient
                     {
-                        Gender = Gender.M.ToString(),
+                        Gender = Gender.M,
                         Identifier = "1",
                         Name = "John",
                         CareContexts = new List<CareContextRepresentation>
@@ -121,8 +120,13 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 new Identifier(IdentifierType.MOBILE, "+919999999999")
             };
             const string patientId = "cm-1";
-            var patientRequest = new PatientEnquiry(patientId, verifiedIdentifiers,
-                new List<Identifier>(), null, Gender.M, 2019);
+            var dateOfBirth = new DateTime(2019, 01, 01);
+            var patientRequest = new PatientEnquiry(patientId,
+                verifiedIdentifiers,
+                new List<Identifier>(),
+                null,
+                Gender.M,
+                (ushort) dateOfBirth.Year);
             var discoveryRequest = new DiscoveryRequest(patientRequest, "transaction-id-1");
             linkPatientRepository.Setup(e => e.GetLinkedCareContexts(patientId))
                 .ReturnsAsync(new Tuple<IEnumerable<LinkedAccounts>, Exception>(new List<LinkedAccounts>(), null));
@@ -131,8 +135,8 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 .Setup(repo => repo.Where(discoveryRequest))
                 .Returns(Task.FromResult(new List<Patient>
                 {
-                    new Patient(),
-                    new Patient()
+                    new Patient {YearOfBirth = (ushort) dateOfBirth.Year},
+                    new Patient {YearOfBirth = (ushort) dateOfBirth.Year}
                 }.AsQueryable()));
 
             var (discoveryResponse, error) = await patientDiscovery.PatientFor(discoveryRequest);
@@ -177,7 +181,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 patientRepository.Object);
             var expectedError =
                 new ErrorRepresentation(new Error(ErrorCode.DuplicateDiscoveryRequest, "Request already exists"));
-            var transactionId = TestBuilders.RandomString();
+            var transactionId = Builder.TestBuilders.RandomString();
             var discoveryRequest = new DiscoveryRequest(null, transactionId);
             discoveryRequestRepository.Setup(repository => repository.RequestExistsFor(transactionId))
                 .ReturnsAsync(true);

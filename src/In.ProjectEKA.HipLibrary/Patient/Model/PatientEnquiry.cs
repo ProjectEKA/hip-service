@@ -1,6 +1,5 @@
 namespace In.ProjectEKA.HipLibrary.Patient.Model
 {
-    using System;
     using System.Collections.Generic;
 
     public class PatientEnquiry
@@ -17,7 +16,7 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
 
         // ReSharper disable once MemberCanBePrivate.Global
         // TODO: Need to be used while doing discovery
-        public int? YearOfBirth { get; }
+        public ushort? YearOfBirth { get; }
 
         public PatientEnquiry(
             string id,
@@ -25,7 +24,7 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
             IEnumerable<Identifier> unverifiedIdentifiers,
             string name,
             Gender gender,
-            int? yearOfBirth)
+            ushort? yearOfBirth)
         {
             Id = id;
             VerifiedIdentifiers = verifiedIdentifiers;

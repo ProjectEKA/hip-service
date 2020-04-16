@@ -4,7 +4,7 @@ namespace In.ProjectEKA.HipServiceTest.Link.Builder
     using Bogus;
     using HipLibrary.Patient.Model;
 
-    public static class TestBuilder
+    public static class TestBuilders
     {
         private static Faker faker;
 

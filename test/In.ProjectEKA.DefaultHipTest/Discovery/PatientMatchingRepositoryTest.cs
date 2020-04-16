@@ -22,7 +22,7 @@ namespace In.ProjectEKA.DefaultHipTest.Discovery
                     null,
                     string.Empty,
                     Gender.F,
-                    DateTime.Now.Year),
+                    (ushort) DateTime.Now.Year),
                 string.Empty);
 
             var patientInfo = await patientMatchingRepository.Where(request);
