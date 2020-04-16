@@ -33,7 +33,8 @@
         {
             return identifiers
                 .Select(ToExpression)
-                .Aggregate(@default, (accumulate, next) => accumulate.Or(next));
+                .DefaultIfEmpty(@default)
+                .Aggregate((accumulate, next) => accumulate.Or(next));
         }
 
         public static Expression<Func<Patient, bool>> GetVerifiedExpression(IEnumerable<Identifier> identifiers)
