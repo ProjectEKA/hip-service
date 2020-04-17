@@ -21,7 +21,7 @@
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
         <PackageReference Include="Moq" Version="4.13.1" />
-        <PackageReference Include="Bogus" Version="29.0.1" />
+        <PackageReference Include="Bogus" Version="29.0.2" />
     </ItemGroup>
     
     <ItemGroup>
