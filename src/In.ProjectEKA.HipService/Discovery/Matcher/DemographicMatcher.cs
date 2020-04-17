@@ -9,6 +9,10 @@ namespace In.ProjectEKA.HipService.Discovery.Matcher
     {
         private static readonly AgeGroupMatcher AgeGroupMatcher = new AgeGroupMatcher(2);
 
+        private DemographicMatcher()
+        {
+        }
+
         public static Func<Patient, bool> ExpressionFor(string name, ushort? age, Gender gender)
         {
             return GenderExpresion(gender).And(NameExpression(name)).And(AgeExpression(age)).Compile();
