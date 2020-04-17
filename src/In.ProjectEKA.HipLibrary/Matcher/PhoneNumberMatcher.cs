@@ -1,8 +1,8 @@
-namespace In.ProjectEKA.DefaultHip.Discovery
+namespace In.ProjectEKA.HipLibrary.Matcher
 {
     using System;
     using System.Linq.Expressions;
-    using HipLibrary.Patient.Model;
+    using Patient.Model;
 
     public class PhoneNumberMatcher : IIdentifierMatcher
     {

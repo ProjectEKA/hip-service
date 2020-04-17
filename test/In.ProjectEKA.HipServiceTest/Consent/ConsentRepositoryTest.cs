@@ -19,7 +19,7 @@ namespace In.ProjectEKA.HipServiceTest.Consent
         }
 
         [Fact]
-        async void ShouldStoreConsent()
+        private async void ShouldStoreConsent()
         {
             var consentContext = ConsentContext();
             var consentRepository = new ConsentRepository(consentContext);
@@ -31,7 +31,7 @@ namespace In.ProjectEKA.HipServiceTest.Consent
         }
 
         [Fact]
-        async void ShouldFetchConsent()
+        private async void ShouldFetchConsent()
         {
             var consentContext = ConsentContext();
             var consentRepository = new ConsentRepository(consentContext);
@@ -44,7 +44,7 @@ namespace In.ProjectEKA.HipServiceTest.Consent
         }
 
         [Fact]
-        async void ShouldReturnNullWhenConsentIsNotFound()
+        private async void ShouldReturnNullWhenConsentIsNotFound()
         {
             var consentContext = ConsentContext();
             var consentRepository = new ConsentRepository(consentContext);
