@@ -1,12 +1,8 @@
 namespace In.ProjectEKA.HipService.Discovery
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Linq.Expressions;
-    using HipLibrary.Matcher;
     using HipLibrary.Patient.Model;
-    using Matcher;
     using Ranker;
     using static HipLibrary.Matcher.StrongMatcherFactory;
     using static Ranker.RankBuilder;
