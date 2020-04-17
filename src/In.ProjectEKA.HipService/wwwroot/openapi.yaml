@@ -394,7 +394,7 @@ components:
     PatientDiscoveryRequest:
       type: object
       properties:
-        requestID:
+        requestId:
           type: string
           format: uuid
         patient:
@@ -501,7 +501,10 @@ components:
     PatientLinkReferenceRequest:
       type: object
       properties:
-        requestID:
+        requestId:
+          type: string
+          format: uuid
+        transcationId:
           type: string
           format: uuid
         patient:
