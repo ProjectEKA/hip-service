@@ -1,12 +1,16 @@
 namespace In.ProjectEKA.HipService.Discovery
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Linq.Expressions;
+    using HipLibrary.Matcher;
     using HipLibrary.Patient.Model;
     using Matcher;
     using Ranker;
     using static HipLibrary.Matcher.StrongMatcherFactory;
     using static Ranker.RankBuilder;
+    using static Matcher.DemographicMatcher;
 
     public static class Filter
     {
@@ -52,26 +56,12 @@ namespace In.ProjectEKA.HipService.Discovery
         public static IEnumerable<PatientEnquiryRepresentation> Do(IEnumerable<Patient> patients,
             DiscoveryRequest request)
         {
-            static bool IsMatching(string name1, string name2)
-            {
-                return FuzzyNameMatcher.LevenshteinDistance(name1, name2) <= 2;
-            }
-
             var unverifiedExpression =
                 GetUnVerifiedExpression(request.Patient.UnverifiedIdentifiers ?? new List<Identifier>());
 
             return patients
                 .AsEnumerable()
-                .Where(patient => patient.Gender == request.Patient.Gender)
-                .Where(patient => IsMatching(patient.Name, request.Patient.Name))
-                .Where(patient =>
-                {
-                    var ageGroupMatcher = new AgeGroupMatcher(2);
-                    return !request.Patient.YearOfBirth.HasValue
-                           || ageGroupMatcher.IsMatching(
-                               AgeCalculator.From(request.Patient.YearOfBirth.Value),
-                               AgeCalculator.From(patient.YearOfBirth));
-                })
+                .Where(ExpressionFor(request.Patient.Name, request.Patient.YearOfBirth, request.Patient.Gender))
                 .Where(unverifiedExpression.Compile())
                 .Select(patientInfo => RankPatient(patientInfo, request))
                 .GroupBy(rankedPatient => rankedPatient.Rank.Score)
