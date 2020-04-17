@@ -5,6 +5,7 @@ namespace In.ProjectEKA.HipService.Common.Model
         REQUESTED,
         GRANTED,
         REVOKED,
-        DENIED
+        DENIED,
+        EXPIRED
     }
 }
