@@ -26,11 +26,11 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
         {
             var patient1 = new PatientEnquiryRepresentation("123", "Jack", new List<CareContextRepresentation>(), new List<string>
             {
-                Match.FirstName.ToString()
+                Match.Name.ToString()
             });
             var patient2 = new PatientEnquiryRepresentation("123", "Jack", new List<CareContextRepresentation>(), new List<string>
             {
-                Match.FirstName.ToString()
+                Match.Name.ToString()
             });
 
             var (patient, error) =
@@ -46,7 +46,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
         {
             var patient1 = new PatientEnquiryRepresentation("123", "Jack", new List<CareContextRepresentation>(), new List<string>
             {
-                Match.FirstName.ToString()
+                Match.Name.ToString()
             });
             var (patient, error) =
                 DiscoveryUseCase.DiscoverPatient(new List<PatientEnquiryRepresentation> { patient1 }.AsQueryable());

@@ -1,8 +1,5 @@
 namespace In.ProjectEKA.HipLibrary.Patient.Model
 {
-    using System.Text.Json.Serialization;
-    using System.Xml.Serialization;
-
     public class Error
     {
         public ErrorCode Code { get; }

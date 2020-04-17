@@ -1,8 +1,8 @@
-namespace In.ProjectEKA.HipLibrary.Patient
+namespace In.ProjectEKA.HipLibrary.Matcher
 {
     using System.Linq;
     using System.Threading.Tasks;
-    using Model;
+    using Patient.Model;
 
     public interface IMatchingRepository
     {
