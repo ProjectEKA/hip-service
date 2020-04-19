@@ -3,15 +3,17 @@ using System;
 using In.ProjectEKA.HipService.Discovery.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace In.ProjectEKA.HipService.Discovery.Database.Migrations
 {
     [DbContext(typeof(DiscoveryContext))]
-    partial class DiscoveryContextModelSnapshot : ModelSnapshot
+    [Migration("20200417080025_RenamingTranscationID")]
+    partial class RenamingTranscationID
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

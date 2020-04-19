@@ -18,7 +18,7 @@ namespace In.ProjectEKA.HipService.Discovery.Database
                 builder.Property(p => p.Timestamp)
                     .HasDefaultValueSql("now()");
                 builder
-                    .HasIndex(p => p.TransactionId)
+                    .HasIndex(p => p.RequestId)
                     .IsUnique();
             });
         }

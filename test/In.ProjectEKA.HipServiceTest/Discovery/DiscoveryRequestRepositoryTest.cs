@@ -24,8 +24,8 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             var dbContext = GetDiscoveryRequestContext();
             var discoveryRequestRepository = new DiscoveryRequestRepository(dbContext);
             const string patientId = "1";
-            const string transactionId = "2";
-            var discoveryRequest = new DiscoveryRequest(transactionId, patientId, patientId);
+            const string requestId = "2";
+            var discoveryRequest = new DiscoveryRequest(requestId, patientId, patientId);
 
             var count = await dbContext.DiscoveryRequest.CountAsync();
             count.Should().Be(0);
@@ -35,7 +35,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             count = await dbContext.DiscoveryRequest.CountAsync();
             count.Should().Be(1);
 
-            await discoveryRequestRepository.Delete(transactionId, patientId);
+            await discoveryRequestRepository.Delete(requestId, patientId);
 
             count = await dbContext.DiscoveryRequest.CountAsync();
             count.Should().Be(0);
