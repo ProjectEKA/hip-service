@@ -16,6 +16,8 @@ namespace In.ProjectEKA.HipService.Link.Database
         
         public DbSet<LinkedAccounts> LinkedAccounts { get; set; }
 
+        public DbSet<InitiatedLinkRequest> InitiatedLinkRequest { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<CareContext>()
@@ -32,6 +34,14 @@ namespace In.ProjectEKA.HipService.Link.Database
             {
                 builder.Property(p => p.DateTimeStamp)
                     .HasDefaultValueSql("now()");
+            });
+
+            modelBuilder.Entity<InitiatedLinkRequest>(builder =>
+            {
+                builder.Property(p => p.DateTimeStamp)
+                    .HasDefaultValueSql("now()");
+                builder.Property(p => p.Status)
+                    .HasDefaultValueSql("false");
             });
             
             modelBuilder.Entity<LinkedAccounts>()

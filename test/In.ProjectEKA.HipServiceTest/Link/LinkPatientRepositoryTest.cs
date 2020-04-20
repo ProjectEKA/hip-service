@@ -140,5 +140,40 @@ namespace In.ProjectEKA.HipServiceTest.Link
 
             dbContext.Database.EnsureDeleted();
         }
+
+        [Fact]
+        private async void ShouldSaveInitiatedLinkRequest()
+        {
+            var faker = TestBuilders.Faker();
+            var dbContext = PatientContext();
+            var linkPatientRepository = new LinkPatientRepository(dbContext);
+            var hashValue = faker.Random.Hash();
+            var request = await linkPatientRepository.Save(hashValue,
+                                                                                hashValue,
+                                                                                hashValue);
+
+            request.MatchSome(l => l.RequestId.Should().BeEquivalentTo(hashValue));
+            request.MatchSome(l => l.TransactionId.Should().BeEquivalentTo(hashValue));
+            request.MatchSome(l => l.LinkReferenceNumber.Should().BeEquivalentTo(hashValue));
+
+            dbContext.Database.EnsureDeleted();
+        }
+
+        [Fact]
+        private async void ThrowErrorOnSaveOfSamePrimaryKeyInitiatedLinkRequest()
+        {
+            var faker = TestBuilders.Faker();
+            var dbContext = PatientContext();
+            var linkPatientRepository = new LinkPatientRepository(dbContext);
+            var hashValue = faker.Random.Hash();
+            await linkPatientRepository.Save(hashValue, hashValue, hashValue);
+            var request = await linkPatientRepository.Save(hashValue,
+                                                                                hashValue,
+                                                                                hashValue);
+
+            request.HasValue.Should().BeFalse();
+
+            dbContext.Database.EnsureDeleted();
+        }
     }
 }

@@ -17,7 +17,8 @@ namespace In.ProjectEKA.HipServiceTest.Link.Builder
                 new LinkReference(
                     faker.Random.Hash(),
                     faker.Random.Hash(),
-                    new[] {new CareContextEnquiry(faker.Random.Hash())}));
+                    new[] {new CareContextEnquiry(faker.Random.Hash())}),
+                faker.Random.Hash());
         }
     }
 }
