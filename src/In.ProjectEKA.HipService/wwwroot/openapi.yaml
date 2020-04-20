@@ -620,10 +620,10 @@ components:
     HealthInformationLinkResponse:
       type: object
       required:
-        - acknowledgementId
+        - transactionId
         - content
       properties:
-        acknowledgementId:
+        transactionId:
           $ref: '#/components/schemas/UuidSchema'
         content:
           type: string
