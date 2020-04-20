@@ -613,9 +613,9 @@ components:
     HealthInformationRequestResponse:
       type: object
       required:
-        - transactionId
+        - acknowledgementId
       properties:
-        transactionId:
+        acknowledgementId:
           type: string
     HealthInformationLinkResponse:
       type: object
