@@ -340,7 +340,7 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  '/consent/':
+  /consent/notification:
     post:
       tags:
         - consents
@@ -613,9 +613,9 @@ components:
     HealthInformationRequestResponse:
       type: object
       required:
-        - transactionId
+        - acknowledgementId
       properties:
-        transactionId:
+        acknowledgementId:
           type: string
     HealthInformationLinkResponse:
       type: object
