@@ -340,7 +340,7 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  '/consent/':
+  /consent/notification:
     post:
       tags:
         - consents
