@@ -133,10 +133,28 @@ namespace In.ProjectEKA.HipServiceTest.Link
         {
             var sessionId = TestBuilders.Faker().Random.Hash();
             var otpToken = TestBuilders.Faker().Random.Number().ToString();
-            var testOtpMessage = new OtpMessage("1001", "Invalid Otp");
+            var testOtpMessage = new OtpMessage(ResponseType.OtpInvalid, "Invalid Otp");
             var patientLinkRequest = new LinkConfirmationRequest(otpToken, sessionId);
             var expectedErrorResponse =
                 new ErrorRepresentation(new Error(ErrorCode.OtpInValid, testOtpMessage.Message));
+            patientVerification.Setup(e => e.Verify(sessionId, otpToken))
+                .ReturnsAsync(testOtpMessage);
+
+            var (_, error) = await linkPatient.VerifyAndLinkCareContext(patientLinkRequest);
+
+            patientVerification.Verify();
+            error.Should().BeEquivalentTo(expectedErrorResponse);
+        }
+
+        [Fact]
+        private async void ReturnOtpExpired()
+        {
+            var sessionId = TestBuilders.Faker().Random.Hash();
+            var otpToken = TestBuilders.Faker().Random.Number().ToString();
+            var testOtpMessage = new OtpMessage(ResponseType.OtpExpired, "Otp Expired");
+            var patientLinkRequest = new LinkConfirmationRequest(otpToken, sessionId);
+            var expectedErrorResponse =
+                new ErrorRepresentation(new Error(ErrorCode.OtpExpired, testOtpMessage.Message));
             patientVerification.Setup(e => e.Verify(sessionId, otpToken))
                 .ReturnsAsync(testOtpMessage);
 
