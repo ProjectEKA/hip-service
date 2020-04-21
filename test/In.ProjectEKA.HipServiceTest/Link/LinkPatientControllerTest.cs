@@ -263,9 +263,9 @@ namespace In.ProjectEKA.HipServiceTest.Link
             discoveryRequestRepository.Verify();
             response.Should().NotBeNull()
                 .And
-                .BeOfType<BadRequestObjectResult>()
+                .BeOfType<UnauthorizedObjectResult>()
                 .Subject.StatusCode.Should()
-                .Be(StatusCodes.Status400BadRequest);
+                .Be(StatusCodes.Status401Unauthorized);
         }
 
         [Fact]

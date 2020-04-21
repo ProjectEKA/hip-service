@@ -68,7 +68,7 @@ namespace In.ProjectEKA.HipService.Link
                 ErrorCode.MultiplePatientsFound => NotFound(errorResponse),
                 ErrorCode.NoPatientFound => NotFound(errorResponse),
                 ErrorCode.OtpGenerationFailed => StatusCode(StatusCodes.Status500InternalServerError, errorResponse),
-                ErrorCode.OtpInValid => BadRequest(errorResponse),
+                ErrorCode.OtpInValid => Unauthorized(errorResponse),
                 ErrorCode.ServerInternalError => StatusCode(StatusCodes.Status500InternalServerError, errorResponse),
                 ErrorCode.CareContextNotFound => NotFound(errorResponse),
                 ErrorCode.NoLinkRequestFound => NotFound(errorResponse),
