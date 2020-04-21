@@ -64,11 +64,11 @@ namespace In.ProjectEKA.HipService.Link
         {
             return errorResponse.Error.Code switch
             {
-                ErrorCode.OtpExpired => (ActionResult) BadRequest(errorResponse),
+                ErrorCode.OtpExpired => (ActionResult) Unauthorized(errorResponse),
                 ErrorCode.MultiplePatientsFound => NotFound(errorResponse),
                 ErrorCode.NoPatientFound => NotFound(errorResponse),
                 ErrorCode.OtpGenerationFailed => StatusCode(StatusCodes.Status500InternalServerError, errorResponse),
-                ErrorCode.OtpInValid => NotFound(errorResponse),
+                ErrorCode.OtpInValid => BadRequest(errorResponse),
                 ErrorCode.ServerInternalError => StatusCode(StatusCodes.Status500InternalServerError, errorResponse),
                 ErrorCode.CareContextNotFound => NotFound(errorResponse),
                 ErrorCode.NoLinkRequestFound => NotFound(errorResponse),

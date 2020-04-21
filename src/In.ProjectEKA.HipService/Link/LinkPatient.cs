@@ -125,7 +125,7 @@ namespace In.ProjectEKA.HipService.Link
             var verifyOtp = await patientVerification.Verify(request.LinkReferenceNumber, request.Token);
             if (verifyOtp != null)
             {
-                return (null, new ErrorRepresentation(new Error(ErrorCode.OtpInValid, verifyOtp.Message)));
+                return (null, new ErrorRepresentation(verifyOtp.toError()));
             }
 
             var (linkEnquires, exception) =

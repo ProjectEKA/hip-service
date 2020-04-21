@@ -263,9 +263,9 @@ namespace In.ProjectEKA.HipServiceTest.Link
             discoveryRequestRepository.Verify();
             response.Should().NotBeNull()
                 .And
-                .BeOfType<NotFoundObjectResult>()
+                .BeOfType<BadRequestObjectResult>()
                 .Subject.StatusCode.Should()
-                .Be(StatusCodes.Status404NotFound);
+                .Be(StatusCodes.Status400BadRequest);
         }
 
         [Fact]
