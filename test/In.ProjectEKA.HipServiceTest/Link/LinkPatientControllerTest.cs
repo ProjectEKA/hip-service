@@ -11,7 +11,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
 {
     using HipLibrary.Patient.Model;
     using HipService.Discovery;
-    using static TestBuilder;
+    using static TestBuilders;
 
     [Collection("Link Patient Controller Tests")]
     public class LinkPatientControllerTest
@@ -41,7 +41,8 @@ namespace In.ProjectEKA.HipServiceTest.Link
                 new LinkReference(
                     consentManagerUserId,
                     patientReference,
-                    new[] {new CareContextEnquiry(programRefNo)}));
+                    new[] {new CareContextEnquiry(programRefNo)}),
+                faker.Random.Hash());
             var linkReference = new LinkEnquiryRepresentation(faker.Random.Hash(), "MEDIATED"
                 , new LinkReferenceMeta("MOBILE", "+91666666666666"
                     , It.IsAny<string>()));
@@ -263,9 +264,9 @@ namespace In.ProjectEKA.HipServiceTest.Link
             discoveryRequestRepository.Verify();
             response.Should().NotBeNull()
                 .And
-                .BeOfType<NotFoundObjectResult>()
+                .BeOfType<UnauthorizedObjectResult>()
                 .Subject.StatusCode.Should()
-                .Be(StatusCodes.Status404NotFound);
+                .Be(StatusCodes.Status401Unauthorized);
         }
 
         [Fact]

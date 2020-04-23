@@ -6,24 +6,31 @@ namespace In.ProjectEKA.HipService.DataFlow
     public class DataRequest
     {
         public IEnumerable<GrantedContext> CareContexts { get; }
-        public HiDataRange DataRange { get; }
-        public string CallBackUrl { get; }
+        public DateRange DateRange { get; }
+        public string DataPushUrl { get; }
         public IEnumerable<HiType> HiType { get; }
         public string TransactionId { get; }
         public KeyMaterial KeyMaterial { get; }
+        public string ConsentManagerId { get; }
+        public string ConsentId { get; }
 
         public DataRequest(IEnumerable<GrantedContext> careContexts,
-                                HiDataRange dataRange, 
-                                string callBackUrl, 
-                                IEnumerable<HiType> hiType,
-                                string transactionId, KeyMaterial keyMaterial)
+            DateRange dateRange,
+            string dataPushUrl,
+            IEnumerable<HiType> hiType,
+            string transactionId,
+            KeyMaterial keyMaterial,
+            string consentManagerId,
+            string consentId)
         {
             CareContexts = careContexts;
-            DataRange = dataRange;
-            CallBackUrl = callBackUrl;
+            DateRange = dateRange;
+            DataPushUrl = dataPushUrl;
             HiType = hiType;
             TransactionId = transactionId;
             KeyMaterial = keyMaterial;
+            ConsentManagerId = consentManagerId;
+            ConsentId = consentId;
         }
     }
 }

@@ -1,19 +1,18 @@
 namespace In.ProjectEKA.HipLibrary.Patient.Model
 {
     using System.Collections.Generic;
-    using System.Runtime.Serialization;
 
     public class Patient
     {
         public string Identifier { get; set; }
 
-        public string Gender { get; set; }
+        public Gender Gender { get; set; }
 
         public string PhoneNumber { get; set; }
 
-        public string FirstName { get; set; }
+        public string Name { get; set; }
 
-        public string LastName { get; set; }
+        public ushort YearOfBirth { get; set; }
 
         public IEnumerable<CareContextRepresentation> CareContexts { get; set; }
 
@@ -22,7 +21,7 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
         {
             return new PatientEnquiryRepresentation(
                 Identifier,
-                FirstName + " " + LastName,
+                Name,
                 unlinkedCareContexts,
                 new[] {Match.ConsentManagerUserId.ToString()});
         }

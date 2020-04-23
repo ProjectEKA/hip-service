@@ -2,28 +2,33 @@ namespace In.ProjectEKA.HipService.Discovery.Ranker
 {
     using System;
 
+    public enum MatchLevel
+    {
+        FullMatch
+    }
+
     public struct Meta : IEquatable<Meta>
     {
         public string Field { get; }
 
-        private readonly MatchLevel MatchLevel;
+        private readonly MatchLevel matchLevel;
 
         public Meta(string field, MatchLevel matchLevel)
         {
             Field = field;
-            MatchLevel = matchLevel;
+            this.matchLevel = matchLevel;
         }
 
         public bool Equals(Meta other)
         {
-            return MatchLevel.Equals(other.MatchLevel) && Field.Equals(other.Field);
+            return matchLevel.Equals(other.matchLevel) && Field.Equals(other.Field);
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return ((int) MatchLevel * 397) ^ Field.GetHashCode();
+                return ((int) matchLevel * 397) ^ Field.GetHashCode();
             }
         }
     }

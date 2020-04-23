@@ -4,6 +4,7 @@ namespace In.ProjectEKA.HipService.Link
     using System.IO;
     using System.Net.Http;
     using System.Net.Http.Headers;
+    using System.Net.Mime;
     using System.Text;
     using System.Threading.Tasks;
     using HipLibrary.Patient.Model;
@@ -21,7 +22,7 @@ namespace In.ProjectEKA.HipService.Link
         {
             this.httpClient = httpClient;
             httpClient.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
+                new MediaTypeWithQualityHeaderValue(MediaTypeNames.Application.Json));
             this.otpService = otpService;
         }
 
@@ -39,7 +40,7 @@ namespace In.ProjectEKA.HipService.Link
             var urlConfig = otpService.Value.BaseUrl;
             var uri = new Uri($"{urlConfig}/otp/{sessionId}/verify");
             var verifyOtpRequest = new OtpVerificationRequest(value);
-            var verifyMessage = await PostCallToOtpServer(uri, 
+            var verifyMessage = await PostCallToOtpServer(uri,
                 CreateHttpContent(verifyOtpRequest)).ConfigureAwait(false);
             return verifyMessage.ValueOr((OtpMessage) null);
         }
@@ -47,7 +48,7 @@ namespace In.ProjectEKA.HipService.Link
         private static HttpContent CreateHttpContent<T>(T content)
         {
             var json = JsonConvert.SerializeObject(content);
-            return new StringContent(json, Encoding.UTF8, "application/json");
+            return new StringContent(json, Encoding.UTF8, MediaTypeNames.Application.Json);
         }
 
         private async Task<Option<OtpMessage>> PostCallToOtpServer(Uri serverUrl, HttpContent content)
@@ -59,7 +60,7 @@ namespace In.ProjectEKA.HipService.Link
                 {
                     return Option.None<OtpMessage>();
                 }
-                
+
                 var responseContent = response.Content;
                 using var reader = new StreamReader(await responseContent.ReadAsStreamAsync());
                 var result = await reader.ReadToEndAsync().ConfigureAwait(false);
@@ -70,7 +71,7 @@ namespace In.ProjectEKA.HipService.Link
             catch (Exception exception)
             {
                 Log.Fatal(exception, exception.StackTrace);
-                return Option.Some(new OtpMessage(ErrorCode.ServerInternalError.ToString(),
+                return Option.Some(new OtpMessage(ResponseType.InternalServerError,
                     ErrorMessage.OtpServiceError));
             }
         }

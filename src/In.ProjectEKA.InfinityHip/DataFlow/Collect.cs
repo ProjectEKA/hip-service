@@ -37,7 +37,7 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
             return Option.Some(entries);
         }
 
-        private static bool WithinRange(HiDataRange range, DateTime date)
+        private static bool WithinRange(DateRange range, DateTime date)
         {
             var fromDate = ParseDate(range.From);
             var toDate = ParseDate(range.To);
@@ -51,8 +51,16 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
                 "yyyy-MM-dd", "yyyy-MM-dd hh:mm:ss", "yyyy-MM-dd hh:mm:ss tt", "yyyy-MM-ddTHH:mm:ss.fffzzz",
                 "dd/MM/yyyy", "dd/MM/yyyy hh:mm:ss", "dd/MM/yyyy hh:mm:ss tt", "dd/MM/yyyyTHH:mm:ss.fffzzz"
             };
-            DateTime.TryParseExact(dateString, formatStrings, CultureInfo.CurrentCulture, DateTimeStyles.None,
+            var tryParseExact = DateTime.TryParseExact(dateString,
+                formatStrings,
+                CultureInfo.CurrentCulture,
+                DateTimeStyles.None,
                 out var aDateTime);
+            if (!tryParseExact)
+            {
+                Log.Error($"Error parsing date: {dateString}");
+            }
+
             return aDateTime;
         }
 
@@ -62,27 +70,32 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
             {
                 LogDataRequest(request);
                 var jsonData = File.ReadAllText(careContextMapFile);
-                var patientDataMap =
-                    JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, List<PatientCcRecord>>>>(
-                        jsonData);
+
+                var patientDataMap = JsonConvert
+                    .DeserializeObject<Dictionary<string, Dictionary<string, List<CareContextRecord>>>>(jsonData);
 
                 var listOfDataFiles = new List<string>();
                 foreach (var grantedContext in request.CareContexts)
                 {
                     var refData = patientDataMap[grantedContext.PatientReference];
                     var ccData = refData?[grantedContext.CareContextReference];
-                    ccData?
-                        .Select(ccRecord => new {ccRecord, captureTime = ParseDate(ccRecord.CapturedOn)})
-                        .Where(t => WithinRange(request.DataRange, t.captureTime))
-                        .SelectMany(t => request.HiType, (t, hiType) => new {t, hiType})
-                        .Select(t => new {t, hiTypeStr = t.hiType.ToString().ToLower()})
-                        .Select(t => t.t.t.ccRecord.Data.GetValueOrDefault(t.hiTypeStr) ?? new List<string>())
-                        .Where(dataFiles => dataFiles.Count > 0)
-                        .Aggregate(listOfDataFiles, (source, next) =>
+
+                    if (ccData == null) continue;
+                    // ReSharper disable once ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
+                    foreach (var ccRecord in ccData)
+                    {
+                        var captureTime = ParseDate(ccRecord.CapturedOn);
+                        if (!WithinRange(request.DateRange, captureTime)) continue;
+                        foreach (var hiType in request.HiType)
                         {
-                            source.AddRange(next);
-                            return source;
-                        });
+                            var hiTypeStr = hiType.ToString().ToLower();
+                            var dataFiles = ccRecord.Data.GetValueOrDefault(hiTypeStr) ?? new List<string>();
+                            if (dataFiles.Count > 0)
+                            {
+                                listOfDataFiles.AddRange(dataFiles);
+                            }
+                        }
+                    }
                 }
 
                 return listOfDataFiles;
@@ -99,14 +112,13 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
         {
             var ccList = JsonConvert.SerializeObject(request.CareContexts);
             var requestedHiTypes = string.Join(", ", request.HiType.Select(hiType => hiType.ToString()));
-            Log.Information(
-                "Data request received." +
-                $" transactionId:{request.TransactionId} , " +
-                $"CareContexts:{ccList}, " +
-                $"HiTypes:{requestedHiTypes}," +
-                $" From date:{request.DataRange.From}," +
-                $" To date:{request.DataRange.To}, " +
-                $"CallbackUrl:{request.CallBackUrl}");
+            Log.Information("Data request received." +
+                            $" transactionId:{request.TransactionId} , " +
+                            $"CareContexts:{ccList}, " +
+                            $"HiTypes:{requestedHiTypes}," +
+                            $" From date:{request.DateRange.From}," +
+                            $" To date:{request.DateRange.To}, " +
+                            $"CallbackUrl:{request.DataPushUrl}");
         }
     }
 }

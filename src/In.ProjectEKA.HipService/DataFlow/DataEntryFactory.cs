@@ -85,7 +85,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             return linkEntry;
         }
 
-        private Entry EntryWith(string content, string link)
+        private static Entry EntryWith(string content, string link)
         {
             return new Entry(content, FhirMediaType, "MD5", link);
         }
@@ -96,7 +96,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             return EntryWith(null, link);
         }
 
-        private Entry ComponentEntry(string serializedBundle)
+        private static Entry ComponentEntry(string serializedBundle)
         {
             return EntryWith(serializedBundle, null);
         }
@@ -116,7 +116,6 @@ namespace In.ProjectEKA.HipService.DataFlow
         {
             using var serviceScope = serviceScopeFactory.CreateScope();
             var healthInformationRepository = serviceScope.ServiceProvider.GetService<IHealthInformationRepository>();
-
             healthInformationRepository.Add(new HealthInformation(linkId, entry, DateTime.Now, token));
         }
     }

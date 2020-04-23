@@ -4,12 +4,15 @@ namespace In.ProjectEKA.HipService.Link
     {
         public string TransactionId { get; }
         
+        public string RequestId { get; }
+
         public LinkReference Patient { get; }
 
-        public PatientLinkReferenceRequest(string transactionId, LinkReference patient)
+        public PatientLinkReferenceRequest(string transactionId, LinkReference patient, string requestId)
         {
             TransactionId = transactionId;
             Patient = patient;
+            RequestId = requestId;
         }
     }
 }

@@ -7,10 +7,10 @@ namespace In.ProjectEKA.HipService.Discovery
     {
         Task Add(DiscoveryRequest discoveryRequest);
 
-        Task Delete(string transactionId, string consentManagerUserId);
+        Task Delete(string requestId, string consentManagerUserId);
 
-        Task<bool> RequestExistsFor(string transactionId, string consentManagerUserId, string patientReferenceNumber);
+        Task<bool> RequestExistsFor(string requestId, string consentManagerUserId, string patientReferenceNumber);
 
-        Task<bool> RequestExistsFor(string transactionId);
+        Task<bool> RequestExistsFor(string requestId);
     }
 }

@@ -14,6 +14,7 @@ namespace In.ProjectEKA.HipService
     using DefaultHip.Link;
     using Discovery;
     using Discovery.Database;
+    using HipLibrary.Matcher;
     using HipLibrary.Patient;
     using Link;
     using Link.Database;
@@ -60,7 +61,6 @@ namespace In.ProjectEKA.HipService
                         x => x.MigrationsAssembly("In.ProjectEKA.HipService")))
                 .AddSingleton<IEncryptor, Encryptor>()
                 .AddSingleton<IPatientRepository>(new PatientRepository("demoPatients.json"))
-                .AddSingleton<HiTypeDataMap>()
                 .AddSingleton<ICollect>(new Collect("demoPatientCareContextDataMap.json"))
                 .AddSingleton<IPatientRepository>(new PatientRepository("demoPatients.json"))
                 .AddRabbit(Configuration)
@@ -75,6 +75,7 @@ namespace In.ProjectEKA.HipService
                 .AddScoped<ReferenceNumberGenerator>()
                 .AddSingleton(Configuration)
                 .AddSingleton<DataFlowClient>()
+                .AddSingleton<DataFlowNotificationClient>()
                 .AddSingleton<DataEntryFactory>()
                 .AddSingleton<DataFlowMessageHandler>()
                 .AddSingleton(HttpClient)
@@ -82,6 +83,7 @@ namespace In.ProjectEKA.HipService
                 .AddScoped<IConsentRepository, ConsentRepository>()
                 .AddHostedService<MessagingQueueListener>()
                 .AddScoped<IDataFlowRepository, DataFlowRepository>()
+                .AddSingleton(Configuration.GetSection("authServer").Get<CentralRegistryConfiguration>())
                 .AddScoped<IHealthInformationRepository, HealthInformationRepository>()
                 .AddSingleton(new CentralRegistryClient(HttpClient,
                     Configuration.GetSection("authServer").Get<CentralRegistryConfiguration>()))

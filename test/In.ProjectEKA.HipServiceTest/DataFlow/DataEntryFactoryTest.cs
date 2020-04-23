@@ -25,7 +25,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
         private void ShouldGetComponentEntry()
         {
             var dataFlowConfiguration = Options.Create(
-                new DataFlowConfiguration {DataSizeLimitInMbs = 5, DataLinkTTLInMinutes = 5});
+                new DataFlowConfiguration {DataSizeLimitInMbs = 5, DataLinkTtlInMinutes = 5});
             var hipConfiguration = Options.Create(
                 new HipConfiguration {Url = "https://hip/"});
             var serviceScopeFactory = new Mock<IServiceScopeFactory>(MockBehavior.Strict);
@@ -59,7 +59,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
         private void ShouldGetLinkEntry()
         {
             var dataFlowConfiguration = Options.Create(
-                new DataFlowConfiguration {DataSizeLimitInMbs = 0, DataLinkTTLInMinutes = 5});
+                new DataFlowConfiguration {DataSizeLimitInMbs = 0, DataLinkTtlInMinutes = 5});
             var hipConfiguration = Options.Create(
                 new HipConfiguration {Url = "https://hip"});
             var serviceScopeFactory = new Mock<IServiceScopeFactory>();

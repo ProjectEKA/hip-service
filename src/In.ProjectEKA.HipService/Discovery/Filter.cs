@@ -4,93 +4,91 @@ namespace In.ProjectEKA.HipService.Discovery
     using System.Linq;
     using HipLibrary.Patient.Model;
     using Ranker;
-    using static Ranker.PatientWithRankBuilder;
+    using static HipLibrary.Matcher.StrongMatcherFactory;
+    using static Ranker.RankBuilder;
+    using static Matcher.DemographicMatcher;
 
-    public class Filter
+    public static class Filter
     {
-        private static readonly Dictionary<IdentifierTypeExt, IRanker<Patient>> Ranks =
-            new Dictionary<IdentifierTypeExt, IRanker<Patient>>
-            {
-                {IdentifierTypeExt.MOBILE, new MobileRanker()},
-                {IdentifierTypeExt.FIRST_NAME, new FirstNameRanker()},
-                {IdentifierTypeExt.LAST_NAME, new LastNameRanker()},
-                {IdentifierTypeExt.GENDER, new GenderRanker()},
-                {IdentifierTypeExt.EMPTY, new EmptyRanker()}
-            };
-
         private static readonly Dictionary<IdentifierType, IdentifierTypeExt> IdentifierTypeExts =
             new Dictionary<IdentifierType, IdentifierTypeExt>
             {
-                {IdentifierType.MOBILE, IdentifierTypeExt.MOBILE},
-                {IdentifierType.MR, IdentifierTypeExt.MR}
+                {IdentifierType.MOBILE, IdentifierTypeExt.Mobile},
+                {IdentifierType.MR, IdentifierTypeExt.Mr}
             };
 
-        private PatientWithRank<Patient> RankPatient(Patient patient,
-            DiscoveryRequest request)
+        private static PatientWithRank<Patient> RankPatient(Patient patient, DiscoveryRequest request)
         {
             return RanksFor(request, patient)
-                .Aggregate(EmptyRankWith(patient),
-                    (rank, withRank) => rank + withRank);
+                .Aggregate((rank, withRank) => rank + withRank);
         }
 
         private static IEnumerable<PatientWithRank<Patient>> RanksFor(DiscoveryRequest request, Patient patient)
         {
-            return From(request).Select(identifier =>
-                Ranks.GetValueOrDefault(identifier.Type, new EmptyRanker())
+            return From(request)
+                .Select(identifier => Ranks
+                    .GetValueOrDefault(identifier.Type, new EmptyRanker())
                     .Rank(patient, identifier.Value));
         }
 
         private static IEnumerable<IdentifierExt> From(DiscoveryRequest request)
         {
-            return request.Patient.VerifiedIdentifiers
-                .Select(identifier => new IdentifierExt(IdentifierTypeExts.GetValueOrDefault(identifier.Type,
-                    IdentifierTypeExt.EMPTY), identifier.Value))
-                .Concat(request.Patient.UnverifiedIdentifiers
-                    .Select(identifier => new IdentifierExt(IdentifierTypeExts.GetValueOrDefault(identifier.Type,
-                        IdentifierTypeExt.EMPTY), identifier.Value)))
-                .Append(new IdentifierExt(IdentifierTypeExt.FIRST_NAME, request.Patient.FirstName))
-                .Append(new IdentifierExt(IdentifierTypeExt.LAST_NAME, request.Patient.LastName))
-                .Append(new IdentifierExt(IdentifierTypeExt.GENDER, request.Patient.Gender.ToString()));
+            static IdentifierExt ToExtension(Identifier identifier)
+            {
+                return new IdentifierExt(
+                    IdentifierTypeExts.GetValueOrDefault(identifier.Type, IdentifierTypeExt.Empty),
+                    identifier.Value);
+            }
+
+            var verifiedIdentifiers = request.Patient.VerifiedIdentifiers ?? new List<Identifier>();
+            var unVerifiedIdentifiers = request.Patient.UnverifiedIdentifiers ?? new List<Identifier>();
+            return verifiedIdentifiers
+                .Select(ToExtension)
+                .Concat(unVerifiedIdentifiers.Select(ToExtension))
+                .Append(new IdentifierExt(IdentifierTypeExt.Name, request.Patient.Name))
+                .Append(new IdentifierExt(IdentifierTypeExt.Gender, request.Patient.Gender.ToString()));
         }
 
-        public IEnumerable<PatientEnquiryRepresentation> Do(IEnumerable<Patient> patients,
+        public static IEnumerable<PatientEnquiryRepresentation> Do(IEnumerable<Patient> patients,
             DiscoveryRequest request)
         {
+            var unverifiedExpression =
+                GetUnVerifiedExpression(request.Patient.UnverifiedIdentifiers ?? new List<Identifier>());
+
             return patients
                 .AsEnumerable()
+                .Where(ExpressionFor(request.Patient.Name, request.Patient.YearOfBirth, request.Patient.Gender))
+                .Where(unverifiedExpression.Compile())
                 .Select(patientInfo => RankPatient(patientInfo, request))
                 .GroupBy(rankedPatient => rankedPatient.Rank.Score)
                 .OrderByDescending(rankedPatient => rankedPatient.Key)
                 .Take(1)
                 .SelectMany(group => group.Select(rankedPatient =>
                 {
-                    var isCareContextPresent = !(rankedPatient.Patient.CareContexts == null ||
-                                                 !rankedPatient.Patient.CareContexts.Any());
+                    var careContexts = rankedPatient.Patient.CareContexts ?? new List<CareContextRepresentation>();
 
-                    var careContexts = isCareContextPresent
-                        ? rankedPatient.Patient.CareContexts
-                            .Select(program =>
-                                new CareContextRepresentation(
-                                    program.ReferenceNumber,
-                                    program.Display))
-                            .ToList()
-                        : new List<CareContextRepresentation>();
+                    var careContextRepresentations = careContexts
+                        .Select(program =>
+                            new CareContextRepresentation(
+                                program.ReferenceNumber,
+                                program.Display))
+                        .ToList();
 
                     return new PatientEnquiryRepresentation(
                         rankedPatient.Patient.Identifier,
-                        $"{rankedPatient.Patient.FirstName} {rankedPatient.Patient.LastName}",
-                        careContexts, rankedPatient.Meta.Select(meta => meta.Field));
+                        $"{rankedPatient.Patient.Name}",
+                        careContextRepresentations,
+                        rankedPatient.Meta.Select(meta => meta.Field));
                 }));
         }
 
-        private enum IdentifierTypeExt
+        internal enum IdentifierTypeExt
         {
-            MOBILE,
-            FIRST_NAME,
-            LAST_NAME,
-            MR,
-            GENDER,
-            EMPTY
+            Mobile,
+            Name,
+            Mr,
+            Gender,
+            Empty
         }
 
         private class IdentifierExt
@@ -104,10 +102,5 @@ namespace In.ProjectEKA.HipService.Discovery
             public IdentifierTypeExt Type { get; }
             public string Value { get; }
         }
-    }
-
-    public enum MatchLevel
-    {
-        FullMatch
     }
 }

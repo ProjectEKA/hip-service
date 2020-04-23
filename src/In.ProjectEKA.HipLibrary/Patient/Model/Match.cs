@@ -2,11 +2,11 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
 {
     public enum Match
     {
-        FirstName,
-        LastName,
+        Name,
         Mobile,
         Gender,
         Empty,
-        ConsentManagerUserId
+        ConsentManagerUserId,
+        Mr
     }
 }
