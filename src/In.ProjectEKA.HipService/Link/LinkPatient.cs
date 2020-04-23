@@ -130,10 +130,10 @@ namespace In.ProjectEKA.HipService.Link
             VerifyAndLinkCareContext(
                 LinkConfirmationRequest request)
         {
-            var verifyOtp = await patientVerification.Verify(request.LinkReferenceNumber, request.Token);
-            if (verifyOtp != null)
+            var errorResponse = await patientVerification.Verify(request.LinkReferenceNumber, request.Token);
+            if (errorResponse != null)
             {
-                return (null, new ErrorRepresentation(new Error(ErrorCode.OtpInValid, verifyOtp.Message)));
+                return (null, new ErrorRepresentation(errorResponse.toError()));
             }
 
             var (linkEnquires, exception) =
