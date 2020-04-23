@@ -8,10 +8,6 @@ services:
       - db
       - otp
       - rabbitmq
-  otp:
-    image: "ganesan92/otp-service"
-    depends_on:
-      - db
   db:
     image: "postgres:latest"
     environment:
@@ -26,6 +22,38 @@ services:
     image: "rabbitmq:3"
     ports:
       - "5672:5672"
+  elasticsearch:
+    container_name: elasticsearch
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.2
+    ports:
+      - 9200:9200
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+    environment:
+      - xpack.monitoring.enabled=true
+      - xpack.watcher.enabled=false
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.type=single-node
+    networks:
+      - elastic
+
+    kibana:
+      container_name: kibana
+      image: docker.elastic.co/kibana/kibana:7.6.2
+      ports:
+        - 5601:5601
+      depends_on:
+        - elasticsearch
+      environment:
+        - ELASTICSEARCH_URL=http://localhost:9200
+      networks:
+        - elastic
+
+networks:
+  elastic:
+    driver: bridge
+  
 volumes:
   postgresql:
   postgresql_data:
+  elasticsearch-data:

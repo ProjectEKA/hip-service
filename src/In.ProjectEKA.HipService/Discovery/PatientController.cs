@@ -2,6 +2,7 @@
 {
     using System.Threading.Tasks;
     using HipLibrary.Patient.Model;
+    using Logger;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
