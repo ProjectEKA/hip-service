@@ -44,7 +44,8 @@ namespace In.ProjectEKA.HipService.DataFlow
                 consent.ConsentArtefact.HiTypes,
                 request.TransactionId,
                 request.KeyMaterial,
-                consentManagerId);
+                consentManagerId,
+                consent.ConsentArtefactId);
             var result = await dataFlowRepository.SaveRequest(request.TransactionId, request).ConfigureAwait(false);
             var (response, errorRepresentation) = result.Map(r =>
             {
