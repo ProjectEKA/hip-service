@@ -40,12 +40,14 @@ namespace In.ProjectEKA.HipService.DataFlow
         {
             var url = await centralRegistryClient.GetUrlFor(dataRequest.ConsentManagerId);
             url.MatchSome(async providerUrl => await PostTo(providerUrl,
+                dataRequest.ConsentId,
                 dataRequest.DataPushUrl,
                 dataRequest.CareContexts,
                 new DataResponse(dataRequest.TransactionId, data, keyMaterial)));
         }
 
         private async Task PostTo(string consentMangerUrl,
+            string consentId,
             string dataPushUrl,
             IEnumerable<GrantedContext> careContexts,
             DataResponse dataResponse)
@@ -59,6 +61,7 @@ namespace In.ProjectEKA.HipService.DataFlow
                     .ConfigureAwait(false));
                 token.MatchNone(() => Log.Information("Did not post data to HIU"));
                 GetDataNotificationRequest(consentMangerUrl,
+                    consentId,
                     grantedContexts,
                     dataResponse,
                     HiStatus.DELIVERED,
@@ -69,6 +72,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             {
                 Log.Error(exception, exception.StackTrace);
                 GetDataNotificationRequest(consentMangerUrl,
+                    consentId,
                     grantedContexts,
                     dataResponse,
                     HiStatus.ERRORED,
@@ -78,6 +82,7 @@ namespace In.ProjectEKA.HipService.DataFlow
         }
 
         private void GetDataNotificationRequest(string consentMangerUrl,
+            string consentId,
             IEnumerable<GrantedContext> careContexts,
             DataResponse dataResponse,
             HiStatus hiStatus,
@@ -93,7 +98,8 @@ namespace In.ProjectEKA.HipService.DataFlow
                 new DataNotificationRequest(dataResponse.TransactionId,
                     DateTime.Now,
                     new Notifier(Type.HIP, centralRegistryConfiguration.ClientId),
-                    new StatusNotification(sessionStatus, centralRegistryConfiguration.ClientId, statusResponses)));
+                    new StatusNotification(sessionStatus, centralRegistryConfiguration.ClientId, statusResponses),
+                    consentId));
         }
 
         private static HttpRequestMessage CreateHttpRequest<T>(string dataPushUrl, T content, string token)
