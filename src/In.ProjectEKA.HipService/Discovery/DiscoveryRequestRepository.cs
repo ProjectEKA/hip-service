@@ -20,31 +20,31 @@ namespace In.ProjectEKA.HipService.Discovery
             await discoveryContext.SaveChangesAsync();
         }
 
-        public async Task Delete(string transactionId, string consentManagerUserId)
+        public async Task Delete(string requestId, string consentManagerUserId)
         {
             var discoveryRequest = await discoveryContext.DiscoveryRequest
                 .FirstAsync(request =>
-                    request.TransactionId == transactionId &&
+                    request.RequestId == requestId &&
                     request.ConsentManagerUserId == consentManagerUserId);
             discoveryContext.Remove(discoveryRequest);
             await discoveryContext.SaveChangesAsync();
         }
 
         public Task<bool> RequestExistsFor(
-            string transactionId,
+            string requestId,
             string consentManagerUserId,
             string patientReferenceNumber)
         {
             return discoveryContext.DiscoveryRequest
-                .AnyAsync(request => request.TransactionId == transactionId
+                .AnyAsync(request => request.RequestId == requestId
                                      && request.ConsentManagerUserId == consentManagerUserId
                                      && request.PatientReferenceNumber == patientReferenceNumber);
         }
 
-        public Task<bool> RequestExistsFor(string transactionId)
+        public Task<bool> RequestExistsFor(string requestId)
         {
             return discoveryContext.DiscoveryRequest
-                .AnyAsync(request => request.TransactionId == transactionId);
+                .AnyAsync(request => request.RequestId == requestId);
         }
     }
 }
