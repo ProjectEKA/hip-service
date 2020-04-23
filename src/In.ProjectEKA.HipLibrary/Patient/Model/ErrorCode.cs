@@ -17,6 +17,7 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
         LinkExpired,
         ExpiredKeyPair,
         FailedToGetLinkedCareContexts,
-        DuplicateDiscoveryRequest
+        DuplicateDiscoveryRequest,
+        DuplicateRequestId
     }
 }
