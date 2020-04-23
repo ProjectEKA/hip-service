@@ -24,14 +24,15 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
         [Fact]
         private async void ReturnTransactionId()
         {
+            var consentMangerId = TestBuilder.Faker().Random.String();
             var transactionId = TestBuilder.Faker().Random.Hash();
             var request = TestBuilder.HealthInformationRequest(transactionId);
             var expectedResponse = new HealthInformationTransactionResponse(transactionId);
-            dataFlow.Setup(d => d.HealthInformationRequestFor(request))
+            dataFlow.Setup(d => d.HealthInformationRequestFor(request, consentMangerId))
                 .ReturnsAsync(
                     new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(expectedResponse, null));
 
-            var response = await dataFlowController.HealthInformationRequestFor(request);
+            var response = await dataFlowController.HealthInformationRequestFor(request, consentMangerId);
 
             dataFlow.Verify();
             response.Should()
@@ -46,14 +47,16 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
         [Fact]
         private async void CheckInternalServerErrorOnSaveDataFailure()
         {
+            var consentMangerId = TestBuilder.Faker().Random.String();
             var request = TestBuilder.HealthInformationRequest(TestBuilder.Faker().Random.Hash());
             var expectedError = new ErrorRepresentation(new Error(ErrorCode.ServerInternalError,
                 ErrorMessage.InternalServerError));
-            dataFlow.Setup(d => d.HealthInformationRequestFor(request))
+            dataFlow.Setup(d => d.HealthInformationRequestFor(request, consentMangerId))
                 .ReturnsAsync(
                     new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(null, expectedError));
 
-            var response = await dataFlowController.HealthInformationRequestFor(request) as ObjectResult;
+            var response =
+                await dataFlowController.HealthInformationRequestFor(request, consentMangerId) as ObjectResult;
 
             dataFlow.Verify();
             response.StatusCode

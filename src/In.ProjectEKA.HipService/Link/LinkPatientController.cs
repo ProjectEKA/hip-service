@@ -44,7 +44,7 @@ namespace In.ProjectEKA.HipService.Link
             }
 
             var patientReferenceRequest =
-                new PatientLinkEnquiry(request.TransactionId, patient);
+                new PatientLinkEnquiry(request.TransactionId, request.RequestId, patient);
             var (linkReferenceResponse, error) = await linkPatient.LinkPatients(patientReferenceRequest);
             return error != null ? ResponseFrom(error) : Ok(linkReferenceResponse);
         }
@@ -64,11 +64,11 @@ namespace In.ProjectEKA.HipService.Link
         {
             return errorResponse.Error.Code switch
             {
-                ErrorCode.OtpExpired => (ActionResult) BadRequest(errorResponse),
+                ErrorCode.OtpExpired => (ActionResult) Unauthorized(errorResponse),
                 ErrorCode.MultiplePatientsFound => NotFound(errorResponse),
                 ErrorCode.NoPatientFound => NotFound(errorResponse),
                 ErrorCode.OtpGenerationFailed => StatusCode(StatusCodes.Status500InternalServerError, errorResponse),
-                ErrorCode.OtpInValid => NotFound(errorResponse),
+                ErrorCode.OtpInValid => Unauthorized(errorResponse),
                 ErrorCode.ServerInternalError => StatusCode(StatusCodes.Status500InternalServerError, errorResponse),
                 ErrorCode.CareContextNotFound => NotFound(errorResponse),
                 ErrorCode.NoLinkRequestFound => NotFound(errorResponse),

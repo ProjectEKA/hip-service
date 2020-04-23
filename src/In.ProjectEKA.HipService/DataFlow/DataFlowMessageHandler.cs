@@ -22,12 +22,13 @@ namespace In.ProjectEKA.HipService.DataFlow
         public async Task HandleDataFlowMessage(HipLibrary.Patient.Model.DataRequest dataRequest)
         {
             var sentKeyMaterial = dataRequest.KeyMaterial;
-
             var data = await collect.CollectData(dataRequest);
             var encryptedEntries = data.FlatMap(entries =>
                 dataEntryFactory.Process(entries, sentKeyMaterial, dataRequest.TransactionId));
             encryptedEntries.MatchSome(entries =>
-                dataFlowClient.SendDataToHiu(dataRequest, entries.Entries, entries.KeyMaterial));
+                dataFlowClient.SendDataToHiu(dataRequest,
+                    entries.Entries,
+                    entries.KeyMaterial));
         }
     }
 }

@@ -29,14 +29,13 @@ namespace In.ProjectEKA.TMHHip.Link
             var patient = JsonSerializer.Deserialize<Discovery.Patient>(responseStream);
             return Option.Some(new Patient
             {
-                FirstName = patient.FirstName,
+                Name = $"{patient.FirstName} {patient.LastName}",
                 CareContexts = new List<CareContextRepresentation>
                 {
                     new CareContextRepresentation($"{patient.Identifier}", $"{patient.FirstName}  {patient.LastName}")
                 },
                 Gender = patient.Gender,
                 Identifier = patient.Identifier,
-                LastName = patient.LastName,
                 PhoneNumber = patient.PhoneNumber
             });
         }

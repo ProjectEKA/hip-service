@@ -18,7 +18,7 @@ tags:
   - name: consents
 
 paths:
-  /patients/discover:
+  /patients/discover/carecontexts:
     post:
       tags:
         - discovery
@@ -340,7 +340,7 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-  '/consent/':
+  /consent/notification:
     post:
       tags:
         - consents
@@ -394,7 +394,7 @@ components:
     PatientDiscoveryRequest:
       type: object
       properties:
-        transactionId:
+        requestId:
           type: string
           format: uuid
         patient:
@@ -418,18 +418,15 @@ components:
               xml:
                 name: unverifiedIdentifiers
                 wrapped: true
-            firstName:
+            name:
               type: string
-              example: "chandler"
-            lastName:
-              type: string
-              example: "bing"
+              example: "chandler bing"
             gender:
               type: string
               enum: [M, F, O]
-            dateOfBirth:
-              type: string
-              format: date
+            yearOfBirth:
+              type: integer
+              example: 2000
       xml:
         name: PatientDiscoveryRequest
 
@@ -457,9 +454,6 @@ components:
     PatientDiscoveryResponse:
       type: object
       properties:
-        transactionId:
-          type: string
-          format: uuid
         patient:
           $ref: '#/components/schemas/PatientRepresentation'
       xml:
@@ -507,7 +501,10 @@ components:
     PatientLinkReferenceRequest:
       type: object
       properties:
-        transactionId:
+        requestId:
+          type: string
+          format: uuid
+        transcationId:
           type: string
           format: uuid
         patient:
@@ -598,17 +595,17 @@ components:
       required:
         - transactionId
         - consent
-        - callBackUrl
+        - dataPushUrl
         - keyMaterial
-        - hiDataRange
+        - dateRange
       properties:
         transactionId:
           $ref: '#/components/schemas/UuidSchema'
         consent:
           $ref: '#/components/schemas/consent'
-        hiDataRange:
-          $ref: '#/components/schemas/hiDataRange'
-        callBackUrl:
+        dateRange:
+          $ref: '#/components/schemas/dateRange'
+        dataPushUrl:
           type: string
         keyMaterial:
           $ref: '#/components/schemas/keyMaterial'
@@ -616,9 +613,9 @@ components:
     HealthInformationRequestResponse:
       type: object
       required:
-        - transactionId
+        - acknowledgementId
       properties:
-        transactionId:
+        acknowledgementId:
           type: string
     HealthInformationLinkResponse:
       type: object
@@ -643,7 +640,7 @@ components:
         digitalSignature:
           type: string
 
-    hiDataRange:
+    dateRange:
       type: object
       required:
         - from
@@ -663,6 +660,9 @@ components:
         consentDetail:
           type: object
           properties:
+            schemaVersion:
+              type: string
+              format: string
             consentId:
               type: string
               format: uuid
@@ -693,6 +693,12 @@ components:
                 - $ref: '#/components/schemas/OrganizationRepresentation'
                 - xml:
                     name: hip
+            consentManager:
+              type: object
+              allOf:
+                - $ref: '#/components/schemas/OrganizationReference'
+                - xml:
+                    name: consentManager
             hiTypes:
               type: array
               items:
@@ -758,7 +764,7 @@ components:
             to:
               type: string
               format: date-time
-        dataExpiryAt:
+        dataEraseAt:
           type: string
           format: date-time
         frequency:
@@ -788,6 +794,17 @@ components:
             attribute: true
       xml:
         name: OrganizationResponse
+    OrganizationReference:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+          xml:
+            attribute: true
+      xml:
+        name: OrganizationReference
     keyMaterial:
       type: object
       required:

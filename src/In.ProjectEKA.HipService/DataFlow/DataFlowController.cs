@@ -21,10 +21,11 @@ namespace In.ProjectEKA.HipService.DataFlow
         [HttpPost]
         [Route("health-information/request")]
         public async Task<ActionResult> HealthInformationRequestFor(
-            [FromBody] HealthInformationRequest healthInformationRequest)
+            [FromBody] HealthInformationRequest healthInformationRequest,
+            [FromHeader(Name = "X-ConsentManagerId")] string consentManagerId)
         {
             var (healthInformationResponse, error) = await dataFlow
-                .HealthInformationRequestFor(healthInformationRequest);
+                .HealthInformationRequestFor(healthInformationRequest, consentManagerId);
             return error != null ? ServerResponseFor(error) : Ok(healthInformationResponse);
         }
 

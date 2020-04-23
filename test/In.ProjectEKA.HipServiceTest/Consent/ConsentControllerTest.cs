@@ -17,15 +17,19 @@ namespace In.ProjectEKA.HipServiceTest.Consent
         async void ShouldStoreConsentArtefact()
         {
             var consentController = new ConsentController(consentRepository.Object);
+            const string consentMangerId = "consentMangerId";
 
             var consentArtefactRequest = TestBuilder.ConsentArtefactRequest();
             consentRepository.Setup(x => x.AddAsync(
                 new Consent(consentArtefactRequest.ConsentDetail.ConsentId,
                     consentArtefactRequest.ConsentDetail,
                     consentArtefactRequest.Signature,
-                    ConsentStatus.GRANTED)
+                    ConsentStatus.GRANTED,
+                    consentMangerId
+                )
             ));
-            var okObjectResult = await consentController.StoreConsent(consentArtefactRequest) as OkResult;
+            var okObjectResult =
+                await consentController.StoreConsent(consentMangerId, consentArtefactRequest) as OkResult;
 
             consentRepository.Verify();
             okObjectResult.StatusCode.Equals(StatusCodes.Status200OK);
@@ -35,21 +39,24 @@ namespace In.ProjectEKA.HipServiceTest.Consent
         async void ShouldUpdateConsentArtefact()
         {
             var consentController = new ConsentController(consentRepository.Object);
-
+            const string consentMangerId = "consentMangerId";
             var consentArtefactRequest = TestBuilder.ConsentArtefactRequest();
             consentRepository.Setup(x => x.AddAsync(
                 new Consent(consentArtefactRequest.ConsentDetail.ConsentId,
                     consentArtefactRequest.ConsentDetail,
                     consentArtefactRequest.Signature,
-                    ConsentStatus.GRANTED)
+                    ConsentStatus.GRANTED,
+                    consentMangerId)
             ));
             consentRepository.Setup(x => x.UpdateAsync(
                 new Consent(consentArtefactRequest.ConsentDetail.ConsentId,
                     consentArtefactRequest.ConsentDetail,
                     consentArtefactRequest.Signature,
-                    ConsentStatus.REVOKED)
+                    ConsentStatus.REVOKED,
+                    consentMangerId)
             ));
-            var okObjectResult = await consentController.StoreConsent(consentArtefactRequest) as OkResult;
+            var okObjectResult =
+                await consentController.StoreConsent(consentMangerId, consentArtefactRequest) as OkResult;
 
             consentRepository.Verify();
             okObjectResult.StatusCode.Equals(StatusCodes.Status200OK);
