@@ -32,7 +32,6 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
             var careContextReferences = results.Keys.ToList();
             foreach (var careContextReference in careContextReferences)
             {
-                var som = results.GetOrDefault(careContextReference);
                 Log.Information($"Returning file: {results.GetOrDefault(careContextReference)}");
                 bundles.Add(careContextReference,await FileReader.ReadJsonAsync<Bundle>(results.GetOrDefault(careContextReference).ToString()));
             }

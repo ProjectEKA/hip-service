@@ -84,7 +84,7 @@ namespace In.ProjectEKA.HipService.DataFlow
         {
             var linkId = Guid.NewGuid().ToString();
             var token = Guid.NewGuid().ToString();
-            var linkEntry = LinkEntry(linkId, token, transactionId,careContextReference);
+            var linkEntry = LinkEntry(linkId, token,careContextReference);
             StoreComponentEntry(linkId, componentEntry, token);
             return linkEntry;
         }
@@ -94,7 +94,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             return new Entry(content, FhirMediaType, "MD5", link,careContextReference);
         }
 
-        private Entry LinkEntry(string linkId, string token, string transactionId,string careContextReference)
+        private Entry LinkEntry(string linkId, string token,string careContextReference)
         {
             var link = $"{hipConfiguration.Value.Url}/health-information/{linkId}?token={token}";
             return EntryWith(null, link,careContextReference);
