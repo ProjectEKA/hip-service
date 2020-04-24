@@ -1,3 +1,5 @@
+using Hl7.Fhir.Utility;
+
 namespace In.ProjectEKA.DefaultHip.DataFlow
 {
     using System;
@@ -25,12 +27,14 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
 
         public async Task<Option<Entries>> CollectData(DataRequest dataRequest)
         {
-            var bundles = new List<Bundle>();
+            var bundles = new Dictionary<string, Bundle>();
             var results = FindPatientData(dataRequest);
-            foreach (var item in results)
+            var careContextReferences = results.Keys.ToList();
+            foreach (var careContextReference in careContextReferences)
             {
-                Log.Information($"Returning file: {item}");
-                bundles.Add(await FileReader.ReadJsonAsync<Bundle>(item));
+                var som = results.GetOrDefault(careContextReference);
+                Log.Information($"Returning file: {results.GetOrDefault(careContextReference)}");
+                bundles.Add(careContextReference,await FileReader.ReadJsonAsync<Bundle>(results.GetOrDefault(careContextReference).ToString()));
             }
 
             var entries = new Entries(bundles);
@@ -64,7 +68,7 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
             return aDateTime;
         }
 
-        private IEnumerable<string> FindPatientData(DataRequest request)
+        private Dictionary<string, List<string>> FindPatientData(DataRequest request)
         {
             try
             {
@@ -72,8 +76,9 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
                 var jsonData = File.ReadAllText(careContextMapFile);
                 var patientDataMap = JsonConvert
                     .DeserializeObject<Dictionary<string, Dictionary<string, List<CareContextRecord>>>>(jsonData);
+                
+                var careContextsAndListOfDataFiles = new Dictionary<string, List<string>>();
 
-                var listOfDataFiles = new List<string>();
                 foreach (var grantedContext in request.CareContexts)
                 {
                     var refData = patientDataMap[grantedContext.PatientReference];
@@ -90,20 +95,18 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
                             var dataFiles = ccRecord.Data.GetValueOrDefault(hiTypeStr) ?? new List<string>();
                             if (dataFiles.Count > 0)
                             {
-                                listOfDataFiles.AddRange(dataFiles);
+                               careContextsAndListOfDataFiles.Add(grantedContext.CareContextReference, dataFiles);
                             }
                         }
                     }
                 }
-
-                return listOfDataFiles;
+                return careContextsAndListOfDataFiles;
             }
             catch (Exception e)
             {
                 Log.Error("Error Occured while collecting data. {Error}", e);
             }
-
-            return new List<string>();
+            return new Dictionary<string, List<string>>();
         }
 
         private static void LogDataRequest(DataRequest request)

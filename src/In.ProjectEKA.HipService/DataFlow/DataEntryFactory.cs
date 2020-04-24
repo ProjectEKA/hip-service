@@ -1,3 +1,5 @@
+using Hl7.Fhir.Utility;
+
 namespace In.ProjectEKA.HipService.DataFlow
 {
     using System;
@@ -47,12 +49,14 @@ namespace In.ProjectEKA.HipService.DataFlow
             var randomKey = EncryptorHelper.GenerateRandomKey();
 
             var processedEntries = new List<Entry>();
-            foreach (var bundle in entries.Bundles)
+            var bundles = entries.Bundles;
+            var careContextReferences = bundles.Keys.ToList();
+            foreach (var careContextReference  in careContextReferences)
             {
                 var encryptData = encryptor.EncryptData(
                     dataRequestKeyMaterial,
                     keyPair,
-                    Serializer.SerializeToString(bundle),
+                    Serializer.SerializeToString(bundles.GetOrDefault(careContextReference)),
                     randomKey);
                 if (!encryptData.HasValue)
                 {
@@ -62,8 +66,8 @@ namespace In.ProjectEKA.HipService.DataFlow
                 encryptData.MatchSome(content =>
                 {
                     var entry = IsLinkable(content)
-                        ? StoreComponentAndGetLink(ComponentEntry(content), transactionId)
-                        : ComponentEntry(content);
+                        ? StoreComponentAndGetLink(ComponentEntry(content,careContextReference), transactionId,careContextReference)
+                        : ComponentEntry(content,careContextReference);
                     processedEntries.Add(entry);
                 });
             }
@@ -76,29 +80,29 @@ namespace In.ProjectEKA.HipService.DataFlow
             return Option.Some(new EncryptedEntries(processedEntries.AsEnumerable(), keyMaterial));
         }
 
-        private Entry StoreComponentAndGetLink(Entry componentEntry, string transactionId)
+        private Entry StoreComponentAndGetLink(Entry componentEntry, string transactionId,string careContextReference)
         {
             var linkId = Guid.NewGuid().ToString();
             var token = Guid.NewGuid().ToString();
-            var linkEntry = LinkEntry(linkId, token, transactionId);
+            var linkEntry = LinkEntry(linkId, token, transactionId,careContextReference);
             StoreComponentEntry(linkId, componentEntry, token);
             return linkEntry;
         }
 
-        private static Entry EntryWith(string content, string link)
+        private static Entry EntryWith(string content, string link,string careContextReference)
         {
-            return new Entry(content, FhirMediaType, "MD5", link);
+            return new Entry(content, FhirMediaType, "MD5", link,careContextReference);
         }
 
-        private Entry LinkEntry(string linkId, string token, string transactionId)
+        private Entry LinkEntry(string linkId, string token, string transactionId,string careContextReference)
         {
             var link = $"{hipConfiguration.Value.Url}/health-information/{linkId}?token={token}";
-            return EntryWith(null, link);
+            return EntryWith(null, link,careContextReference);
         }
 
-        private static Entry ComponentEntry(string serializedBundle)
+        private static Entry ComponentEntry(string serializedBundle, string careContextReference)
         {
-            return EntryWith(serializedBundle, null);
+            return EntryWith(serializedBundle, null,careContextReference);
         }
 
         private bool IsLinkable(string serializedBundle)
