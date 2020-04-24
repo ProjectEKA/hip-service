@@ -66,7 +66,7 @@ namespace In.ProjectEKA.HipService.DataFlow
                 encryptData.MatchSome(content =>
                 {
                     var entry = IsLinkable(content)
-                        ? StoreComponentAndGetLink(ComponentEntry(content,careContextReference), transactionId,careContextReference)
+                        ? StoreComponentAndGetLink(ComponentEntry(content,careContextReference),careContextReference)
                         : ComponentEntry(content,careContextReference);
                     processedEntries.Add(entry);
                 });
@@ -80,7 +80,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             return Option.Some(new EncryptedEntries(processedEntries.AsEnumerable(), keyMaterial));
         }
 
-        private Entry StoreComponentAndGetLink(Entry componentEntry, string transactionId,string careContextReference)
+        private Entry StoreComponentAndGetLink(Entry componentEntry,string careContextReference)
         {
             var linkId = Guid.NewGuid().ToString();
             var token = Guid.NewGuid().ToString();

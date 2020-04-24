@@ -33,7 +33,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                 serviceScopeFactory.Object,
                 dataFlowConfiguration,
                 hipConfiguration, encryptor.Object);
-            var dataEntries = new Entries(new Dictionary<string,Bundle>(){{"careContextReference",new Bundle()}});
+            var dataEntries = new Entries(new Dictionary<string,Bundle>{{"careContextReference",new Bundle()}});
             
             var expectedEntries = new List<Entry>
             {
