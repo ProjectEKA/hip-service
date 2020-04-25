@@ -6,6 +6,7 @@ namespace In.ProjectEKA.HipService.Link
     using System.Linq;
     using System.Threading.Tasks;
     using Database;
+    using Database.Migrations;
     using Logger;
     using Microsoft.EntityFrameworkCore;
     using Model;
@@ -101,5 +102,55 @@ namespace In.ProjectEKA.HipService.Link
                 return new Tuple<IEnumerable<LinkedAccounts>, Exception>(null, exception);
             }
         }
+
+        public async Task<Option<InitiatedLinkRequest>> Save(string requestId, string transactionId, string linkReferenceNumber)
+        {
+            try
+            {
+                var initiatedLinkRequest = new InitiatedLinkRequest(requestId,
+                    transactionId,
+                    linkReferenceNumber,
+                    false,
+                    DateTime.Now.ToUniversalTime().ToString(Constants.DateTimeFormat));
+                linkPatientContext.InitiatedLinkRequest.Add(initiatedLinkRequest);
+                await linkPatientContext.SaveChangesAsync();
+                return Option.Some(initiatedLinkRequest);
+            }
+            catch (Exception exception)
+            {
+                Log.Fatal(exception, exception.StackTrace);
+                return Option.None<InitiatedLinkRequest>();
+            }
+        }
+
+        public async Task<Option<IEnumerable<InitiatedLinkRequest>>> Get(string linkReferenceNumber)
+        {
+            try
+            {
+                var initiatedLinkRequest = await linkPatientContext.InitiatedLinkRequest
+                    .Where(request => request.LinkReferenceNumber.Equals(linkReferenceNumber)).ToListAsync();
+                return Option.Some(initiatedLinkRequest.AsEnumerable());
+            }
+            catch (Exception exception)
+            {
+                Log.Fatal(exception, exception.StackTrace);
+                return Option.None<IEnumerable<InitiatedLinkRequest>>();
+            }
+        }
+
+        public async Task<bool> Update(InitiatedLinkRequest linkRequest)
+        {
+            try
+            {
+                linkPatientContext.InitiatedLinkRequest.Update(linkRequest);
+                return true;
+            }
+            catch (Exception exception)
+            {
+                Log.Fatal(exception, exception.StackTrace);
+                return false;
+            }
+        }
+
     }
 }

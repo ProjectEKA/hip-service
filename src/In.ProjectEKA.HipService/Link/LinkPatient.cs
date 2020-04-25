@@ -53,6 +53,13 @@ namespace In.ProjectEKA.HipService.Link
             var linkRefNumber = referenceNumberGenerator.NewGuid();
             using (var scope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
+                if (!await SaveInitiatedLinkRequest(request.RequestId, request.TransactionId, linkRefNumber)
+                    .ConfigureAwait(false))
+                {
+                    return (null,
+                        new ErrorRepresentation(new Error(ErrorCode.DuplicateRequestId, ErrorMessage.DuplicateRequestId))); 
+                }
+
                 var careContextReferenceNumbers = request.Patient.CareContexts
                     .Select(context => context.ReferenceNumber)
                     .ToArray();
@@ -82,6 +89,7 @@ namespace In.ProjectEKA.HipService.Link
 
                 await discoveryRequestRepository.Delete(request.TransactionId, request.Patient.ConsentManagerUserId)
                     .ConfigureAwait(false);
+
                 scope.Complete();
             }
 
@@ -122,10 +130,10 @@ namespace In.ProjectEKA.HipService.Link
             VerifyAndLinkCareContext(
                 LinkConfirmationRequest request)
         {
-            var verifyOtp = await patientVerification.Verify(request.LinkReferenceNumber, request.Token);
-            if (verifyOtp != null)
+            var errorResponse = await patientVerification.Verify(request.LinkReferenceNumber, request.Token);
+            if (errorResponse != null)
             {
-                return (null, new ErrorRepresentation(new Error(ErrorCode.OtpInValid, verifyOtp.Message)));
+                return (null, new ErrorRepresentation(errorResponse.toError()));
             }
 
             var (linkEnquires, exception) =
@@ -140,6 +148,16 @@ namespace In.ProjectEKA.HipService.Link
             return await patientRepository.PatientWith(linkEnquires.PatientReferenceNumber)
                 .Map( async patient =>
                 {
+                    var savedLinkRequests = await linkPatientRepository.Get(request.LinkReferenceNumber);
+                    savedLinkRequests.MatchSome(linkRequests =>
+                    {
+                        foreach (var linkRequest in linkRequests)
+                        {
+                            linkRequest.Status = true;
+                            linkPatientRepository.Update(linkRequest);
+                        }
+                    });
+
                     var representations = linkEnquires.CareContexts
                         .Where(careContext =>
                             patient.CareContexts.Any(info => info.ReferenceNumber == careContext.CareContextNumber))
@@ -169,6 +187,13 @@ namespace In.ProjectEKA.HipService.Link
                     linkEnquires.CareContexts.Select(context => context.CareContextNumber).ToList())
                 .ConfigureAwait(false);
             return linkedAccount.HasValue;
+        }
+
+        private async Task<bool> SaveInitiatedLinkRequest(string requestId, string transactionId, string linkReferenceNumber)
+        {
+            var savedLinkRequest = await linkPatientRepository.Save(requestId, transactionId, linkReferenceNumber)
+                .ConfigureAwait(false);
+            return savedLinkRequest.HasValue;
         }
     }
 }

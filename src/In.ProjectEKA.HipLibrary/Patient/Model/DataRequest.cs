@@ -11,7 +11,8 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
             IEnumerable<HiType> hiType,
             string transactionId,
             KeyMaterial keyMaterial,
-            string consentManagerId)
+            string consentManagerId,
+            string consentId)
         {
             CareContexts = careContexts;
             DateRange = dateRange;
@@ -20,6 +21,7 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
             TransactionId = transactionId;
             KeyMaterial = keyMaterial;
             ConsentManagerId = consentManagerId;
+            ConsentId = consentId;
         }
 
         public IEnumerable<GrantedContext> CareContexts { get; }
@@ -29,6 +31,7 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
         public string TransactionId { get; }
         public KeyMaterial KeyMaterial { get; }
         public string ConsentManagerId { get; }
+        public string ConsentId { get; }
 
 
         public override string ToString()

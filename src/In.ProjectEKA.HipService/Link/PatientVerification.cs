@@ -71,7 +71,7 @@ namespace In.ProjectEKA.HipService.Link
             catch (Exception exception)
             {
                 Log.Fatal(exception, exception.StackTrace);
-                return Option.Some(new OtpMessage(ErrorCode.ServerInternalError.ToString(),
+                return Option.Some(new OtpMessage(ResponseType.InternalServerError,
                     ErrorMessage.OtpServiceError));
             }
         }

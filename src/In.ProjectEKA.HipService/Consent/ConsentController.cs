@@ -7,7 +7,7 @@ namespace In.ProjectEKA.HipService.Consent
     using Model;
 
     [Authorize]
-    [Route("consent")]
+    [Route("consent/notification")]
     public class ConsentController : Controller
     {
         private readonly IConsentRepository consentRepository;

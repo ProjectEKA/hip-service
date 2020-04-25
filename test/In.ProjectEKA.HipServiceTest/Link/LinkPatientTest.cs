@@ -7,6 +7,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
     using Optional;
     using Xunit;
     using System.Linq;
+    using Bogus;
     using Builder;
     using HipLibrary.Patient;
     using HipLibrary.Patient.Model;
@@ -65,17 +66,26 @@ namespace In.ProjectEKA.HipServiceTest.Link
             IEnumerable<CareContextEnquiry> careContexts = new[] {new CareContextEnquiry(programRefNo)};
             var patient = new LinkEnquiry(TestBuilders.Faker().Random.Hash(),
                 TestBuilders.Faker().Random.Hash(), testPatient.Identifier, careContexts);
-            var patientReferenceRequest = new PatientLinkEnquiry(TestBuilders.Faker().Random.Hash(), patient);
+            var patientReferenceRequest = new PatientLinkEnquiry(TestBuilders.Faker().Random.Hash(), 
+                TestBuilders.Faker().Random.Hash(), patient);
             guidGenerator.Setup(x => x.NewGuid()).Returns(linkReferenceNumber);
             patientVerification.Setup(x => x.SendTokenFor(new Session(linkReferenceNumber
                     , new Communication(CommunicationMode.MOBILE, testPatient.PhoneNumber))))
                 .ReturnsAsync((OtpMessage) null);
-
+            var initiatedLinkRequest = new InitiatedLinkRequest(patientReferenceRequest.RequestId,
+                                                                patientReferenceRequest.TransactionId,
+                                                                linkReferenceNumber,
+                                                                false,
+                                                                It.IsAny<string>());
             linkRepository.Setup(x => x.SaveRequestWith(linkReferenceNumber,
                     patientReferenceRequest.Patient.ConsentManagerId,
                     patientReferenceRequest.Patient.ConsentManagerUserId,
                     patientReferenceRequest.Patient.ReferenceNumber, new[] {programRefNo}))
                 .ReturnsAsync(new Tuple<LinkEnquires, Exception>(null, null));
+            linkRepository.Setup(x => x.Save(patientReferenceRequest.RequestId,
+                                                                         patientReferenceRequest.TransactionId,
+                                                                         linkReferenceNumber))
+                .ReturnsAsync(Option.Some(initiatedLinkRequest));
 
             patientRepository.Setup(x => x.PatientWith(testPatient.Identifier))
                 .Returns(Option.Some(testPatient));
@@ -100,8 +110,8 @@ namespace In.ProjectEKA.HipServiceTest.Link
             IEnumerable<CareContextEnquiry> careContexts = new[] {new CareContextEnquiry("129")};
             var patient = new LinkEnquiry(TestBuilders.Faker().Random.Hash(),
                 TestBuilders.Faker().Random.Hash(), "1234", careContexts);
-            var patientReferenceRequest = new PatientLinkEnquiry(TestBuilders.Faker().Random.Hash(), patient);
-
+            var patientReferenceRequest = new PatientLinkEnquiry(TestBuilders.Faker().Random.Hash(), 
+                TestBuilders.Faker().Random.Hash(), patient);
             var expectedError =
                 new ErrorRepresentation(new Error(ErrorCode.NoPatientFound, ErrorMessage.NoPatientFound));
             var (_, error) = await linkPatient.LinkPatients(patientReferenceRequest);
@@ -115,7 +125,8 @@ namespace In.ProjectEKA.HipServiceTest.Link
             IEnumerable<CareContextEnquiry> careContexts = new[] {new CareContextEnquiry("1234")};
             var patient = new LinkEnquiry(TestBuilders.Faker().Random.Hash(),
                 TestBuilders.Faker().Random.Hash(), "4", careContexts);
-            var patientReferenceRequest = new PatientLinkEnquiry(TestBuilders.Faker().Random.Hash(), patient);
+            var patientReferenceRequest = new PatientLinkEnquiry(TestBuilders.Faker().Random.Hash(), 
+                TestBuilders.Faker().Random.Hash(), patient);
             patientRepository.Setup(e => e.PatientWith(testPatient.Identifier))
                 .Returns(Option.Some(testPatient));
             var expectedError = new ErrorRepresentation(
@@ -133,10 +144,28 @@ namespace In.ProjectEKA.HipServiceTest.Link
         {
             var sessionId = TestBuilders.Faker().Random.Hash();
             var otpToken = TestBuilders.Faker().Random.Number().ToString();
-            var testOtpMessage = new OtpMessage("1001", "Invalid Otp");
+            var testOtpMessage = new OtpMessage(ResponseType.OtpInvalid, "Invalid Otp");
             var patientLinkRequest = new LinkConfirmationRequest(otpToken, sessionId);
             var expectedErrorResponse =
                 new ErrorRepresentation(new Error(ErrorCode.OtpInValid, testOtpMessage.Message));
+            patientVerification.Setup(e => e.Verify(sessionId, otpToken))
+                .ReturnsAsync(testOtpMessage);
+
+            var (_, error) = await linkPatient.VerifyAndLinkCareContext(patientLinkRequest);
+
+            patientVerification.Verify();
+            error.Should().BeEquivalentTo(expectedErrorResponse);
+        }
+
+        [Fact]
+        private async void ReturnOtpExpired()
+        {
+            var sessionId = TestBuilders.Faker().Random.Hash();
+            var otpToken = TestBuilders.Faker().Random.Number().ToString();
+            var testOtpMessage = new OtpMessage(ResponseType.OtpExpired, "Otp Expired");
+            var patientLinkRequest = new LinkConfirmationRequest(otpToken, sessionId);
+            var expectedErrorResponse =
+                new ErrorRepresentation(new Error(ErrorCode.OtpExpired, testOtpMessage.Message));
             patientVerification.Setup(e => e.Verify(sessionId, otpToken))
                 .ReturnsAsync(testOtpMessage);
 
@@ -204,6 +233,42 @@ namespace In.ProjectEKA.HipServiceTest.Link
             guidGenerator.Verify();
             response.Patient.ReferenceNumber.Should().BeEquivalentTo(expectedLinkResponse.Patient.ReferenceNumber);
             response.Patient.Display.Should().BeEquivalentTo(expectedLinkResponse.Patient.Display);
+        }
+
+        [Fact]
+        private async void ErrorOnDuplicateRequestId()
+        {
+            const string linkReferenceNumber = "linkreference";
+            const string programRefNo = "129";
+            var expectedErrorResponse =
+                new ErrorRepresentation(new Error(ErrorCode.DuplicateRequestId, ErrorMessage.DuplicateRequestId));
+            IEnumerable<CareContextEnquiry> careContexts = new[] {new CareContextEnquiry(programRefNo)};
+            var patient = new LinkEnquiry(TestBuilders.Faker().Random.Hash(),
+                TestBuilders.Faker().Random.Hash(), testPatient.Identifier, careContexts);
+            var patientReferenceRequest = new PatientLinkEnquiry(TestBuilders.Faker().Random.Hash(), 
+                TestBuilders.Faker().Random.Hash(), patient);
+            guidGenerator.Setup(x => x.NewGuid()).Returns(linkReferenceNumber);
+            patientVerification.Setup(x => x.SendTokenFor(new Session(linkReferenceNumber
+                    , new Communication(CommunicationMode.MOBILE, testPatient.PhoneNumber))))
+                .ReturnsAsync((OtpMessage) null);
+            linkRepository.Setup(x => x.SaveRequestWith(linkReferenceNumber,
+                    patientReferenceRequest.Patient.ConsentManagerId,
+                    patientReferenceRequest.Patient.ConsentManagerUserId,
+                    patientReferenceRequest.Patient.ReferenceNumber, new[] {programRefNo}))
+                .ReturnsAsync(new Tuple<LinkEnquires, Exception>(null, null));
+            linkRepository.Setup(x => x.Save(patientReferenceRequest.RequestId,
+                                                                         patientReferenceRequest.TransactionId,
+                                                                         linkReferenceNumber))
+                .ReturnsAsync(Option.None<InitiatedLinkRequest>());
+            patientRepository.Setup(x => x.PatientWith(testPatient.Identifier))
+                .Returns(Option.Some(testPatient));
+            var (_, errorRepresentation) = await linkPatient.LinkPatients(patientReferenceRequest);
+
+            patientVerification.Verify();
+            linkRepository.Verify();
+            guidGenerator.Verify();
+
+            errorRepresentation.Should().BeEquivalentTo(expectedErrorResponse);
         }
     }
 }

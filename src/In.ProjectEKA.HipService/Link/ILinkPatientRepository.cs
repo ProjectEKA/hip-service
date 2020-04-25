@@ -3,6 +3,7 @@ namespace In.ProjectEKA.HipService.Link
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
+    using Database.Migrations;
     using Model;
     using Optional;
 
@@ -24,5 +25,11 @@ namespace In.ProjectEKA.HipService.Link
             IEnumerable<string> careContextReferenceNumbers);
 
         Task<Tuple<IEnumerable<LinkedAccounts>, Exception>> GetLinkedCareContexts(string consentManagerUserId);
+
+        Task<Option<InitiatedLinkRequest>> Save(string requestId, string transactionId, string linkReferenceNumber);
+
+        Task<Option<IEnumerable<InitiatedLinkRequest>>> Get(string linkReferenceNumber);
+
+        Task<bool> Update(InitiatedLinkRequest linkRequest);
     }
 }
