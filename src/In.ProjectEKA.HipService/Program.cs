@@ -2,6 +2,7 @@
 {
     using System;
     using System.Reflection;
+    using Elastic.CommonSchema.Serilog;
     using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
@@ -45,14 +46,14 @@
                 .Enrich.WithExceptionDetails()
                 .Enrich.WithMachineName()
                 .WriteTo.Debug()
-                .WriteTo.Console()
+                .WriteTo.Console(new EcsTextFormatter())
                 .WriteTo.Elasticsearch(ConfigureElasticSink(
-                    new ConfigurationBuilder()
-                                    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                                    .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json",
+                            new ConfigurationBuilder()
+                                .AddJsonFile("appsettings.json", false, true)
+                                .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json",
                                         true)
-                                    .Build(),
-                    Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")))
+                                .Build(),
+                            Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")))
                 .Enrich.WithProperty("Environment", Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"))
                 .ReadFrom.Configuration(host.Services.GetRequiredService<IConfiguration>())
                 .CreateLogger();
