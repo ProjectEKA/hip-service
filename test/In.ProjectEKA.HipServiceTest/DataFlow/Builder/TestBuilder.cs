@@ -70,7 +70,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
                 SessionStatus.TRANSFERRED,
                 "10000005",
                 new List<StatusResponse>());
-            return new DataNotificationRequest(transactionId, DateTime.Now, notifier, statusNotification, consentId);
+            return new DataNotificationRequest(transactionId, DateTime.Now, notifier, statusNotification, consentId, Guid.NewGuid());
         }
 
         internal static Consent Consent()

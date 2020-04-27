@@ -99,7 +99,8 @@ namespace In.ProjectEKA.HipService.DataFlow
                     DateTime.Now,
                     new Notifier(Type.HIP, centralRegistryConfiguration.ClientId),
                     new StatusNotification(sessionStatus, centralRegistryConfiguration.ClientId, statusResponses),
-                    consentId));
+                    consentId,
+                    Guid.NewGuid()));
         }
 
         private static HttpRequestMessage CreateHttpRequest<T>(string dataPushUrl, T content, string token)
