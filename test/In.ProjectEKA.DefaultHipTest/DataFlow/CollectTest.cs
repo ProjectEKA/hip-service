@@ -43,7 +43,6 @@ namespace In.ProjectEKA.DefaultHipTest.DataFlow
                 consentId);
 
             var entries = await collect.CollectData(dataRequest);
-            // var some = entries.ValueOrDefault();
             var count = 0;
             var bundles = entries.ValueOrDefault().Bundles;
             var bundleKeys = bundles.Keys.ToList();
