@@ -27,18 +27,16 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
 
         public async Task<Option<Entries>> CollectData(DataRequest dataRequest)
         {
-            var bundles = new Dictionary<string, List<Bundle>>();
+            var bundles = new List<CareBundle>();
             var patientData = FindPatientData(dataRequest);
             var careContextReferences = patientData.Keys.ToList();
             foreach (var careContextReference in careContextReferences)
             {
-                var bundlesForThisCareContextReference = new List<Bundle>();
                 foreach (var result in patientData.GetOrDefault(careContextReference))
                 {
                     Log.Information($"Returning file: {result}");
-                    bundlesForThisCareContextReference.Add(await FileReader.ReadJsonAsync<Bundle>(result));
+                    bundles.Add(new CareBundle(careContextReference, await FileReader.ReadJsonAsync<Bundle>(result)));
                 }
-                bundles.Add(careContextReference,bundlesForThisCareContextReference);
             }
 
             var entries = new Entries(bundles);
@@ -80,7 +78,7 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
                 var jsonData = File.ReadAllText(careContextMapFile);
                 var patientDataMap = JsonConvert
                     .DeserializeObject<Dictionary<string, Dictionary<string, List<CareContextRecord>>>>(jsonData);
-                
+
                 var careContextsAndListOfDataFiles = new Dictionary<string, List<string>>();
 
                 foreach (var grantedContext in request.CareContexts)
@@ -104,6 +102,7 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
                             }
                         }
                     }
+
                     careContextsAndListOfDataFiles.Add(grantedContext.CareContextReference, listOfDataFiles);
                 }
 

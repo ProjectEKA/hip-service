@@ -24,13 +24,15 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                 new DataFlowMessageHandler(collect.Object, dataFlowClient.Object, dataEntryFactory.Object);
             var transactionId = TestBuilder.Faker().Random.Uuid().ToString();
             var dataRequest = TestBuilder.DataRequest(transactionId);
-            var entries = new Entries(new Dictionary<string, List<Bundle>>{{"careContextReference",new List<Bundle>()}});
+            var careBundles = new List<CareBundle>();
+            careBundles.Add(new CareBundle("careContextReference", new Bundle()));
+            var entries = new Entries(careBundles);
             var data = Option.Some(entries);
             var content = TestBuilder.Faker().Random.String();
             var checksum = TestBuilder.Faker().Random.Hash();
             var entriesList = new List<Entry>
             {
-                new Entry(content, MediaTypeNames.Application.Json, checksum, null,"careContextReference")
+                new Entry(content, MediaTypeNames.Application.Json, checksum, null, "careContextReference")
             };
             var requestKeyMaterial = TestBuilder.KeyMaterialLib();
             collect.Setup(c => c.CollectData(dataRequest)).ReturnsAsync(data);

@@ -49,31 +49,24 @@ namespace In.ProjectEKA.HipService.DataFlow
             var randomKey = EncryptorHelper.GenerateRandomKey();
 
             var processedEntries = new List<Entry>();
-            var bundles = entries.Bundles;
-            var careContextReferences = bundles.Keys.ToList();
-            foreach (var careContextReference  in careContextReferences)
+            var careBundles = entries.CareBundles;
+            foreach (var careBundle in careBundles)
             {
-                foreach (var bundle in bundles.GetOrDefault(careContextReference))
+                var encryptData = encryptor.EncryptData(dataRequestKeyMaterial, keyPair,
+                    Serializer.SerializeToString(careBundle.BundleForThisCcr), randomKey);
+                if (!encryptData.HasValue)
                 {
-                    var encryptData = encryptor.EncryptData(
-                        dataRequestKeyMaterial,
-                        keyPair,
-                        Serializer.SerializeToString(bundle),
-                        randomKey);
-                    if (!encryptData.HasValue)
-                    {
-                        return Option.None<EncryptedEntries>();
-                    }
-
-                    encryptData.MatchSome(content =>
-                    {
-                        var entry = IsLinkable(content)
-                            ? StoreComponentAndGetLink(ComponentEntry(content, careContextReference),
-                                careContextReference)
-                            : ComponentEntry(content, careContextReference);
-                        processedEntries.Add(entry);
-                    });
+                    return Option.None<EncryptedEntries>();
                 }
+
+                encryptData.MatchSome(content =>
+                {
+                    var entry = IsLinkable(content)
+                        ? StoreComponentAndGetLink(ComponentEntry(content, careBundle.CareContextReference),
+                            careBundle.CareContextReference)
+                        : ComponentEntry(content, careBundle.CareContextReference);
+                    processedEntries.Add(entry);
+                });
             }
 
             var keyStructure = new KeyStructure(DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"),
@@ -84,29 +77,29 @@ namespace In.ProjectEKA.HipService.DataFlow
             return Option.Some(new EncryptedEntries(processedEntries.AsEnumerable(), keyMaterial));
         }
 
-        private Entry StoreComponentAndGetLink(Entry componentEntry,string careContextReference)
+        private Entry StoreComponentAndGetLink(Entry componentEntry, string careContextReference)
         {
             var linkId = Guid.NewGuid().ToString();
             var token = Guid.NewGuid().ToString();
-            var linkEntry = LinkEntry(linkId, token,careContextReference);
+            var linkEntry = LinkEntry(linkId, token, careContextReference);
             StoreComponentEntry(linkId, componentEntry, token);
             return linkEntry;
         }
 
-        private static Entry EntryWith(string content, string link,string careContextReference)
+        private static Entry EntryWith(string content, string link, string careContextReference)
         {
-            return new Entry(content, FhirMediaType, "MD5", link,careContextReference);
+            return new Entry(content, FhirMediaType, "MD5", link, careContextReference);
         }
 
-        private Entry LinkEntry(string linkId, string token,string careContextReference)
+        private Entry LinkEntry(string linkId, string token, string careContextReference)
         {
             var link = $"{hipConfiguration.Value.Url}/health-information/{linkId}?token={token}";
-            return EntryWith(null, link,careContextReference);
+            return EntryWith(null, link, careContextReference);
         }
 
         private static Entry ComponentEntry(string serializedBundle, string careContextReference)
         {
-            return EntryWith(serializedBundle, null,careContextReference);
+            return EntryWith(serializedBundle, null, careContextReference);
         }
 
         private bool IsLinkable(string serializedBundle)

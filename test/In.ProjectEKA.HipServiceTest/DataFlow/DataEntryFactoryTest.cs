@@ -35,9 +35,9 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                 hipConfiguration, encryptor.Object);
             var bundleList = new List<Bundle>();
             bundleList.Add(new Bundle());
-            var bundles = new Dictionary<string,List<Bundle>>();
-            bundles.Add("careContextReference",bundleList);
-            var dataEntries = new Entries(bundles);
+            var careBundles = new List<CareBundle>();
+            careBundles.Add(new CareBundle("careContextReference", new Bundle()));
+            var dataEntries = new Entries(careBundles);
             var expectedEntries = new List<Entry>
             {
                 new Entry(
@@ -87,7 +87,9 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                 It.IsAny<AsymmetricCipherKeyPair>(),
                 It.IsAny<string>(),
                 It.IsAny<string>())).Returns(Option.Some("https://hip/health-information"));
-            var dataEntries = new Entries(new Dictionary<string,List<Bundle>>{{"careContextReference",new List<Bundle>()}});
+            var careBundles = new List<CareBundle>();
+            careBundles.Add(new CareBundle("careContextReference", new Bundle()));
+            var dataEntries = new Entries(careBundles);
             var entries = dataEntryFactory.Process(
                 dataEntries, keyMaterialLib, transactionId);
 
