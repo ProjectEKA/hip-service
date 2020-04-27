@@ -24,7 +24,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                 new DataFlowMessageHandler(collect.Object, dataFlowClient.Object, dataEntryFactory.Object);
             var transactionId = TestBuilder.Faker().Random.Uuid().ToString();
             var dataRequest = TestBuilder.DataRequest(transactionId);
-            var entries = new Entries(new Dictionary<string, Bundle>{{"careContextReference",new Bundle()}});
+            var entries = new Entries(new Dictionary<string, List<Bundle>>{{"careContextReference",new List<Bundle>()}});
             var data = Option.Some(entries);
             var content = TestBuilder.Faker().Random.String();
             var checksum = TestBuilder.Faker().Random.Hash();

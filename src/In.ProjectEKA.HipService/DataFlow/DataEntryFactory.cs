@@ -53,23 +53,27 @@ namespace In.ProjectEKA.HipService.DataFlow
             var careContextReferences = bundles.Keys.ToList();
             foreach (var careContextReference  in careContextReferences)
             {
-                var encryptData = encryptor.EncryptData(
-                    dataRequestKeyMaterial,
-                    keyPair,
-                    Serializer.SerializeToString(bundles.GetOrDefault(careContextReference)),
-                    randomKey);
-                if (!encryptData.HasValue)
+                foreach (var bundle in bundles.GetOrDefault(careContextReference))
                 {
-                    return Option.None<EncryptedEntries>();
-                }
+                    var encryptData = encryptor.EncryptData(
+                        dataRequestKeyMaterial,
+                        keyPair,
+                        Serializer.SerializeToString(bundle),
+                        randomKey);
+                    if (!encryptData.HasValue)
+                    {
+                        return Option.None<EncryptedEntries>();
+                    }
 
-                encryptData.MatchSome(content =>
-                {
-                    var entry = IsLinkable(content)
-                        ? StoreComponentAndGetLink(ComponentEntry(content,careContextReference),careContextReference)
-                        : ComponentEntry(content,careContextReference);
-                    processedEntries.Add(entry);
-                });
+                    encryptData.MatchSome(content =>
+                    {
+                        var entry = IsLinkable(content)
+                            ? StoreComponentAndGetLink(ComponentEntry(content, careContextReference),
+                                careContextReference)
+                            : ComponentEntry(content, careContextReference);
+                        processedEntries.Add(entry);
+                    });
+                }
             }
 
             var keyStructure = new KeyStructure(DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"),

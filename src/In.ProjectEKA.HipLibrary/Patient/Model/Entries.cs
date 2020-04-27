@@ -5,11 +5,11 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
 
     public class Entries
     {
-        public Entries(Dictionary<string, Bundle> bundles)
+        public Entries(Dictionary<string, List<Bundle>> bundles)
         {
             Bundles = bundles;
         }
         
-        public Dictionary<string,Bundle> Bundles { get; }
+        public Dictionary<string,List<Bundle>> Bundles { get; }
     }
 }

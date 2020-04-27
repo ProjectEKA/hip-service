@@ -27,13 +27,18 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
 
         public async Task<Option<Entries>> CollectData(DataRequest dataRequest)
         {
-            var bundles = new Dictionary<string, Bundle>();
-            var results = FindPatientData(dataRequest);
-            var careContextReferences = results.Keys.ToList();
+            var bundles = new Dictionary<string, List<Bundle>>();
+            var patientData = FindPatientData(dataRequest);
+            var careContextReferences = patientData.Keys.ToList();
             foreach (var careContextReference in careContextReferences)
             {
-                Log.Information($"Returning file: {results.GetOrDefault(careContextReference)}");
-                bundles.Add(careContextReference,await FileReader.ReadJsonAsync<Bundle>(results.GetOrDefault(careContextReference).ToString()));
+                var bundlesForThisCareContextReference = new List<Bundle>();
+                foreach (var result in patientData.GetOrDefault(careContextReference))
+                {
+                    Log.Information($"Returning file: {result}");
+                    bundlesForThisCareContextReference.Add(await FileReader.ReadJsonAsync<Bundle>(result));
+                }
+                bundles.Add(careContextReference,bundlesForThisCareContextReference);
             }
 
             var entries = new Entries(bundles);
@@ -82,6 +87,7 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
                 {
                     var refData = patientDataMap[grantedContext.PatientReference];
                     var ccData = refData?[grantedContext.CareContextReference];
+                    var listOfDataFiles = new List<string>();
                     if (ccData == null) continue;
                     // ReSharper disable once ForeachCanBePartlyConvertedToQueryUsingAnotherGetEnumerator
                     foreach (var ccRecord in ccData)
@@ -94,17 +100,20 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
                             var dataFiles = ccRecord.Data.GetValueOrDefault(hiTypeStr) ?? new List<string>();
                             if (dataFiles.Count > 0)
                             {
-                               careContextsAndListOfDataFiles.Add(grantedContext.CareContextReference, dataFiles);
+                                listOfDataFiles.Add(dataFiles[0]);
                             }
                         }
                     }
+                    careContextsAndListOfDataFiles.Add(grantedContext.CareContextReference, listOfDataFiles);
                 }
+
                 return careContextsAndListOfDataFiles;
             }
             catch (Exception e)
             {
                 Log.Error("Error Occured while collecting data. {Error}", e);
             }
+
             return new Dictionary<string, List<string>>();
         }
 
