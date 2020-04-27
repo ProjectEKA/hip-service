@@ -43,9 +43,7 @@ namespace In.ProjectEKA.DefaultHipTest.DataFlow
                 consentId);
 
             var entries = await collect.CollectData(dataRequest);
-            var bundlesCount = entries.ValueOrDefault().CareBundles.Count;
-            bundlesCount.Should().Be(7);
-            
+            entries.ValueOrDefault().CareBundles.Count().Should().Be(7);
         }
     }
 }

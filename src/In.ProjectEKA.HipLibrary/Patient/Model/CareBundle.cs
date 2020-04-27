@@ -10,8 +10,8 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
             BundleForThisCcr = bundleForThisCcr;
         }
 
-        public string CareContextReference { get; set; }
+        public string CareContextReference { get; }
 
-        public Bundle BundleForThisCcr { get; set; }
+        public Bundle BundleForThisCcr { get; }
     }
 }

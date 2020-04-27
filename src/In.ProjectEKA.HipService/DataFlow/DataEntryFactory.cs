@@ -52,8 +52,10 @@ namespace In.ProjectEKA.HipService.DataFlow
             var careBundles = entries.CareBundles;
             foreach (var careBundle in careBundles)
             {
-                var encryptData = encryptor.EncryptData(dataRequestKeyMaterial, keyPair,
-                    Serializer.SerializeToString(careBundle.BundleForThisCcr), randomKey);
+                var encryptData =
+                    encryptor.EncryptData(dataRequestKeyMaterial,
+                        keyPair,
+                        Serializer.SerializeToString(careBundle.BundleForThisCcr), randomKey);
                 if (!encryptData.HasValue)
                 {
                     return Option.None<EncryptedEntries>();
