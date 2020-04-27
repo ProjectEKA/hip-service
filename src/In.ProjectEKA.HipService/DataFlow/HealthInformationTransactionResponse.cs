@@ -2,11 +2,11 @@ namespace In.ProjectEKA.HipService.DataFlow
 {
     public class HealthInformationTransactionResponse
     {
-        public string TransactionId { get; }
+        public string AcknowledgementId { get; }
         
         public HealthInformationTransactionResponse(string transactionId)
         {
-            TransactionId = transactionId;
+            AcknowledgementId = transactionId;
         }
     }
 }
