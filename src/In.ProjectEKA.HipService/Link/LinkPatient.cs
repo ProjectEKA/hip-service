@@ -87,7 +87,7 @@ namespace In.ProjectEKA.HipService.Link
                         new ErrorRepresentation(new Error(ErrorCode.OtpGenerationFailed, otpGeneration.Message)));
                 }
 
-                await discoveryRequestRepository.Delete(request.TransactionId, request.Patient.ConsentManagerUserId)
+                await discoveryRequestRepository.Delete(request.RequestId, request.Patient.ConsentManagerUserId)
                     .ConfigureAwait(false);
 
                 scope.Complete();
