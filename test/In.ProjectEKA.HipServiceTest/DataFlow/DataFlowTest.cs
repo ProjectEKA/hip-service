@@ -39,7 +39,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
         }
 
         [Fact]
-        private async void ReturnTransactionIdOnSuccess()
+        private async void ReturnAcknowledgementIdOnSuccess()
         {
             var consentMangerId = TestBuilder.Faker().Random.String();
             var transactionId = TestBuilder.Faker().Random.Hash();
@@ -52,7 +52,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                 await dataFlowService.HealthInformationRequestFor(request, consentMangerId);
 
             dataFlowRepository.Verify();
-            healthInformationResponse.TransactionId.Should().BeEquivalentTo(transactionId);
+            healthInformationResponse.AcknowledgementId.Should().BeEquivalentTo(transactionId);
         }
 
         [Fact]
