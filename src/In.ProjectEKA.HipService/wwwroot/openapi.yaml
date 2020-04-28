@@ -568,7 +568,7 @@ components:
           type: integer
           enum: [1000, 10001]
           description: >
-            1. Error code 1000 : No patient found
+            1. Error code 1000 : No patients found
             2. Error code 1001: Multiple patients found
         message:
           type: string
