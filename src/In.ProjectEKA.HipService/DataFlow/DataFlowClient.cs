@@ -22,7 +22,6 @@ namespace In.ProjectEKA.HipService.DataFlow
         private readonly DataFlowNotificationClient dataFlowNotificationClient;
         private readonly CentralRegistryConfiguration centralRegistryConfiguration;
 
-
         public DataFlowClient(HttpClient httpClient,
             CentralRegistryClient centralRegistryClient,
             DataFlowNotificationClient dataFlowNotificationClient,
@@ -34,7 +33,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             this.centralRegistryConfiguration = centralRegistryConfiguration;
         }
 
-        public virtual async void SendDataToHiu(HipLibrary.Patient.Model.DataRequest dataRequest,
+        public virtual async Task SendDataToHiu(HipLibrary.Patient.Model.DataRequest dataRequest,
             IEnumerable<Entry> data,
             KeyMaterial keyMaterial)
         {
@@ -56,10 +55,26 @@ namespace In.ProjectEKA.HipService.DataFlow
             try
             {
                 var token = await centralRegistryClient.Authenticate();
-                token.MatchSome(async accessToken => await httpClient
-                    .SendAsync(CreateHttpRequest(dataPushUrl, dataResponse, accessToken))
-                    .ConfigureAwait(false));
-                token.MatchNone(() => Log.Information("Did not post data to HIU"));
+                token.MatchSome(async accessToken =>
+                {
+                    try
+                    {
+                        await httpClient.SendAsync(CreateHttpRequest(dataPushUrl, dataResponse, accessToken))
+                            .ConfigureAwait(false);
+                    }
+                    catch (Exception exception)
+                    {
+                        Log.Error(exception, exception.StackTrace);
+                        GetDataNotificationRequest(consentMangerUrl,
+                            consentId,
+                            grantedContexts,
+                            dataResponse,
+                            HiStatus.ERRORED,
+                            SessionStatus.FAILED,
+                            "Failed to deliver health information");
+                    }
+                });
+                token.MatchNone(() => Log.Error("Did not post data to HIU"));
                 GetDataNotificationRequest(consentMangerUrl,
                     consentId,
                     grantedContexts,
@@ -71,17 +86,10 @@ namespace In.ProjectEKA.HipService.DataFlow
             catch (Exception exception)
             {
                 Log.Error(exception, exception.StackTrace);
-                GetDataNotificationRequest(consentMangerUrl,
-                    consentId,
-                    grantedContexts,
-                    dataResponse,
-                    HiStatus.ERRORED,
-                    SessionStatus.FAILED,
-                    "Failed to deliver health information");
             }
         }
 
-        private void GetDataNotificationRequest(string consentMangerUrl,
+        private async Task GetDataNotificationRequest(string consentMangerUrl,
             string consentId,
             IEnumerable<GrantedContext> careContexts,
             DataResponse dataResponse,
@@ -94,7 +102,7 @@ namespace In.ProjectEKA.HipService.DataFlow
                     new StatusResponse(grantedContext.CareContextReference, hiStatus, description))
                 .ToList();
 
-            dataFlowNotificationClient.NotifyCm(consentMangerUrl,
+            await dataFlowNotificationClient.NotifyCm(consentMangerUrl,
                 new DataNotificationRequest(dataResponse.TransactionId,
                     DateTime.Now,
                     new Notifier(Type.HIP, centralRegistryConfiguration.ClientId),
