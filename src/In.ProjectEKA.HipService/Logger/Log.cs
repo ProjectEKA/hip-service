@@ -18,22 +18,7 @@ namespace In.ProjectEKA.HipService.Logger
         {
             Serilog.Log.Error(exception, format, arg);
         }
-        
-        public static void CloseAndFlush()
-        {
-            Serilog.Log.CloseAndFlush();
-        }
-        
-        public static void Debug(string format, params object[] arg)
-        {
-            Serilog.Log.Information(format, arg);
-        }
-        
-        public static void Information(params object[] arg)
-        {
-            Serilog.Log.Information(LogTemplate.InformationTemplate, arg);
-        }
-        
+
         public static void Error(params object[] arg)
         {
             Serilog.Log.Error(LogTemplate.ErrorTemplate, arg);

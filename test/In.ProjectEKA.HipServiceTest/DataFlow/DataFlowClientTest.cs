@@ -71,6 +71,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             dataFlowNotificationClient.Setup(client =>
                     client.NotifyCm("http://localhost:8000",
                         It.IsAny<DataNotificationRequest>()))
+                .Returns(Task.CompletedTask)
                 .Callback((string url, DataNotificationRequest request) =>
                     {
                         dataNotificationRequest.Should().NotBeNull();
