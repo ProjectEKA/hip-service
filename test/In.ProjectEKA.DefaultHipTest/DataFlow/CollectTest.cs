@@ -16,6 +16,7 @@ namespace In.ProjectEKA.DefaultHipTest.DataFlow
         [Fact]
         private async void ReturnEntries()
         {
+            const string consentId = "ConsentId";
             const string consentManagerId = "ConsentManagerId";
             var grantedContexts = new List<GrantedContext>
             {
@@ -36,7 +37,8 @@ namespace In.ProjectEKA.DefaultHipTest.DataFlow
                 hiTypes,
                 "someTxnId",
                 null,
-                consentManagerId);
+                consentManagerId,
+                consentId);
 
             var entries = await collect.CollectData(dataRequest);
 

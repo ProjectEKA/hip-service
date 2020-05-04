@@ -29,8 +29,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
             var expiry = DateTime.Now.Add(time).ToUniversalTime().ToString("yyyy-MM-dd'T'HH:mm:ss'Z'");
             return new HealthInformationRequest(
                 transactionId,
-                new HipService.DataFlow.Consent(faker.Random.Hash(),
-                    faker.Random.Hash()),
+                new HipService.DataFlow.Consent(faker.Random.Hash()),
                 new DateRange(faker.Random.Hash(), faker.Random.Hash()),
                 faker.Random.Hash(),
                 new KeyMaterial(faker.Random.Word(), faker.Random.Word(),
@@ -46,6 +45,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
         internal static HipLibrary.Patient.Model.DataRequest DataRequest(string transactionId)
         {
             const string consentManagerId = "ConsentManagerId";
+            const string consentId = "ConsentId";
             var dateRange = new HipLibrary.Patient.Model.DateRange("from", "to");
             const string callBackUrl = "http://callback/data/notification";
             var keyMaterial = new KeyMaterialLib(faker.Random.Word(), faker.Random.Word(),
@@ -57,17 +57,19 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
                 new List<HiType>(),
                 transactionId,
                 keyMaterial,
-                consentManagerId);
+                consentManagerId,
+                consentId);
         }
 
         internal static DataNotificationRequest DataNotificationRequest(string transactionId)
         {
             var notifier = new Notifier(Type.HIP, "10000005");
+            const string consentId = "ConsentId";
             var statusNotification = new StatusNotification(
                 SessionStatus.TRANSFERRED,
                 "10000005",
                 new List<StatusResponse>());
-            return new DataNotificationRequest(transactionId, DateTime.Now, notifier, statusNotification);
+            return new DataNotificationRequest(transactionId, DateTime.Now, notifier, statusNotification, consentId);
         }
 
         internal static Consent Consent()

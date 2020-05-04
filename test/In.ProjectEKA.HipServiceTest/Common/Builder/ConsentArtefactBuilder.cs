@@ -1,3 +1,4 @@
+// ReSharper disable MemberCanBePrivate.Global
 namespace In.ProjectEKA.HipServiceTest.Common.Builder
 {
     using System;
@@ -6,6 +7,7 @@ namespace In.ProjectEKA.HipServiceTest.Common.Builder
 
     internal class ConsentArtefactBuilder
     {
+#pragma warning disable 649
         public string SchemaVersion; 
         public string ConsentId; 
         public DateTime CreatedAt;
@@ -16,12 +18,11 @@ namespace In.ProjectEKA.HipServiceTest.Common.Builder
         public ConsentPermission Permission;
         public IEnumerable<GrantedContext> CareContexts;
         public OrganizationReference ConsentManager;
-        
+#pragma warning restore 649
+
         public ConsentArtefact Build()
         {
             return new ConsentArtefact(SchemaVersion, ConsentId, CreatedAt, Purpose, Patient, Hip, HiTypes, Permission, CareContexts, ConsentManager);
         }
-
-        
     }
 }

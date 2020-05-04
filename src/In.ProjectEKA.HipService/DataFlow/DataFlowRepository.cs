@@ -4,7 +4,6 @@ namespace In.ProjectEKA.HipService.DataFlow
     using System.Threading.Tasks;
     using Database;
     using Logger;
-    using Microsoft.EntityFrameworkCore;
     using Model;
     using Optional;
 
@@ -33,12 +32,6 @@ namespace In.ProjectEKA.HipService.DataFlow
                 Log.Fatal(exception,"Error Occured");
                 return Option.Some(exception);
             }
-        }
-
-        public async Task<DataFlowRequest> RequestFor(string transactionId)
-        {
-            return await dataFlowContext.DataFlowRequest
-                .FirstOrDefaultAsync(request => request.TransactionId == transactionId);
         }
     }
 }

@@ -86,11 +86,49 @@
     "name": "Nitesh Patel",
     "caseReferenceNumber": "1003",
     "Gender": "M",
-    "dateOfBirth": 1976,
+    "yearOfBirth": 1976,
     "careContexts": [
       {
         "referenceNumber": "NCP1031",
         "display": "National Cancer program"
+      }
+    ]
+  },
+  {
+    "phoneNumber": "+91-1111111111",
+    "identifier": "RVH1111",
+    "email": "krunalpatel83@acme.com",
+    "name": "krunal Patel",
+    "caseReferenceNumber": "1003",
+    "Gender": "M",
+    "yearOfBirth": 1976,
+    "careContexts": [
+      {
+        "referenceNumber": "NCP1111",
+        "display": "National Cancer program"
+      },
+      {
+        "referenceNumber": "NCP11111",
+        "display": "National Cancer program - Episode 2"
+      }
+    ]
+  },
+  {
+    "phoneNumber": "+91-1111111111",
+    "identifier": "RVH1112",
+    "email": "krunalpatel83@acme.com",
+    "name": "krunal Patel",
+    "caseReferenceNumber": "1003",
+    "Gender": "M",
+    "yearOfBirth": 1976,
+    "careContexts": [
+      {
+        "referenceNumber": "NCP1112",
+        "display": "National Cancer program"
+      },
+      {
+        "referenceNumber": "NCP11122",
+        "display": "National Cancer program -  Episode 2"
       }
     ]
   }

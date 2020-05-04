@@ -4,12 +4,12 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
     {
         public PatientEnquiry Patient { get; }
 
-        public string TransactionId { get; }
+        public string RequestId { get; }
 
-        public DiscoveryRequest(PatientEnquiry patient, string transactionId)
+        public DiscoveryRequest(PatientEnquiry patient, string requestId)
         {
             Patient = patient;
-            TransactionId = transactionId;
+            RequestId = requestId;
         }
     }
 }
