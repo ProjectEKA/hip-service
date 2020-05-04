@@ -65,23 +65,23 @@ namespace In.ProjectEKA.HipService.DataFlow
                     catch (Exception exception)
                     {
                         Log.Error(exception, exception.StackTrace);
-                        GetDataNotificationRequest(consentMangerUrl,
+                        await GetDataNotificationRequest(consentMangerUrl,
                             consentId,
                             grantedContexts,
                             dataResponse,
                             HiStatus.ERRORED,
                             SessionStatus.FAILED,
-                            "Failed to deliver health information");
+                            "Failed to deliver health information").ConfigureAwait(false);
                     }
                 });
                 token.MatchNone(() => Log.Error("Did not post data to HIU"));
-                GetDataNotificationRequest(consentMangerUrl,
+                await GetDataNotificationRequest(consentMangerUrl,
                     consentId,
                     grantedContexts,
                     dataResponse,
                     HiStatus.DELIVERED,
                     SessionStatus.TRANSFERRED,
-                    "Successfully delivered health information");
+                    "Successfully delivered health information").ConfigureAwait(false);
             }
             catch (Exception exception)
             {
