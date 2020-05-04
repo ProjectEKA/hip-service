@@ -22,7 +22,8 @@ namespace In.ProjectEKA.HipService.DataFlow
         [Route("health-information/request")]
         public async Task<ActionResult> HealthInformationRequestFor(
             [FromBody] HealthInformationRequest healthInformationRequest,
-            [FromHeader(Name = "X-ConsentManagerId")] string consentManagerId)
+            [FromHeader(Name = "X-ConsentManagerId")]
+            string consentManagerId)
         {
             var (healthInformationResponse, error) = await dataFlow
                 .HealthInformationRequestFor(healthInformationRequest, consentManagerId);
@@ -31,9 +32,7 @@ namespace In.ProjectEKA.HipService.DataFlow
 
         [HttpGet]
         [Route("health-information/{informationId}")]
-        public async Task<ActionResult> HealthInformation(
-            [FromRoute] string informationId,
-            [FromQuery] string token)
+        public async Task<ActionResult> HealthInformation([FromRoute] string informationId, [FromQuery] string token)
         {
             var (healthInformation, error) = await dataFlow.HealthInformationFor(informationId, token);
             return error != null ? ServerResponseFor(error) : Ok(healthInformation);
