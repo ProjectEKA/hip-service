@@ -633,13 +633,9 @@ components:
       type: object
       required:
         - id
-        - digitalSignature
       properties:
         id:
           type: string
-        digitalSignature:
-          type: string
-
     dateRange:
       type: object
       required:

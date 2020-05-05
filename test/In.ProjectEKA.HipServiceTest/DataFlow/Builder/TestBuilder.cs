@@ -29,8 +29,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
             var expiry = DateTime.Now.Add(time).ToUniversalTime().ToString("yyyy-MM-dd'T'HH:mm:ss'Z'");
             return new HealthInformationRequest(
                 transactionId,
-                new HipService.DataFlow.Consent(faker.Random.Hash(),
-                    faker.Random.Hash()),
+                new HipService.DataFlow.Consent(faker.Random.Hash()),
                 new DateRange(faker.Random.Hash(), faker.Random.Hash()),
                 faker.Random.Hash(),
                 new KeyMaterial(faker.Random.Word(), faker.Random.Word(),
