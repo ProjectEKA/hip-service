@@ -1,7 +1,6 @@
 ﻿namespace In.ProjectEKA.HipService
 {
     using System;
-    using System.Reflection;
     using Elastic.CommonSchema.Serilog;
     using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
@@ -9,7 +8,6 @@
     using Microsoft.Extensions.DependencyInjection;
     using Serilog;
     using Serilog.Exceptions;
-    using Serilog.Sinks.Elasticsearch;
 
     public class Program
     {
@@ -57,15 +55,6 @@
             return WebHost.CreateDefaultBuilder(args)
                 .UseSerilog()
                 .UseStartup<Startup>();
-        }
-        
-        private static ElasticsearchSinkOptions ConfigureElasticSink(IConfigurationRoot configuration, string environment)
-        {
-            return new ElasticsearchSinkOptions(new Uri(configuration["ElasticConfiguration:Uri"]))
-            {
-                AutoRegisterTemplate = true,
-                IndexFormat = $"{Assembly.GetExecutingAssembly().GetName().Name.ToLower().Replace(".", "-")}-{environment?.ToLower().Replace(".", "-")}-{DateTime.UtcNow:yyyy-MM}"
-            };
         }
     }
 }
