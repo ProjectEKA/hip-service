@@ -43,9 +43,6 @@
                 .Enrich.FromLogContext()
                 .Enrich.WithExceptionDetails()
                 .Enrich.WithMachineName()
-                .WriteTo.Debug()
-                .WriteTo.Console(new EcsTextFormatter())
-                .WriteTo.File(new EcsTextFormatter(), "../../logs/log.log", rollingInterval: RollingInterval.Day)
                 .Enrich.WithProperty("Environment", Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"))
                 .ReadFrom.Configuration(host.Services.GetRequiredService<IConfiguration>())
                 .CreateLogger();
