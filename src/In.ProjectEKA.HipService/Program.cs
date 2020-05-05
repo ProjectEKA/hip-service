@@ -47,13 +47,7 @@
                 .Enrich.WithMachineName()
                 .WriteTo.Debug()
                 .WriteTo.Console(new EcsTextFormatter())
-                .WriteTo.Elasticsearch(ConfigureElasticSink(
-                            new ConfigurationBuilder()
-                                .AddJsonFile("appsettings.json", false, true)
-                                .AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json",
-                                        true)
-                                .Build(),
-                            Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")))
+                .WriteTo.File(new EcsTextFormatter(), "../../logs/log.log", rollingInterval: RollingInterval.Day)
                 .Enrich.WithProperty("Environment", Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"))
                 .ReadFrom.Configuration(host.Services.GetRequiredService<IConfiguration>())
                 .CreateLogger();

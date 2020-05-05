@@ -22,7 +22,21 @@ services:
     image: "rabbitmq:3"
     ports:
       - "5672:5672"
+
+  filebeat:
+    container_name: filebeat
+    build:
+      context: .
+      dockerfile: filebeat.Dockerfile
+    volumes:
+      - ./logs:/var/log
+    networks:
+      - elk
   
 volumes:
   postgresql:
   postgresql_data:
+
+networks:
+  elk:
+    external: true

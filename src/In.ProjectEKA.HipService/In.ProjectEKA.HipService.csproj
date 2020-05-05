@@ -32,6 +32,7 @@
         <PackageReference Include="Serilog.Sinks.Debug" Version="1.0.1" />
         <PackageReference Include="Serilog.Sinks.Elasticsearch" Version="8.0.1" />
         <PackageReference Include="Serilog.Sinks.File" Version="4.1.0" />
+        <PackageReference Include="Serilog.Sinks.Http" Version="5.2.1" />
         <PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="5.3.1" />
         <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="5.3.3" />
         <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="5.3.3" />
