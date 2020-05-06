@@ -34,7 +34,7 @@ namespace In.ProjectEKA.HipService.Link
                 request.Patient.ReferenceNumber,
                 request.Patient.CareContexts);
             var doesRequestExists = await discoveryRequestRepository.RequestExistsFor(
-                request.RequestId,
+                request.TransactionId,
                 request.Patient?.ConsentManagerUserId,
                 request.Patient?.ReferenceNumber);
             if (!doesRequestExists)
