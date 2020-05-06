@@ -15,7 +15,7 @@ namespace In.ProjectEKA.HipServiceTest.Consent.Builder
         {
             return new ConsentArtefactRequest(faker.Random.Hash(),
                 ConsentArtefact().Generate().Build(),
-                ConsentStatus.GRANTED);
+                ConsentStatus.GRANTED, faker.Random.Hash());
         }
 
         private static Faker<ConsentArtefactBuilder> ConsentArtefact()

@@ -29,10 +29,10 @@ namespace In.ProjectEKA.HipServiceTest.Consent
                 )
             ));
             var okObjectResult =
-                await consentController.StoreConsent(consentMangerId, consentArtefactRequest) as OkResult;
+                await consentController.StoreConsent(consentMangerId, consentArtefactRequest) as NoContentResult;
 
             consentRepository.Verify();
-            okObjectResult.StatusCode.Equals(StatusCodes.Status200OK);
+            okObjectResult.StatusCode.Equals(StatusCodes.Status204NoContent);
         }
 
         [Fact]
@@ -49,17 +49,38 @@ namespace In.ProjectEKA.HipServiceTest.Consent
                     consentMangerId)
             ));
             consentRepository.Setup(x => x.UpdateAsync(
+                consentArtefactRequest.ConsentId,
+                ConsentStatus.REVOKED)
+            );
+            var okObjectResult =
+                await consentController.StoreConsent(consentMangerId, consentArtefactRequest) as NoContentResult;
+
+            consentRepository.Verify();
+            okObjectResult.StatusCode.Equals(StatusCodes.Status204NoContent);
+        }
+        
+        [Fact]
+        async void ShouldUpdateConsentArtefactAsExpired()
+        {
+            var consentController = new ConsentController(consentRepository.Object);
+            const string consentMangerId = "consentMangerId";
+            var consentArtefactRequest = TestBuilder.ConsentArtefactRequest();
+            consentRepository.Setup(x => x.AddAsync(
                 new Consent(consentArtefactRequest.ConsentDetail.ConsentId,
                     consentArtefactRequest.ConsentDetail,
                     consentArtefactRequest.Signature,
-                    ConsentStatus.REVOKED,
+                    ConsentStatus.GRANTED,
                     consentMangerId)
             ));
+            consentRepository.Setup(x => x.UpdateAsync(
+                consentArtefactRequest.ConsentId,
+                ConsentStatus.EXPIRED)
+            );
             var okObjectResult =
-                await consentController.StoreConsent(consentMangerId, consentArtefactRequest) as OkResult;
+                await consentController.StoreConsent(consentMangerId, consentArtefactRequest) as NoContentResult;
 
             consentRepository.Verify();
-            okObjectResult.StatusCode.Equals(StatusCodes.Status200OK);
+            okObjectResult.StatusCode.Equals(StatusCodes.Status204NoContent);
         }
     }
 }
