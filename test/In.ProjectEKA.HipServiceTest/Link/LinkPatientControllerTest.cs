@@ -57,7 +57,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
                     )
                 ))
                 .ReturnsAsync((expectedResponse, null));
-            discoveryRequestRepository.Setup(x => x.RequestExistsFor(linkRequest.TransactionId,
+            discoveryRequestRepository.Setup(x => x.RequestExistsFor(linkRequest.RequestId,
                     consentManagerUserId,
                     linkRequest.Patient.ReferenceNumber))
                 .ReturnsAsync(true);
@@ -123,7 +123,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
                     )
                 ))
                 .ReturnsAsync((null, expectedError));
-            discoveryRequestRepository.Setup(x => x.RequestExistsFor(linkRequest.TransactionId,
+            discoveryRequestRepository.Setup(x => x.RequestExistsFor(linkRequest.RequestId,
                     linkRequest.Patient.ConsentManagerUserId,
                     linkRequest.Patient.ReferenceNumber))
                 .ReturnsAsync(true);
@@ -154,7 +154,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
                     )
                 ))
                 .ReturnsAsync((null, expectedError));
-            discoveryRequestRepository.Setup(x => x.RequestExistsFor(linkRequest.TransactionId,
+            discoveryRequestRepository.Setup(x => x.RequestExistsFor(linkRequest.RequestId,
                     linkRequest.Patient.ConsentManagerUserId,
                     linkRequest.Patient.ReferenceNumber))
                 .ReturnsAsync(true);
@@ -187,7 +187,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
                     )
                 ))
                 .ReturnsAsync((null, expectedError));
-            discoveryRequestRepository.Setup(x => x.RequestExistsFor(linkRequest.TransactionId,
+            discoveryRequestRepository.Setup(x => x.RequestExistsFor(linkRequest.RequestId,
                     linkRequest.Patient.ConsentManagerUserId,
                     linkRequest.Patient.ReferenceNumber))
                 .ReturnsAsync(true);
@@ -253,7 +253,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
                     )
                 ))
                 .ReturnsAsync((null, expectedError));
-            discoveryRequestRepository.Setup(x => x.RequestExistsFor(linkRequest.TransactionId,
+            discoveryRequestRepository.Setup(x => x.RequestExistsFor(linkRequest.RequestId,
                     linkRequest.Patient.ConsentManagerUserId,
                     linkRequest.Patient.ReferenceNumber))
                 .ReturnsAsync(true);
