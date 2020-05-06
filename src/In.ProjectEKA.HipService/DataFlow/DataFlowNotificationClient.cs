@@ -23,7 +23,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             this.centralRegistryClient = centralRegistryClient;
         }
 
-        public virtual async void NotifyCm(string url, DataNotificationRequest dataNotificationRequest)
+        public virtual async Task NotifyCm(string url, DataNotificationRequest dataNotificationRequest)
         {
             await PostTo(url, dataNotificationRequest);
         }
