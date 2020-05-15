@@ -16,8 +16,7 @@ namespace In.ProjectEKA.HipService.DataFlow
         private readonly DefaultObjectPool<IModel> objectPool;
         private IModel channel;
 
-        public MessagingQueueListener(
-            IPooledObjectPolicy<IModel> objectPolicy,
+        public MessagingQueueListener(IPooledObjectPolicy<IModel> objectPolicy,
             DataFlowMessageHandler dataFlowMessageHandler)
         {
             this.dataFlowMessageHandler = dataFlowMessageHandler;
@@ -50,7 +49,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             consumer.Received += async (ch, ea) =>
             {
                 var body = ea.Body;
-                var message = Encoding.UTF8.GetString(body);
+                var message = Encoding.UTF8.GetString(body.ToArray());
                 var dataFlowMessage =
                     JsonConvert.DeserializeObject<HipLibrary.Patient.Model.DataRequest>(message);
                 await dataFlowMessageHandler.HandleDataFlowMessage(dataFlowMessage);
