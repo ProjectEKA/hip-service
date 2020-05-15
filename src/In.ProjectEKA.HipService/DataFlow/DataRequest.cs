@@ -9,7 +9,7 @@ namespace In.ProjectEKA.HipService.DataFlow
         public DateRange DateRange { get; }
         public string DataPushUrl { get; }
         public IEnumerable<HiType> HiType { get; }
-        public string TransactionId { get; }
+        public string RequestId { get; }
         public KeyMaterial KeyMaterial { get; }
         public string ConsentManagerId { get; }
         public string ConsentId { get; }
@@ -27,7 +27,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             DateRange = dateRange;
             DataPushUrl = dataPushUrl;
             HiType = hiType;
-            TransactionId = transactionId;
+            RequestId = transactionId;
             KeyMaterial = keyMaterial;
             ConsentManagerId = consentManagerId;
             ConsentId = consentId;

@@ -33,14 +33,19 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                 serviceScopeFactory.Object,
                 dataFlowConfiguration,
                 hipConfiguration, encryptor.Object);
-            var dataEntries = new Entries(new List<Bundle> {new Bundle()});
+            var bundleList = new List<Bundle>();
+            bundleList.Add(new Bundle());
+            var careBundles = new List<CareBundle>();
+            careBundles.Add(new CareBundle("careContextReference", new Bundle()));
+            var dataEntries = new Entries(careBundles);
             var expectedEntries = new List<Entry>
             {
                 new Entry(
                     "5zGyp5O9GkggioxwWyUGOQ==",
                     "application/fhir+json",
                     "MD5",
-                    null)
+                    null,
+                    "careContextReference")
             }.AsEnumerable();
             var transactionId = TestBuilder.Faker().Random.Uuid().ToString();
             var keyMaterial = TestBuilder.KeyMaterialLib();
@@ -82,8 +87,11 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                 It.IsAny<AsymmetricCipherKeyPair>(),
                 It.IsAny<string>(),
                 It.IsAny<string>())).Returns(Option.Some("https://hip/health-information"));
+            var careBundles = new List<CareBundle>();
+            careBundles.Add(new CareBundle("careContextReference", new Bundle()));
+            var dataEntries = new Entries(careBundles);
             var entries = dataEntryFactory.Process(
-                new Entries(new List<Bundle> {new Bundle()}), keyMaterialLib, transactionId);
+                dataEntries, keyMaterialLib, transactionId);
 
             entries.HasValue.Should().BeTrue();
             entries.MatchSome(dataEntries =>

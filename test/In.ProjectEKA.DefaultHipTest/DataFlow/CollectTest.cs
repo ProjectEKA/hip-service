@@ -1,3 +1,5 @@
+using Hl7.Fhir.Utility;
+
 namespace In.ProjectEKA.DefaultHipTest.DataFlow
 {
     using System.Collections.Generic;
@@ -41,9 +43,7 @@ namespace In.ProjectEKA.DefaultHipTest.DataFlow
                 consentId);
 
             var entries = await collect.CollectData(dataRequest);
-
-            var bundles = entries.Map(s => s.Bundles);
-            bundles.ValueOrDefault().Count().Should().Be(8);
+            entries.ValueOrDefault().CareBundles.Count().Should().Be(8);
         }
     }
 }
