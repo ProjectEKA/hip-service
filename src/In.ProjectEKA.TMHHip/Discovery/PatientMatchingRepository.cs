@@ -42,10 +42,9 @@ namespace In.ProjectEKA.TMHHip.Discovery
             var result = await JsonSerializer.DeserializeAsync<IEnumerable<Patient>>(responseStream);
             return result.Select(patient => new HipLibrary.Patient.Model.Patient
             {
-                FirstName = patient.FirstName,
+                Name = $"{patient.FirstName} {patient.LastName}",
                 Gender = patient.Gender,
                 Identifier = patient.Identifier,
-                LastName = patient.LastName,
                 CareContexts = new List<CareContextRepresentation>
                 {
                     new CareContextRepresentation(

@@ -1,5 +1,6 @@
 namespace In.ProjectEKA.HipService
 {
+    using System.Configuration;
     using System.Linq;
     using System.Net.Http;
     using System.Text.Json;
@@ -9,9 +10,6 @@ namespace In.ProjectEKA.HipService
     using DataFlow;
     using DataFlow.Database;
     using DataFlow.Encryptor;
-    using DefaultHip.DataFlow;
-    using DefaultHip.Discovery;
-    using DefaultHip.Link;
     using Discovery;
     using Discovery.Database;
     using HipLibrary.Matcher;
@@ -31,6 +29,9 @@ namespace In.ProjectEKA.HipService
     using Newtonsoft.Json;
     using TMHHip.DataFlow;
     using Serilog;
+    using TMHHip.DataFlow;
+    using TMHHip.Discovery;
+    using TMHHip.Link;
     using Task = System.Threading.Tasks.Task;
     using TMHHip.Discovery;
     using TMHHip.Link;
@@ -65,10 +66,8 @@ namespace In.ProjectEKA.HipService
                     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
                         x => x.MigrationsAssembly("In.ProjectEKA.HipService")))
                 .AddSingleton<IEncryptor, Encryptor>()
-                .AddSingleton<IPatientRepository>(new PatientRepository("demoPatients.json"))
-                .AddSingleton<ICollect>(new Collect("demoPatientCareContextDataMap.json"))
-                .AddSingleton<IPatientRepository>(new PatientRepository("demoPatients.json"))
                 .AddRabbit(Configuration)
+                .AddSingleton<IMatchingRepository, PatientMatchingRepository>()
                 .Configure<OtpServiceConfiguration>(Configuration.GetSection("OtpService"))
                 .Configure<DataFlowConfiguration>(Configuration.GetSection("dataFlow"))
                 .Configure<HipConfiguration>(Configuration.GetSection("hip"))
@@ -76,6 +75,7 @@ namespace In.ProjectEKA.HipService
                 .AddSingleton<IPatientRepository, PatientRepository>()
                 .AddScoped<IDiscoveryRequestRepository, DiscoveryRequestRepository>()
                 .AddScoped<PatientDiscovery>()
+                .AddTransient<ICollect, Collect>()
                 .AddScoped<LinkPatient>()
                 .AddScoped<ReferenceNumberGenerator>()
                 .AddSingleton(Configuration)

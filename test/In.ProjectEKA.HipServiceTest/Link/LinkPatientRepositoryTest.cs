@@ -87,7 +87,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
             error.Should().NotBeNull();
             dbContext.Database.EnsureDeleted();
         }
-        
+
         [Fact]
         private async void ShouldSaveLinkedAccounts()
         {
@@ -118,7 +118,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
                 , linkReferenceNumber, new[] {faker.Random.Word()});
 
             linkedAccount.HasValue.Should().BeFalse();
-            
+
             dbContext.Database.EnsureDeleted();
         }
 
@@ -129,14 +129,14 @@ namespace In.ProjectEKA.HipServiceTest.Link
             var dbContext = PatientContext();
             var linkPatientRepository = new LinkPatientRepository(dbContext);
             var consentManagerUserId = faker.Random.Hash();
-            var linkedAccounts = await linkPatientRepository.Save(consentManagerUserId, faker.Random.Hash(), faker.Random.Hash(),
+
+            var linkedAccounts = await linkPatientRepository.Save(consentManagerUserId,
+                faker.Random.Hash(),
+                faker.Random.Hash(),
                 new[] {faker.Random.Word()});
             var (patientFor, _) = await linkPatientRepository.GetLinkedCareContexts(consentManagerUserId);
 
-            linkedAccounts.MatchSome(l =>
-            {
-                l.Should().BeEquivalentTo(patientFor.First());
-            });
+            linkedAccounts.MatchSome(l => { l.Should().BeEquivalentTo(patientFor.First()); });
 
             dbContext.Database.EnsureDeleted();
         }
@@ -149,8 +149,8 @@ namespace In.ProjectEKA.HipServiceTest.Link
             var linkPatientRepository = new LinkPatientRepository(dbContext);
             var hashValue = faker.Random.Hash();
             var request = await linkPatientRepository.Save(hashValue,
-                                                                                hashValue,
-                                                                                hashValue);
+                hashValue,
+                hashValue);
 
             request.MatchSome(l => l.RequestId.Should().BeEquivalentTo(hashValue));
             request.MatchSome(l => l.TransactionId.Should().BeEquivalentTo(hashValue));
@@ -168,8 +168,8 @@ namespace In.ProjectEKA.HipServiceTest.Link
             var hashValue = faker.Random.Hash();
             await linkPatientRepository.Save(hashValue, hashValue, hashValue);
             var request = await linkPatientRepository.Save(hashValue,
-                                                                                hashValue,
-                                                                                hashValue);
+                hashValue,
+                hashValue);
 
             request.HasValue.Should().BeFalse();
 
