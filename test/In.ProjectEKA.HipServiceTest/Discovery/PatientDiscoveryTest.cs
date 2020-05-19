@@ -57,7 +57,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 name,
                 Gender.M,
                 2019);
-            var discoveryRequest = new DiscoveryRequest(patientRequest, requestId);
+            var discoveryRequest = new DiscoveryRequest(patientRequest, requestId, RandomString(), RandomString());
             var sessionId = Faker().Random.Hash();
             var linkedCareContext = new[] {alreadyLinked.ReferenceNumber};
             var testLinkAccounts = new LinkedAccounts(patientId,
@@ -138,7 +138,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 name,
                 Gender.M,
                 yearOfBirth);
-            var discoveryRequest = new DiscoveryRequest(patientRequest, requestId);
+            var discoveryRequest = new DiscoveryRequest(patientRequest, requestId, RandomString(), RandomString());
             linkPatientRepository.Setup(e => e.GetLinkedCareContexts(consentManagerUserId))
                 .ReturnsAsync(new Tuple<IEnumerable<LinkedAccounts>, Exception>(new List<LinkedAccounts>(), null));
             matchingRepository
@@ -202,7 +202,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 name,
                 Gender.M,
                 yearOfBirth);
-            var discoveryRequest = new DiscoveryRequest(patientRequest, requestId);
+            var discoveryRequest = new DiscoveryRequest(patientRequest, requestId, RandomString(), RandomString());
             linkPatientRepository.Setup(e => e.GetLinkedCareContexts(consentManagerUserId))
                 .ReturnsAsync(new Tuple<IEnumerable<LinkedAccounts>, Exception>(new List<LinkedAccounts>(), null));
             matchingRepository
@@ -252,7 +252,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 name,
                 gender,
                 yearOfBirth);
-            var discoveryRequest = new DiscoveryRequest(patientRequest, Faker().Random.String());
+            var discoveryRequest = new DiscoveryRequest(patientRequest, Faker().Random.String(), RandomString(), RandomString());
             linkPatientRepository.Setup(e => e.GetLinkedCareContexts(consentManagerUserId))
                 .ReturnsAsync(new Tuple<IEnumerable<LinkedAccounts>, Exception>(new List<LinkedAccounts>(), null));
 
@@ -303,7 +303,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 name,
                 gender,
                 yearOfBirth);
-            var discoveryRequest = new DiscoveryRequest(patientRequest, Faker().Random.String());
+            var discoveryRequest = new DiscoveryRequest(patientRequest, Faker().Random.String(), RandomString(), RandomString());
             linkPatientRepository.Setup(e => e.GetLinkedCareContexts(consentManagerUserId))
                 .ReturnsAsync(new Tuple<IEnumerable<LinkedAccounts>, Exception>(new List<LinkedAccounts>(), null));
 
@@ -353,7 +353,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 null,
                 Gender.M,
                 2019);
-            var discoveryRequest = new DiscoveryRequest(patientRequest, Faker().Random.String());
+            var discoveryRequest = new DiscoveryRequest(patientRequest, Faker().Random.String(), RandomString(), RandomString());
             linkPatientRepository.Setup(e => e.GetLinkedCareContexts(consentManagerUserId))
                 .ReturnsAsync(new Tuple<IEnumerable<LinkedAccounts>, Exception>(new List<LinkedAccounts>(), null));
 
@@ -380,7 +380,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 null,
                 Gender.M,
                 2019);
-            var discoveryRequest = new DiscoveryRequest(patientRequest, Faker().Random.String());
+            var discoveryRequest = new DiscoveryRequest(patientRequest, Faker().Random.String(), RandomString(), RandomString());
             linkPatientRepository.Setup(e => e.GetLinkedCareContexts(consentManagerUserId))
                 .ReturnsAsync(new Tuple<IEnumerable<LinkedAccounts>, Exception>(new List<LinkedAccounts>(), null));
 
@@ -401,7 +401,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             var expectedError =
                 new ErrorRepresentation(new Error(ErrorCode.DuplicateDiscoveryRequest, "Request already exists"));
             var requestId = RandomString();
-            var discoveryRequest = new DiscoveryRequest(null, requestId);
+            var discoveryRequest = new DiscoveryRequest(null, requestId, RandomString(), RandomString());
             discoveryRequestRepository.Setup(repository => repository.RequestExistsFor(requestId))
                 .ReturnsAsync(true);
 

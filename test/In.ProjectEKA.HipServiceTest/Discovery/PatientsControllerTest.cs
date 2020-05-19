@@ -42,7 +42,8 @@
                     unverifiedIdentifiers,
                     Faker().Name.FullName(),
                     Faker().PickRandom<Gender>(),
-                    (ushort) Faker().Date.Past().Year), Faker().Random.String());
+                    (ushort) Faker().Date.Past().Year), Faker().Random.String(), 
+                "transactionId", "timestamp");
             var expectedPatient = new PatientEnquiryRepresentation(
                 "p1",
                 "J K",
@@ -75,13 +76,14 @@
             var unverifiedIdentifiers = Identifier()
                 .GenerateLazy(1)
                 .Select(builder => builder.Build());
+            var patientEnquiry = new PatientEnquiry(Faker().Random.Hash(),
+                verifiedIdentifiers,
+                unverifiedIdentifiers,
+                Faker().Name.FullName(),
+                Faker().PickRandom<Gender>(),
+                (ushort) Faker().Date.Past().Year);
             var discoveryRequest = new DiscoveryRequest(
-                new PatientEnquiry(Faker().Random.Hash(),
-                    verifiedIdentifiers,
-                    unverifiedIdentifiers,
-                    Faker().Name.FullName(),
-                    Faker().PickRandom<Gender>(),
-                    (ushort) Faker().Date.Past().Year), Faker().Random.String());
+                patientEnquiry, Faker().Random.String(), "transactionId", "timestamp");
             var error = new ErrorRepresentation(new Error(ErrorCode.MultiplePatientsFound, "Multiple patients found"));
             discovery.Setup(x => x.PatientFor(discoveryRequest)).ReturnsAsync((null, error));
 

@@ -1,3 +1,6 @@
+using Hangfire;
+using Hangfire.MemoryStorage;
+
 namespace In.ProjectEKA.HipService
 {
     using System.Linq;
@@ -60,6 +63,7 @@ namespace In.ProjectEKA.HipService
                 .AddDbContext<ConsentContext>(options =>
                     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
                         x => x.MigrationsAssembly("In.ProjectEKA.HipService")))
+                .AddHangfire(config => { config.UseMemoryStorage(); })
                 .AddSingleton<IEncryptor, Encryptor>()
                 .AddSingleton<IPatientRepository>(new PatientRepository("demoPatients.json"))
                 .AddSingleton<ICollect>(new Collect("demoPatientCareContextDataMap.json"))
@@ -150,7 +154,8 @@ namespace In.ProjectEKA.HipService
                 .UseSerilogRequestLogging()
                 .UseAuthentication()
                 .UseAuthorization()
-                .UseEndpoints(endpoints => { endpoints.MapControllers(); });
+                .UseEndpoints(endpoints => { endpoints.MapControllers(); })
+                .UseHangfireServer();
 
             using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
             var linkContext = serviceScope.ServiceProvider.GetService<LinkPatientContext>();

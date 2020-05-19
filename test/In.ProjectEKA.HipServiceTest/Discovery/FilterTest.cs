@@ -37,7 +37,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                     patientName,
                     patientGender,
                     yearOfBirth),
-                Faker().Random.String());
+                Faker().Random.String(), RandomString(), RandomString());
             var patients = Patient()
                 .GenerateLazy(10)
                 .Append(Patient().Rules((_, patient) =>
@@ -75,7 +75,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                     name,
                     gender,
                     dateOfBirth),
-                Faker().Random.String());
+                Faker().Random.String(), RandomString(), RandomString());
             var patients = Patient()
                 .GenerateLazy(10)
                 .Append(Patient().Rules((_, patient) =>
@@ -116,7 +116,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                     unverifiedIdentifiers,
                     null,
                     patientGender,
-                    null), Faker().Random.String());
+                    null), Faker().Random.String(), RandomString(), RandomString());
             var patients = Patient()
                 .GenerateLazy(10)
                 .Append(Patient().Rules((_, patient) =>
