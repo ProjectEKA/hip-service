@@ -5,7 +5,6 @@
     using System.Linq;
     using System.Threading.Tasks;
     using FluentAssertions;
-    using HipLibrary.Patient;
     using HipLibrary.Patient.Model;
     using HipService.Discovery;
     using Microsoft.AspNetCore.Http;
@@ -42,8 +41,7 @@
                     unverifiedIdentifiers,
                     Faker().Name.FullName(),
                     Faker().PickRandom<Gender>(),
-                    (ushort) Faker().Date.Past().Year), Faker().Random.String(), 
-                "transactionId", "timestamp");
+                    (ushort) Faker().Date.Past().Year), Faker().Random.String(), "transactionId", DateTime.Now);
             var expectedPatient = new PatientEnquiryRepresentation(
                 "p1",
                 "J K",
@@ -76,14 +74,13 @@
             var unverifiedIdentifiers = Identifier()
                 .GenerateLazy(1)
                 .Select(builder => builder.Build());
-            var patientEnquiry = new PatientEnquiry(Faker().Random.Hash(),
-                verifiedIdentifiers,
-                unverifiedIdentifiers,
-                Faker().Name.FullName(),
-                Faker().PickRandom<Gender>(),
-                (ushort) Faker().Date.Past().Year);
             var discoveryRequest = new DiscoveryRequest(
-                patientEnquiry, Faker().Random.String(), "transactionId", "timestamp");
+                new PatientEnquiry(Faker().Random.Hash(),
+                    verifiedIdentifiers,
+                    unverifiedIdentifiers,
+                    Faker().Name.FullName(),
+                    Faker().PickRandom<Gender>(),
+                    (ushort) Faker().Date.Past().Year), Faker().Random.String(), "transactionId", DateTime.Now);
             var error = new ErrorRepresentation(new Error(ErrorCode.MultiplePatientsFound, "Multiple patients found"));
             discovery.Setup(x => x.PatientFor(discoveryRequest)).ReturnsAsync((null, error));
 

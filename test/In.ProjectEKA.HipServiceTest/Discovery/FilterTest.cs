@@ -1,3 +1,5 @@
+using System;
+
 namespace In.ProjectEKA.HipServiceTest.Discovery
 {
     using System.Linq;
@@ -37,7 +39,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                     patientName,
                     patientGender,
                     yearOfBirth),
-                Faker().Random.String(), RandomString(), RandomString());
+                Faker().Random.String(), RandomString(), DateTime.Now);
             var patients = Patient()
                 .GenerateLazy(10)
                 .Append(Patient().Rules((_, patient) =>
@@ -75,7 +77,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                     name,
                     gender,
                     dateOfBirth),
-                Faker().Random.String(), RandomString(), RandomString());
+                Faker().Random.String(), RandomString(), DateTime.Now);
             var patients = Patient()
                 .GenerateLazy(10)
                 .Append(Patient().Rules((_, patient) =>
@@ -116,7 +118,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                     unverifiedIdentifiers,
                     null,
                     patientGender,
-                    null), Faker().Random.String(), RandomString(), RandomString());
+                    null), Faker().Random.String(), RandomString(), DateTime.Now);
             var patients = Patient()
                 .GenerateLazy(10)
                 .Append(Patient().Rules((_, patient) =>

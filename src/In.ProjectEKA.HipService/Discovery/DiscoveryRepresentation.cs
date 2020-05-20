@@ -1,7 +1,7 @@
 using System;
-using Hl7.Fhir.Model;
+using In.ProjectEKA.HipLibrary.Patient.Model;
 
-namespace In.ProjectEKA.HipLibrary.Patient.Model
+namespace In.ProjectEKA.HipService.Discovery
 {
     public class DiscoveryRepresentation
     {
@@ -17,13 +17,17 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
     {
         public PatientEnquiryRepresentation Patient { get; }
         public Guid RequestId { get; }
-        public string Timestamp { get; }
+        public DateTime Timestamp { get; }
         public string TransactionId { get; }
         public Error Error { get; }
         public Resp Resp { get; }
 
-        public GatewayDiscoveryRepresentation(PatientEnquiryRepresentation patient, Guid requestId,
-            string timestamp, string transactionId, Error error, Resp resp)
+        public GatewayDiscoveryRepresentation(PatientEnquiryRepresentation patient,
+            Guid requestId,
+            DateTime timestamp,
+            string transactionId,
+            Error error,
+            Resp resp)
         {
             Patient = patient;
             RequestId = requestId;

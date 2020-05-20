@@ -1,12 +1,11 @@
+using In.ProjectEKA.HipService.Discovery;
+
 namespace In.ProjectEKA.HipService.Common
 {
     using System;
     using System.Net.Http;
     using System.Net.Mime;
     using System.Text;
-    using Common;
-    using In.ProjectEKA.HipLibrary.Patient.Model;
-    using Model;
     using Logger;
     using Microsoft.Net.Http.Headers;
     using Newtonsoft.Json;
@@ -17,25 +16,30 @@ namespace In.ProjectEKA.HipService.Common
     {
         private readonly HttpClient httpClient;
         private readonly CentralRegistryClient centralRegistryClient;
+        private readonly GatewayConfiguration configuration;
+        private static string OnDiscoverPath = "/patients/care-contexts/on-discover";
 
-        public GatewayClient(HttpClient httpClient, CentralRegistryClient centralRegistryClient)
+        public GatewayClient(HttpClient httpClient,
+            CentralRegistryClient centralRegistryClient, GatewayConfiguration gatewayConfiguration)
         {
             this.httpClient = httpClient;
             this.centralRegistryClient = centralRegistryClient;
+            this.configuration = gatewayConfiguration;
         }
 
-        public virtual async Task SendDataToGateway(String url, GatewayDiscoveryRepresentation discoveryResponse)
+        public virtual async Task SendDataToGateway(GatewayDiscoveryRepresentation discoveryResponse, string cmSuffix)
         {
-            await PostTo(url, discoveryResponse);
+            await PostTo(configuration.Url + OnDiscoverPath, discoveryResponse, cmSuffix)
+                .ConfigureAwait(false);
         }
 
-        private async Task PostTo(string gatewayUrl, GatewayDiscoveryRepresentation representation)
+        private async Task PostTo(string gatewayUrl, GatewayDiscoveryRepresentation representation, string cmSuffix)
         {
             try
             {
                 var token = await centralRegistryClient.Authenticate();
                 token.MatchSome(async accessToken => await httpClient
-                    .SendAsync(CreateHttpRequest(gatewayUrl, representation, accessToken))
+                    .SendAsync(CreateHttpRequest(gatewayUrl, representation, accessToken, cmSuffix))
                     .ConfigureAwait(false));
                 token.MatchNone(() => Log.Information("Data transfer notification to Gateway failed"));
             }
@@ -45,7 +49,10 @@ namespace In.ProjectEKA.HipService.Common
             }
         }
 
-        private static HttpRequestMessage CreateHttpRequest<T>(string dataPushUrl, T content, string token)
+        private static HttpRequestMessage CreateHttpRequest<T>(string dataPushUrl,
+            T content,
+            string token,
+            string cmSuffix)
         {
             var json = JsonConvert.SerializeObject(content, new JsonSerializerSettings
             {
@@ -62,7 +69,8 @@ namespace In.ProjectEKA.HipService.Common
                 Content = new StringContent(json, Encoding.UTF8, MediaTypeNames.Application.Json),
                 Headers =
                 {
-                    {HeaderNames.Authorization, token}
+                    {HeaderNames.Authorization, token},
+                    {"X-CM-ID", cmSuffix}
                 }
             };
         }

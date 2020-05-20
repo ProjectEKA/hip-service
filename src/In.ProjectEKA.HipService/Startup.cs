@@ -92,6 +92,10 @@ namespace In.ProjectEKA.HipService
                 .AddScoped<IHealthInformationRepository, HealthInformationRepository>()
                 .AddSingleton(new CentralRegistryClient(HttpClient,
                     Configuration.GetSection("authServer").Get<CentralRegistryConfiguration>()))
+                .AddSingleton(new GatewayClient(HttpClient, new CentralRegistryClient(
+                        HttpClient,
+                        Configuration.GetSection("authServer").Get<CentralRegistryConfiguration>()),
+                    Configuration.GetSection("Gateway").Get<GatewayConfiguration>()))
                 .AddTransient<IDataFlow, DataFlow.DataFlow>()
                 .AddRouting(options => options.LowercaseUrls = true)
                 .AddControllers()
