@@ -1,14 +1,14 @@
-﻿using In.ProjectEKA.HipService.Common;
+﻿using System;
+using System.Threading.Tasks;
+using Hangfire;
+using In.ProjectEKA.HipLibrary.Patient.Model;
+using In.ProjectEKA.HipService.Common;
+using In.ProjectEKA.HipService.Logger;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace In.ProjectEKA.HipService.Discovery
 {
-    using System;
-    using Hangfire;
-    using System.Threading.Tasks;
-    using HipLibrary.Patient.Model;
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Mvc;
-
     [Authorize]
     [Route("patients/discover/carecontexts")]
     [ApiController]
@@ -38,11 +38,15 @@ namespace In.ProjectEKA.HipService.Discovery
     {
         private readonly PatientDiscovery patientDiscovery;
         private readonly GatewayClient gatewayClient;
+        private readonly IBackgroundJobClient backgroundJob;
 
-        public CareContextDiscoveryController(PatientDiscovery patientDiscovery, GatewayClient gatewayClient)
+        public CareContextDiscoveryController(PatientDiscovery patientDiscovery,
+            GatewayClient gatewayClient,
+            IBackgroundJobClient backgroundJob)
         {
             this.patientDiscovery = patientDiscovery;
             this.gatewayClient = gatewayClient;
+            this.backgroundJob = backgroundJob;
         }
 
         [HttpPost]
@@ -50,24 +54,33 @@ namespace In.ProjectEKA.HipService.Discovery
         {
             // should use cancellation token
             // https://docs.hangfire.io/en/latest/background-methods/using-cancellation-tokens.html
-            BackgroundJob.Enqueue(() => GetPatientCareContext(request));
+            backgroundJob.Enqueue(() => GetPatientCareContext(request));
             return Accepted();
         }
 
         public async Task<int> GetPatientCareContext(DiscoveryRequest request)
         {
-            var (discoveryResponse, errorRepresentation) = await patientDiscovery.PatientFor(request);
-            var patientId = request.Patient.Id;
-            var cmSuffix = patientId.Substring(patientId.LastIndexOf("@", StringComparison.Ordinal) + 1);
+            try
+            {
+                var (response, error) = await patientDiscovery.PatientFor(request);
+                var patientId = request.Patient.Id;
+                var cmSuffix = patientId.Substring(
+                    patientId.LastIndexOf("@", StringComparison.Ordinal) + 1);
 
-            var gatewayDiscoveryRepresentation = new GatewayDiscoveryRepresentation(
-                discoveryResponse?.Patient,
-                Guid.NewGuid(),
-                DateTime.Now.ToUniversalTime(),
-                request.TransactionId, //TODO: should be reading transactionId from contract
-                errorRepresentation?.Error,
-                new Resp(request.RequestId));
-            await gatewayClient.SendDataToGateway(gatewayDiscoveryRepresentation, cmSuffix);
+                var gatewayDiscoveryRepresentation = new GatewayDiscoveryRepresentation(
+                    response?.Patient,
+                    Guid.NewGuid(),
+                    DateTime.Now.ToUniversalTime(),
+                    request.TransactionId, //TODO: should be reading transactionId from contract
+                    error?.Error,
+                    new Resp(request.RequestId));
+                await gatewayClient.SendDataToGateway(gatewayDiscoveryRepresentation, cmSuffix);
+            }
+            catch (Exception exception)
+            {
+                Log.Error(exception, exception.StackTrace);
+            }
+
             return 0;
         }
     }
