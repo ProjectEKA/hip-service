@@ -1,39 +1,39 @@
-using System;
-using System.Linq;
-using System.Net.Http;
-using System.Text.Json;
-using System.Threading.Tasks;
 using Hangfire;
 using Hangfire.MemoryStorage;
-using In.ProjectEKA.DefaultHip.DataFlow;
-using In.ProjectEKA.DefaultHip.Discovery;
-using In.ProjectEKA.DefaultHip.Link;
-using In.ProjectEKA.HipLibrary.Matcher;
-using In.ProjectEKA.HipLibrary.Patient;
-using In.ProjectEKA.HipService.Common;
-using In.ProjectEKA.HipService.Consent;
-using In.ProjectEKA.HipService.Consent.Database;
-using In.ProjectEKA.HipService.DataFlow;
-using In.ProjectEKA.HipService.DataFlow.Database;
-using In.ProjectEKA.HipService.DataFlow.Encryptor;
-using In.ProjectEKA.HipService.Discovery;
-using In.ProjectEKA.HipService.Discovery.Database;
-using In.ProjectEKA.HipService.Link;
-using In.ProjectEKA.HipService.Link.Database;
-using In.ProjectEKA.HipService.MessagingQueue;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
-using Serilog;
 
 namespace In.ProjectEKA.HipService
 {
+    using System.Linq;
+    using System.Net.Http;
+    using System.Text.Json;
+    using Common;
+    using Consent;
+    using Consent.Database;
+    using DataFlow;
+    using DataFlow.Database;
+    using DataFlow.Encryptor;
+    using DefaultHip.DataFlow;
+    using DefaultHip.Discovery;
+    using DefaultHip.Link;
+    using Discovery;
+    using Discovery.Database;
+    using HipLibrary.Matcher;
+    using HipLibrary.Patient;
+    using Link;
+    using Link.Database;
+    using MessagingQueue;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using Microsoft.IdentityModel.Tokens;
+    using Newtonsoft.Json;
+    using Serilog;
+    using Task = System.Threading.Tasks.Task;
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
