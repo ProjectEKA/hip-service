@@ -52,13 +52,11 @@ namespace In.ProjectEKA.HipService.Discovery
         [HttpPost]
         public AcceptedResult DiscoverPatientCareContexts(DiscoveryRequest request)
         {
-            // should use cancellation token
-            // https://docs.hangfire.io/en/latest/background-methods/using-cancellation-tokens.html
             backgroundJob.Enqueue(() => GetPatientCareContext(request));
             return Accepted();
         }
 
-        public async Task<int> GetPatientCareContext(DiscoveryRequest request)
+        public async Task GetPatientCareContext(DiscoveryRequest request)
         {
             try
             {
@@ -80,8 +78,6 @@ namespace In.ProjectEKA.HipService.Discovery
             {
                 Log.Error(exception, exception.StackTrace);
             }
-
-            return 0;
         }
     }
 }

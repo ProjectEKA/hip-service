@@ -1,3 +1,4 @@
+using System;
 using Hangfire;
 using Hangfire.MemoryStorage;
 
@@ -47,7 +48,10 @@ namespace In.ProjectEKA.HipService
                     chain,
                     sslPolicyErrors) => true
             };
-            HttpClient = new HttpClient(clientHandler);
+            HttpClient = new HttpClient(clientHandler)
+            {
+                Timeout = TimeSpan.FromSeconds(Configuration.GetSection("Gateway:timeout").Get<int>())
+            };
         }
 
         private IConfiguration Configuration { get; }
@@ -162,7 +166,11 @@ namespace In.ProjectEKA.HipService
                 .UseAuthentication()
                 .UseAuthorization()
                 .UseEndpoints(endpoints => { endpoints.MapControllers(); })
-                .UseHangfireServer();
+                .UseHangfireServer(new BackgroundJobServerOptions
+                {
+                    CancellationCheckInterval = TimeSpan.FromMinutes(
+                        Configuration.GetSection("BackgroundJobs:cancellationCheckInterval").Get<int>())
+                });
 
             using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
             var linkContext = serviceScope.ServiceProvider.GetService<LinkPatientContext>();
