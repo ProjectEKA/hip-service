@@ -24,7 +24,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             var httpClient = new HttpClient(handlerMock.Object);
             var centralRegistryClient = new Mock<CentralRegistryClient>(MockBehavior.Strict, null, null);
             var gatewayConfiguration = new GatewayConfiguration {Url = "http://someUrl"};
-            var expectedUri = new Uri("http://someUrl/patients/care-contexts/on-discover");
+            var expectedUri = new Uri("http://someUrl/care-contexts/on-discover");
 
             var patientEnquiryRepresentation = new PatientEnquiryRepresentation(
                 "123",

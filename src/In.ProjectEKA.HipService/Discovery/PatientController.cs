@@ -32,7 +32,7 @@ namespace In.ProjectEKA.HipService.Discovery
         }
     }
 
-    [Route("patients/care-contexts/discover")]
+    [Route("care-contexts/discover")]
     [ApiController]
     public class CareContextDiscoveryController : Controller
     {

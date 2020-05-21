@@ -16,7 +16,7 @@ namespace In.ProjectEKA.HipService.Common
         private readonly HttpClient httpClient;
         private readonly CentralRegistryClient centralRegistryClient;
         private readonly GatewayConfiguration configuration;
-        private static string OnDiscoverPath = "/patients/care-contexts/on-discover";
+        private static string OnDiscoverPath = "/care-contexts/on-discover";
 
         public GatewayClient(HttpClient httpClient,
             CentralRegistryClient centralRegistryClient, GatewayConfiguration gatewayConfiguration)
