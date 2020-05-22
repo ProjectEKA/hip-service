@@ -1,8 +1,8 @@
-using System;
-using In.ProjectEKA.HipLibrary.Patient.Model;
-
 namespace In.ProjectEKA.HipService.Gateway.Model
 {
+    using System;
+    using HipLibrary.Patient.Model;
+
     public class GatewayDiscoveryRepresentation
     {
         public PatientEnquiryRepresentation Patient { get; }

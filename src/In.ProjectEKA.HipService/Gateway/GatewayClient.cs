@@ -1,16 +1,16 @@
-using System;
-using System.Net.Http;
-using System.Net.Mime;
-using System.Text;
-using System.Threading.Tasks;
-using In.ProjectEKA.HipService.Common;
-using In.ProjectEKA.HipService.Logger;
-using Microsoft.Net.Http.Headers;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-
 namespace In.ProjectEKA.HipService.Gateway
 {
+    using System;
+    using System.Net.Http;
+    using System.Net.Mime;
+    using System.Text;
+    using System.Threading.Tasks;
+    using Common;
+    using Logger;
+    using Microsoft.Net.Http.Headers;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Serialization;
+
     public class GatewayClient
     {
         private readonly HttpClient httpClient;

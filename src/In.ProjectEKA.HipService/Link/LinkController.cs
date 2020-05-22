@@ -1,15 +1,15 @@
-using System;
-using System.Threading.Tasks;
-using Hangfire;
-using In.ProjectEKA.HipLibrary.Patient.Model;
-using In.ProjectEKA.HipService.Discovery;
-using In.ProjectEKA.HipService.Gateway;
-using In.ProjectEKA.HipService.Gateway.Model;
-using In.ProjectEKA.HipService.Logger;
-using Microsoft.AspNetCore.Mvc;
-
 namespace In.ProjectEKA.HipService.Link
 {
+    using System;
+    using System.Threading.Tasks;
+    using Discovery;
+    using Gateway;
+    using Gateway.Model;
+    using Hangfire;
+    using HipLibrary.Patient.Model;
+    using Logger;
+    using Microsoft.AspNetCore.Mvc;
+
     [ApiController]
     [Route("links/link/init")]
     public class LinkController : ControllerBase
@@ -60,13 +60,22 @@ namespace In.ProjectEKA.HipService.Link
                     errorRepresentation = new ErrorRepresentation(
                         new Error(ErrorCode.DiscoveryRequestNotFound, ErrorMessage.DiscoveryRequestNotFound));
                 }
-
                 var patientReferenceRequest =
                     new PatientLinkEnquiry(request.TransactionId, request.RequestId, patient);
+                var patientLinkEnquiryRepresentation = new PatientLinkEnquiryRepresentation();
+
                 var (linkReferenceResponse, error) = errorRepresentation != null
-                    ? (null, errorRepresentation)
+                    ? (patientLinkEnquiryRepresentation, errorRepresentation)
                     : await linkPatient.LinkPatients(patientReferenceRequest);
-                var response = new GatewayLinkResponse(linkReferenceResponse, error);
+
+                var response = new GatewayLinkResponse(
+                    linkReferenceResponse ?? new PatientLinkEnquiryRepresentation(),
+                    error?.Error,
+                    new Resp(request.RequestId),
+                    request.TransactionId,
+                    DateTime.Now.ToUniversalTime(),
+                    Guid.NewGuid());
+
                 await gatewayClient.SendDataToGateway(GatewayPathConstants.OnLinkInitPath, response, cmSuffix);
             }
             catch (Exception exception)

@@ -1,17 +1,31 @@
-using In.ProjectEKA.HipLibrary.Patient.Model;
-
 namespace In.ProjectEKA.HipService.Gateway.Model
 {
+    using System;
+    using HipLibrary.Patient.Model;
+
     public class GatewayLinkResponse
     {
-        private readonly PatientLinkEnquiryRepresentation patientLinkEnquiryRepresentation;
-        private readonly ErrorRepresentation errorRepresentation;
+        public PatientLinkEnquiryRepresentation PatientLinkEnquiryRepresentation { get; }
+
+        public Guid RequestId { get; }
+
+        public DateTime Timestamp { get; }
+
+        public string TransactionId { get; }
+
+        public Error Error { get; }
+
+        public Resp Resp { get; }
 
         public GatewayLinkResponse(PatientLinkEnquiryRepresentation patientLinkEnquiryRepresentation,
-            ErrorRepresentation errorRepresentation)
+            Error error, Resp resp, string transactionId, DateTime timestamp, Guid requestId)
         {
-            this.patientLinkEnquiryRepresentation = patientLinkEnquiryRepresentation;
-            this.errorRepresentation = errorRepresentation;
+            PatientLinkEnquiryRepresentation = patientLinkEnquiryRepresentation;
+            Error = error;
+            Resp = resp;
+            TransactionId = transactionId;
+            Timestamp = timestamp;
+            RequestId = requestId;
         }
     }
 }

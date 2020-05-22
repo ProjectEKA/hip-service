@@ -1,17 +1,17 @@
-﻿using System;
-using System.Threading.Tasks;
-using Hangfire;
-using In.ProjectEKA.HipLibrary.Patient.Model;
-using In.ProjectEKA.HipService.Common;
-using In.ProjectEKA.HipService.Gateway;
-using In.ProjectEKA.HipService.Gateway.Model;
-using In.ProjectEKA.HipService.Logger;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using static In.ProjectEKA.HipService.Gateway.GatewayPathConstants;
+﻿using static In.ProjectEKA.HipService.Gateway.GatewayPathConstants;
 
 namespace In.ProjectEKA.HipService.Discovery
 {
+    using System;
+    using System.Threading.Tasks;
+    using Gateway;
+    using Gateway.Model;
+    using Hangfire;
+    using HipLibrary.Patient.Model;
+    using Logger;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+
     [Authorize]
     [Route("patients/discover/carecontexts")]
     [ApiController]

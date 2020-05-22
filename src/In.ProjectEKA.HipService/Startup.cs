@@ -1,13 +1,10 @@
-using System;
-using Hangfire;
-using Hangfire.MemoryStorage;
-using In.ProjectEKA.HipService.Gateway;
-
 namespace In.ProjectEKA.HipService
 {
+    using System;
     using System.Linq;
     using System.Net.Http;
     using System.Text.Json;
+    using System.Threading.Tasks;
     using Common;
     using Consent;
     using Consent.Database;
@@ -19,6 +16,9 @@ namespace In.ProjectEKA.HipService
     using DefaultHip.Link;
     using Discovery;
     using Discovery.Database;
+    using Gateway;
+    using Hangfire;
+    using Hangfire.MemoryStorage;
     using HipLibrary.Matcher;
     using HipLibrary.Patient;
     using Link;
@@ -34,7 +34,6 @@ namespace In.ProjectEKA.HipService
     using Microsoft.IdentityModel.Tokens;
     using Newtonsoft.Json;
     using Serilog;
-    using Task = System.Threading.Tasks.Task;
 
     public class Startup
     {

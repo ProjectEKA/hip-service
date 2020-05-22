@@ -1,21 +1,20 @@
-using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
-using In.ProjectEKA.HipLibrary.Patient.Model;
-using In.ProjectEKA.HipService.Common;
-using In.ProjectEKA.HipService.Discovery;
-using In.ProjectEKA.HipService.Gateway;
-using In.ProjectEKA.HipService.Gateway.Model;
-using Moq;
-using Moq.Protected;
-using Optional;
-using Xunit;
-
 namespace In.ProjectEKA.HipServiceTest.Discovery
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Net;
+    using System.Net.Http;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using HipLibrary.Patient.Model;
+    using HipService.Common;
+    using HipService.Gateway;
+    using HipService.Gateway.Model;
+    using Moq;
+    using Moq.Protected;
+    using Optional;
+    using Xunit;
+
     [Collection("Gateway Client Tests")]
     public class GatewayClientTest
     {
@@ -60,7 +59,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
 
             centralRegistryClient.Setup(client => client.Authenticate()).ReturnsAsync(Option.Some("Something"));
 
-            gatewayClient.SendDataToGateway(gatewayDiscoveryRepresentation, "ncg");
+            gatewayClient.SendDataToGateway(GatewayPathConstants.OnDiscoverPath, gatewayDiscoveryRepresentation, "ncg");
 
             handlerMock.Protected().Verify(
                 "SendAsync",
@@ -69,7 +68,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                                                          && message.RequestUri == expectedUri),
                 ItExpr.IsAny<CancellationToken>());
         }
-        
+
         [Fact]
         private void ShouldNotPostDataIfAuthenticationWithCentralRegistryFailed()
         {
@@ -110,7 +109,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
 
             centralRegistryClient.Setup(client => client.Authenticate()).ReturnsAsync(Option.None<string>());
 
-            gatewayClient.SendDataToGateway(gatewayDiscoveryRepresentation, "ncg");
+            gatewayClient.SendDataToGateway(GatewayPathConstants.OnDiscoverPath, gatewayDiscoveryRepresentation, "ncg");
 
             handlerMock.Protected().Verify(
                 "SendAsync",
