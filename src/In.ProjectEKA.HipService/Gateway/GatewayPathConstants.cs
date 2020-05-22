@@ -1,9 +1,8 @@
 namespace In.ProjectEKA.HipService.Gateway
 {
-    public class GatewayPathConstants
+    public static class GatewayPathConstants
     {
-        public static string OnDiscoverPath = "/care-contexts/on-discover";
-        public static string OnLinkInitPath = "/v1/links/link/on-init";
-
+        public static readonly string OnDiscoverPath = "/care-contexts/on-discover";
+        public static readonly string OnLinkInitPath = "/v1/links/link/on-init";
     }
 }
