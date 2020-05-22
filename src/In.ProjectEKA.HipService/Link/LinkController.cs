@@ -60,16 +60,17 @@ namespace In.ProjectEKA.HipService.Link
                     errorRepresentation = new ErrorRepresentation(
                         new Error(ErrorCode.DiscoveryRequestNotFound, ErrorMessage.DiscoveryRequestNotFound));
                 }
+
                 var patientReferenceRequest =
                     new PatientLinkEnquiry(request.TransactionId, request.RequestId, patient);
-                var patientLinkEnquiryRepresentation = new PatientLinkEnquiryRepresentation();
+                var linkEnquiryRepresentation = new PatientLinkEnquiryRepresentation();
 
                 var (linkReferenceResponse, error) = errorRepresentation != null
-                    ? (patientLinkEnquiryRepresentation, errorRepresentation)
+                    ? (linkEnquiryRepresentation, errorRepresentation)
                     : await linkPatient.LinkPatients(patientReferenceRequest);
 
                 var response = new GatewayLinkResponse(
-                    linkReferenceResponse ?? new PatientLinkEnquiryRepresentation(),
+                    linkReferenceResponse ?? linkEnquiryRepresentation,
                     error?.Error,
                     new Resp(request.RequestId),
                     request.TransactionId,

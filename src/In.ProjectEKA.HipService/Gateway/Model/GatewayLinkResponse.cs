@@ -5,7 +5,7 @@ namespace In.ProjectEKA.HipService.Gateway.Model
 
     public class GatewayLinkResponse
     {
-        public PatientLinkEnquiryRepresentation PatientLinkEnquiryRepresentation { get; }
+        public PatientLinkEnquiryRepresentation LinkEnquiryRepresentation { get; }
 
         public Guid RequestId { get; }
 
@@ -17,10 +17,10 @@ namespace In.ProjectEKA.HipService.Gateway.Model
 
         public Resp Resp { get; }
 
-        public GatewayLinkResponse(PatientLinkEnquiryRepresentation patientLinkEnquiryRepresentation,
+        public GatewayLinkResponse(PatientLinkEnquiryRepresentation linkEnquiryRepresentation,
             Error error, Resp resp, string transactionId, DateTime timestamp, Guid requestId)
         {
-            PatientLinkEnquiryRepresentation = patientLinkEnquiryRepresentation;
+            LinkEnquiryRepresentation = linkEnquiryRepresentation;
             Error = error;
             Resp = resp;
             TransactionId = transactionId;

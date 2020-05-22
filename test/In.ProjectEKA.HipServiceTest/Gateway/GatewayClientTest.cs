@@ -1,4 +1,4 @@
-namespace In.ProjectEKA.HipServiceTest.Discovery
+namespace In.ProjectEKA.HipServiceTest.Gateway
 {
     using System;
     using System.Collections.Generic;
