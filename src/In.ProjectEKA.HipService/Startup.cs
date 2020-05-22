@@ -1,6 +1,7 @@
 using System;
 using Hangfire;
 using Hangfire.MemoryStorage;
+using In.ProjectEKA.HipService.Gateway;
 
 namespace In.ProjectEKA.HipService
 {

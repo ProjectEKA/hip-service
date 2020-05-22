@@ -3,20 +3,19 @@ using System.Net.Http;
 using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
-using In.ProjectEKA.HipService.Discovery;
+using In.ProjectEKA.HipService.Common;
 using In.ProjectEKA.HipService.Logger;
 using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
-namespace In.ProjectEKA.HipService.Common
+namespace In.ProjectEKA.HipService.Gateway
 {
     public class GatewayClient
     {
         private readonly HttpClient httpClient;
         private readonly CentralRegistryClient centralRegistryClient;
         private readonly GatewayConfiguration configuration;
-        private static string OnDiscoverPath = "/care-contexts/on-discover";
 
         public GatewayClient(HttpClient httpClient,
             CentralRegistryClient centralRegistryClient, GatewayConfiguration gatewayConfiguration)
@@ -26,13 +25,13 @@ namespace In.ProjectEKA.HipService.Common
             this.configuration = gatewayConfiguration;
         }
 
-        public virtual async Task SendDataToGateway(GatewayDiscoveryRepresentation discoveryResponse, string cmSuffix)
+        public virtual async Task SendDataToGateway<T>(string urlPath, T response, string cmSuffix)
         {
-            await PostTo(configuration.Url + OnDiscoverPath, discoveryResponse, cmSuffix)
+            await PostTo(configuration.Url + urlPath, response, cmSuffix)
                 .ConfigureAwait(false);
         }
 
-        private async Task PostTo(string gatewayUrl, GatewayDiscoveryRepresentation representation, string cmSuffix)
+        private async Task PostTo<T>(string gatewayUrl, T representation, string cmSuffix)
         {
             try
             {

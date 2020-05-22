@@ -9,6 +9,7 @@ using Hangfire.States;
 using In.ProjectEKA.HipLibrary.Patient.Model;
 using In.ProjectEKA.HipService.Common;
 using In.ProjectEKA.HipService.Discovery;
+using In.ProjectEKA.HipService.Gateway;
 using In.ProjectEKA.HipServiceTest.Discovery.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

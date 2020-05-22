@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using In.ProjectEKA.HipLibrary.Patient.Model;
 using In.ProjectEKA.HipService.Common;
 using In.ProjectEKA.HipService.Discovery;
+using In.ProjectEKA.HipService.Gateway;
+using In.ProjectEKA.HipService.Gateway.Model;
 using Moq;
 using Moq.Protected;
 using Optional;
