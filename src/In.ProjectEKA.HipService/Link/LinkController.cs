@@ -11,7 +11,7 @@ namespace In.ProjectEKA.HipService.Link
     using Microsoft.AspNetCore.Mvc;
 
     [ApiController]
-    [Route("links/link/init")]
+    [Route("v1/links/link/init")]
     public class LinkController : ControllerBase
     {
         private readonly IDiscoveryRequestRepository discoveryRequestRepository;
