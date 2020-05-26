@@ -31,15 +31,15 @@ namespace In.ProjectEKA.HipService.Link
         }
 
         [HttpPost]
-        public AcceptedResult LinkFor(PatientLinkReferenceRequest request)
+        public AcceptedResult LinkFor(LinkReferenceRequest request)
         {
             backgroundJob.Enqueue(() => LinkPatient(request));
             return Accepted();
         }
 
-        public async Task LinkPatient(PatientLinkReferenceRequest request)
+        public async Task LinkPatient(LinkReferenceRequest request)
         {
-            var cmUserId = request.Patient.ConsentManagerUserId;
+            var cmUserId = request.Patient.Id;
             var cmSuffix = cmUserId.Substring(
                 cmUserId.LastIndexOf("@", StringComparison.Ordinal) + 1);
             var patient = new LinkEnquiry(
@@ -51,7 +51,7 @@ namespace In.ProjectEKA.HipService.Link
             {
                 var doesRequestExists = await discoveryRequestRepository.RequestExistsFor(
                     request.TransactionId,
-                    request.Patient?.ConsentManagerUserId,
+                    request.Patient?.Id,
                     request.Patient?.ReferenceNumber);
 
                 ErrorRepresentation errorRepresentation = null;

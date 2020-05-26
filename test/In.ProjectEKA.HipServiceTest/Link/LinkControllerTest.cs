@@ -41,18 +41,18 @@ namespace In.ProjectEKA.HipServiceTest.Link
             var faker = Faker();
             const string programRefNo = "129";
             const string patientReference = "4";
-            var consentManagerUserId = faker.Random.Hash();
+            var id = faker.Random.Hash();
             var transactionId = faker.Random.Hash();
-            var linkRequest = new PatientLinkReferenceRequest(
+            var linkRequest = new LinkReferenceRequest(
                 transactionId,
-                new LinkReference(
-                    consentManagerUserId,
+                new PatientLinkReference(
+                    id,
                     patientReference,
                     new[] {new CareContextEnquiry(programRefNo)}),
                 faker.Random.Hash());
 
             discoveryRequestRepository.Setup(x => x.RequestExistsFor(linkRequest.TransactionId,
-                    consentManagerUserId,
+                    id,
                     linkRequest.Patient.ReferenceNumber))
                 .ReturnsAsync(true);
 
