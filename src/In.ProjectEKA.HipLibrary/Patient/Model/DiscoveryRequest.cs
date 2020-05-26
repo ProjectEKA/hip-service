@@ -1,3 +1,5 @@
+using System;
+
 namespace In.ProjectEKA.HipLibrary.Patient.Model
 {
     public class DiscoveryRequest
@@ -6,10 +8,16 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
 
         public string RequestId { get; }
 
-        public DiscoveryRequest(PatientEnquiry patient, string requestId)
+        public string TransactionId { get; }
+
+        public DateTime Timestamp { get; }
+
+        public DiscoveryRequest(PatientEnquiry patient, string requestId, string transactionId, DateTime timestamp)
         {
             Patient = patient;
             RequestId = requestId;
+            TransactionId = transactionId;
+            Timestamp = timestamp;
         }
     }
 }
