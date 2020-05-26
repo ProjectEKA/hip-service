@@ -72,14 +72,18 @@ namespace In.ProjectEKA.HipService.Link
 
                 var patientReferenceRequest =
                     new PatientLinkEnquiry(request.TransactionId, request.RequestId, patient);
-                var linkEnquiryRepresentation = new PatientLinkEnquiryRepresentation();
+                var patientLinkEnquiryRepresentation = new PatientLinkEnquiryRepresentation();
 
                 var (linkReferenceResponse, error) = errorRepresentation != null
-                    ? (linkEnquiryRepresentation, errorRepresentation)
+                    ? (patientLinkEnquiryRepresentation, errorRepresentation)
                     : await linkPatient.LinkPatients(patientReferenceRequest);
-
+                var linkedPatientRepresentation = new LinkEnquiryRepresentation();
+                if (linkReferenceResponse != null)
+                {
+                    linkedPatientRepresentation = linkReferenceResponse.Link;
+                }
                 var response = new GatewayLinkResponse(
-                    linkReferenceResponse ?? linkEnquiryRepresentation,
+                    linkedPatientRepresentation,
                     error?.Error,
                     new Resp(request.RequestId),
                     request.TransactionId,

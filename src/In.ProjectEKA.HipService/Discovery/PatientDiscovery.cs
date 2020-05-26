@@ -33,7 +33,7 @@ namespace In.ProjectEKA.HipService.Discovery
         public virtual async Task<ValueTuple<DiscoveryRepresentation, ErrorRepresentation>> PatientFor(
             DiscoveryRequest request)
         {
-            if (await AlreadyExists(request.RequestId))
+            if (await AlreadyExists(request.TransactionId))
             {
                 return (null,
                     new ErrorRepresentation(new Error(ErrorCode.DuplicateDiscoveryRequest, "Request already exists")));
@@ -55,7 +55,7 @@ namespace In.ProjectEKA.HipService.Discovery
                 return await patientRepository.PatientWith(linkedCareContexts.First().PatientReferenceNumber)
                     .Map(async patient =>
                     {
-                        await discoveryRequestRepository.Add(new Model.DiscoveryRequest(request.RequestId,
+                        await discoveryRequestRepository.Add(new Model.DiscoveryRequest(request.TransactionId,
                             request.Patient.Id, patient.Identifier));
                         return (new DiscoveryRepresentation(patient.ToPatientEnquiryRepresentation(
                                 GetUnlinkedCareContexts(linkedCareContexts, patient))),
@@ -74,14 +74,14 @@ namespace In.ProjectEKA.HipService.Discovery
                 return (null, error);
             }
 
-            await discoveryRequestRepository.Add(new Model.DiscoveryRequest(request.RequestId,
+            await discoveryRequestRepository.Add(new Model.DiscoveryRequest(request.TransactionId,
                 request.Patient.Id, patientEnquiryRepresentation.ReferenceNumber));
             return (new DiscoveryRepresentation(patientEnquiryRepresentation), null);
         }
 
-        private async Task<bool> AlreadyExists(string requestId)
+        private async Task<bool> AlreadyExists(string transactionId)
         {
-            return await discoveryRequestRepository.RequestExistsFor(requestId);
+            return await discoveryRequestRepository.RequestExistsFor(transactionId);
         }
 
         private static bool HasAny(IEnumerable<LinkedAccounts> linkedAccounts)

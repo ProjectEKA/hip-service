@@ -90,7 +90,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             discoveryResponse.Patient.Should().BeEquivalentTo(expectedPatient);
             discoveryRequestRepository.Verify(
                 x => x.Add(It.Is<HipService.Discovery.Model.DiscoveryRequest>(
-                    r => r.RequestId == requestId && r.ConsentManagerUserId == patientId)),
+                    r => r.TransactionId == requestId && r.ConsentManagerUserId == patientId)),
                 Times.Once);
             error.Should().BeNull();
         }
@@ -161,7 +161,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             discoveryResponse.Patient.Should().BeEquivalentTo(expectedPatient);
             discoveryRequestRepository.Verify(
                 x => x.Add(It.Is<HipService.Discovery.Model.DiscoveryRequest>(
-                    r => r.RequestId == requestId && r.ConsentManagerUserId == consentManagerUserId)),
+                    r => r.TransactionId == requestId && r.ConsentManagerUserId == consentManagerUserId)),
                 Times.Once);
             error.Should().BeNull();
         }
@@ -225,7 +225,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             discoveryResponse.Patient.Should().BeEquivalentTo(expectedPatient);
             discoveryRequestRepository.Verify(
                 x => x.Add(It.Is<HipService.Discovery.Model.DiscoveryRequest>(
-                    r => r.RequestId == requestId && r.ConsentManagerUserId == consentManagerUserId)),
+                    r => r.TransactionId == requestId && r.ConsentManagerUserId == consentManagerUserId)),
                 Times.Once);
             error.Should().BeNull();
         }
