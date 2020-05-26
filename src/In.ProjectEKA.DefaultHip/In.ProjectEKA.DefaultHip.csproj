@@ -188,4 +188,11 @@
       <Link>SC1701FirstVisitDiagnosticReport.json</Link>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\NCP1008ThirdVisitDischargeSummary.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>NCP1008ThirdVisitDischargeSummary.json</Link>
+    </Content>
+  </ItemGroup>
 </Project>

@@ -95,7 +95,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
             patientVerification.Verify();
             linkRepository.Verify();
             guidGenerator.Verify();
-            discoveryRequestRepository.Verify(x => x.Delete(patientReferenceRequest.RequestId,
+            discoveryRequestRepository.Verify(x => x.Delete(patientReferenceRequest.TransactionId,
                 patientReferenceRequest.Patient.ConsentManagerUserId));
             response.Link.ReferenceNumber.Should().Be(linkReferenceNumber);
             response.Link.AuthenticationType.Should().Be(authType);
