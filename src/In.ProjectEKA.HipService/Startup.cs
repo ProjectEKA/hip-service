@@ -24,17 +24,13 @@ namespace In.ProjectEKA.HipService
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
-    using Microsoft.IdentityModel.Logging;
     using Microsoft.IdentityModel.Tokens;
     using Newtonsoft.Json;
     using TMHHip.DataFlow;
     using Serilog;
-    using TMHHip.DataFlow;
     using TMHHip.Discovery;
     using TMHHip.Link;
     using Task = System.Threading.Tasks.Task;
-    using TMHHip.Discovery;
-    using TMHHip.Link;
 
     public class Startup
     {
@@ -141,8 +137,6 @@ namespace In.ProjectEKA.HipService
                         }
                     };
                 });
-
-        private HttpClient HttpClient { get; }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

@@ -1,3 +1,5 @@
+using System;
+
 namespace In.ProjectEKA.TMHHip.Link
 {
     using System.Net.Http;
@@ -34,7 +36,7 @@ namespace In.ProjectEKA.TMHHip.Link
                 {
                     new CareContextRepresentation($"{patient.Identifier}", $"{patient.FirstName}  {patient.LastName}")
                 },
-                Gender = patient.Gender,
+                Gender = Enum.Parse<Gender>(patient.Gender),
                 Identifier = patient.Identifier,
                 PhoneNumber = patient.PhoneNumber
             });

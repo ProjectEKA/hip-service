@@ -1,3 +1,5 @@
+using System;
+
 namespace In.ProjectEKA.TMHHip.Discovery
 {
     using System.Collections.Generic;
@@ -5,9 +7,9 @@ namespace In.ProjectEKA.TMHHip.Discovery
     using System.Net.Http;
     using System.Text;
     using System.Threading.Tasks;
-    using HipLibrary.Patient;
     using HipLibrary.Patient.Model;
     using Newtonsoft.Json;
+    using HipLibrary.Matcher;
     using JsonSerializer = System.Text.Json.JsonSerializer;
 
     public class PatientMatchingRepository : IMatchingRepository
@@ -43,7 +45,7 @@ namespace In.ProjectEKA.TMHHip.Discovery
             return result.Select(patient => new HipLibrary.Patient.Model.Patient
             {
                 Name = $"{patient.FirstName} {patient.LastName}",
-                Gender = patient.Gender,
+                Gender = Enum.Parse<Gender>(patient.Gender),
                 Identifier = patient.Identifier,
                 CareContexts = new List<CareContextRepresentation>
                 {
