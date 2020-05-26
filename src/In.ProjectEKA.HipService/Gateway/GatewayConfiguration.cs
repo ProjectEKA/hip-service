@@ -1,4 +1,4 @@
-namespace In.ProjectEKA.HipService.Discovery
+namespace In.ProjectEKA.HipService.Gateway
 {
     public class GatewayConfiguration
     {
