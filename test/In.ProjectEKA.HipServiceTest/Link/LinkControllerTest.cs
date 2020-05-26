@@ -1,5 +1,6 @@
 namespace In.ProjectEKA.HipServiceTest.Link
 {
+    using System;
     using FluentAssertions;
     using Hangfire;
     using Hangfire.Common;
@@ -66,6 +67,37 @@ namespace In.ProjectEKA.HipServiceTest.Link
             link.Verify();
             discoveryRequestRepository.Verify();
             linkedResult.StatusCode.Should().Be(StatusCodes.Status202Accepted);
+        }
+
+        [Fact]
+        private void ShouldEnqueueLinkConfirmationRequestAndReturnAccepted()
+        {
+            var linkReferenceNumber = Faker().Random.Hash();
+            var token = "1234";
+            var careContext = new[] {new CareContextRepresentation("129", Faker().Random.Word())};
+            var expectedResponse = new PatientLinkConfirmationRepresentation(new LinkConfirmationRepresentation("4",
+                Faker().Random.Word()
+                , careContext));
+            link.Setup(e => e.VerifyAndLinkCareContext(It.Is<LinkConfirmationRequest>(p =>
+                    p.Token == "1234" &&
+                    p.LinkReferenceNumber == linkReferenceNumber)))
+                .ReturnsAsync((expectedResponse, null));
+
+            var linkPatientRequest = new LinkPatientRequest(
+                                                            Faker().Random.Hash(),
+                                                            It.IsAny<string>(),
+                                                            new LinkConfirmation(linkReferenceNumber, token)
+                                                            );
+            var response = linkController.LinkPatientFor(linkPatientRequest);
+
+            backgroundJobClient.Verify(client => client.Create(
+                It.Is<Job>(job => job.Method.Name == "LinkPatientCareContextFor" && job.Args[0] == linkPatientRequest),
+                It.IsAny<EnqueuedState>()
+            ));
+
+            link.Verify();
+            discoveryRequestRepository.Verify();
+            response.StatusCode.Should().Be(StatusCodes.Status202Accepted);
         }
     }
 }

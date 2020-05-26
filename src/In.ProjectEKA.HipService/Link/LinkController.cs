@@ -11,7 +11,7 @@ namespace In.ProjectEKA.HipService.Link
     using Microsoft.AspNetCore.Mvc;
 
     [ApiController]
-    [Route("v1/links/link/init")]
+    [Route("/v1/links/link")]
     public class LinkController : ControllerBase
     {
         private readonly IDiscoveryRequestRepository discoveryRequestRepository;
@@ -30,10 +30,19 @@ namespace In.ProjectEKA.HipService.Link
             this.gatewayClient = gatewayClient;
         }
 
+        [Route("init")]
         [HttpPost]
         public AcceptedResult LinkFor(LinkReferenceRequest request)
         {
             backgroundJob.Enqueue(() => LinkPatient(request));
+            return Accepted();
+        }
+
+        [Route("confirm")]
+        [HttpPost]
+        public AcceptedResult LinkPatientFor(LinkPatientRequest request)
+        {
+            backgroundJob.Enqueue(() => LinkPatientCareContextFor(request));
             return Accepted();
         }
 
@@ -80,6 +89,33 @@ namespace In.ProjectEKA.HipService.Link
                 await gatewayClient.SendDataToGateway(GatewayPathConstants.OnLinkInitPath, response, cmSuffix);
             }
             catch (Exception exception)
+            {
+                Log.Error(exception, exception.StackTrace);
+            }
+        }
+
+        public async Task LinkPatientCareContextFor(LinkPatientRequest request)
+        {
+            try
+            {
+                var (patientLinkResponse, error) = await linkPatient
+                    .VerifyAndLinkCareContext(new LinkConfirmationRequest(request.Confirmation.Token,
+                        request.Confirmation.LinkRefNumber));
+                var linkedPatientRepresentation = new LinkConfirmationRepresentation();
+                if (patientLinkResponse != null)
+                {
+                    linkedPatientRepresentation = patientLinkResponse.Patient;
+                }
+                var response = new GatewayLinkConfirmResponse(
+                    Guid.NewGuid(),
+                    DateTime.Now.ToUniversalTime(),
+                    linkedPatientRepresentation,
+                    error?.Error,
+                    new Resp(request.RequestId)
+                );
+                await gatewayClient.SendDataToGateway(GatewayPathConstants.OnLinkConfirmPath, response, null);
+            }
+            catch(Exception exception)
             {
                 Log.Error(exception, exception.StackTrace);
             }
