@@ -1,3 +1,7 @@
+using System;
+using Hangfire;
+using Hangfire.MemoryStorage;
+
 namespace In.ProjectEKA.HipService
 {
     using System.Configuration;
@@ -39,9 +43,16 @@ namespace In.ProjectEKA.HipService
             Configuration = configuration;
             var clientHandler = new HttpClientHandler
             {
-                ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true
+                ServerCertificateCustomValidationCallback = (
+                    sender,
+                    cert,
+                    chain,
+                    sslPolicyErrors) => true
             };
-            HttpClient = new HttpClient(clientHandler);
+            HttpClient = new HttpClient(clientHandler)
+            {
+                Timeout = TimeSpan.FromSeconds(Configuration.GetSection("Gateway:timeout").Get<int>())
+            };
         }
 
         private IConfiguration Configuration { get; }
@@ -61,6 +72,7 @@ namespace In.ProjectEKA.HipService
                 .AddDbContext<ConsentContext>(options =>
                     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
                         x => x.MigrationsAssembly("In.ProjectEKA.HipService")))
+                .AddHangfire(config => { config.UseMemoryStorage(); })
                 .AddSingleton<IEncryptor, Encryptor>()
                 .AddRabbit(Configuration)
                 .AddSingleton<IMatchingRepository, PatientMatchingRepository>()
@@ -88,6 +100,10 @@ namespace In.ProjectEKA.HipService
                 .AddScoped<IHealthInformationRepository, HealthInformationRepository>()
                 .AddSingleton(new CentralRegistryClient(HttpClient,
                     Configuration.GetSection("authServer").Get<CentralRegistryConfiguration>()))
+                .AddSingleton(new GatewayClient(HttpClient, new CentralRegistryClient(
+                        HttpClient,
+                        Configuration.GetSection("authServer").Get<CentralRegistryConfiguration>()),
+                    Configuration.GetSection("Gateway").Get<GatewayConfiguration>()))
                 .AddTransient<IDataFlow, DataFlow.DataFlow>()
                 .AddRouting(options => options.LowercaseUrls = true)
                 .AddControllers()
@@ -148,7 +164,12 @@ namespace In.ProjectEKA.HipService
                 .UseSerilogRequestLogging()
                 .UseAuthentication()
                 .UseAuthorization()
-                .UseEndpoints(endpoints => { endpoints.MapControllers(); });
+                .UseEndpoints(endpoints => { endpoints.MapControllers(); })
+                .UseHangfireServer(new BackgroundJobServerOptions
+                {
+                    CancellationCheckInterval = TimeSpan.FromMinutes(
+                        Configuration.GetSection("BackgroundJobs:cancellationCheckInterval").Get<int>())
+                });
 
             using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
             var linkContext = serviceScope.ServiceProvider.GetService<LinkPatientContext>();
