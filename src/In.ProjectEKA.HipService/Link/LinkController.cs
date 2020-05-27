@@ -106,10 +106,20 @@ namespace In.ProjectEKA.HipService.Link
                     .VerifyAndLinkCareContext(new LinkConfirmationRequest(request.Confirmation.Token,
                         request.Confirmation.LinkRefNumber));
                 var linkedPatientRepresentation = new LinkConfirmationRepresentation();
+                var cmUserId = await linkPatient.GetPatientId(request.Confirmation.LinkRefNumber);
+                var userId = "";
+                cmUserId.MatchSome(id =>
+                {
+                    userId = id;
+                });
+                var cmSuffix = userId.Substring(
+                    userId.LastIndexOf("@", StringComparison.Ordinal) + 1);
+
                 if (patientLinkResponse != null)
                 {
                     linkedPatientRepresentation = patientLinkResponse.Patient;
                 }
+
                 var response = new GatewayLinkConfirmResponse(
                     Guid.NewGuid(),
                     DateTime.Now.ToUniversalTime(),
@@ -117,7 +127,7 @@ namespace In.ProjectEKA.HipService.Link
                     error?.Error,
                     new Resp(request.RequestId)
                 );
-                await gatewayClient.SendDataToGateway(GatewayPathConstants.OnLinkConfirmPath, response, null);
+                await gatewayClient.SendDataToGateway(GatewayPathConstants.OnLinkConfirmPath, response, cmSuffix);
             }
             catch(Exception exception)
             {
