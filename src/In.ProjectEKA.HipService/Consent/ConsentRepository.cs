@@ -1,11 +1,12 @@
+
 namespace In.ProjectEKA.HipService.Consent
 {
     using System.Threading.Tasks;
-    using Database;
+    using In.ProjectEKA.HipService.Common.Model;
+    using In.ProjectEKA.HipService.Consent.Database;
     using Microsoft.EntityFrameworkCore;
-    using Model;
 
-    public class ConsentRepository: IConsentRepository
+    public class ConsentRepository : IConsentRepository
     {
         private readonly ConsentContext consentContext;
 
@@ -14,21 +15,21 @@ namespace In.ProjectEKA.HipService.Consent
             this.consentContext = consentContext;
         }
 
-        public async Task AddAsync(Consent consent)
+        public async Task AddAsync(Model.Consent consent)
         {
-            await consentContext.ConsentArtefact.AddAsync(consent); 
+            await consentContext.ConsentArtefact.AddAsync(consent);
             await consentContext.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(Consent consent)
+        public async Task UpdateAsync(string consentArtefactId, ConsentStatus status)
         {
             var consentArtefact = await consentContext.ConsentArtefact
-                .FirstOrDefaultAsync(c => c.ConsentArtefactId == consent.ConsentArtefactId);
-            consentArtefact.Status = consent.Status;
+                .FirstOrDefaultAsync(c => c.ConsentArtefactId == consentArtefactId);
+            consentArtefact.Status = status;
             await consentContext.SaveChangesAsync();
         }
 
-        public async Task<Consent> GetFor(string consentArtefactId)
+        public async Task<Model.Consent> GetFor(string consentArtefactId)
         {
             return await consentContext.ConsentArtefact
                 .FirstOrDefaultAsync(x => x.ConsentArtefactId == consentArtefactId);

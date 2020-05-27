@@ -344,6 +344,11 @@ paths:
     post:
       tags:
         - consents
+      summary: Notify HIP on consent update
+      description: >
+        Handles the notification of the consent based on its status:
+          1. **IF status is GRANTED, both consent-artefact and signature are available**
+          2. **ELSE both of these fields will be empty**
       requestBody:
         required: true
         content:
@@ -354,8 +359,8 @@ paths:
             schema:
               $ref: '#/components/schemas/ConsentArtefact'
       responses:
-        '201':
-          description: Consent artefact stored
+        '204':
+          description: An acknowledged consent notification
 components:
   parameters:
     LinkRefNumber:
@@ -650,9 +655,15 @@ components:
           format: date-time
     ConsentArtefact:
       type: object
+      required:
+        - status
+        - consentId
       properties:
         status:
           $ref: '#/components/schemas/ConsentStatus'
+        consentId:
+          type: string
+          format: uuid
         consentDetail:
           type: object
           properties:
@@ -722,6 +733,7 @@ components:
         - DENIED
         - REQUESTED
         - REVOKED
+      example: REQUESTED | GRANTED | DENIED | REVOKED | EXPIRED
     ConsentManagerPatientID:
       type: object
       properties:

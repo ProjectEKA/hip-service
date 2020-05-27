@@ -8,6 +8,10 @@ services:
       - db
       - otp
       - rabbitmq
+  otp:
+    image: "ganesan92/otp-service"
+    depends_on:
+      - db
   db:
     image: "postgres:latest"
     environment:

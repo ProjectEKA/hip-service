@@ -1,8 +1,10 @@
 namespace In.ProjectEKA.HipService.Link
 {
+    using System;
     using System.Collections.Generic;
     using HipLibrary.Patient.Model;
 
+    [Obsolete]
     public class LinkReference
     {
         public string ConsentManagerUserId { get; }

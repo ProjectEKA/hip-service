@@ -13,7 +13,7 @@ namespace In.ProjectEKA.HipService.Discovery.Model
         [Key]
         public int Id { get; set; }
 
-        [Required, MaxLength(50)] public string RequestId { get; set; }
+        [Required, MaxLength(50)] public string TransactionId { get; set; }
 
         [Required, MaxLength(50)] public string ConsentManagerUserId { get; set; }
 
@@ -21,9 +21,9 @@ namespace In.ProjectEKA.HipService.Discovery.Model
 
         [Required, MaxLength(50)] public string PatientReferenceNumber { get; set; }
 
-        public DiscoveryRequest(string requestId, string consentManagerUserId, string patientReferenceNumber)
+        public DiscoveryRequest(string transactionId, string consentManagerUserId, string patientReferenceNumber)
         {
-            RequestId = requestId;
+            TransactionId = transactionId;
             ConsentManagerUserId = consentManagerUserId;
             PatientReferenceNumber = patientReferenceNumber;
         }

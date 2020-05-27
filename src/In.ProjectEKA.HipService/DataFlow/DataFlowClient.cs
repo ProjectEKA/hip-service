@@ -4,16 +4,12 @@ namespace In.ProjectEKA.HipService.DataFlow
     using System.Collections.Generic;
     using System.Linq;
     using System.Net.Http;
-    using System.Net.Mime;
-    using System.Text;
+    using System.Threading.Tasks;
     using Common;
-    using In.ProjectEKA.HipLibrary.Patient.Model;
-    using Model;
+    using HipLibrary.Patient.Model;
     using Logger;
-    using Microsoft.Net.Http.Headers;
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Serialization;
-    using Task = System.Threading.Tasks.Task;
+    using Model;
+    using static Common.HttpRequestHelper;
 
     public class DataFlowClient
     {
@@ -107,29 +103,8 @@ namespace In.ProjectEKA.HipService.DataFlow
                     DateTime.Now,
                     new Notifier(Type.HIP, centralRegistryConfiguration.ClientId),
                     new StatusNotification(sessionStatus, centralRegistryConfiguration.ClientId, statusResponses),
-                    consentId));
-        }
-
-        private static HttpRequestMessage CreateHttpRequest<T>(string dataPushUrl, T content, string token)
-        {
-            var json = JsonConvert.SerializeObject(content, new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore,
-                ContractResolver = new DefaultContractResolver
-                {
-                    NamingStrategy = new CamelCaseNamingStrategy()
-                }
-            });
-            return new HttpRequestMessage
-            {
-                RequestUri = new Uri($"{dataPushUrl}"),
-                Method = HttpMethod.Post,
-                Content = new StringContent(json, Encoding.UTF8, MediaTypeNames.Application.Json),
-                Headers =
-                {
-                    {HeaderNames.Authorization, token}
-                }
-            };
+                    consentId,
+                    Guid.NewGuid()));
         }
     }
 }

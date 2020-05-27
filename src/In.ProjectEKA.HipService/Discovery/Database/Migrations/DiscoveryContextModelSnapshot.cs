@@ -16,7 +16,7 @@ namespace In.ProjectEKA.HipService.Discovery.Database.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
-                .HasAnnotation("ProductVersion", "3.1.3")
+                .HasAnnotation("ProductVersion", "3.1.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             modelBuilder.Entity("In.ProjectEKA.HipService.Discovery.Model.DiscoveryRequest", b =>
@@ -36,19 +36,19 @@ namespace In.ProjectEKA.HipService.Discovery.Database.Migrations
                         .HasColumnType("character varying(50)")
                         .HasMaxLength(50);
 
-                    b.Property<string>("RequestId")
-                        .IsRequired()
-                        .HasColumnType("character varying(50)")
-                        .HasMaxLength(50);
-
                     b.Property<DateTime>("Timestamp")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("timestamp without time zone")
                         .HasDefaultValueSql("now()");
 
+                    b.Property<string>("TransactionId")
+                        .IsRequired()
+                        .HasColumnType("character varying(50)")
+                        .HasMaxLength(50);
+
                     b.HasKey("Id");
 
-                    b.HasIndex("RequestId")
+                    b.HasIndex("TransactionId")
                         .IsUnique();
 
                     b.ToTable("DiscoveryRequest");

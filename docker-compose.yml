@@ -7,6 +7,11 @@ services:
     depends_on:
       - db
       - rabbitmq
+      - otp
+  otp:
+    build: src/In.ProjectEKA.OtpService/.
+    depends_on:
+      - db
   db:
     image: "postgres:latest"
     environment:

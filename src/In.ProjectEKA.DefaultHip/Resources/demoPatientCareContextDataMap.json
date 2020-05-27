@@ -98,6 +98,12 @@
                     "medicationrequest" : ["NCP1008SecondVisitMedications.json"],
                     "diagnosticreport" : ["NCP1008SecondVisitDiagnosticReport.json"]
                 }
+            },
+            { 
+                "capturedOn": "2020-03-15",
+                "data":  {
+                    "diagnosticreport" : ["NCP1008ThirdVisitDischargeSummary.json"]
+                }
             }
         ]
     },
