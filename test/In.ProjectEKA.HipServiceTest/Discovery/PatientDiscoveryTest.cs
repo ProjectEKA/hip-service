@@ -399,7 +399,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 linkPatientRepository.Object,
                 patientRepository.Object);
             var expectedError =
-                new ErrorRepresentation(new Error(ErrorCode.DuplicateDiscoveryRequest, "Request already exists"));
+                new ErrorRepresentation(new Error(ErrorCode.DuplicateDiscoveryRequest, "Discovery Request already exists"));
             var transactionId = RandomString();
             var discoveryRequest = new DiscoveryRequest(null, RandomString(),transactionId, DateTime.Now);
             discoveryRequestRepository.Setup(repository => repository.RequestExistsFor(transactionId))
