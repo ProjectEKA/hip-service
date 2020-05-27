@@ -11,6 +11,9 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
 
         public LinkReferenceMeta Meta { get; }
 
+        public LinkEnquiryRepresentation()
+        {
+        }
         public LinkEnquiryRepresentation(string referenceNumber, string authenticationType, LinkReferenceMeta meta)
         {
             ReferenceNumber = referenceNumber;

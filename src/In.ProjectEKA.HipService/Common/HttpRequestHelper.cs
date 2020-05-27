@@ -32,7 +32,7 @@ namespace In.ProjectEKA.HipService.Common
             httpRequestMessage.Headers.Add(HeaderNames.Authorization, token);
             if (cmSuffix != null)
             {
-                httpRequestMessage.Headers.Add(cmSuffix, "X-CM-ID");
+                httpRequestMessage.Headers.Add( "X-CM-ID", cmSuffix);
             }
             return httpRequestMessage;
         }
