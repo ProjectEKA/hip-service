@@ -36,7 +36,7 @@ namespace In.ProjectEKA.HipService.Discovery
             if (await AlreadyExists(request.TransactionId))
             {
                 return (null,
-                    new ErrorRepresentation(new Error(ErrorCode.DuplicateDiscoveryRequest, "Request already exists")));
+                    new ErrorRepresentation(new Error(ErrorCode.DuplicateDiscoveryRequest, "Discovery Request already exists")));
             }
 
             var (linkedAccounts, exception) = await linkPatientRepository.GetLinkedCareContexts(request.Patient.Id);
