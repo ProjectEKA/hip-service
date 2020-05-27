@@ -6,12 +6,14 @@ namespace In.ProjectEKA.HipService.Link
     using System.Threading.Tasks;
     using System.Transactions;
     using Discovery;
+    using Hangfire.Dashboard.Resources;
     using HipLibrary.Patient;
     using HipLibrary.Patient.Model;
     using Hl7.Fhir.Model;
     using Logger;
     using Microsoft.Extensions.Options;
     using Model;
+    using Optional;
     using Patient = HipLibrary.Patient.Model.Patient;
     using Task = System.Threading.Tasks.Task;
 
@@ -187,6 +189,21 @@ namespace In.ProjectEKA.HipService.Link
                     linkEnquires.CareContexts.Select(context => context.CareContextNumber).ToList())
                 .ConfigureAwait(false);
             return linkedAccount.HasValue;
+        }
+
+        public async Task<Option<string>> GetPatientId(string linkReferenceNumber)
+        {
+            var (linkEnquires, exception) =
+                await linkPatientRepository.GetPatientFor(linkReferenceNumber);
+
+            if (exception != null)
+            {
+                return Option.None<string>();
+            }
+
+            return patientRepository.PatientWith(linkEnquires.PatientReferenceNumber)
+                .Map(patient => Option.Some(patient.Identifier))
+                .ValueOr(Option.None<string>());
         }
 
         private async Task<bool> SaveInitiatedLinkRequest(string requestId, string transactionId, string linkReferenceNumber)
