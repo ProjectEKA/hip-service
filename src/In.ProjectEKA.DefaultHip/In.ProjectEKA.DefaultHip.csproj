@@ -54,10 +54,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Resources\diagnosticReportWithRadiologyImageInline.json">
+    <Content Include="Resources\NCP1006DiagnosticReportWithRadiologyImageInline.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <CopyToPublishDirectory>Always</CopyToPublishDirectory>
-      <Link>diagnosticReportWithRadiologyImageInline.json</Link>
+      <Link>NCP1006DiagnosticReportWithRadiologyImageInline.json</Link>
     </Content>
   </ItemGroup>
 
