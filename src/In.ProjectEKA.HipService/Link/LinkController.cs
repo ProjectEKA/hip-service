@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authorization;
+
 namespace In.ProjectEKA.HipService.Link
 {
     using System;
@@ -9,7 +11,8 @@ namespace In.ProjectEKA.HipService.Link
     using HipLibrary.Patient.Model;
     using Logger;
     using Microsoft.AspNetCore.Mvc;
-
+    
+    [Authorize]
     [ApiController]
     [Route("/v1/links/link")]
     public class LinkController : ControllerBase
