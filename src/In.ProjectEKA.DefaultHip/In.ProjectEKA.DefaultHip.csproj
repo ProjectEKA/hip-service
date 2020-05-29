@@ -195,4 +195,11 @@
       <Link>NCP1008ThirdVisitDischargeSummary.json</Link>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\NCP1008DiagnosticReportWithRadiologyImageInline.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>NCP1008DiagnosticReportWithRadiologyImageInline.json</Link>
+    </Content>
+  </ItemGroup>  
 </Project>

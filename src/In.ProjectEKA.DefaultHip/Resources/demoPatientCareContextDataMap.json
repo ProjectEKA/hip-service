@@ -92,6 +92,12 @@
                 }
             },
             { 
+                "capturedOn": "2019-06-04",
+                "data":  {
+                    "diagnosticreport" : ["NCP1008DiagnosticReportWithRadiologyImageInline.json"]
+                }
+            },
+            { 
                 "capturedOn": "2020-02-15",
                 "data":  {
                     "observation" : ["NCP1008SecondVisitObsWithMembers.json"],
