@@ -24,7 +24,7 @@ namespace In.ProjectEKA.HipService.Discovery
         {
             var discoveryRequest = await discoveryContext.DiscoveryRequest
                 .FirstAsync(request =>
-                    request.RequestId == requestId &&
+                    request.TransactionId == requestId &&
                     request.ConsentManagerUserId == consentManagerUserId);
             discoveryContext.Remove(discoveryRequest);
             await discoveryContext.SaveChangesAsync();
@@ -36,7 +36,7 @@ namespace In.ProjectEKA.HipService.Discovery
             string patientReferenceNumber)
         {
             return discoveryContext.DiscoveryRequest
-                .AnyAsync(request => request.RequestId == requestId
+                .AnyAsync(request => request.TransactionId == requestId
                                      && request.ConsentManagerUserId == consentManagerUserId
                                      && request.PatientReferenceNumber == patientReferenceNumber);
         }
@@ -44,7 +44,7 @@ namespace In.ProjectEKA.HipService.Discovery
         public Task<bool> RequestExistsFor(string requestId)
         {
             return discoveryContext.DiscoveryRequest
-                .AnyAsync(request => request.RequestId == requestId);
+                .AnyAsync(request => request.TransactionId == requestId);
         }
     }
 }

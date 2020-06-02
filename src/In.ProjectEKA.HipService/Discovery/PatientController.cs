@@ -1,14 +1,17 @@
-﻿using System;
-using System.Threading.Tasks;
-using Hangfire;
-using In.ProjectEKA.HipLibrary.Patient.Model;
-using In.ProjectEKA.HipService.Common;
-using In.ProjectEKA.HipService.Logger;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using static In.ProjectEKA.HipService.Gateway.GatewayPathConstants;
 
 namespace In.ProjectEKA.HipService.Discovery
 {
+    using System;
+    using System.Threading.Tasks;
+    using Gateway;
+    using Gateway.Model;
+    using Hangfire;
+    using HipLibrary.Patient.Model;
+    using Logger;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+
     [Authorize]
     [Route("patients/discover/carecontexts")]
     [ApiController]
@@ -31,8 +34,8 @@ namespace In.ProjectEKA.HipService.Discovery
             return Ok(discoveryResponse);
         }
     }
-
-    [Route("care-contexts/discover")]
+    [Authorize]
+    [Route("v1/care-contexts/discover")]
     [ApiController]
     public class CareContextDiscoveryController : Controller
     {
@@ -72,7 +75,7 @@ namespace In.ProjectEKA.HipService.Discovery
                     request.TransactionId, //TODO: should be reading transactionId from contract
                     error?.Error,
                     new Resp(request.RequestId));
-                await gatewayClient.SendDataToGateway(gatewayDiscoveryRepresentation, cmSuffix);
+                await gatewayClient.SendDataToGateway(OnDiscoverPath, gatewayDiscoveryRepresentation, cmSuffix);
             }
             catch (Exception exception)
             {

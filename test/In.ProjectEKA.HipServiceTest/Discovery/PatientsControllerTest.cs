@@ -1,24 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using FluentAssertions;
-using Hangfire;
-using Hangfire.Common;
-using Hangfire.States;
-using In.ProjectEKA.HipLibrary.Patient.Model;
-using In.ProjectEKA.HipService.Common;
-using In.ProjectEKA.HipService.Discovery;
-using In.ProjectEKA.HipServiceTest.Discovery.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Moq;
-using Xunit;
-using static Moq.It;
+﻿using static Moq.It;
 
 namespace In.ProjectEKA.HipServiceTest.Discovery
 {
-    using static TestBuilders;
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using FluentAssertions;
+    using Hangfire;
+    using Hangfire.Common;
+    using Hangfire.States;
+    using HipLibrary.Patient.Model;
+    using HipService.Discovery;
+    using HipService.Gateway;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
+    using Moq;
+    using Xunit;
+    using static Builder.TestBuilders;
 
     [Collection("Patient Controller Tests")]
     public class PatientsControllerTest

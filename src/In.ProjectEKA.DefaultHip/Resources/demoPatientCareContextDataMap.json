@@ -24,7 +24,7 @@
             { 
                 "capturedOn": "2019-06-04",
                 "data":  {
-                    "diagnosticreport" : ["NCP1006ThirdVisitImagingStudy.json"]
+                    "diagnosticreport" : ["NCP1006DiagnosticReportWithRadiologyImageInline.json"]
                 }
             }
         ]
@@ -89,6 +89,12 @@
                 "capturedOn": "2019-06-02",
                 "data":  {
                     "diagnosticreport" : ["NCP1008FirstVisitDiagnosticReport.json"]
+                }
+            },
+            { 
+                "capturedOn": "2019-06-04",
+                "data":  {
+                    "diagnosticreport" : ["NCP1008DiagnosticReportWithRadiologyImageInline.json"]
                 }
             },
             { 

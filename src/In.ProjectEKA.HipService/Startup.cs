@@ -1,13 +1,10 @@
-using System;
-using Hangfire;
-using Hangfire.MemoryStorage;
-
 namespace In.ProjectEKA.HipService
 {
-    using System.Configuration;
+    using System;
     using System.Linq;
     using System.Net.Http;
     using System.Text.Json;
+    using System.Threading.Tasks;
     using Common;
     using Consent;
     using Consent.Database;
@@ -16,6 +13,9 @@ namespace In.ProjectEKA.HipService
     using DataFlow.Encryptor;
     using Discovery;
     using Discovery.Database;
+    using Gateway;
+    using Hangfire;
+    using Hangfire.MemoryStorage;
     using HipLibrary.Matcher;
     using HipLibrary.Patient;
     using Link;

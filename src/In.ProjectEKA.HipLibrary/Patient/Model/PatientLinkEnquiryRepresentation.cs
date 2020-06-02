@@ -4,6 +4,10 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
     {
         public LinkEnquiryRepresentation Link { get; }
 
+        public PatientLinkEnquiryRepresentation()
+        {
+        }
+
         public PatientLinkEnquiryRepresentation(LinkEnquiryRepresentation link)
         {
             Link = link;
