@@ -23,21 +23,21 @@ namespace In.ProjectEKA.HipService.Consent
             string consentManagerId,
             [FromBody] ConsentArtefactRequest consentArtefactRequest)
         {
-            var consent = new Consent(consentArtefactRequest.ConsentDetail.ConsentId,
-                consentArtefactRequest.ConsentDetail,
-                consentArtefactRequest.Signature,
-                consentArtefactRequest.Status,
-                consentManagerId);
             if (consentArtefactRequest.Status == ConsentStatus.GRANTED)
             {
+                var consent = new Consent(consentArtefactRequest.ConsentDetail.ConsentId,
+                    consentArtefactRequest.ConsentDetail,
+                    consentArtefactRequest.Signature,
+                    consentArtefactRequest.Status,
+                    consentManagerId);
                 await consentRepository.AddAsync(consent);
             }
             else
             {
-                await consentRepository.UpdateAsync(consent);
+                await consentRepository.UpdateAsync(consentArtefactRequest.ConsentId, consentArtefactRequest.Status);
             }
 
-            return Ok();
+            return NoContent();
         }
     }
 }

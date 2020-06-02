@@ -1,4 +1,6 @@
-namespace In.ProjectEKA.HipLibrary.Patient.Model
+using In.ProjectEKA.HipLibrary.Patient.Model;
+
+namespace In.ProjectEKA.HipService.Discovery
 {
     public class DiscoveryRepresentation
     {

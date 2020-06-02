@@ -29,8 +29,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
             var expiry = DateTime.Now.Add(time).ToUniversalTime().ToString("yyyy-MM-dd'T'HH:mm:ss'Z'");
             return new HealthInformationRequest(
                 transactionId,
-                new HipService.DataFlow.Consent(faker.Random.Hash(),
-                    faker.Random.Hash()),
+                new HipService.DataFlow.Consent(faker.Random.Hash()),
                 new DateRange(faker.Random.Hash(), faker.Random.Hash()),
                 faker.Random.Hash(),
                 new KeyMaterial(faker.Random.Word(), faker.Random.Word(),
@@ -70,7 +69,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
                 SessionStatus.TRANSFERRED,
                 "10000005",
                 new List<StatusResponse>());
-            return new DataNotificationRequest(transactionId, DateTime.Now, notifier, statusNotification, consentId);
+            return new DataNotificationRequest(transactionId, DateTime.Now, notifier, statusNotification, consentId, Guid.NewGuid());
         }
 
         internal static Consent Consent()
@@ -89,7 +88,8 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
             var content = Faker().Random.String();
             var media = Faker().Random.String();
             var checksum = Faker().Random.Hash();
-            return new Entry(content, media, checksum, null);
+            var careContextReference = Faker().Random.String();
+            return new Entry(content, media, checksum, null, careContextReference);
         }
 
         internal static HealthInformation HealthInformation(string token, DateTime dateTime)

@@ -44,7 +44,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
 
             var entries = new List<Entry>
                 {
-                    new Entry(content, MediaTypeNames.Application.Json, checksum, null)
+                    new Entry(content, MediaTypeNames.Application.Json, checksum, null,"careContextReference")
                 }
                 .AsEnumerable();
             var expectedUri = new Uri("http://callback/data/notification");
@@ -71,6 +71,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             dataFlowNotificationClient.Setup(client =>
                     client.NotifyCm("http://localhost:8000",
                         It.IsAny<DataNotificationRequest>()))
+                .Returns(Task.CompletedTask)
                 .Callback((string url, DataNotificationRequest request) =>
                     {
                         dataNotificationRequest.Should().NotBeNull();

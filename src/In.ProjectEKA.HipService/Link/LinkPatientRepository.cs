@@ -2,11 +2,9 @@ namespace In.ProjectEKA.HipService.Link
 {
     using System;
     using System.Collections.Generic;
-    using System.Globalization;
     using System.Linq;
     using System.Threading.Tasks;
     using Database;
-    using Database.Migrations;
     using Logger;
     using Microsoft.EntityFrameworkCore;
     using Model;
@@ -20,7 +18,6 @@ namespace In.ProjectEKA.HipService.Link
         {
             this.linkPatientContext = linkPatientContext;
         }
-
 
         public async Task<Tuple<LinkEnquires, Exception>> SaveRequestWith(
             string linkReferenceNumber,
@@ -41,8 +38,8 @@ namespace In.ProjectEKA.HipService.Link
                 linkedCareContexts);
             try
             {
-                linkPatientContext.LinkEnquires.Add(linkRequest);
-                await linkPatientContext.SaveChangesAsync();
+                await linkPatientContext.LinkEnquires.AddAsync(linkRequest).ConfigureAwait(false);
+                await linkPatientContext.SaveChangesAsync().ConfigureAwait(false);
                 return new Tuple<LinkEnquires, Exception>(linkRequest, null);
             }
             catch (Exception exception)
@@ -57,7 +54,8 @@ namespace In.ProjectEKA.HipService.Link
             try
             {
                 var linkRequest = await linkPatientContext.LinkEnquires.Include("CareContexts")
-                    .FirstAsync(request => request.LinkReferenceNumber == linkReferenceNumber);
+                    .FirstAsync(request => request.LinkReferenceNumber == linkReferenceNumber)
+                    .ConfigureAwait(false);
                 return new Tuple<LinkEnquires, Exception>(linkRequest, null);
             }
             catch (Exception exception)
@@ -67,18 +65,20 @@ namespace In.ProjectEKA.HipService.Link
             }
         }
 
-        public async Task<Option<LinkedAccounts>> Save(string consentManagerUserId, string patientReferenceNumber, string linkReferenceNumber,
+        public async Task<Option<LinkedAccounts>> Save(string consentManagerUserId,
+            string patientReferenceNumber,
+            string linkReferenceNumber,
             IEnumerable<string> careContextReferenceNumbers)
         {
-            var linkedAccounts = new  LinkedAccounts(patientReferenceNumber, 
-                                                  linkReferenceNumber,
-                                                  consentManagerUserId,
-                                                  DateTime.Now.ToUniversalTime().ToString(Constants.DateTimeFormat), 
-                                                  careContextReferenceNumbers.ToList());
+            var linkedAccounts = new LinkedAccounts(patientReferenceNumber,
+                linkReferenceNumber,
+                consentManagerUserId,
+                DateTime.Now.ToUniversalTime().ToString(Constants.DateTimeFormat),
+                careContextReferenceNumbers.ToList());
             try
             {
-                linkPatientContext.LinkedAccounts.Add(linkedAccounts);
-                await linkPatientContext.SaveChangesAsync();
+                await linkPatientContext.LinkedAccounts.AddAsync(linkedAccounts).ConfigureAwait(false);
+                await linkPatientContext.SaveChangesAsync().ConfigureAwait(false);
                 return Option.Some(linkedAccounts);
             }
             catch (Exception exception)
@@ -88,12 +88,15 @@ namespace In.ProjectEKA.HipService.Link
             }
         }
 
-        public async Task<Tuple<IEnumerable<LinkedAccounts>, Exception>> GetLinkedCareContexts(string consentManagerUserId)
+        public async Task<Tuple<IEnumerable<LinkedAccounts>, Exception>> GetLinkedCareContexts(
+            string consentManagerUserId)
         {
             try
             {
                 var linkRequest = await linkPatientContext.LinkedAccounts
-                    .Where(request => request.ConsentManagerUserId.Equals(consentManagerUserId)).ToListAsync();
+                    .Where(request => request.ConsentManagerUserId.Equals(consentManagerUserId))
+                    .ToListAsync()
+                    .ConfigureAwait(false);
                 return new Tuple<IEnumerable<LinkedAccounts>, Exception>(linkRequest, null);
             }
             catch (Exception exception)
@@ -103,7 +106,9 @@ namespace In.ProjectEKA.HipService.Link
             }
         }
 
-        public async Task<Option<InitiatedLinkRequest>> Save(string requestId, string transactionId, string linkReferenceNumber)
+        public async Task<Option<InitiatedLinkRequest>> Save(string requestId,
+            string transactionId,
+            string linkReferenceNumber)
         {
             try
             {
@@ -112,7 +117,7 @@ namespace In.ProjectEKA.HipService.Link
                     linkReferenceNumber,
                     false,
                     DateTime.Now.ToUniversalTime().ToString(Constants.DateTimeFormat));
-                linkPatientContext.InitiatedLinkRequest.Add(initiatedLinkRequest);
+                await linkPatientContext.InitiatedLinkRequest.AddAsync(initiatedLinkRequest).ConfigureAwait(false);
                 await linkPatientContext.SaveChangesAsync();
                 return Option.Some(initiatedLinkRequest);
             }
@@ -128,7 +133,9 @@ namespace In.ProjectEKA.HipService.Link
             try
             {
                 var initiatedLinkRequest = await linkPatientContext.InitiatedLinkRequest
-                    .Where(request => request.LinkReferenceNumber.Equals(linkReferenceNumber)).ToListAsync();
+                    .Where(request => request.LinkReferenceNumber.Equals(linkReferenceNumber))
+                    .ToListAsync()
+                    .ConfigureAwait(false);
                 return Option.Some(initiatedLinkRequest.AsEnumerable());
             }
             catch (Exception exception)
@@ -151,6 +158,5 @@ namespace In.ProjectEKA.HipService.Link
                 return false;
             }
         }
-
     }
 }

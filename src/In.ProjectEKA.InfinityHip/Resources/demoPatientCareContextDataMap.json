@@ -24,7 +24,7 @@
             { 
                 "capturedOn": "2019-06-04",
                 "data":  {
-                    "diagnosticreport" : ["NCP1006ThirdVisitImagingStudy.json"]
+                    "diagnosticreport" : ["NCP1006DiagnosticReportWithRadiologyImageInline.json"]
                 }
             }
         ]
@@ -92,11 +92,23 @@
                 }
             },
             { 
+                "capturedOn": "2019-06-04",
+                "data":  {
+                    "diagnosticreport" : ["NCP1008DiagnosticReportWithRadiologyImageInline.json"]
+                }
+            },
+            { 
                 "capturedOn": "2020-02-15",
                 "data":  {
                     "observation" : ["NCP1008SecondVisitObsWithMembers.json"],
                     "medicationrequest" : ["NCP1008SecondVisitMedications.json"],
                     "diagnosticreport" : ["NCP1008SecondVisitDiagnosticReport.json"]
+                }
+            },
+            { 
+                "capturedOn": "2020-03-15",
+                "data":  {
+                    "diagnosticreport" : ["NCP1008ThirdVisitDischargeSummary.json"]
                 }
             }
         ]

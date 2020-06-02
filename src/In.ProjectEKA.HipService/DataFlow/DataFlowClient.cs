@@ -4,16 +4,12 @@ namespace In.ProjectEKA.HipService.DataFlow
     using System.Collections.Generic;
     using System.Linq;
     using System.Net.Http;
-    using System.Net.Mime;
-    using System.Text;
+    using System.Threading.Tasks;
     using Common;
-    using In.ProjectEKA.HipLibrary.Patient.Model;
-    using Model;
+    using HipLibrary.Patient.Model;
     using Logger;
-    using Microsoft.Net.Http.Headers;
-    using Newtonsoft.Json;
-    using Newtonsoft.Json.Serialization;
-    using Task = System.Threading.Tasks.Task;
+    using Model;
+    using static Common.HttpRequestHelper;
 
     public class DataFlowClient
     {
@@ -21,7 +17,6 @@ namespace In.ProjectEKA.HipService.DataFlow
         private readonly CentralRegistryClient centralRegistryClient;
         private readonly DataFlowNotificationClient dataFlowNotificationClient;
         private readonly CentralRegistryConfiguration centralRegistryConfiguration;
-
 
         public DataFlowClient(HttpClient httpClient,
             CentralRegistryClient centralRegistryClient,
@@ -34,7 +29,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             this.centralRegistryConfiguration = centralRegistryConfiguration;
         }
 
-        public virtual async void SendDataToHiu(HipLibrary.Patient.Model.DataRequest dataRequest,
+        public virtual async Task SendDataToHiu(HipLibrary.Patient.Model.DataRequest dataRequest,
             IEnumerable<Entry> data,
             KeyMaterial keyMaterial)
         {
@@ -56,32 +51,41 @@ namespace In.ProjectEKA.HipService.DataFlow
             try
             {
                 var token = await centralRegistryClient.Authenticate();
-                token.MatchSome(async accessToken => await httpClient
-                    .SendAsync(CreateHttpRequest(dataPushUrl, dataResponse, accessToken))
-                    .ConfigureAwait(false));
-                token.MatchNone(() => Log.Information("Did not post data to HIU"));
-                GetDataNotificationRequest(consentMangerUrl,
+                token.MatchSome(async accessToken =>
+                {
+                    try
+                    {
+                        await httpClient.SendAsync(CreateHttpRequest(dataPushUrl, dataResponse, accessToken))
+                            .ConfigureAwait(false);
+                    }
+                    catch (Exception exception)
+                    {
+                        Log.Error(exception, exception.StackTrace);
+                        await GetDataNotificationRequest(consentMangerUrl,
+                            consentId,
+                            grantedContexts,
+                            dataResponse,
+                            HiStatus.ERRORED,
+                            SessionStatus.FAILED,
+                            "Failed to deliver health information").ConfigureAwait(false);
+                    }
+                });
+                token.MatchNone(() => Log.Error("Did not post data to HIU"));
+                await GetDataNotificationRequest(consentMangerUrl,
                     consentId,
                     grantedContexts,
                     dataResponse,
                     HiStatus.DELIVERED,
                     SessionStatus.TRANSFERRED,
-                    "Successfully delivered health information");
+                    "Successfully delivered health information").ConfigureAwait(false);
             }
             catch (Exception exception)
             {
                 Log.Error(exception, exception.StackTrace);
-                GetDataNotificationRequest(consentMangerUrl,
-                    consentId,
-                    grantedContexts,
-                    dataResponse,
-                    HiStatus.ERRORED,
-                    SessionStatus.FAILED,
-                    "Failed to deliver health information");
             }
         }
 
-        private void GetDataNotificationRequest(string consentMangerUrl,
+        private async Task GetDataNotificationRequest(string consentMangerUrl,
             string consentId,
             IEnumerable<GrantedContext> careContexts,
             DataResponse dataResponse,
@@ -94,34 +98,13 @@ namespace In.ProjectEKA.HipService.DataFlow
                     new StatusResponse(grantedContext.CareContextReference, hiStatus, description))
                 .ToList();
 
-            dataFlowNotificationClient.NotifyCm(consentMangerUrl,
+            await dataFlowNotificationClient.NotifyCm(consentMangerUrl,
                 new DataNotificationRequest(dataResponse.TransactionId,
                     DateTime.Now,
                     new Notifier(Type.HIP, centralRegistryConfiguration.ClientId),
                     new StatusNotification(sessionStatus, centralRegistryConfiguration.ClientId, statusResponses),
-                    consentId));
-        }
-
-        private static HttpRequestMessage CreateHttpRequest<T>(string dataPushUrl, T content, string token)
-        {
-            var json = JsonConvert.SerializeObject(content, new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore,
-                ContractResolver = new DefaultContractResolver
-                {
-                    NamingStrategy = new CamelCaseNamingStrategy()
-                }
-            });
-            return new HttpRequestMessage
-            {
-                RequestUri = new Uri($"{dataPushUrl}"),
-                Method = HttpMethod.Post,
-                Content = new StringContent(json, Encoding.UTF8, MediaTypeNames.Application.Json),
-                Headers =
-                {
-                    {HeaderNames.Authorization, token}
-                }
-            };
+                    consentId,
+                    Guid.NewGuid()));
         }
     }
 }
