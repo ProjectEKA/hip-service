@@ -1,0 +1,206 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>In.ProjectEKA.DefaultHip</RootNamespace>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="Serilog" Version="2.9.0" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <ProjectReference Include="..\In.ProjectEKA.HipLibrary\In.ProjectEKA.HipLibrary.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\observation.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>observation.json</Link>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\diagnosticReport.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>diagnosticReport.json</Link>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\dignosticReportWithMediaDicomFileAsUrl.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>dignosticReportWithMediaDicomFileAsUrl.json</Link>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\dignosticReportWithPresentedFormPdfFileAsUrl.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>dignosticReportWithPresentedFormPdfFileAsUrl.json</Link>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\patients.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>patients.json</Link>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\NCP1006DiagnosticReportWithRadiologyImageInline.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>NCP1006DiagnosticReportWithRadiologyImageInline.json</Link>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\ShriyaTMHFirstVisitConditionAndObs.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>ShriyaTMHFirstVisitConditionAndObs.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\ShriyaTMHFirstVisitDiagnosticReport.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>ShriyaTMHFirstVisitDiagnosticReport.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\ShriyaTMHThirdVisitDiagnosticReports.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>ShriyaTMHThirdVisitDiagnosticReports.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\ShriyaTMHThirdVisitMedication.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>ShriyaTMHThirdVisitMedication.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\ShriyaTMHThirdVisitObsWithRef.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>ShriyaTMHThirdVisitObsWithRef.json</Link>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\demoPatients.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>demoPatients.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\demoPatientCareContextDataMap.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>demoPatientCareContextDataMap.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\BI-KTH-12FirstVisitConditions.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>BI-KTH-12FirstVisitConditions.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\NCP1006FirstVisitDiagnosticReports.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>NCP1006FirstVisitDiagnosticReports.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\NCP1006SecondVisitDiagnosticRepots.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>NCP1006SecondVisitDiagnosticRepots.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\NCP1006ThirdVisitImagingStudy.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>NCP1006ThirdVisitImagingStudy.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\NCP1008FirstVisitCondition.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>NCP1008FirstVisitCondition.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\NCP1008FirstVisitDiagnosticReport.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>NCP1008FirstVisitDiagnosticReport.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\NCP1008FirstVisitObservations.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>NCP1008FirstVisitObservations.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\NCP1008SecondVisitDiagnosticReport.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>NCP1008SecondVisitDiagnosticReport.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\NCP1008SecondVisitMedications.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>NCP1008SecondVisitMedications.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\NCP1008SecondVisitObsWithMembers.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>NCP1008SecondVisitObsWithMembers.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\SC1701FirstVisitDiagnosticReport.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>SC1701FirstVisitDiagnosticReport.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\NCP1008ThirdVisitDischargeSummary.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>NCP1008ThirdVisitDischargeSummary.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\NCP1008DiagnosticReportWithRadiologyImageInline.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>NCP1008DiagnosticReportWithRadiologyImageInline.json</Link>
+    </Content>
+  </ItemGroup>  
+</Project>

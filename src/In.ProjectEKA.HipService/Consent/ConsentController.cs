@@ -19,7 +19,8 @@ namespace In.ProjectEKA.HipService.Consent
 
         [HttpPost]
         public async Task<ActionResult> StoreConsent(
-            [FromHeader(Name = "X-ConsentManagerID")] string consentManagerId,
+            [FromHeader(Name = "X-ConsentManagerID")]
+            string consentManagerId,
             [FromBody] ConsentArtefactRequest consentArtefactRequest)
         {
             if (consentArtefactRequest.Status == ConsentStatus.GRANTED)

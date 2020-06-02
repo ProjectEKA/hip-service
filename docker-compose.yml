@@ -1,18 +1,18 @@
 version: '3'
 services:
-  hip:
+  hip-infi:
     build: .
     ports:
-      - "9052:80"
+      - "9053:80"
     depends_on:
-      - db
-      - rabbitmq
-      - otp
-  otp:
+      - db-infi
+      - otp-infi
+      - rabbitmq-infi
+  otp-infi:
     build: src/In.ProjectEKA.OtpService/.
     depends_on:
-      - db
-  db:
+      - db-infi
+  db-infi:
     image: "postgres:latest"
     environment:
       - POSTGRES_USER=postgres
@@ -22,7 +22,7 @@ services:
     volumes:
       - postgresql:/var/lib/postgresql
       - postgresql_data:/var/lib/postgresql/data
-  rabbitmq:
+  rabbitmq-infi:
     image: "rabbitmq:3"
     ports:
       - "5672:5672"

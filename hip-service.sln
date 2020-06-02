@@ -9,9 +9,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{C6699092-7
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "In.ProjectEKA.HipServiceTest", "test\In.ProjectEKA.HipServiceTest\In.ProjectEKA.HipServiceTest.csproj", "{B5A9C0B9-25EC-472E-B2CD-3EC5A69584F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "In.ProjectEKA.DefaultHip", "src\In.ProjectEKA.DefaultHip\In.ProjectEKA.DefaultHip.csproj", "{23976B61-FBF9-41B8-AEA2-B70AD47F00A8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "In.ProjectEKA.InfinityHip", "src\In.ProjectEKA.InfinityHip\In.ProjectEKA.InfinityHip.csproj", "{23976B61-FBF9-41B8-AEA2-B70AD47F00A8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "In.ProjectEKA.DefaultHipTest", "test\In.ProjectEKA.DefaultHipTest\In.ProjectEKA.DefaultHipTest.csproj", "{4412373D-2E69-412A-8264-FA2806902173}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "In.ProjectEKA.InfinityHipTest", "test\In.ProjectEKA.InfinityHipTest\In.ProjectEKA.InfinityHipTest.csproj", "{4412373D-2E69-412A-8264-FA2806902173}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "In.ProjectEKA.HipLibrary", "src\In.ProjectEKA.HipLibrary\In.ProjectEKA.HipLibrary.csproj", "{40B6794D-AA65-4B3D-B929-0180CA40E3D6}"
 EndProject
