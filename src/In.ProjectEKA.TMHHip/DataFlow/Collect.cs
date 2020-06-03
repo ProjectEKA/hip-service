@@ -116,7 +116,10 @@ namespace In.ProjectEKA.TMHHip.DataFlow
             var healthObservationRepresentations = new List<HealthObservationRepresentation>();
             foreach (var clinicalNote in clinicalNotes)
             {
-                if (!WithinRange(dataRequest.DateRange, clinicalNote.CreatedDate)) continue;
+                if (!WithinRange(dataRequest.DateRange, clinicalNote.CreatedDate))
+                {
+                    continue;
+                }
 
                 healthObservationRepresentations.Add(
                     new HealthObservationRepresentation

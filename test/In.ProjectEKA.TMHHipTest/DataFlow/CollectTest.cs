@@ -36,11 +36,11 @@ namespace In.ProjectEKA.TMHHipTest.DataFlow
             var patientRepository = new PatientRepository(repoClient);
             var collect = new Collect(tmhClient, patientRepository);
             var noteCreatedTime = new DateTime(2018, 1, 1);
-            var clinicalNote = new ClinicalNote()
+            var clinicalNote = new ClinicalNote
                 {CreatedDate = noteCreatedTime, Note = "some note", NoteNumber = 1, UserName = "doctor"};
             var clinicalNoteResponse = JsonConvert.SerializeObject(new List<ClinicalNote> {clinicalNote});
 
-            var patient = new TMHHip.Discovery.Patient()
+            var patient = new TMHHip.Discovery.Patient
             {
                 DateOfBirth = new DateTime(), FirstName = "test", Gender = "F", Identifier = "MOBILE",
                 LastName = "test",
