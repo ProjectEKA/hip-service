@@ -53,7 +53,8 @@ namespace In.ProjectEKA.TMHHip.Discovery
                         $"{patient.Identifier}",
                         $"{patient.FirstName}  {patient.LastName}")
                 },
-                PhoneNumber = patient.PhoneNumber
+                PhoneNumber = patient.PhoneNumber,
+                YearOfBirth = (ushort) patient.DateOfBirth.Year
             }).AsQueryable();
         }
     }

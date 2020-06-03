@@ -53,7 +53,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
                         p.TransactionId == linkRequest.TransactionId &&
                         p.Patient.ReferenceNumber == linkRequest.Patient.ReferenceNumber &&
                         p.Patient.ConsentManagerId == consentManagerId &&
-                        p.Patient.ConsentManagerUserId == linkRequest.Patient.ConsentManagerUserId &&
+                        p.Patient.ConsentManagerUserId == linkRequest.Patient.Id &&
                         Equals(p.Patient.CareContexts, linkRequest.Patient.CareContexts)
                     )
                 ))
@@ -119,13 +119,13 @@ namespace In.ProjectEKA.HipServiceTest.Link
                         p.TransactionId == linkRequest.TransactionId &&
                         p.Patient.ReferenceNumber == linkRequest.Patient.ReferenceNumber &&
                         p.Patient.ConsentManagerId == consentManagerId &&
-                        p.Patient.ConsentManagerUserId == linkRequest.Patient.ConsentManagerUserId &&
+                        p.Patient.ConsentManagerUserId == linkRequest.Patient.Id &&
                         Equals(p.Patient.CareContexts, linkRequest.Patient.CareContexts)
                     )
                 ))
                 .ReturnsAsync((null, expectedError));
             discoveryRequestRepository.Setup(x => x.RequestExistsFor(linkRequest.TransactionId,
-                    linkRequest.Patient.ConsentManagerUserId,
+                    linkRequest.Patient.Id,
                     linkRequest.Patient.ReferenceNumber))
                 .ReturnsAsync(true);
 
@@ -150,13 +150,13 @@ namespace In.ProjectEKA.HipServiceTest.Link
                         p.TransactionId == linkRequest.TransactionId &&
                         p.Patient.ReferenceNumber == linkRequest.Patient.ReferenceNumber &&
                         p.Patient.ConsentManagerId == consentManagerId &&
-                        p.Patient.ConsentManagerUserId == linkRequest.Patient.ConsentManagerUserId &&
+                        p.Patient.ConsentManagerUserId == linkRequest.Patient.Id &&
                         Equals(p.Patient.CareContexts, linkRequest.Patient.CareContexts)
                     )
                 ))
                 .ReturnsAsync((null, expectedError));
             discoveryRequestRepository.Setup(x => x.RequestExistsFor(linkRequest.TransactionId,
-                    linkRequest.Patient.ConsentManagerUserId,
+                    linkRequest.Patient.Id,
                     linkRequest.Patient.ReferenceNumber))
                 .ReturnsAsync(true);
 
@@ -183,13 +183,13 @@ namespace In.ProjectEKA.HipServiceTest.Link
                         p.TransactionId == linkRequest.TransactionId &&
                         p.Patient.ReferenceNumber == linkRequest.Patient.ReferenceNumber &&
                         p.Patient.ConsentManagerId == consentManagerId &&
-                        p.Patient.ConsentManagerUserId == linkRequest.Patient.ConsentManagerUserId &&
+                        p.Patient.ConsentManagerUserId == linkRequest.Patient.Id &&
                         Equals(p.Patient.CareContexts, linkRequest.Patient.CareContexts)
                     )
                 ))
                 .ReturnsAsync((null, expectedError));
             discoveryRequestRepository.Setup(x => x.RequestExistsFor(linkRequest.TransactionId,
-                    linkRequest.Patient.ConsentManagerUserId,
+                    linkRequest.Patient.Id,
                     linkRequest.Patient.ReferenceNumber))
                 .ReturnsAsync(true);
 
@@ -216,13 +216,13 @@ namespace In.ProjectEKA.HipServiceTest.Link
                         p.TransactionId == linkRequest.TransactionId &&
                         p.Patient.ReferenceNumber == linkRequest.Patient.ReferenceNumber &&
                         p.Patient.ConsentManagerId == consentManagerId &&
-                        p.Patient.ConsentManagerUserId == linkRequest.Patient.ConsentManagerUserId &&
+                        p.Patient.ConsentManagerUserId == linkRequest.Patient.Id &&
                         Equals(p.Patient.CareContexts, linkRequest.Patient.CareContexts)
                     )
                 ))
                 .ReturnsAsync((null, expectedError));
             discoveryRequestRepository.Setup(x => x.RequestExistsFor(linkRequest.TransactionId,
-                    linkRequest.Patient.ConsentManagerUserId,
+                    linkRequest.Patient.Id,
                     linkRequest.Patient.ReferenceNumber))
                 .ReturnsAsync(true);
 
@@ -249,13 +249,13 @@ namespace In.ProjectEKA.HipServiceTest.Link
                         p.TransactionId == linkRequest.TransactionId &&
                         p.Patient.ReferenceNumber == linkRequest.Patient.ReferenceNumber &&
                         p.Patient.ConsentManagerId == consentManagerId &&
-                        p.Patient.ConsentManagerUserId == linkRequest.Patient.ConsentManagerUserId &&
+                        p.Patient.ConsentManagerUserId == linkRequest.Patient.Id &&
                         Equals(p.Patient.CareContexts, linkRequest.Patient.CareContexts)
                     )
                 ))
                 .ReturnsAsync((null, expectedError));
             discoveryRequestRepository.Setup(x => x.RequestExistsFor(linkRequest.TransactionId,
-                    linkRequest.Patient.ConsentManagerUserId,
+                    linkRequest.Patient.Id,
                     linkRequest.Patient.ReferenceNumber))
                 .ReturnsAsync(true);
 
@@ -283,11 +283,11 @@ namespace In.ProjectEKA.HipServiceTest.Link
                         p.TransactionId == linkRequest.TransactionId &&
                         p.Patient.ReferenceNumber == linkRequest.Patient.ReferenceNumber &&
                         p.Patient.ConsentManagerId == consentManagerId &&
-                        p.Patient.ConsentManagerUserId == linkRequest.Patient.ConsentManagerUserId &&
+                        p.Patient.ConsentManagerUserId == linkRequest.Patient.Id &&
                         Equals(p.Patient.CareContexts, linkRequest.Patient.CareContexts))))
                 .ReturnsAsync((null, expectedError));
             discoveryRequestRepository.Setup(x => x.RequestExistsFor(linkRequest.TransactionId,
-                    linkRequest.Patient.ConsentManagerUserId,
+                    linkRequest.Patient.Id,
                     linkRequest.Patient.ReferenceNumber))
                 .ReturnsAsync(false);
 

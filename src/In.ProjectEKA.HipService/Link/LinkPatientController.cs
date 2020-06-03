@@ -30,12 +30,12 @@ namespace In.ProjectEKA.HipService.Link
         {
             var patient = new LinkEnquiry(
                 consentManagerId,
-                request.Patient.ConsentManagerUserId,
+                request.Patient.Id,
                 request.Patient.ReferenceNumber,
                 request.Patient.CareContexts);
             var doesRequestExists = await discoveryRequestRepository.RequestExistsFor(
                 request.TransactionId,
-                request.Patient?.ConsentManagerUserId,
+                request.Patient?.Id,
                 request.Patient?.ReferenceNumber);
             if (!doesRequestExists)
             {
