@@ -6,8 +6,8 @@ services:
       - "9052:80"
     depends_on:
       - db
-      - otp
       - rabbitmq
+      - otp
   otp:
     build: src/In.ProjectEKA.OtpService/.
     depends_on:
@@ -26,6 +26,32 @@ services:
     image: "rabbitmq:3"
     ports:
       - "5672:5672"
+  filebeat:
+    container_name: filebeat
+    build:
+      context: .
+      dockerfile: filebeat.Dockerfile
+    volumes:
+      - ./logs:/var/log
+    networks:
+      - elk
+  logstash:
+    build:
+      context: logstash/
+    volumes:
+      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro
+      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro
+    ports:
+      - "5044:5044"
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    networks:
+      - elk
+
 volumes:
   postgresql:
   postgresql_data:
+    
+networks:
+  elk:
+    external: true
