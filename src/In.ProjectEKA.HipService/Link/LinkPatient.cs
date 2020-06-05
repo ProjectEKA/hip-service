@@ -191,7 +191,7 @@ namespace In.ProjectEKA.HipService.Link
             return linkedAccount.HasValue;
         }
 
-        public async Task<string> GetCMId(string linkReferenceNumber)
+        public async Task<string> GetCmId(string linkReferenceNumber)
         {
             var (linkEnquires, exception) =
                 await linkPatientRepository.GetPatientFor(linkReferenceNumber);
