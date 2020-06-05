@@ -33,7 +33,7 @@ namespace In.ProjectEKA.HipServiceTest.Consent
         }
         
         [Fact]
-        private void ShouldEnqueueLinkRequestAndReturnAccepted()
+        private void ShouldEnqueueConsentNotificationAndReturnAccepted()
         {
             const string consentMangerId = "consentMangerId";
             var notification = TestBuilder.Notification();
