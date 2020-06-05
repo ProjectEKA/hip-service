@@ -7,16 +7,27 @@ using Newtonsoft.Json.Converters;
 
 namespace In.ProjectEKA.TMHHip.DataFlow.Model
 {
-    public class HealthObservationRepresentation
+    public class ObservationRepresentation
     {
         public string FullUrl { get; set; }
         public Resource Resource { get; set; }
+    }
+
+    public class Performer
+    {
+        public Performer(string display)
+        {
+            Display = display;
+        }
+
+        public string Display { get; set; }
     }
 
     public class Resource
     {
         [JsonConverter(typeof(StringEnumConverter))]
         public HiType ResourceType { get; set; }
+
         public string Id { get; set; }
         public string Status { get; set; }
         public Code Code { get; set; }
@@ -37,35 +48,5 @@ namespace In.ProjectEKA.TMHHip.DataFlow.Model
             EffectiveDateTime = effectiveDateTime;
             ValueString = valueString;
         }
-    }
-
-    public class Code
-    {
-        public Code(string text)
-        {
-            Text = text;
-        }
-
-        public string Text { set; get; }
-    }
-
-    public class Subject
-    {
-        public Subject(string display)
-        {
-            Display = display;
-        }
-
-        public string Display { get; set; }
-    }
-
-    public class Performer
-    {
-        public Performer(string display)
-        {
-            Display = display;
-        }
-
-        public string Display { get; set; }
     }
 }
