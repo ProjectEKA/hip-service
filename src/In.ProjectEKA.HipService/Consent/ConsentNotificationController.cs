@@ -27,9 +27,9 @@ namespace In.ProjectEKA.HipService.Consent
             return Accepted();
         }
 
-        public async Task StoreConsent(ConsentArtefactRepresentation consentArtefactArtefact)
+        public async Task StoreConsent(ConsentArtefactRepresentation consentArtefact)
         {
-            var notification = consentArtefactArtefact.Notification;
+            var notification = consentArtefact.Notification;
 
             if (notification.Status == ConsentStatus.GRANTED)
             {
