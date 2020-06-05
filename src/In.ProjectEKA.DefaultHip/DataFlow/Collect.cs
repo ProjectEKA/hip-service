@@ -98,11 +98,10 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
                             var dataFiles = ccRecord.Data.GetValueOrDefault(hiTypeStr) ?? new List<string>();
                             if (dataFiles.Count > 0)
                             {
-                                listOfDataFiles.Add(dataFiles[0]);
+                                listOfDataFiles.AddRange(dataFiles);
                             }
                         }
                     }
-
                     careContextsAndListOfDataFiles.Add(grantedContext.CareContextReference, listOfDataFiles);
                 }
 

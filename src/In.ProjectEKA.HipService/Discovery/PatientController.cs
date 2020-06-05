@@ -34,7 +34,7 @@ namespace In.ProjectEKA.HipService.Discovery
             return Ok(discoveryResponse);
         }
     }
-
+    [Authorize]
     [Route("v1/care-contexts/discover")]
     [ApiController]
     public class CareContextDiscoveryController : Controller
