@@ -9,8 +9,8 @@ namespace In.ProjectEKA.TMHHip.DataFlow.Model
         public DateTime Date { get; set; }
         public string GenName { get; set; }
         public string Medicine { get; set; }
-        public int RequiredQuantity { get; set; }
-        public int GivenQuantity { get; set; }
+        public float RequiredQuantity { get; set; }
+        public float GivenQuantity { get; set; }
         public string Dosage { get; set; }
     }
 }

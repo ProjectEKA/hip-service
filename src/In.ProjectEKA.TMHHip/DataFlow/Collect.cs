@@ -35,7 +35,9 @@ namespace In.ProjectEKA.TMHHip.DataFlow
         public async Task<Option<Entries>> CollectData(DataRequest dataRequest)
         {
             var bundles = new List<CareBundle>();
-            var tmhPatientData = FetchPatientData(dataRequest).Result;
+            var fetchPatientDataTask = FetchPatientData(dataRequest);
+            fetchPatientDataTask.Wait();
+            var tmhPatientData = fetchPatientDataTask.Result;
             var caseId = dataRequest.CareContexts.First().PatientReference;
             var patient = patientRepository.PatientWith(caseId);
             var patientName = patient.Select(patientObj => patientObj.Name).ValueOr("");
@@ -45,10 +47,12 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                 switch (hiType)
                 {
                     case HiType.Observation:
-                        bundles.AddRange(FindObservationData(dataRequest, tmhPatientData.ClinicalNotes, patientName).Result);
+                        bundles.AddRange(FindObservationData(dataRequest, tmhPatientData.ClinicalNotes, patientName)
+                            .Result);
                         break;
                     case HiType.MedicationRequest:
-                        bundles.AddRange(FindMedicationRequestData(dataRequest, tmhPatientData.Prescriptions, patientName).Result);
+                        bundles.AddRange(
+                            FindMedicationRequestData(dataRequest, tmhPatientData.Prescriptions, patientName).Result);
                         break;
                     case HiType.Condition:
                         break;
@@ -204,8 +208,8 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                     "application/json")
             };
 
-            var response = await client.SendAsync(request);
-            await using var responseStream = await response.Content.ReadAsStreamAsync();
+            var response = await client.SendAsync(request).ConfigureAwait(false);
+            var responseStream = await response.Content.ReadAsStreamAsync();
             return await JsonSerializer.DeserializeAsync<PatientData>(responseStream);
         }
 
