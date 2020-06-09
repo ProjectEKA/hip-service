@@ -120,7 +120,7 @@ namespace In.ProjectEKA.TMHHipTest.DataFlow
                 Medicine = "NARCODOL",
                 CaseNumber = "caseNumber",
                 GivenQuantity = 1,
-                ItemCode = "itemcode",
+                GenName = "GenName",
                 PrescriptionId = "prescriptionId",
                 RequiredQuantity = 1
             };
@@ -210,7 +210,7 @@ namespace In.ProjectEKA.TMHHipTest.DataFlow
                 Medicine = "NARCODOL",
                 CaseNumber = "caseNumber",
                 GivenQuantity = 1,
-                ItemCode = "itemcode",
+                GenName = "GenName",
                 PrescriptionId = "prescriptionId",
                 RequiredQuantity = 1
             };
