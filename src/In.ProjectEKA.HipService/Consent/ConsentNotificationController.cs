@@ -20,8 +20,7 @@ namespace In.ProjectEKA.HipService.Consent
         }
 
         [HttpPost]
-        public AcceptedResult ConsentNotification([FromHeader(Name = "X-HIP-ID")] string hipId,
-            [FromBody] ConsentArtefactRepresentation consentArtefact)
+        public AcceptedResult ConsentNotification([FromBody] ConsentArtefactRepresentation consentArtefact)
         {
             backgroundJob.Enqueue(() => StoreConsent(consentArtefact));
             return Accepted();
