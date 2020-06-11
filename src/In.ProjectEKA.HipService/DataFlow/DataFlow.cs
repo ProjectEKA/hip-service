@@ -115,7 +115,7 @@ namespace In.ProjectEKA.HipService.DataFlow
         private static bool IsExpired(string expiryDate)
         {
             var expiryDateTime =
-                DateTime.ParseExact(expiryDate, "yyyy-MM-dd'T'HH:mm:ss'Z'", CultureInfo.InvariantCulture);
+                DateTime.ParseExact(expiryDate, "yyyy-MM-dd'T'HH:mm:ss.ffffff", CultureInfo.InvariantCulture);
             var currentDate = DateTime.Today;
             return expiryDateTime < currentDate;
         }
