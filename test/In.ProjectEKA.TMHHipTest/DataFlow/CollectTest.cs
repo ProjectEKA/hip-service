@@ -85,7 +85,7 @@ namespace In.ProjectEKA.TMHHipTest.DataFlow
                 new GrantedContext("RVH1003", "BI-KTH-12.05.0024"),
                 new GrantedContext("RVH1003", "NCP1008")
             };
-            var dateRange = new DateRange("2017-12-01T15:43:00.000+0000", "2020-03-31T15:43:19.279+0000");
+            var dateRange = new DateRange("2017-12-01T15:43:00.000", "2020-03-31T15:43:19.279");
             var hiTypes = new List<HiType>
             {
                 HiType.Observation
@@ -171,7 +171,7 @@ namespace In.ProjectEKA.TMHHipTest.DataFlow
                 new GrantedContext("RVH1003", "BI-KTH-12.05.0024"),
                 new GrantedContext("RVH1003", "NCP1008")
             };
-            var dateRange = new DateRange("2017-12-01T15:43:00.000+0000", "2020-03-31T15:43:19.279+0000");
+            var dateRange = new DateRange("2017-12-01T15:43:00.000", "2020-03-31T15:43:19.279");
             var hiTypes = new List<HiType>
             {
                 HiType.MedicationRequest
@@ -259,7 +259,7 @@ namespace In.ProjectEKA.TMHHipTest.DataFlow
                 new GrantedContext("RVH1003", "BI-KTH-12.05.0024"),
                 new GrantedContext("RVH1003", "NCP1008")
             };
-            var dateRange = new DateRange("2017-12-01T15:43:00.000+0000", "2020-03-31T15:43:19.279+0000");
+            var dateRange = new DateRange("2017-12-01T15:43:00.000", "2020-03-31T15:43:19.279");
             var hiTypes = new List<HiType>
             {
                 HiType.MedicationRequest,
