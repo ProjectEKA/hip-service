@@ -196,7 +196,10 @@ namespace In.ProjectEKA.HipService
         private static bool CheckRoleInAccessToken(JwtSecurityToken accessToken)
         {
             var clientId = accessToken.Payload["clientId"] as string;
-            if (!(accessToken.Payload["resource_access"] is JObject resourceAccess) || clientId == null) return false;
+            if (!(accessToken.Payload["resource_access"] is JObject resourceAccess) || clientId == null)
+            {
+                return false;
+            }
             var token = new Token(clientId, resourceAccess[clientId]["roles"].ToObject<string[]>());
             return token.Roles.Contains("Gateway");
         }
