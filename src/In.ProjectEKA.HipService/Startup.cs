@@ -1,6 +1,8 @@
 namespace In.ProjectEKA.HipService
 {
     using System;
+    using System.Collections.Generic;
+    using System.IdentityModel.Tokens.Jwt;
     using System.Linq;
     using System.Net.Http;
     using System.Text.Json;
@@ -33,6 +35,8 @@ namespace In.ProjectEKA.HipService
     using Microsoft.Extensions.Hosting;
     using Microsoft.IdentityModel.Tokens;
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+    using Optional;
     using Serilog;
 
     public class Startup
@@ -138,16 +142,22 @@ namespace In.ProjectEKA.HipService
                         OnTokenValidated = context =>
                         {
                             const string claimTypeClientId = "clientId";
-                            if (!context.Principal.HasClaim(claim => claim.Type == claimTypeClientId))
+                            var accessToken = context.SecurityToken as JwtSecurityToken;
+                            if (!CheckRoleInAccessToken(accessToken))
                             {
-                                context.Fail($"Claim {claimTypeClientId} is not present in the token.");
+                                context.Fail("Specified role not found.");
                             }
                             else
                             {
-                                context.Request.Headers["X-ConsentManagerID"] =
-                                    context.Principal.Claims.First(claim => claim.Type == claimTypeClientId).Value;
+                                if (!context.Principal.HasClaim(claim => claim.Type == claimTypeClientId))
+                                {
+                                    context.Fail($"Claim {claimTypeClientId} is not present in the token.");
+                                }
+                                else
+                                {
+                                    context.Request.Headers["X-ConsentManagerID"] = context.Principal.Claims.First(claim => claim.Type == claimTypeClientId).Value;
+                                }    
                             }
-
                             return Task.CompletedTask;
                         }
                     };
@@ -181,6 +191,14 @@ namespace In.ProjectEKA.HipService
             dataFlowContext.Database.Migrate();
             var consentContext = serviceScope.ServiceProvider.GetService<ConsentContext>();
             consentContext.Database.Migrate();
+        }
+
+        private static bool CheckRoleInAccessToken(JwtSecurityToken accessToken)
+        {
+            var clientId = accessToken.Payload["clientId"] as string;
+            if (!(accessToken.Payload["resource_access"] is JObject resourceAccess) || clientId == null) return false;
+            var token = new Token(clientId, resourceAccess[clientId]["roles"].ToObject<string[]>());
+            return token.Roles.Contains("Gateway");
         }
     }
 }
