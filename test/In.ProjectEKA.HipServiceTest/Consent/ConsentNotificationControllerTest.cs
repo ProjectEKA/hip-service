@@ -50,7 +50,7 @@ namespace In.ProjectEKA.HipServiceTest.Consent
                 )
             ));
             
-            var result = consentNotificationController.ConsentNotification("",consentNotification);
+            var result = consentNotificationController.ConsentNotification(consentNotification);
 
             backgroundJobClient.Verify(client => client.Create(
                 It.Is<Job>(job => job.Method.Name == "StoreConsent" && job.Args[0] == consentNotification),
