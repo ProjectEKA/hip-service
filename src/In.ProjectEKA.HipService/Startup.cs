@@ -203,7 +203,7 @@ namespace In.ProjectEKA.HipService
             {
                 return false;
             }
-            context.Request.Headers["X-ConsentManagerID"] = context.Principal.Claims.First(claim => claim.Type == claimTypeClientId).Value;
+            context.Request.Headers["X-GatewayID"] = context.Principal.Claims.First(claim => claim.Type == claimTypeClientId).Value;
             return true;
         }
     }
