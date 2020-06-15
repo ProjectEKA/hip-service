@@ -33,6 +33,7 @@ namespace In.ProjectEKA.HipService
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using Microsoft.IdentityModel.Logging;
     using Microsoft.IdentityModel.Tokens;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
@@ -56,6 +57,7 @@ namespace In.ProjectEKA.HipService
             {
                 Timeout = TimeSpan.FromSeconds(Configuration.GetSection("Gateway:timeout").Get<int>())
             };
+            IdentityModelEventSource.ShowPII = true;
         }
 
         private IConfiguration Configuration { get; }
