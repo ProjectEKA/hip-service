@@ -141,22 +141,9 @@ namespace In.ProjectEKA.HipService
                     {
                         OnTokenValidated = context =>
                         {
-                            const string claimTypeClientId = "clientId";
-                            var accessToken = context.SecurityToken as JwtSecurityToken;
-                            if (!CheckRoleInAccessToken(accessToken))
+                            if (!IsTokenValid(context))
                             {
-                                context.Fail("Specified role not found.");
-                            }
-                            else
-                            {
-                                if (!context.Principal.HasClaim(claim => claim.Type == claimTypeClientId))
-                                {
-                                    context.Fail($"Claim {claimTypeClientId} is not present in the token.");
-                                }
-                                else
-                                {
-                                    context.Request.Headers["X-ConsentManagerID"] = context.Principal.Claims.First(claim => claim.Type == claimTypeClientId).Value;
-                                }    
+                                context.Fail("Unable to validate token.");
                             }
                             return Task.CompletedTask;
                         }
@@ -201,7 +188,23 @@ namespace In.ProjectEKA.HipService
                 return false;
             }
             var token = new Token(clientId, resourceAccess[clientId]["roles"].ToObject<string[]>());
-            return token.Roles.Contains("Gateway");
+            return token.Roles.Contains("gateway", StringComparer.OrdinalIgnoreCase);
+        }
+
+        private static bool IsTokenValid(TokenValidatedContext context)
+        {
+            const string claimTypeClientId = "clientId";
+            var accessToken = context.SecurityToken as JwtSecurityToken;
+            if (!CheckRoleInAccessToken(accessToken))
+            {
+                return false;
+            }
+            if (!context.Principal.HasClaim(claim => claim.Type == claimTypeClientId))
+            {
+                return false;
+            }
+            context.Request.Headers["X-ConsentManagerID"] = context.Principal.Claims.First(claim => claim.Type == claimTypeClientId).Value;
+            return true;
         }
     }
 }
