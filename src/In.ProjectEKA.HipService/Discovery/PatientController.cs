@@ -9,8 +9,10 @@ namespace In.ProjectEKA.HipService.Discovery
     using Hangfire;
     using HipLibrary.Patient.Model;
     using Logger;
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
+    [Authorize]
     [Route("v1/care-contexts/discover")]
     [ApiController]
     public class CareContextDiscoveryController : Controller
