@@ -2,6 +2,7 @@ namespace In.ProjectEKA.HipService.DataFlow
 {
     using System;
     using System.Threading.Tasks;
+    using Hangfire;
     using HipLibrary.Patient.Model;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
@@ -22,7 +23,7 @@ namespace In.ProjectEKA.HipService.DataFlow
         [Route("health-information/request")]
         public async Task<ActionResult> HealthInformationRequestFor(
             [FromBody] HealthInformationRequest healthInformationRequest,
-            [FromHeader(Name = "X-ConsentManagerId")]
+            [FromHeader(Name = "X-GatewayID ")]
             string consentManagerId)
         {
             var (healthInformationResponse, error) = await dataFlow
@@ -50,6 +51,43 @@ namespace In.ProjectEKA.HipService.DataFlow
                 ErrorCode.ExpiredKeyPair => StatusCode(StatusCodes.Status400BadRequest, errorResponse),
                 _ => Problem(errorResponse.Error.Message)
             };
+        }
+    }
+
+    [ApiController]
+    [Route("/v1/health-information/hip")]
+    public class PatientDataFlowController : ControllerBase
+    {
+        private readonly IDataFlow dataFlow;
+        private readonly IBackgroundJobClient backgroundJob;
+
+        public PatientDataFlowController(IDataFlow dataFlow, IBackgroundJobClient backgroundJob)
+        {
+            this.dataFlow = dataFlow;
+            this.backgroundJob = backgroundJob;
+        }
+
+        [Route("request")]
+        [HttpPost]
+        public AcceptedResult HealthInformationRequestFor(PatientHealthInformationRequest healthInformationRequest,
+                                                          [FromHeader(Name = "X-GatewayID")] string gatewayId)
+        {
+            backgroundJob.Enqueue(() => HealthInformationOf(healthInformationRequest, gatewayId));
+            return Accepted();
+        }
+
+        public async Task HealthInformationOf(PatientHealthInformationRequest healthInformationRequest, string gatewayId)
+        {
+            var hiRequest = healthInformationRequest.HiRequest;
+            var request = new HealthInformationRequest(healthInformationRequest.TransactionId,
+                hiRequest.Consent,
+                hiRequest.DateRange,
+                hiRequest.DataPushUrl,
+                hiRequest.KeyMaterial);
+
+            await dataFlow.HealthInformationRequestFor(request, gatewayId);
+
+            //TODO:: OnRequest implementation pending
         }
     }
 }
