@@ -15,7 +15,7 @@
         <PackageReference Include="Hl7.Fhir.R4" Version="1.7.0" />
         <PackageReference Include="Microsoft.AspNetCore.HttpsPolicy" Version="2.2.0" />
         <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.5" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.4">
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.5">
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
