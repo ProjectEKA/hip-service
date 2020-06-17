@@ -20,7 +20,7 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="Moq" Version="4.14.1" />
+        <PackageReference Include="Moq" Version="4.14.2" />
         <PackageReference Include="Bogus" Version="29.0.2" />
     </ItemGroup>
     
