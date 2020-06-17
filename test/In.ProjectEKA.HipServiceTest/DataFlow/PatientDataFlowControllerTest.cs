@@ -11,6 +11,8 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
     using Microsoft.AspNetCore.Http;
     using Moq;
     using Xunit;
+    using HipService.Gateway;
+    
 
     public class PatientDataFlowControllerTest
     {
@@ -18,9 +20,11 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
         private readonly Mock<IDataFlow> dataFlow = new Mock<IDataFlow>();
         private readonly PatientDataFlowController patientDataFlowController;
 
+        private readonly Mock<GatewayClient> gatewayClient = new Mock<GatewayClient>(MockBehavior.Strict, null, null, null);
+
         public PatientDataFlowControllerTest()
         {
-            patientDataFlowController = new PatientDataFlowController(dataFlow.Object, backgroundJobClient.Object);
+            patientDataFlowController = new PatientDataFlowController(dataFlow.Object, backgroundJobClient.Object,gatewayClient.Object);
         }
 
         [Fact]
