@@ -1,3 +1,4 @@
+using System.Globalization;
 using Hl7.Fhir.Utility;
 
 namespace In.ProjectEKA.HipService.DataFlow
@@ -71,7 +72,8 @@ namespace In.ProjectEKA.HipService.DataFlow
                 });
             }
 
-            var keyStructure = new KeyStructure(DateTime.Now.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ"),
+            var dto = DateTimeOffset.Now;
+            var keyStructure = new KeyStructure(dto.LocalDateTime.ToString(CultureInfo.InvariantCulture),
                 dataRequestKeyMaterial.DhPublicKey.Parameters, EncryptorHelper.GetPublicKey(keyPair));
             var keyMaterial = new KeyMaterial(dataRequestKeyMaterial.CryptoAlg,
                 dataRequestKeyMaterial.Curve,

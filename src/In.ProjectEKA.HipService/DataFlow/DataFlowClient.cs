@@ -100,7 +100,7 @@ namespace In.ProjectEKA.HipService.DataFlow
 
             await dataFlowNotificationClient.NotifyCm(consentMangerUrl,
                 new DataNotificationRequest(dataResponse.TransactionId,
-                    DateTime.Now,
+                    DateTime.UtcNow,
                     new Notifier(Type.HIP, centralRegistryConfiguration.ClientId),
                     new StatusNotification(sessionStatus, centralRegistryConfiguration.ClientId, statusResponses),
                     consentId,
