@@ -72,8 +72,7 @@ namespace In.ProjectEKA.HipService.DataFlow
                 });
             }
 
-            var dto = DateTimeOffset.Now;
-            var keyStructure = new KeyStructure(dto.LocalDateTime.ToString(CultureInfo.InvariantCulture),
+            var keyStructure = new KeyStructure(DateTimeOffset.Now.LocalDateTime.ToString(CultureInfo.InvariantCulture),
                 dataRequestKeyMaterial.DhPublicKey.Parameters, EncryptorHelper.GetPublicKey(keyPair));
             var keyMaterial = new KeyMaterial(dataRequestKeyMaterial.CryptoAlg,
                 dataRequestKeyMaterial.Curve,
