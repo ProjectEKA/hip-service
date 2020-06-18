@@ -46,4 +46,37 @@
         <ProjectReference Include="..\In.ProjectEKA.HipLibrary\In.ProjectEKA.HipLibrary.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Include="..\In.ProjectEKA.DefaultHip\Resources\demoPatients.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+        <Link>demoPatients.json</Link>
+      </Content>
+      <Content Include="..\In.ProjectEKA.DefaultHip\Resources\observation.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+        <Link>observation.json</Link>
+      </Content>
+      <Content Include="..\In.ProjectEKA.DefaultHip\Resources\patients.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+        <Link>patients.json</Link>
+      </Content>
+      <Content Update="patients.json">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+      <Content Update="observation.json">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+      <Content Update="demoPatients.json">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+    </ItemGroup>
+
 </Project>
