@@ -31,10 +31,21 @@ namespace In.ProjectEKA.HipService.DataFlow
             try
             {
                 var token = await centralRegistryClient.Authenticate();
-                token.MatchSome(async accessToken => await httpClient
-                    .SendAsync(CreateHttpRequest(url + HealthInformationNotificationPath, dataNotificationRequest,
-                        accessToken))
-                    .ConfigureAwait(false));
+                token.MatchSome(async accessToken =>
+                {
+                    try
+                    {
+                        await httpClient
+                            .SendAsync(CreateHttpRequest(url + HealthInformationNotificationPath,
+                                dataNotificationRequest,
+                                accessToken))
+                            .ConfigureAwait(false);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Fatal(ex, "Error happened");
+                    }
+                });
                 token.MatchNone(() => Log.Information("Data transfer notification to CM failed"));
             }
             catch (Exception exception)
