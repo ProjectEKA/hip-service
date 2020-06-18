@@ -114,8 +114,23 @@ namespace In.ProjectEKA.HipService.DataFlow
 
         private static bool IsExpired(string expiryDate)
         {
-            var expiryDateTime =
-                DateTime.ParseExact(expiryDate, "yyyy-MM-dd'T'HH:mm:ss'Z'", CultureInfo.InvariantCulture);
+            var formatStrings = new[]
+            {
+                "yyyy-MM-dd", "yyyy-MM-dd hh:mm:ss", "yyyy-MM-dd hh:mm:ss tt", "yyyy-MM-ddTHH:mm:ss.fffzzz",
+                "yyyy-MM-dd'T'HH:mm:ss.fff", "yyyy-MM-dd'T'HH:mm:ss.ffff", "yyyy-MM-dd'T'HH:mm:ss.fffff",
+                "dd/MM/yyyy", "dd/MM/yyyy hh:mm:ss", "dd/MM/yyyy hh:mm:ss tt", "dd/MM/yyyyTHH:mm:ss.fffzzz",
+                "yyyy-MM-dd'T'HH:mm:ss.ffffff"
+            };
+            var tryParseExact = DateTime.TryParseExact(expiryDate,
+                formatStrings,
+                CultureInfo.CurrentCulture,
+                DateTimeStyles.None,
+                out var expiryDateTime);
+            if (!tryParseExact)
+            {
+                Log.Error($"Error parsing date: {expiryDate}");
+            }
+
             var currentDate = DateTime.Today;
             return expiryDateTime < currentDate;
         }

@@ -45,5 +45,5 @@
         <ProjectReference Include="..\In.ProjectEKA.DefaultHip\In.ProjectEKA.DefaultHip.csproj" />
         <ProjectReference Include="..\In.ProjectEKA.HipLibrary\In.ProjectEKA.HipLibrary.csproj" />
     </ItemGroup>
-
+    
 </Project>
