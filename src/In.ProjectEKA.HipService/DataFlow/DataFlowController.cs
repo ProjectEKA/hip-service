@@ -14,7 +14,6 @@ namespace In.ProjectEKA.HipService.DataFlow
     using Gateway;
     using Logger;
     
-
     [ApiController]
     public class DataFlowController : ControllerBase
     {
@@ -96,7 +95,6 @@ namespace In.ProjectEKA.HipService.DataFlow
                     hiRequest.DateRange,
                     hiRequest.DataPushUrl,
                     hiRequest.KeyMaterial);
-
                 var (_response, error) = await dataFlow.HealthInformationRequestFor(request, gatewayId);
                 var patientId = await dataFlow.GetPatientId(hiRequest.Consent.Id);
                 var cmSuffix = patientId.Split("@")[1];
@@ -112,7 +110,6 @@ namespace In.ProjectEKA.HipService.DataFlow
                     new DataFlowRequestResponse(healthInformationRequest.TransactionId, sessionStatus),
                     error?.Error,
                     new Resp(healthInformationRequest.RequestId));
-
                 await gatewayClient.SendDataToGateway(HealthInformationOnRequestPath, gatewayResponse , cmSuffix);
             }  
             catch (Exception exception)

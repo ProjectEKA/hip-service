@@ -15,5 +15,4 @@ namespace In.ProjectEKA.HipService.DataFlow
         
         Task<String> GetPatientId(String consentId);
     }
-
 }
