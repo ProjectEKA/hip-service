@@ -33,16 +33,13 @@ namespace In.ProjectEKA.HipService.DataFlow
             IEnumerable<Entry> data,
             KeyMaterial keyMaterial)
         {
-            var url = await centralRegistryClient.GetUrlFor(dataRequest.ConsentManagerId);
-            url.MatchSome(async providerUrl => await PostTo(providerUrl,
-                dataRequest.ConsentId,
+             await PostTo(dataRequest.ConsentId,
                 dataRequest.DataPushUrl,
                 dataRequest.CareContexts,
-                new DataResponse(dataRequest.TransactionId, data, keyMaterial)));
+                new DataResponse(dataRequest.TransactionId, data, keyMaterial));
         }
 
-        private async Task PostTo(string consentMangerUrl,
-            string consentId,
+        private async Task PostTo(string consentId,
             string dataPushUrl,
             IEnumerable<GrantedContext> careContexts,
             DataResponse dataResponse)
@@ -61,8 +58,7 @@ namespace In.ProjectEKA.HipService.DataFlow
                     catch (Exception exception)
                     {
                         Log.Error(exception, exception.StackTrace);
-                        await GetDataNotificationRequest(consentMangerUrl,
-                            consentId,
+                        await GetDataNotificationRequest(consentId,
                             grantedContexts,
                             dataResponse,
                             HiStatus.ERRORED,
@@ -71,8 +67,7 @@ namespace In.ProjectEKA.HipService.DataFlow
                     }
                 });
                 token.MatchNone(() => Log.Error("Did not post data to HIU"));
-                await GetDataNotificationRequest(consentMangerUrl,
-                    consentId,
+                await GetDataNotificationRequest(consentId,
                     grantedContexts,
                     dataResponse,
                     HiStatus.DELIVERED,
@@ -85,8 +80,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             }
         }
 
-        private async Task GetDataNotificationRequest(string consentMangerUrl,
-            string consentId,
+        private async Task GetDataNotificationRequest(string consentId,
             IEnumerable<GrantedContext> careContexts,
             DataResponse dataResponse,
             HiStatus hiStatus,

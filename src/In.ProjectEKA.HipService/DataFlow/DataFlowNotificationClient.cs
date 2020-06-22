@@ -9,27 +9,31 @@ namespace In.ProjectEKA.HipService.DataFlow
     using Logger;
     using Model;
     using static Common.HttpRequestHelper;
+    using HipService.Consent;
 
     public class DataFlowNotificationClient
     {
         private readonly HttpClient httpClient;
         private readonly CentralRegistryClient centralRegistryClient;
         private readonly GatewayClient gatewayClient;
+        private readonly IConsentRepository consentRepository;
         private static readonly string HealthInformationNotificationPath = "/health-information/notification";
 
 
         public DataFlowNotificationClient(HttpClient httpClient,
                                           CentralRegistryClient centralRegistryClient,
-                                          GatewayClient gatewayClient)
+                                          GatewayClient gatewayClient,
+                                          IConsentRepository consentRepository)
         {
             this.httpClient = httpClient;
             this.centralRegistryClient = centralRegistryClient;
             this.gatewayClient = gatewayClient;
+            this.consentRepository = consentRepository;
         }
 
         public virtual async Task NotifyGateway( DataNotificationRequest dataNotificationRequest)
         {
-            var cmSuffix = "";
+            var consent = await consentRepository.GetFor(dataNotificationRequest.ConsentId);
             var notificationRequest = new GatewayDataNotificationRequest(Guid.NewGuid(),
                                                                          DateTime.Now.ToUniversalTime(),
                                                                          new DataFlowNotificationRequest(
@@ -40,9 +44,9 @@ namespace In.ProjectEKA.HipService.DataFlow
                                                                              dataNotificationRequest.StatusNotification
                                                                              )
                                                                          );
-            await gatewayClient.SendDataToGateway(GatewayPathConstants.HealthInformationNotifyGateway,
+            await gatewayClient.SendDataToGateway(GatewayPathConstants.HealthInformationNotifyGatewayPath,
                                                   notificationRequest,
-                                                  cmSuffix);
+                                                  consent.ConsentArtefact.ConsentManager.Id);
         }
 
         [Obsolete]

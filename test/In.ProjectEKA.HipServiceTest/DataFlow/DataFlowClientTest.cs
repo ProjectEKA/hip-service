@@ -68,9 +68,11 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             centralRegistryClient.Setup(client => client.Authenticate()).ReturnsAsync(Option.Some("Something"));
             centralRegistryClient.Setup(client => client.GetUrlFor(id))
                 .ReturnsAsync(Option.Some("http://localhost:8000"));
+            // dataFlowNotificationClient.Setup(client =>
+            //         client.NotifyCm("http://localhost:8000",
+            //             It.IsAny<DataNotificationRequest>()))
             dataFlowNotificationClient.Setup(client =>
-                    client.NotifyCm("http://localhost:8000",
-                        It.IsAny<DataNotificationRequest>()))
+                    client.NotifyGateway(It.IsAny<DataNotificationRequest>()))
                 .Returns(Task.CompletedTask)
                 .Callback((string url, DataNotificationRequest request) =>
                     {
