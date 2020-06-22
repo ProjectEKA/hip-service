@@ -7,11 +7,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Serialization;
-using Hl7.Fhir.Utility;
 using In.ProjectEKA.HipLibrary.Patient;
 using In.ProjectEKA.HipLibrary.Patient.Model;
 using In.ProjectEKA.TMHHip.DataFlow.Model;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Optional;
 using Optional.Linq;
 using Serilog;
@@ -34,7 +34,8 @@ namespace In.ProjectEKA.TMHHip.DataFlow
 
         public async Task<Option<Entries>> CollectData(DataRequest dataRequest)
         {
-            var bundles = new List<CareBundle>();
+            var parser = new FhirJsonParser();
+            var careBundles = new List<CareBundle>();
             var fetchPatientDataTask = FetchPatientData(dataRequest);
             fetchPatientDataTask.Wait();
             var tmhPatientData = fetchPatientDataTask.Result;
@@ -47,13 +48,42 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                 switch (hiType)
                 {
                     case HiType.Observation:
-                        bundles.AddRange(FindObservationData(dataRequest, tmhPatientData.ClinicalNotes, patientName)
-                            .Result);
+                    {
+                        if (tmhPatientData.ClinicalNotes != null)
+                        {
+                            var observationResponse =
+                                FindObservationData(dataRequest, tmhPatientData.ClinicalNotes, patientName)
+                                    .Result;
+                            var serializeObject = JsonConvert.SerializeObject(observationResponse,
+                                new JsonSerializerSettings
+                                {
+                                    Formatting = Formatting.Indented,
+                                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                                });
+                            var careBundle = new CareBundle(caseId, parser.Parse<Bundle>(serializeObject));
+                            careBundles.Add(careBundle);
+                        }
+
                         break;
+                    }
                     case HiType.MedicationRequest:
-                        bundles.AddRange(
-                            FindMedicationRequestData(dataRequest, tmhPatientData.Prescriptions, patientName).Result);
+                    {
+                        if (tmhPatientData.Prescriptions != null)
+                        {
+                            var medicationResponse =
+                                FindMedicationRequestData(dataRequest, tmhPatientData.Prescriptions, patientName)
+                                    .Result;
+                            var serializeObject = JsonConvert.SerializeObject(medicationResponse,
+                                new JsonSerializerSettings
+                                {
+                                    Formatting = Formatting.Indented,
+                                    ContractResolver = new CamelCasePropertyNamesContractResolver()
+                                });
+                            var careBundle = new CareBundle(caseId, parser.Parse<Bundle>(serializeObject));
+                            careBundles.Add(careBundle);
+                        }
                         break;
+                    }
                     case HiType.Condition:
                         break;
                     case HiType.DiagnosticReport:
@@ -65,7 +95,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                 }
             }
 
-            var entries = new Entries(bundles);
+            var entries = new Entries(careBundles);
             return Option.Some(entries);
         }
 
@@ -97,17 +127,13 @@ namespace In.ProjectEKA.TMHHip.DataFlow
             return aDateTime;
         }
 
-        private async Task<List<CareBundle>> FindMedicationRequestData(DataRequest dataRequest,
+
+        private async Task<MedicationResponse> FindMedicationRequestData(DataRequest dataRequest,
             List<Prescription> prescriptions, string patientName)
         {
             LogDataRequest(dataRequest);
-            var caseId = dataRequest.CareContexts.First().PatientReference;
-            var parser = new FhirJsonParser(new ParserSettings
-            {
-                AcceptUnknownMembers = true,
-                AllowUnrecognizedEnums = true
-            });
-            var careBundles = new List<CareBundle>();
+            var list = new List<IMedication>();
+
             foreach (var prescription in prescriptions)
             {
                 if (!WithinRange(dataRequest.DateRange, prescription.Date))
@@ -125,7 +151,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                     Resource = new MedicationRequestResource
                     {
                         Id = id,
-                        Intent = "active",
+                        Intent = "order",
                         Status = "active",
                         Subject = new Subject(patientName),
                         AuthoredOn = prescription.Date.Date,
@@ -141,32 +167,28 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                         {Id = medicationId, ResourceType = HiType.Medication, Code = new Code(prescription.Medicine)}
                 };
 
-                var prescriptionRepresentation = new PrescriptionRepresentation
-                {
-                    MedicationRepresentation = medicationRepresentation,
-                    MedicationRequestRepresentation = medicationRequestRepresentation
-                };
-                var content = JsonConvert.SerializeObject(prescriptionRepresentation);
-                var careBundle = new CareBundle(caseId, parser.Parse<Bundle>(content));
-                careBundles.Add(careBundle);
+                list.Add(medicationRequestRepresentation);
+                list.Add(medicationRepresentation);
             }
 
-            return careBundles;
+            var medicationResponse = new MedicationResponse
+            {
+                Entry = list,
+                Id = Uuid.Generate().Value.Split(":").Last(),
+                ResourceType = "Bundle",
+                Type = "collection"
+            };
+            return medicationResponse;
         }
 
-        private async Task<List<CareBundle>> FindObservationData(DataRequest dataRequest,
+        private async Task<ObservationResponse> FindObservationData(DataRequest dataRequest,
             List<ClinicalNote> clinicalNotes, string patientName)
         {
             LogDataRequest(dataRequest);
-            var caseId = dataRequest.CareContexts.First().PatientReference;
             var uuid = Uuid.Generate().Value;
             var id = uuid.Split(":").Last();
-            var careBundles = new List<CareBundle>();
-            var parser = new FhirJsonParser(new ParserSettings
-            {
-                AcceptUnknownMembers = true,
-                AllowUnrecognizedEnums = true
-            });
+            var list = new List<ObservationRepresentation>();
+
             foreach (var clinicalNote in clinicalNotes)
             {
                 if (!WithinRange(dataRequest.DateRange, clinicalNote.CreatedDate))
@@ -182,36 +204,50 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                         clinicalNote.CreatedDate,
                         clinicalNote.Note),
                 };
-                var content = JsonConvert.SerializeObject(observationRepresentation);
-                var careBundle = new CareBundle(caseId, parser.Parse<Bundle>(content));
-                careBundles.Add(careBundle);
+                list.Add(observationRepresentation);
             }
 
-            return careBundles;
+            var observationResponse = new ObservationResponse
+            {
+                Entry = list,
+                Id = Uuid.Generate().Value.Split(":").Last(),
+                ResourceType = "Bundle",
+                Type = "collection"
+            };
+            return observationResponse;
         }
+
 
         private async Task<PatientData> FetchPatientData(
             DataRequest dataRequest)
         {
-            LogDataRequest(dataRequest);
-            var caseId = dataRequest.CareContexts.First().PatientReference;
-            var request = new HttpRequestMessage(HttpMethod.Post, "https://tmc.gov.in/tmh_ncg_api/healthInfo")
+            try
             {
-                Content = new StringContent(
-                    JsonConvert.SerializeObject(new
-                    {
-                        HiTypes = dataRequest.HiType,
-                        StartDate = dataRequest.DateRange.From,
-                        EndDate = dataRequest.DateRange.To,
-                        CaseId = caseId
-                    }),
-                    Encoding.UTF8,
-                    "application/json")
-            };
+                LogDataRequest(dataRequest);
+                var caseId = dataRequest.CareContexts.First().PatientReference;
+                var request = new HttpRequestMessage(HttpMethod.Post, "https://tmc.gov.in/tmh_ncg_api/healthInfo")
+                {
+                    Content = new StringContent(
+                        JsonConvert.SerializeObject(new
+                        {
+                            HiTypes = dataRequest.HiType,
+                            StartDate = dataRequest.DateRange.From,
+                            EndDate = dataRequest.DateRange.To,
+                            CaseId = caseId
+                        }),
+                        Encoding.UTF8,
+                        "application/json")
+                };
 
-            var response = await client.SendAsync(request).ConfigureAwait(false);
-            var responseStream = await response.Content.ReadAsStreamAsync();
-            return await JsonSerializer.DeserializeAsync<PatientData>(responseStream);
+                var response = await client.SendAsync(request).ConfigureAwait(false);
+                var responseStream = await response.Content.ReadAsStreamAsync();
+                return await JsonSerializer.DeserializeAsync<PatientData>(responseStream);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e.Message);
+                return null;
+            }
         }
 
         private static void LogDataRequest(DataRequest request)

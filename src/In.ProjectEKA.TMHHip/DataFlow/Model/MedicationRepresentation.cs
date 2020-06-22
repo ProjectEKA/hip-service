@@ -4,7 +4,7 @@ using Newtonsoft.Json.Converters;
 
 namespace In.ProjectEKA.TMHHip.DataFlow.Model
 {
-    public class MedicationRepresentation
+    public class MedicationRepresentation:IMedication
     {
         public string FullUrl { get; set; }
         public MedicationResource Resource { get; set; }
@@ -19,5 +19,10 @@ namespace In.ProjectEKA.TMHHip.DataFlow.Model
         public string Id { get; set; }
         
         public Code Code { get; set; }
+    }
+
+    public interface IMedication
+    {
+        
     }
 }

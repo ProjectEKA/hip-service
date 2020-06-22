@@ -5,7 +5,7 @@ using Newtonsoft.Json.Converters;
 
 namespace In.ProjectEKA.TMHHip.DataFlow.Model
 {
-    public class MedicationRequestRepresentation
+    public class MedicationRequestRepresentation:IMedication
     {
         public string FullUrl { get; set; }
         public MedicationRequestResource Resource { get; set; }
