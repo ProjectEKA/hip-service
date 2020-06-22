@@ -1,3 +1,5 @@
+using static In.ProjectEKA.HipService.Gateway.GatewayPathConstants;
+
 namespace In.ProjectEKA.HipService.DataFlow
 {
     using System;
@@ -7,11 +9,16 @@ namespace In.ProjectEKA.HipService.DataFlow
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-
+    using HipService.Gateway.Model;
+    using HipService.DataFlow.Model;
+    using Gateway;
+    using Logger;
+    
     [ApiController]
     public class DataFlowController : ControllerBase
     {
         private readonly IDataFlow dataFlow;
+
 
         public DataFlowController(IDataFlow dataFlow)
         {
@@ -60,11 +67,13 @@ namespace In.ProjectEKA.HipService.DataFlow
     {
         private readonly IDataFlow dataFlow;
         private readonly IBackgroundJobClient backgroundJob;
+        private readonly GatewayClient gatewayClient;
 
-        public PatientDataFlowController(IDataFlow dataFlow, IBackgroundJobClient backgroundJob)
+        public PatientDataFlowController(IDataFlow dataFlow, IBackgroundJobClient backgroundJob, GatewayClient gatewayClient)
         {
             this.dataFlow = dataFlow;
             this.backgroundJob = backgroundJob;
+            this.gatewayClient = gatewayClient;
         }
 
         [Route("request")]
@@ -78,16 +87,35 @@ namespace In.ProjectEKA.HipService.DataFlow
 
         public async Task HealthInformationOf(PatientHealthInformationRequest healthInformationRequest, string gatewayId)
         {
-            var hiRequest = healthInformationRequest.HiRequest;
-            var request = new HealthInformationRequest(healthInformationRequest.TransactionId,
-                hiRequest.Consent,
-                hiRequest.DateRange,
-                hiRequest.DataPushUrl,
-                hiRequest.KeyMaterial);
+            try
+            {
+                var hiRequest = healthInformationRequest.HiRequest;
+                var request = new HealthInformationRequest(healthInformationRequest.TransactionId,
+                    hiRequest.Consent,
+                    hiRequest.DateRange,
+                    hiRequest.DataPushUrl,
+                    hiRequest.KeyMaterial);
+                var (_response, error) = await dataFlow.HealthInformationRequestFor(request, gatewayId);
+                var patientId = await dataFlow.GetPatientId(hiRequest.Consent.Id);
+                var cmSuffix = patientId.Split("@")[1];
+                var sessionStatus = DataFlowRequestStatus.ACKNOWLEDGED;
+                if (error != null)
+                {
+                    sessionStatus = DataFlowRequestStatus.ERRORED;
+                }
 
-            await dataFlow.HealthInformationRequestFor(request, gatewayId);
-
-            //TODO:: OnRequest implementation pending
+                var gatewayResponse = new GatewayDataFlowRequestResponse(
+                    Guid.NewGuid(),
+                    DateTime.Now.ToUniversalTime(),
+                    new DataFlowRequestResponse(healthInformationRequest.TransactionId, sessionStatus),
+                    error?.Error,
+                    new Resp(healthInformationRequest.RequestId));
+                await gatewayClient.SendDataToGateway(HealthInformationOnRequestPath, gatewayResponse , cmSuffix);
+            }  
+            catch (Exception exception)
+            {
+                Log.Error(exception, exception.StackTrace);
+            }
         }
     }
 }
