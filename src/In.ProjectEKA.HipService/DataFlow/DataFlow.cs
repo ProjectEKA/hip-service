@@ -71,6 +71,12 @@ namespace In.ProjectEKA.HipService.DataFlow
             return new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(response, null);
         }
 
+        public async Task<String> GetPatientId(String consentId) 
+        {
+            var consent = await consentRepository.GetFor(consentId);
+            return consent.ConsentArtefact.Patient.Id;
+        }
+
         private static Tuple<HealthInformationTransactionResponse, ErrorRepresentation> ConsentArtefactNotFound()
         {
             return new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(null,
@@ -117,7 +123,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             var formatStrings = new[]
             {
                 "yyyy-MM-dd", "yyyy-MM-dd hh:mm:ss", "yyyy-MM-dd hh:mm:ss tt", "yyyy-MM-ddTHH:mm:ss.fffzzz",
-                "yyyy-MM-dd'T'HH:mm:ss.fff", "yyyy-MM-dd'T'HH:mm:ss.ffff", "yyyy-MM-dd'T'HH:mm:ss.fffff",
+                "yyyy-MM-dd'T'HH:mm:ss.fff","yyyy-MM-dd'T'HH:mm:ss.ff","yyyy-MM-dd'T'HH:mm:ss.f", "yyyy-MM-dd'T'HH:mm:ss.ffff", "yyyy-MM-dd'T'HH:mm:ss.fffff",
                 "dd/MM/yyyy", "dd/MM/yyyy hh:mm:ss", "dd/MM/yyyy hh:mm:ss tt", "dd/MM/yyyyTHH:mm:ss.fffzzz",
                 "yyyy-MM-dd'T'HH:mm:ss.ffffff"
             };
