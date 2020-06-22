@@ -201,5 +201,12 @@
       <CopyToPublishDirectory>Always</CopyToPublishDirectory>
       <Link>NCP1008DiagnosticReportWithRadiologyImageInline.json</Link>
     </Content>
-  </ItemGroup>  
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\NCP1006FourthVisitMediaAsReport.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>NCP1006FourthVisitMediaAsReport.json</Link>
+    </Content>
+  </ItemGroup>
 </Project>
