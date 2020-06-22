@@ -109,7 +109,7 @@ namespace In.ProjectEKA.HipService.Link
                     .VerifyAndLinkCareContext(new LinkConfirmationRequest(request.Confirmation.Token,
                         request.Confirmation.LinkRefNumber));
                 var linkedPatientRepresentation = new LinkConfirmationRepresentation();
-                var cmId = await linkPatient.GetCMId(request.Confirmation.LinkRefNumber);
+                var cmId = await linkPatient.GetCmId(request.Confirmation.LinkRefNumber);
                 if (patientLinkResponse != null || cmId != "")
                 {
                     linkedPatientRepresentation = patientLinkResponse.Patient;

@@ -12,5 +12,7 @@ namespace In.ProjectEKA.HipService.DataFlow
         Task<Tuple<HealthInformationResponse, ErrorRepresentation>> HealthInformationFor(
             string informationId,
             string token);
+        
+        Task<String> GetPatientId(String consentId);
     }
 }
