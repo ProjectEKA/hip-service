@@ -98,7 +98,7 @@ namespace In.ProjectEKA.HipService.DataFlow
                     new StatusResponse(grantedContext.CareContextReference, hiStatus, description))
                 .ToList();
 
-            await dataFlowNotificationClient.NotifyCm(consentMangerUrl,
+            await dataFlowNotificationClient.NotifyGateway(
                 new DataNotificationRequest(dataResponse.TransactionId,
                     DateTime.Now,
                     new Notifier(Type.HIP, centralRegistryConfiguration.ClientId),
