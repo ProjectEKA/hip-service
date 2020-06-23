@@ -1,3 +1,9 @@
+using System;
+using In.ProjectEKA.HipLibrary.Patient.Model;
+using In.ProjectEKA.HipService.Gateway;
+using In.ProjectEKA.HipService.Gateway.Model;
+using static In.ProjectEKA.HipService.Gateway.GatewayPathConstants;
+
 namespace In.ProjectEKA.HipService.Consent
 {
     using System.Threading.Tasks;
@@ -13,10 +19,16 @@ namespace In.ProjectEKA.HipService.Consent
 
         private readonly IBackgroundJobClient backgroundJob;
 
-        public ConsentNotificationController(IConsentRepository consentRepository, IBackgroundJobClient backgroundJob)
+        private readonly GatewayClient gatewayClient;
+
+        public ConsentNotificationController(
+            IConsentRepository consentRepository, 
+            IBackgroundJobClient backgroundJob, 
+            GatewayClient gatewayClient)
         {
             this.consentRepository = consentRepository;
             this.backgroundJob = backgroundJob;
+            this.gatewayClient = gatewayClient;
         }
 
         [HttpPost]
@@ -42,6 +54,19 @@ namespace In.ProjectEKA.HipService.Consent
             else
             {
                 await consentRepository.UpdateAsync(notification.ConsentId, notification.Status);
+                if (notification.Status == ConsentStatus.REVOKED)
+                {
+                    var patientId = notification.ConsentDetail.Patient.Id;
+                    var cmSuffix = patientId.Split("@")[1];
+                    var gatewayResponse = new GatewayRevokedConsentRepresentation(
+                        Guid.NewGuid(),
+                        DateTime.Now.ToUniversalTime(), 
+                        new ConsentUpdateResponse(ConsentUpdateStatus.OK.ToString(),
+                            notification.ConsentDetail.ConsentId),
+                        null,
+                        new Resp(consentArtefact.RequestId));
+                    await gatewayClient.SendDataToGateway(ConsentOnNotifyPath, gatewayResponse, cmSuffix);
+                }
             }
         }
     }
