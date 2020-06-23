@@ -76,7 +76,7 @@ namespace In.ProjectEKA.HipService.DataFlow
                         Log.Fatal(ex, "Error happened");
                     }
                 });
-                token.MatchNone(() => Log.Information("Data transfer notification to CM failed"));
+                token.MatchNone(() => Log.Information("Data transfer notification to Gateway failed"));
             }
             catch (Exception exception)
             {
