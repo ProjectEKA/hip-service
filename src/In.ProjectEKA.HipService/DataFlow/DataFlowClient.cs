@@ -37,7 +37,7 @@ namespace In.ProjectEKA.HipService.DataFlow
                 dataRequest.DataPushUrl,
                 dataRequest.CareContexts,
                 new DataResponse(dataRequest.TransactionId, data, keyMaterial),
-                dataRequest.CmSuffix);
+                dataRequest.CmSuffix).ConfigureAwait(false);
         }
 
         private async Task PostTo(string consentId,
