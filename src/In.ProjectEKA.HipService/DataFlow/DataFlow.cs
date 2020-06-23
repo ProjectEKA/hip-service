@@ -33,7 +33,7 @@ namespace In.ProjectEKA.HipService.DataFlow
 
         public async Task<Tuple<HealthInformationTransactionResponse, ErrorRepresentation>> HealthInformationRequestFor(
             HealthInformationRequest request,
-            string consentManagerId)
+            string gatewayId)
         {
             var consent = await consentRepository.GetFor(request.Consent.Id);
             if (consent == null) return ConsentArtefactNotFound();
@@ -44,8 +44,10 @@ namespace In.ProjectEKA.HipService.DataFlow
                 consent.ConsentArtefact.HiTypes,
                 request.TransactionId,
                 request.KeyMaterial,
-                consentManagerId,
-                consent.ConsentArtefactId);
+                gatewayId,
+                consent.ConsentArtefactId,
+                consent.ConsentArtefact.ConsentManager.Id
+            );
             var result = await dataFlowRepository.SaveRequest(request.TransactionId, request).ConfigureAwait(false);
             var (response, errorRepresentation) = result.Map(r =>
             {

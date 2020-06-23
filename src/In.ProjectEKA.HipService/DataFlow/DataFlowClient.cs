@@ -36,13 +36,15 @@ namespace In.ProjectEKA.HipService.DataFlow
              await PostTo(dataRequest.ConsentId,
                 dataRequest.DataPushUrl,
                 dataRequest.CareContexts,
-                new DataResponse(dataRequest.TransactionId, data, keyMaterial));
+                new DataResponse(dataRequest.TransactionId, data, keyMaterial),
+                dataRequest.CmSuffix);
         }
 
         private async Task PostTo(string consentId,
             string dataPushUrl,
             IEnumerable<GrantedContext> careContexts,
-            DataResponse dataResponse)
+            DataResponse dataResponse,
+            string cmSuffix)
         {
             var grantedContexts = careContexts as GrantedContext[] ?? careContexts.ToArray();
             try
@@ -63,7 +65,8 @@ namespace In.ProjectEKA.HipService.DataFlow
                             dataResponse,
                             HiStatus.ERRORED,
                             SessionStatus.FAILED,
-                            "Failed to deliver health information").ConfigureAwait(false);
+                            "Failed to deliver health information",
+                            cmSuffix).ConfigureAwait(false);
                     }
                 });
                 token.MatchNone(() => Log.Error("Did not post data to HIU"));
@@ -72,7 +75,8 @@ namespace In.ProjectEKA.HipService.DataFlow
                     dataResponse,
                     HiStatus.DELIVERED,
                     SessionStatus.TRANSFERRED,
-                    "Successfully delivered health information").ConfigureAwait(false);
+                    "Successfully delivered health information",
+                    cmSuffix).ConfigureAwait(false);
             }
             catch (Exception exception)
             {
@@ -85,14 +89,15 @@ namespace In.ProjectEKA.HipService.DataFlow
             DataResponse dataResponse,
             HiStatus hiStatus,
             SessionStatus sessionStatus,
-            string description)
+            string description,
+            string cmSuffix)
         {
             var statusResponses = careContexts
                 .Select(grantedContext =>
                     new StatusResponse(grantedContext.CareContextReference, hiStatus, description))
                 .ToList();
 
-            await dataFlowNotificationClient.NotifyGateway(
+            await dataFlowNotificationClient.NotifyGateway( cmSuffix,
                 new DataNotificationRequest(dataResponse.TransactionId,
                     DateTime.Now,
                     new Notifier(Type.HIP, centralRegistryConfiguration.ClientId),

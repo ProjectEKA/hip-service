@@ -29,11 +29,8 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var id = "ConsentManagerId";
             const string centralRegistryRootUrl = "https://root/central-registry";
             var centralRegistryClient = new Mock<CentralRegistryClient>(MockBehavior.Strict, null, null);
-            var dataFlowNotificationClient = new Mock<DataFlowNotificationClient>(MockBehavior.Strict,
-                                                                                  It.IsAny<HttpClient>(),
-                                                                                  It.IsAny<CentralRegistryClient>(),
-                                                                                  It.IsAny<GatewayClient>(),
-                                                                                  It.IsAny<IConsentRepository>());
+            var dataFlowNotificationClient = new Mock<DataFlowNotificationClient>(MockBehavior.Strict, null, null, null);
+
             var centralRegistryConfiguration = new CentralRegistryConfiguration
             {
                 Url = centralRegistryRootUrl,
@@ -75,9 +72,9 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             centralRegistryClient.Setup(client => client.GetUrlFor(id))
                 .ReturnsAsync(Option.Some("http://localhost:8000"));
             dataFlowNotificationClient.Setup(client =>
-                    client.NotifyGateway(It.IsAny<DataNotificationRequest>()))
+                    client.NotifyGateway(dataRequest.CmSuffix,It.IsAny<DataNotificationRequest>()))
                 .Returns(Task.CompletedTask)
-                .Callback((DataNotificationRequest request) =>
+                .Callback((string cmSuffix, DataNotificationRequest request) =>
                     {
                         dataNotificationRequest.Should().NotBeNull();
                         dataNotificationRequest.Notifier.Id.Should().Be(request.Notifier.Id);
@@ -103,11 +100,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var id = "ConsentManagerId";
             const string centralRegistryRootUrl = "https://root/central-registry";
             var centralRegistryClient = new Mock<CentralRegistryClient>(MockBehavior.Strict, null, null);
-            var dataFlowNotificationClient = new Mock<DataFlowNotificationClient>(MockBehavior.Strict,
-                                                                                  It.IsAny<HttpClient>(),
-                                                                                  It.IsAny<CentralRegistryClient>(),
-                                                                                  It.IsAny<GatewayClient>(),
-                                                                                  It.IsAny<IConsentRepository>());
+            var dataFlowNotificationClient = new Mock<DataFlowNotificationClient>(MockBehavior.Strict, null, null, null);
             var centralRegistryConfiguration = new CentralRegistryConfiguration
             {
                 Url = centralRegistryRootUrl,

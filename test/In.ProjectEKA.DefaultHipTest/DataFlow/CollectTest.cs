@@ -40,7 +40,8 @@ namespace In.ProjectEKA.DefaultHipTest.DataFlow
                 "someTxnId",
                 null,
                 consentManagerId,
-                consentId);
+                consentId,
+                "sometext");
 
             var entries = await collect.CollectData(dataRequest);
             entries.ValueOrDefault().CareBundles.Count().Should().Be(8);
