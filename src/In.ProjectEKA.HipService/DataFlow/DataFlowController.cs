@@ -107,7 +107,7 @@ namespace In.ProjectEKA.HipService.DataFlow
                 var gatewayResponse = new GatewayDataFlowRequestResponse(
                     Guid.NewGuid(),
                     DateTime.Now.ToUniversalTime(),
-                    new DataFlowRequestResponse(healthInformationRequest.TransactionId, sessionStatus),
+                    new DataFlowRequestResponse(healthInformationRequest.TransactionId, sessionStatus.ToString()),
                     error?.Error,
                     new Resp(healthInformationRequest.RequestId));
                 await gatewayClient.SendDataToGateway(HealthInformationOnRequestPath, gatewayResponse , cmSuffix);

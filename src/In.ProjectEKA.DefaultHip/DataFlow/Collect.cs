@@ -56,6 +56,7 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
             {
                 "yyyy-MM-dd", "yyyy-MM-dd hh:mm:ss", "yyyy-MM-dd hh:mm:ss tt", "yyyy-MM-ddTHH:mm:ss.fffzzz",
                 "yyyy-MM-dd'T'HH:mm:ss.fff", "yyyy-MM-dd'T'HH:mm:ss.ffff", "yyyy-MM-dd'T'HH:mm:ss.fffff",
+                "yyyy-MM-dd'T'HH:mm:ss.ff","yyyy-MM-dd'T'HH:mm:ss.ff",
                 "dd/MM/yyyy", "dd/MM/yyyy hh:mm:ss", "dd/MM/yyyy hh:mm:ss tt", "dd/MM/yyyyTHH:mm:ss.fffzzz",
                 "yyyy-MM-dd'T'HH:mm:ss.ffffff"
             };
