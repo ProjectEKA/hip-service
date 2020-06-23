@@ -26,7 +26,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
         internal static HealthInformationRequest HealthInformationRequest(string transactionId)
         {
             var time = new TimeSpan(2, 0, 0, 0);
-            var expiry = DateTime.Now.Add(time).ToUniversalTime().ToString("yyyy-MM-dd'T'HH:mm:ss'Z'");
+            var expiry = DateTime.Now.Add(time).ToUniversalTime().ToString("yyyy-MM-dd'T'HH:mm:ss.ffffff");
             return new HealthInformationRequest(
                 transactionId,
                 new HipService.DataFlow.Consent(faker.Random.Hash()),
@@ -88,7 +88,8 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
             var content = Faker().Random.String();
             var media = Faker().Random.String();
             var checksum = Faker().Random.Hash();
-            return new Entry(content, media, checksum, null);
+            var careContextReference = Faker().Random.String();
+            return new Entry(content, media, checksum, null, careContextReference);
         }
 
         internal static HealthInformation HealthInformation(string token, DateTime dateTime)

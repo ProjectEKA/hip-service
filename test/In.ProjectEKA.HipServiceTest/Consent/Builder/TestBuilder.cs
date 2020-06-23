@@ -18,6 +18,14 @@ namespace In.ProjectEKA.HipServiceTest.Consent.Builder
                 ConsentStatus.GRANTED, faker.Random.Hash());
         }
 
+        internal static Notification Notification()
+        {
+            return new Notification(ConsentArtefact().Generate().Build(),
+                                    faker.Random.Hash(),
+                                    faker.Random.Hash(),
+                                    ConsentStatus.GRANTED);
+        }
+
         private static Faker<ConsentArtefactBuilder> ConsentArtefact()
         {
             return new Faker<ConsentArtefactBuilder>();

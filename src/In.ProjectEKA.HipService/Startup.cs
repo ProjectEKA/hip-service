@@ -1,8 +1,12 @@
 namespace In.ProjectEKA.HipService
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IdentityModel.Tokens.Jwt;
     using System.Linq;
     using System.Net.Http;
     using System.Text.Json;
+    using System.Threading.Tasks;
     using Common;
     using Consent;
     using Consent.Database;
@@ -14,6 +18,9 @@ namespace In.ProjectEKA.HipService
     using DefaultHip.Link;
     using Discovery;
     using Discovery.Database;
+    using Gateway;
+    using Hangfire;
+    using Hangfire.MemoryStorage;
     using HipLibrary.Matcher;
     using HipLibrary.Patient;
     using Link;
@@ -29,8 +36,9 @@ namespace In.ProjectEKA.HipService
     using Microsoft.IdentityModel.Logging;
     using Microsoft.IdentityModel.Tokens;
     using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+    using Optional;
     using Serilog;
-    using Task = System.Threading.Tasks.Task;
 
     public class Startup
     {
@@ -39,9 +47,17 @@ namespace In.ProjectEKA.HipService
             Configuration = configuration;
             var clientHandler = new HttpClientHandler
             {
-                ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true
+                ServerCertificateCustomValidationCallback = (
+                    sender,
+                    cert,
+                    chain,
+                    sslPolicyErrors) => true
             };
-            HttpClient = new HttpClient(clientHandler);
+            HttpClient = new HttpClient(clientHandler)
+            {
+                Timeout = TimeSpan.FromSeconds(Configuration.GetSection("Gateway:timeout").Get<int>())
+            };
+            IdentityModelEventSource.ShowPII = true;
         }
 
         private IConfiguration Configuration { get; }
@@ -60,6 +76,7 @@ namespace In.ProjectEKA.HipService
                 .AddDbContext<ConsentContext>(options =>
                     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
                         x => x.MigrationsAssembly("In.ProjectEKA.HipService")))
+                .AddHangfire(config => { config.UseMemoryStorage(); })
                 .AddSingleton<IEncryptor, Encryptor>()
                 .AddSingleton<IPatientRepository>(new PatientRepository("demoPatients.json"))
                 .AddSingleton<ICollect>(new Collect("demoPatientCareContextDataMap.json"))
@@ -88,6 +105,10 @@ namespace In.ProjectEKA.HipService
                 .AddScoped<IHealthInformationRepository, HealthInformationRepository>()
                 .AddSingleton(new CentralRegistryClient(HttpClient,
                     Configuration.GetSection("authServer").Get<CentralRegistryConfiguration>()))
+                .AddSingleton(new GatewayClient(HttpClient, new CentralRegistryClient(
+                        HttpClient,
+                        Configuration.GetSection("authServer").Get<CentralRegistryConfiguration>()),
+                    Configuration.GetSection("Gateway").Get<GatewayConfiguration>()))
                 .AddTransient<IDataFlow, DataFlow.DataFlow>()
                 .AddRouting(options => options.LowercaseUrls = true)
                 .AddControllers()
@@ -122,17 +143,10 @@ namespace In.ProjectEKA.HipService
                     {
                         OnTokenValidated = context =>
                         {
-                            const string claimTypeClientId = "clientId";
-                            if (!context.Principal.HasClaim(claim => claim.Type == claimTypeClientId))
+                            if (!IsTokenValid(context))
                             {
-                                context.Fail($"Claim {claimTypeClientId} is not present in the token.");
+                                context.Fail("Unable to validate token.");
                             }
-                            else
-                            {
-                                context.Request.Headers["X-ConsentManagerID"] =
-                                    context.Principal.Claims.First(claim => claim.Type == claimTypeClientId).Value;
-                            }
-
                             return Task.CompletedTask;
                         }
                     };
@@ -150,7 +164,12 @@ namespace In.ProjectEKA.HipService
                 .UseSerilogRequestLogging()
                 .UseAuthentication()
                 .UseAuthorization()
-                .UseEndpoints(endpoints => { endpoints.MapControllers(); });
+                .UseEndpoints(endpoints => { endpoints.MapControllers(); })
+                .UseHangfireServer(new BackgroundJobServerOptions
+                {
+                    CancellationCheckInterval = TimeSpan.FromMinutes(
+                        Configuration.GetSection("BackgroundJobs:cancellationCheckInterval").Get<int>())
+                });
 
             using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
             var linkContext = serviceScope.ServiceProvider.GetService<LinkPatientContext>();
@@ -161,6 +180,33 @@ namespace In.ProjectEKA.HipService
             dataFlowContext.Database.Migrate();
             var consentContext = serviceScope.ServiceProvider.GetService<ConsentContext>();
             consentContext.Database.Migrate();
+        }
+
+        private static bool CheckRoleInAccessToken(JwtSecurityToken accessToken)
+        {
+            var clientId = accessToken.Payload["clientId"] as string;
+            if (!(accessToken.Payload["resource_access"] is JObject resourceAccess) || clientId == null)
+            {
+                return false;
+            }
+            var token = new Token(clientId, resourceAccess[clientId]["roles"].ToObject<string[]>());
+            return token.Roles.Contains("gateway", StringComparer.OrdinalIgnoreCase);
+        }
+
+        private static bool IsTokenValid(TokenValidatedContext context)
+        {
+            const string claimTypeClientId = "clientId";
+            var accessToken = context.SecurityToken as JwtSecurityToken;
+            if (!CheckRoleInAccessToken(accessToken))
+            {
+                return false;
+            }
+            if (!context.Principal.HasClaim(claim => claim.Type == claimTypeClientId))
+            {
+                return false;
+            }
+            context.Request.Headers["X-GatewayID"] = context.Principal.Claims.First(claim => claim.Type == claimTypeClientId).Value;
+            return true;
         }
     }
 }
