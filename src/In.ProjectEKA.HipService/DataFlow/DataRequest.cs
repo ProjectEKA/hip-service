@@ -11,8 +11,10 @@ namespace In.ProjectEKA.HipService.DataFlow
         public IEnumerable<HiType> HiType { get; }
         public string TransactionId { get; }
         public KeyMaterial KeyMaterial { get; }
-        public string ConsentManagerId { get; }
+        public string GatewayId { get; }
         public string ConsentId { get; }
+        public string CmSuffix { get; }
+
 
         public DataRequest(IEnumerable<GrantedContext> careContexts,
             DateRange dateRange,
@@ -20,8 +22,9 @@ namespace In.ProjectEKA.HipService.DataFlow
             IEnumerable<HiType> hiType,
             string transactionId,
             KeyMaterial keyMaterial,
-            string consentManagerId,
-            string consentId)
+            string gatewayId,
+            string consentId,
+            string cmSuffix)
         {
             CareContexts = careContexts;
             DateRange = dateRange;
@@ -29,8 +32,9 @@ namespace In.ProjectEKA.HipService.DataFlow
             HiType = hiType;
             TransactionId = transactionId;
             KeyMaterial = keyMaterial;
-            ConsentManagerId = consentManagerId;
+            GatewayId = gatewayId;
             ConsentId = consentId;
+            CmSuffix = cmSuffix;
         }
     }
 }

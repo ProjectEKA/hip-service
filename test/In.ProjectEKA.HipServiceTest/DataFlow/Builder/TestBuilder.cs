@@ -7,6 +7,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
     using In.ProjectEKA.HipService.Common.Model;
     using In.ProjectEKA.HipService.DataFlow;
     using In.ProjectEKA.HipServiceTest.Common.Builder;
+    using Moq;
     using Consent = In.ProjectEKA.HipService.Consent.Model.Consent;
     using KeyMaterialLib = HipLibrary.Patient.Model.KeyMaterial;
     using KeyStructureLib = HipLibrary.Patient.Model.KeyStructure;
@@ -58,7 +59,8 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
                 transactionId,
                 keyMaterial,
                 consentManagerId,
-                consentId);
+                consentId,
+                faker.Random.Word());
         }
 
         internal static DataNotificationRequest DataNotificationRequest(string transactionId)
@@ -81,6 +83,33 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
                 ConsentStatus.GRANTED,
                 "consentMangerId"
             );
+        }
+
+        internal static Consent DataFlowConsent()
+        {
+            return new Consent(
+                faker.Random.Hash(),
+                new ConsentArtefact(
+                    faker.Random.Word(),
+                    faker.Random.Word(),
+                    DateTime.Today,
+                    new ConsentPurpose(faker.Random.Word(),
+                        faker.Random.Word(),
+                        faker.Random.Word()),
+                    new PatientReference(faker.Random.Word()),
+                    new HIPReference(faker.Random.Word(), faker.Random.Word()),
+                    new []{HipService.Common.Model.HiType.Condition},
+                    new ConsentPermission(AccessMode.View,
+                        new AccessPeriod(DateTime.Today,
+                            DateTime.Today),
+                        new DataFrequency(DataFrequencyUnit.Day, 0, 1),
+                        DateTime.Today),
+                    new []{new HipService.Common.Model.GrantedContext(faker.Random.Word(),
+                        faker.Random.Word())},
+                    new OrganizationReference(faker.Random.Word())),
+                faker.Random.Word(),
+                ConsentStatus.GRANTED,
+                faker.Random.Word());
         }
 
         private static Entry Entry()

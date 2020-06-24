@@ -7,6 +7,6 @@ namespace In.ProjectEKA.HipService.Gateway
         public static readonly string OnLinkConfirmPath = "/v1/links/link/on-confirm";
         public static readonly string ConsentOnNotifyPath = "/v1/consents/hip/on-notify";
         public static readonly string HealthInformationOnRequestPath = "/v1/health-information/hip/on-request";
-
+        public static readonly string HealthInformationNotifyGatewayPath = "/v1/health-information/notify";
     }
 }
