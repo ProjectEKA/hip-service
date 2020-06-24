@@ -99,7 +99,7 @@ namespace In.ProjectEKA.HipService.DataFlow
 
             await dataFlowNotificationClient.NotifyGateway( cmSuffix,
                 new DataNotificationRequest(dataResponse.TransactionId,
-                    DateTime.Now,
+                    DateTime.Now.ToUniversalTime(),
                     new Notifier(Type.HIP, centralRegistryConfiguration.ClientId),
                     new StatusNotification(sessionStatus, centralRegistryConfiguration.ClientId, statusResponses),
                     consentId,
