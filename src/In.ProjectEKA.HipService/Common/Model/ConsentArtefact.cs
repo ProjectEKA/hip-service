@@ -16,10 +16,6 @@ namespace In.ProjectEKA.HipService.Common.Model
         public ConsentPermission Permission { get; }
         public IEnumerable<GrantedContext> CareContexts { get; }
 
-        public ConsentArtefact()
-        {
-        }
-
         public ConsentArtefact(string schemaVersion,
         string consentId,
         DateTime createdAt,
