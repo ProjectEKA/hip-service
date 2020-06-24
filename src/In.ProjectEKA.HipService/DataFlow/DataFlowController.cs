@@ -10,7 +10,7 @@ namespace In.ProjectEKA.HipService.DataFlow
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using HipService.Gateway.Model;
-    using HipService.DataFlow.Model;
+    using Model;
     using Gateway;
     using Logger;
     
@@ -95,7 +95,7 @@ namespace In.ProjectEKA.HipService.DataFlow
                     hiRequest.DateRange,
                     hiRequest.DataPushUrl,
                     hiRequest.KeyMaterial);
-                var (_response, error) = await dataFlow.HealthInformationRequestFor(request, gatewayId);
+                var (response, error) = await dataFlow.HealthInformationRequestFor(request, gatewayId);
                 var patientId = await dataFlow.GetPatientId(hiRequest.Consent.Id);
                 var cmSuffix = patientId.Split("@")[1];
                 var sessionStatus = DataFlowRequestStatus.ACKNOWLEDGED;
@@ -107,7 +107,7 @@ namespace In.ProjectEKA.HipService.DataFlow
                 var gatewayResponse = new GatewayDataFlowRequestResponse(
                     Guid.NewGuid(),
                     DateTime.Now.ToUniversalTime(),
-                    new DataFlowRequestResponse(healthInformationRequest.TransactionId, sessionStatus),
+                    new DataFlowRequestResponse(healthInformationRequest.TransactionId, sessionStatus.ToString()),
                     error?.Error,
                     new Resp(healthInformationRequest.RequestId));
                 await gatewayClient.SendDataToGateway(HealthInformationOnRequestPath, gatewayResponse , cmSuffix);

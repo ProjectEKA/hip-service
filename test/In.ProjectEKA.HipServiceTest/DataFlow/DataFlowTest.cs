@@ -46,7 +46,8 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var request = TestBuilder.HealthInformationRequest(transactionId);
             dataFlowRepository.Setup(d => d.SaveRequest(transactionId, request))
                 .ReturnsAsync(Option.None<Exception>());
-            consentRepository.Setup(d => d.GetFor(request.Consent.Id)).ReturnsAsync(TestBuilder.Consent());
+            consentRepository.Setup(d => d.GetFor(request.Consent.Id))
+                .ReturnsAsync(TestBuilder.DataFlowConsent());
 
             var (healthInformationResponse, _) =
                 await dataFlowService.HealthInformationRequestFor(request, consentMangerId);
@@ -67,7 +68,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var expectedError = new ErrorRepresentation(new Error(ErrorCode.ServerInternalError,
                 ErrorMessage.InternalServerError));
             consentRepository.Setup(d => d.GetFor(request.Consent.Id))
-                .ReturnsAsync(TestBuilder.Consent());
+                .ReturnsAsync(TestBuilder.DataFlowConsent());
 
             var (_, errorResponse) = await dataFlowService.HealthInformationRequestFor(request, consentMangerId);
 

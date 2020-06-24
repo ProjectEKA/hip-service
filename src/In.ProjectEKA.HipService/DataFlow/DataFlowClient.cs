@@ -33,19 +33,18 @@ namespace In.ProjectEKA.HipService.DataFlow
             IEnumerable<Entry> data,
             KeyMaterial keyMaterial)
         {
-            var url = await centralRegistryClient.GetUrlFor(dataRequest.ConsentManagerId);
-            url.MatchSome(async providerUrl => await PostTo(providerUrl,
-                dataRequest.ConsentId,
+             await PostTo(dataRequest.ConsentId,
                 dataRequest.DataPushUrl,
                 dataRequest.CareContexts,
-                new DataResponse(dataRequest.TransactionId, data, keyMaterial)));
+                new DataResponse(dataRequest.TransactionId, data, keyMaterial),
+                dataRequest.CmSuffix).ConfigureAwait(false);
         }
 
-        private async Task PostTo(string consentMangerUrl,
-            string consentId,
+        private async Task PostTo(string consentId,
             string dataPushUrl,
             IEnumerable<GrantedContext> careContexts,
-            DataResponse dataResponse)
+            DataResponse dataResponse,
+            string cmSuffix)
         {
             var grantedContexts = careContexts as GrantedContext[] ?? careContexts.ToArray();
             try
@@ -61,23 +60,23 @@ namespace In.ProjectEKA.HipService.DataFlow
                     catch (Exception exception)
                     {
                         Log.Error(exception, exception.StackTrace);
-                        await GetDataNotificationRequest(consentMangerUrl,
-                            consentId,
+                        await GetDataNotificationRequest(consentId,
                             grantedContexts,
                             dataResponse,
                             HiStatus.ERRORED,
                             SessionStatus.FAILED,
-                            "Failed to deliver health information").ConfigureAwait(false);
+                            "Failed to deliver health information",
+                            cmSuffix).ConfigureAwait(false);
                     }
                 });
                 token.MatchNone(() => Log.Error("Did not post data to HIU"));
-                await GetDataNotificationRequest(consentMangerUrl,
-                    consentId,
+                await GetDataNotificationRequest(consentId,
                     grantedContexts,
                     dataResponse,
                     HiStatus.DELIVERED,
                     SessionStatus.TRANSFERRED,
-                    "Successfully delivered health information").ConfigureAwait(false);
+                    "Successfully delivered health information",
+                    cmSuffix).ConfigureAwait(false);
             }
             catch (Exception exception)
             {
@@ -85,20 +84,20 @@ namespace In.ProjectEKA.HipService.DataFlow
             }
         }
 
-        private async Task GetDataNotificationRequest(string consentMangerUrl,
-            string consentId,
+        private async Task GetDataNotificationRequest(string consentId,
             IEnumerable<GrantedContext> careContexts,
             DataResponse dataResponse,
             HiStatus hiStatus,
             SessionStatus sessionStatus,
-            string description)
+            string description,
+            string cmSuffix)
         {
             var statusResponses = careContexts
                 .Select(grantedContext =>
                     new StatusResponse(grantedContext.CareContextReference, hiStatus, description))
                 .ToList();
 
-            await dataFlowNotificationClient.NotifyCm(consentMangerUrl,
+            await dataFlowNotificationClient.NotifyGateway( cmSuffix,
                 new DataNotificationRequest(dataResponse.TransactionId,
                     DateTime.Now,
                     new Notifier(Type.HIP, centralRegistryConfiguration.ClientId),

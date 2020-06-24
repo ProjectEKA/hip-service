@@ -71,7 +71,8 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                 .ReturnsAsync(
                     new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(expectedResponse, null));
             gatewayClient.Setup (client => client.SendDataToGateway("/v1/health-information/hip/on-request", It.IsAny<GatewayDataFlowRequestResponse>(), "ncg"));
-            dataFlow.Setup(d => d.GetPatientId(It.IsAny<String>())).ReturnsAsync("abc@ncg"); await patientDataFlowController.HealthInformationOf(request, gatewayId);
+            dataFlow.Setup(d => d.GetPatientId(It.IsAny<String>())).ReturnsAsync("abc@ncg"); 
+            await patientDataFlowController.HealthInformationOf(request, gatewayId);
             
             gatewayClient.Verify();
             dataFlow.Verify();

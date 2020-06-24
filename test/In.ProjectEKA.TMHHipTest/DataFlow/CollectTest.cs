@@ -97,7 +97,7 @@ namespace In.ProjectEKA.TMHHipTest.DataFlow
                 "someTxnId",
                 null,
                 consentManagerId,
-                consentId);
+                consentId,"@ncg");
 
             var entries = await collect.CollectData(dataRequest);
             entries.ValueOrDefault().CareBundles.Count().Should().Be(1);
@@ -183,7 +183,7 @@ namespace In.ProjectEKA.TMHHipTest.DataFlow
                 "someTxnId",
                 null,
                 consentManagerId,
-                consentId);
+                consentId,"@ncg");
 
             var entries = await collect.CollectData(dataRequest);
             entries.ValueOrDefault().CareBundles.Count().Should().Be(1);
@@ -272,7 +272,7 @@ namespace In.ProjectEKA.TMHHipTest.DataFlow
                 "someTxnId",
                 null,
                 consentManagerId,
-                consentId);
+                consentId,"@ncg");
 
             var entries = await collect.CollectData(dataRequest);
             entries.ValueOrDefault().CareBundles.Count().Should().Be(2);

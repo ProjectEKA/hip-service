@@ -4,9 +4,9 @@ namespace In.ProjectEKA.HipService.DataFlow.Model
     {
         public string TransactionId { get; }
         
-        public DataFlowRequestStatus SessionStatus {get;}
+        public string SessionStatus {get;}
 
-        public DataFlowRequestResponse(string transactionId, DataFlowRequestStatus sessionStatus)
+        public DataFlowRequestResponse(string transactionId, string sessionStatus)
         {
             TransactionId = transactionId;
             SessionStatus = sessionStatus;
