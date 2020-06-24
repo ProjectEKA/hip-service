@@ -29,6 +29,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
         public Collect(HttpClient client, IPatientRepository patientRepository)
         {
             this.client = client;
+            this.client.Timeout = TimeSpan.FromSeconds(20);
             this.patientRepository = patientRepository;
         }
 

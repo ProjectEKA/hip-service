@@ -20,6 +20,7 @@ namespace In.ProjectEKA.TMHHip.Discovery
         public PatientMatchingRepository(HttpClient client)
         {
             this.client = client;
+            this.client.Timeout = TimeSpan.FromSeconds(20);
         }
 
         public async Task<IQueryable<HipLibrary.Patient.Model.Patient>> Where(DiscoveryRequest predicate)
