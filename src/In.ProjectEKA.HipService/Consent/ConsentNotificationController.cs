@@ -57,19 +57,19 @@ namespace In.ProjectEKA.HipService.Consent
             else
             {
                 await consentRepository.UpdateAsync(notification.ConsentId, notification.Status);
-                // if (notification.Status == ConsentStatus.REVOKED)
-                // {
-                //     var patientId = notification.ConsentDetail.Patient.Id;
-                //     var cmSuffix = patientId.Split("@")[1];
-                //     var gatewayResponse = new GatewayRevokedConsentRepresentation(
-                //         Guid.NewGuid(),
-                //         DateTime.Now.ToUniversalTime(), 
-                //         new ConsentUpdateResponse(ConsentUpdateStatus.OK.ToString(),
-                //             notification.ConsentDetail.ConsentId),
-                //         null,
-                //         new Resp(consentArtefact.RequestId));
-                //     await gatewayClient.SendDataToGateway(ConsentOnNotifyPath, gatewayResponse, cmSuffix);
-                // }
+                if (notification.Status == ConsentStatus.REVOKED)
+                {
+                    var consent = await consentRepository.GetFor(notification.ConsentId);
+                    var cmSuffix = consent.ConsentArtefact.ConsentManager.Id;
+                    var gatewayResponse = new GatewayRevokedConsentRepresentation(
+                        Guid.NewGuid(),
+                        DateTime.Now.ToUniversalTime(), 
+                        new ConsentUpdateResponse(ConsentUpdateStatus.OK.ToString(),
+                            notification.ConsentId),
+                        null,
+                        new Resp(consentArtefact.RequestId));
+                    await gatewayClient.SendDataToGateway(ConsentOnNotifyPath, gatewayResponse, cmSuffix);
+                }
             }
         }
     }
