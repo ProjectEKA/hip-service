@@ -11,8 +11,10 @@ namespace In.ProjectEKA.HipService.Consent
     using Hangfire;
     using Microsoft.AspNetCore.Mvc;
     using Model;
+    using Newtonsoft.Json.Linq;
 
-    [Route("v1/consents/hip/notify")]
+    [ApiController]
+    [Route("v1/consents/hip")]
     public class ConsentNotificationController : ControllerBase
     {
         private readonly IConsentRepository consentRepository;
@@ -31,6 +33,7 @@ namespace In.ProjectEKA.HipService.Consent
             this.gatewayClient = gatewayClient;
         }
 
+        [Route("notify")]
         [HttpPost]
         public AcceptedResult ConsentNotification([FromBody] ConsentArtefactRepresentation consentArtefact)
         {
