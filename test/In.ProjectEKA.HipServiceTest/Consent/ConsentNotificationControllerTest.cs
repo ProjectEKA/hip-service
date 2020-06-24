@@ -66,21 +66,21 @@ namespace In.ProjectEKA.HipServiceTest.Consent
             result.StatusCode.Should().Be(StatusCodes.Status202Accepted);
         }
 
-        [Fact]
-        private async void ShouldUpdateRevokedConsentAndReturnAccepted()
-        {
-            var notification = TestBuilder.RevokedNotification("hinapatel@ncg");
-            var faker = new Faker();
-            var consentNotification = new ConsentArtefactRepresentation(notification,
-                DateTime.Now,
-                faker.Random.Hash());
-            consentRepository.Setup(x => 
-                x.UpdateAsync(notification.ConsentId, ConsentStatus.REVOKED));
-            gatewayClient.Setup(client => client.SendDataToGateway("/v1/consents/hip/on-notify",
-                It.IsAny<GatewayRevokedConsentRepresentation>(), "ncg")).Returns(Task.CompletedTask);
-            await consentNotificationController.StoreConsent(consentNotification);
-            consentRepository.Verify();
-            gatewayClient.Verify();
-        }
+        // [Fact]
+        // private async void ShouldUpdateRevokedConsentAndReturnAccepted()
+        // {
+        //     var notification = TestBuilder.RevokedNotification("hinapatel@ncg");
+        //     var faker = new Faker();
+        //     var consentNotification = new ConsentArtefactRepresentation(notification,
+        //         DateTime.Now,
+        //         faker.Random.Hash());
+        //     consentRepository.Setup(x => 
+        //         x.UpdateAsync(notification.ConsentId, ConsentStatus.REVOKED));
+        //     gatewayClient.Setup(client => client.SendDataToGateway("/v1/consents/hip/on-notify",
+        //         It.IsAny<GatewayRevokedConsentRepresentation>(), "ncg")).Returns(Task.CompletedTask);
+        //     await consentNotificationController.StoreConsent(consentNotification);
+        //     consentRepository.Verify();
+        //     gatewayClient.Verify();
+        // }
     }
 }
