@@ -76,7 +76,7 @@ namespace In.ProjectEKA.HipService.Gateway
         {
             try
             {
-                var token = await Authenticate();
+                var token = await Authenticate().ConfigureAwait(false);
                 token.MatchSome(async accessToken =>
                 {
                     try

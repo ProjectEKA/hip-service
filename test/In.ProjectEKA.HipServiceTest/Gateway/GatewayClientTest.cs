@@ -8,27 +8,16 @@ namespace In.ProjectEKA.HipServiceTest.Gateway
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
+    using Common;
     using Common.Builder;
     using FluentAssertions;
     using HipLibrary.Patient.Model;
     using HipService.Gateway;
     using HipService.Gateway.Model;
     using Moq;
-    using Moq.Language.Flow;
     using Moq.Protected;
     using Newtonsoft.Json;
     using Xunit;
-
-    public static class MoqExtensions
-    {
-        public static IReturnsResult<TMock> ReturnsInOrder<TMock, TResult>(this ISetup<TMock, TResult> setup,
-            params Func<TResult>[] valueFunctions)
-            where TMock : class
-        {
-            var queue = new Queue<Func<TResult>>(valueFunctions);
-            return setup.Returns(() => queue.Dequeue()());
-        }
-    }
 
     [Collection("Gateway Client Tests")]
     public class GatewayClientTest
