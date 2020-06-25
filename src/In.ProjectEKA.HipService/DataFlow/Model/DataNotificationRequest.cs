@@ -2,7 +2,6 @@ namespace In.ProjectEKA.HipService.DataFlow.Model
 {
     using System;
     using System.ComponentModel.DataAnnotations;
-    using Hl7.Fhir.Model;
 
     public class DataNotificationRequest
     {
