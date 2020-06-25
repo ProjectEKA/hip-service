@@ -1,9 +1,3 @@
-using System;
-using In.ProjectEKA.HipLibrary.Patient.Model;
-using In.ProjectEKA.HipService.Gateway;
-using In.ProjectEKA.HipService.Gateway.Model;
-using static In.ProjectEKA.HipService.Gateway.GatewayPathConstants;
-
 namespace In.ProjectEKA.HipService.Consent
 {
     using System.Threading.Tasks;
@@ -11,7 +5,7 @@ namespace In.ProjectEKA.HipService.Consent
     using Hangfire;
     using Microsoft.AspNetCore.Mvc;
     using Model;
-    using Newtonsoft.Json.Linq;
+    using Gateway;
 
     [ApiController]
     [Route("v1/consents/hip")]
@@ -24,8 +18,8 @@ namespace In.ProjectEKA.HipService.Consent
         private readonly GatewayClient gatewayClient;
 
         public ConsentNotificationController(
-            IConsentRepository consentRepository, 
-            IBackgroundJobClient backgroundJob, 
+            IConsentRepository consentRepository,
+            IBackgroundJobClient backgroundJob,
             GatewayClient gatewayClient)
         {
             this.consentRepository = consentRepository;

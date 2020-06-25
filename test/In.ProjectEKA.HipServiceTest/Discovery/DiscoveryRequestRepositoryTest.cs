@@ -40,7 +40,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             count = await dbContext.DiscoveryRequest.CountAsync();
             count.Should().Be(0);
 
-            dbContext.Database.EnsureDeleted();
+            await dbContext.Database.EnsureDeletedAsync();
         }
     }
 }

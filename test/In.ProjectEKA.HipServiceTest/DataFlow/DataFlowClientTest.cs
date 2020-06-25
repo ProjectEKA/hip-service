@@ -11,8 +11,6 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
     using In.ProjectEKA.HipService.DataFlow;
     using Builder;
     using FluentAssertions;
-    using HipService.Common;
-    using HipService.Consent;
     using HipService.Gateway;
     using In.ProjectEKA.HipService.DataFlow.Model;
     using Moq;
@@ -26,18 +24,17 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
         [Fact]
         private void ShouldReturnDataComponent()
         {
-            var id = "ConsentManagerId";
-            const string centralRegistryRootUrl = "https://root/central-registry";
-            var centralRegistryClient = new Mock<CentralRegistryClient>(MockBehavior.Strict, null, null);
-            var dataFlowNotificationClient = new Mock<DataFlowNotificationClient>(MockBehavior.Strict, null, null, null);
+            const string gatewayUrl = "https://root/central-registry";
+            var gatewayClient = new Mock<GatewayClient>(MockBehavior.Strict, null, null);
+            var dataFlowNotificationClient = new Mock<DataFlowNotificationClient>(MockBehavior.Strict, null);
 
-            var centralRegistryConfiguration = new CentralRegistryConfiguration
+            var centralRegistryConfiguration = new GatewayConfiguration
             {
-                Url = centralRegistryRootUrl,
+                Url = gatewayUrl,
                 ClientId = "10000005",
                 ClientSecret = TestBuilder.RandomString()
             };
-            var transactionId = "transactionId";
+            const string transactionId = "transactionId";
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
             var httpClient = new HttpClient(handlerMock.Object);
             var dataRequest = TestBuilder.DataRequest(transactionId);
@@ -46,13 +43,13 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var dataNotificationRequest = TestBuilder.DataNotificationRequest(transactionId);
 
             var entries = new List<Entry>
-                {
-                    new Entry(content, MediaTypeNames.Application.Json, checksum, null,"careContextReference")
-                }
+            {
+                new Entry(content, MediaTypeNames.Application.Json, checksum, null, "careContextReference")
+            }
                 .AsEnumerable();
             var expectedUri = new Uri("http://callback/data/notification");
             var dataFlowClient = new DataFlowClient(httpClient,
-                centralRegistryClient.Object,
+                gatewayClient.Object,
                 dataFlowNotificationClient.Object,
                 centralRegistryConfiguration);
 
@@ -68,21 +65,20 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                 })
                 .Verifiable();
 
-            centralRegistryClient.Setup(client => client.Authenticate()).ReturnsAsync(Option.Some("Something"));
-            centralRegistryClient.Setup(client => client.GetUrlFor(id))
-                .ReturnsAsync(Option.Some("http://localhost:8000"));
+            gatewayClient.Setup(client => client.Authenticate()).ReturnsAsync(Option.Some("Something"));
             dataFlowNotificationClient.Setup(client =>
-                    client.NotifyGateway(dataRequest.CmSuffix,It.IsAny<DataNotificationRequest>()))
+                client.NotifyGateway(dataRequest.CmSuffix, It.IsAny<DataNotificationRequest>()))
                 .Returns(Task.CompletedTask)
                 .Callback((string cmSuffix, DataNotificationRequest request) =>
-                    {
-                        dataNotificationRequest.Should().NotBeNull();
-                        dataNotificationRequest.Notifier.Id.Should().Be(request.Notifier.Id);
-                        dataNotificationRequest.Notifier.Type.Should().Be(request.Notifier.Type);
-                        dataNotificationRequest.TransactionId.Should().Be(request.TransactionId);
-                        dataNotificationRequest.StatusNotification.HipId.Should().Be(request.StatusNotification.HipId);
-                        dataNotificationRequest.StatusNotification.SessionStatus.Should().Be(request.StatusNotification.SessionStatus);
-                    });
+                {
+                    dataNotificationRequest.Should().NotBeNull();
+                    dataNotificationRequest.Notifier.Id.Should().Be(request.Notifier.Id);
+                    dataNotificationRequest.Notifier.Type.Should().Be(request.Notifier.Type);
+                    dataNotificationRequest.TransactionId.Should().Be(request.TransactionId);
+                    dataNotificationRequest.StatusNotification.HipId.Should().Be(request.StatusNotification.HipId);
+                    dataNotificationRequest.StatusNotification.SessionStatus.Should().Be(
+                        request.StatusNotification.SessionStatus);
+                });
 
             dataFlowClient.SendDataToHiu(dataRequest, entries, null);
 
@@ -97,22 +93,19 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
         [Fact]
         private void ShouldNotPostDataIfAuthenticationWithCentralRegistryFailed()
         {
-            var id = "ConsentManagerId";
-            const string centralRegistryRootUrl = "https://root/central-registry";
-            var centralRegistryClient = new Mock<CentralRegistryClient>(MockBehavior.Strict, null, null);
-            var dataFlowNotificationClient = new Mock<DataFlowNotificationClient>(MockBehavior.Strict, null, null, null);
-            var centralRegistryConfiguration = new CentralRegistryConfiguration
+            const string id = "ConsentManagerId";
+            var gatewayClient = new Mock<GatewayClient>(MockBehavior.Strict, null, null);
+            var dataFlowNotificationClient = new Mock<DataFlowNotificationClient>(MockBehavior.Strict, null);
+            var centralRegistryConfiguration = new GatewayConfiguration
             {
-                Url = centralRegistryRootUrl,
                 ClientId = id,
-                ClientSecret = TestBuilder.RandomString()
             };
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
             var httpClient = new HttpClient(handlerMock.Object);
             var dataRequest = TestBuilder.DataRequest(TestBuilder.Faker().Random.Hash());
             var entries = new List<Entry>().AsEnumerable();
             var dataFlowClient = new DataFlowClient(httpClient,
-                centralRegistryClient.Object,
+                gatewayClient.Object,
                 dataFlowNotificationClient.Object,
                 centralRegistryConfiguration);
 
@@ -127,8 +120,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                     StatusCode = HttpStatusCode.OK
                 })
                 .Verifiable();
-            centralRegistryClient.Setup(client => client.Authenticate()).ReturnsAsync(Option.None<string>());
-            centralRegistryClient.Setup(client => client.GetUrlFor(id)).ReturnsAsync(Option.None<string>());
+            gatewayClient.Setup(client => client.Authenticate()).ReturnsAsync(Option.None<string>());
 
             dataFlowClient.SendDataToHiu(dataRequest, entries, null);
 
