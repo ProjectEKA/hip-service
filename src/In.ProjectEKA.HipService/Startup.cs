@@ -4,20 +4,20 @@ using In.ProjectEKA.TMHHip.Link;
 
 namespace In.ProjectEKA.HipService
 {
-	using System;
-	using System.Collections.Generic;
-	using System.IdentityModel.Tokens.Jwt;
-	using System.Linq;
-	using System.Net.Http;
-	using System.Text.Json;
-	using System.Threading.Tasks;
-	using Common;
-	using Consent;
-	using Consent.Database;
-	using DataFlow;
-	using DataFlow.Database;
-	using DataFlow.Encryptor;
-	using Discovery;
+    using System;
+    using System.Collections.Generic;
+    using System.IdentityModel.Tokens.Jwt;
+    using System.Linq;
+    using System.Net.Http;
+    using System.Text.Json;
+    using System.Threading.Tasks;
+    using Common;
+    using Consent;
+    using Consent.Database;
+    using DataFlow;
+    using DataFlow.Database;
+    using DataFlow.Encryptor;
+    using Discovery;
 	using Discovery.Database;
 	using Gateway;
 	using Hangfire;
@@ -38,30 +38,29 @@ namespace In.ProjectEKA.HipService
 	using Microsoft.IdentityModel.Tokens;
 	using Newtonsoft.Json;
 	using Newtonsoft.Json.Linq;
-	using Optional;
 	using Serilog;
 
-	public class Startup
-	{
-		public Startup(IConfiguration configuration)
-		{
-			Configuration = configuration;
-			var clientHandler = new HttpClientHandler
-			{
-				ServerCertificateCustomValidationCallback = (
-					sender,
-					cert,
-					chain,
-					sslPolicyErrors) => true
-			};
-			HttpClient = new HttpClient(clientHandler)
-			{
-				Timeout = TimeSpan.FromSeconds(Configuration.GetSection("Gateway:timeout").Get<int>())
-			};
-			IdentityModelEventSource.ShowPII = true;
-		}
+    public class Startup
+    {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+            var clientHandler = new HttpClientHandler
+            {
+                ServerCertificateCustomValidationCallback = (
+                    sender,
+                    cert,
+                    chain,
+                    sslPolicyErrors) => true
+            };
+            HttpClient = new HttpClient(clientHandler)
+            {
+                Timeout = TimeSpan.FromSeconds(Configuration.GetSection("Gateway:timeout").Get<int>())
+            };
+            IdentityModelEventSource.ShowPII = true;
+        }
 
-		private IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services) =>
             services
@@ -101,13 +100,10 @@ namespace In.ProjectEKA.HipService
                 .AddScoped<IConsentRepository, ConsentRepository>()
                 .AddHostedService<MessagingQueueListener>()
                 .AddScoped<IDataFlowRepository, DataFlowRepository>()
-                .AddSingleton(Configuration.GetSection("authServer").Get<CentralRegistryConfiguration>())
                 .AddScoped<IHealthInformationRepository, HealthInformationRepository>()
-                .AddSingleton(new CentralRegistryClient(HttpClient,
-                    Configuration.GetSection("authServer").Get<CentralRegistryConfiguration>()))
-                .AddSingleton(new GatewayClient(HttpClient, new CentralRegistryClient(
-                        HttpClient,
-                        Configuration.GetSection("authServer").Get<CentralRegistryConfiguration>()),
+                .AddSingleton(
+                    Configuration.GetSection("Gateway").Get<GatewayConfiguration>())
+                .AddSingleton(new GatewayClient(HttpClient, 
                     Configuration.GetSection("Gateway").Get<GatewayConfiguration>()))
                 .AddTransient<IDataFlow, DataFlow.DataFlow>()
                 .AddRouting(options => options.LowercaseUrls = true)
@@ -129,7 +125,7 @@ namespace In.ProjectEKA.HipService
                 .AddJwtBearer(options =>
                 {
                     // Need to validate Audience and Issuer properly
-                    options.Authority = Configuration.GetValue<string>("authServer:url");
+                    options.Authority = $"{Configuration.GetValue<string>("Gateway:url")}/v1";
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
@@ -152,61 +148,61 @@ namespace In.ProjectEKA.HipService
                     };
                 });
 
-		private HttpClient HttpClient { get; }
+        private HttpClient HttpClient { get; }
 
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-		{
-			app.UseStaticFilesWithYaml()
-				.UseRouting()
-				.UseIf(!env.IsDevelopment(), x => x.UseHsts())
-				.UseIf(env.IsDevelopment(), x => x.UseDeveloperExceptionPage())
-				.UseCustomOpenApi()
-				.UseSerilogRequestLogging()
-				.UseAuthentication()
-				.UseAuthorization()
-				.UseEndpoints(endpoints => { endpoints.MapControllers(); })
-				.UseHangfireServer(new BackgroundJobServerOptions
-				{
-					CancellationCheckInterval = TimeSpan.FromMinutes(
-						Configuration.GetSection("BackgroundJobs:cancellationCheckInterval").Get<int>())
-				});
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            app.UseStaticFilesWithYaml()
+                .UseRouting()
+                .UseIf(!env.IsDevelopment(), x => x.UseHsts())
+                .UseIf(env.IsDevelopment(), x => x.UseDeveloperExceptionPage())
+                .UseCustomOpenApi()
+                .UseSerilogRequestLogging()
+                .UseAuthentication()
+                .UseAuthorization()
+                .UseEndpoints(endpoints => { endpoints.MapControllers(); })
+                .UseHangfireServer(new BackgroundJobServerOptions
+                {
+                    CancellationCheckInterval = TimeSpan.FromMinutes(
+                        Configuration.GetSection("BackgroundJobs:cancellationCheckInterval").Get<int>())
+                });
 
-			using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
-			var linkContext = serviceScope.ServiceProvider.GetService<LinkPatientContext>();
-			linkContext.Database.Migrate();
-			var discoveryContext = serviceScope.ServiceProvider.GetService<DiscoveryContext>();
-			discoveryContext.Database.Migrate();
-			var dataFlowContext = serviceScope.ServiceProvider.GetService<DataFlowContext>();
-			dataFlowContext.Database.Migrate();
-			var consentContext = serviceScope.ServiceProvider.GetService<ConsentContext>();
-			consentContext.Database.Migrate();
-		}
+            using var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>().CreateScope();
+            var linkContext = serviceScope.ServiceProvider.GetService<LinkPatientContext>();
+            linkContext.Database.Migrate();
+            var discoveryContext = serviceScope.ServiceProvider.GetService<DiscoveryContext>();
+            discoveryContext.Database.Migrate();
+            var dataFlowContext = serviceScope.ServiceProvider.GetService<DataFlowContext>();
+            dataFlowContext.Database.Migrate();
+            var consentContext = serviceScope.ServiceProvider.GetService<ConsentContext>();
+            consentContext.Database.Migrate();
+        }
 
-		private static bool CheckRoleInAccessToken(JwtSecurityToken accessToken)
-		{
-			if (!(accessToken.Payload["realm_access"] is JObject resourceAccess))
-			{
-				return false;
-			}
-			var token = new Token(resourceAccess["roles"]?.ToObject<List<string>>() ?? new List<string>());
-			return token.Roles.Contains("gateway", StringComparer.OrdinalIgnoreCase);
-		}
+        private static bool CheckRoleInAccessToken(JwtSecurityToken accessToken)
+        {
+            if (!(accessToken.Payload["realm_access"] is JObject resourceAccess))
+            {
+                return false;
+            }
+            var token = new Token(resourceAccess["roles"]?.ToObject<List<string>>() ?? new List<string>());
+            return token.Roles.Contains("gateway", StringComparer.OrdinalIgnoreCase);
+        }
 
-		private static bool IsTokenValid(TokenValidatedContext context)
-		{
-			const string claimTypeClientId = "clientId";
-			var accessToken = context.SecurityToken as JwtSecurityToken;
-			if (!CheckRoleInAccessToken(accessToken))
-			{
-				return false;
-			}
-			if (!context.Principal.HasClaim(claim => claim.Type == claimTypeClientId))
-			{
-				return false;
-			}
-			var clientId = context.Principal.Claims.First(claim => claim.Type == claimTypeClientId).Value;
-			context.Request.Headers["X-GatewayID"] = clientId;
-			return true;
-		}
-	}
+        private static bool IsTokenValid(TokenValidatedContext context)
+        {
+            const string claimTypeClientId = "clientId";
+            var accessToken = context.SecurityToken as JwtSecurityToken;
+            if (!CheckRoleInAccessToken(accessToken))
+            {
+                return false;
+            }
+            if (!context.Principal.HasClaim(claim => claim.Type == claimTypeClientId))
+            {
+                return false;
+            }
+            var clientId = context.Principal.Claims.First(claim => claim.Type == claimTypeClientId).Value;
+            context.Request.Headers["X-GatewayID"] = clientId;
+            return true;
+        }
+    }
 }

@@ -1,6 +1,5 @@
 namespace In.ProjectEKA.HipServiceTest.Link
 {
-    using System;
     using FluentAssertions;
     using Hangfire;
     using Hangfire.Common;
@@ -26,7 +25,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
         {
             link = new Mock<LinkPatient>(MockBehavior.Strict, null, null, null, null, null, null);
             discoveryRequestRepository = new Mock<IDiscoveryRequestRepository>();
-            var gatewayClient = new Mock<GatewayClient>(MockBehavior.Strict, null, null, null);
+            var gatewayClient = new Mock<GatewayClient>(MockBehavior.Strict, null, null);
 
             backgroundJobClient = new Mock<IBackgroundJobClient>();
             linkController = new LinkController(
@@ -53,8 +52,8 @@ namespace In.ProjectEKA.HipServiceTest.Link
                 faker.Random.Hash());
 
             discoveryRequestRepository.Setup(x => x.RequestExistsFor(linkRequest.TransactionId,
-                    id,
-                    linkRequest.Patient.ReferenceNumber))
+                id,
+                linkRequest.Patient.ReferenceNumber))
                 .ReturnsAsync(true);
 
             var linkedResult = linkController.LinkFor(linkRequest);
@@ -62,7 +61,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
             backgroundJobClient.Verify(client => client.Create(
                 It.Is<Job>(job => job.Method.Name == "LinkPatient" && job.Args[0] == linkRequest),
                 It.IsAny<EnqueuedState>()
-            ));
+                ));
 
             link.Verify();
             discoveryRequestRepository.Verify();
@@ -73,27 +72,24 @@ namespace In.ProjectEKA.HipServiceTest.Link
         private void ShouldEnqueueLinkConfirmationRequestAndReturnAccepted()
         {
             var linkReferenceNumber = Faker().Random.Hash();
-            var token = "1234";
+            const string token = "1234";
             var careContext = new[] {new CareContextRepresentation("129", Faker().Random.Word())};
             var expectedResponse = new PatientLinkConfirmationRepresentation(new LinkConfirmationRepresentation("4",
                 Faker().Random.Word()
                 , careContext));
             link.Setup(e => e.VerifyAndLinkCareContext(It.Is<LinkConfirmationRequest>(p =>
-                    p.Token == "1234" &&
-                    p.LinkReferenceNumber == linkReferenceNumber)))
+                p.Token == "1234" &&
+                p.LinkReferenceNumber == linkReferenceNumber)))
                 .ReturnsAsync((expectedResponse, null));
 
-            var linkPatientRequest = new LinkPatientRequest(
-                                                            Faker().Random.Hash(),
-                                                            It.IsAny<string>(),
-                                                            new LinkConfirmation(linkReferenceNumber, token)
-                                                            );
+            var linkPatientRequest = new LinkPatientRequest(Faker().Random.Hash(),
+                It.IsAny<string>(),
+                new LinkConfirmation(linkReferenceNumber, token));
             var response = linkController.LinkPatientFor(linkPatientRequest);
 
             backgroundJobClient.Verify(client => client.Create(
                 It.Is<Job>(job => job.Method.Name == "LinkPatientCareContextFor" && job.Args[0] == linkPatientRequest),
-                It.IsAny<EnqueuedState>()
-            ));
+                It.IsAny<EnqueuedState>()));
 
             link.Verify();
             discoveryRequestRepository.Verify();

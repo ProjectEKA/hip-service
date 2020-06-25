@@ -7,7 +7,7 @@ namespace In.ProjectEKA.HipService.Gateway.Model
     {
         public Guid RequestId { get; }
         public DateTime Timestamp { get; }
-        private DataFlowNotificationRequest Notification { get; }
+        public DataFlowNotificationRequest Notification { get; }
 
         public GatewayDataNotificationRequest(Guid requestId, DateTime timestamp, DataFlowNotificationRequest notification)
         {

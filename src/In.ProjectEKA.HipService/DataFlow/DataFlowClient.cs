@@ -5,7 +5,7 @@ namespace In.ProjectEKA.HipService.DataFlow
     using System.Linq;
     using System.Net.Http;
     using System.Threading.Tasks;
-    using Common;
+    using Gateway;
     using HipLibrary.Patient.Model;
     using Logger;
     using Model;
@@ -14,26 +14,26 @@ namespace In.ProjectEKA.HipService.DataFlow
     public class DataFlowClient
     {
         private readonly HttpClient httpClient;
-        private readonly CentralRegistryClient centralRegistryClient;
+        private readonly GatewayClient gatewayClient;
         private readonly DataFlowNotificationClient dataFlowNotificationClient;
-        private readonly CentralRegistryConfiguration centralRegistryConfiguration;
+        private readonly GatewayConfiguration gatewayConfiguration;
 
         public DataFlowClient(HttpClient httpClient,
-            CentralRegistryClient centralRegistryClient,
+            GatewayClient gatewayClient,
             DataFlowNotificationClient dataFlowNotificationClient,
-            CentralRegistryConfiguration centralRegistryConfiguration)
+            GatewayConfiguration gatewayConfiguration)
         {
             this.httpClient = httpClient;
-            this.centralRegistryClient = centralRegistryClient;
+            this.gatewayClient = gatewayClient;
             this.dataFlowNotificationClient = dataFlowNotificationClient;
-            this.centralRegistryConfiguration = centralRegistryConfiguration;
+            this.gatewayConfiguration = gatewayConfiguration;
         }
 
         public virtual async Task SendDataToHiu(HipLibrary.Patient.Model.DataRequest dataRequest,
             IEnumerable<Entry> data,
             KeyMaterial keyMaterial)
         {
-             await PostTo(dataRequest.ConsentId,
+            await PostTo(dataRequest.ConsentId,
                 dataRequest.DataPushUrl,
                 dataRequest.CareContexts,
                 new DataResponse(dataRequest.TransactionId, data, keyMaterial),
@@ -49,7 +49,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             var grantedContexts = careContexts as GrantedContext[] ?? careContexts.ToArray();
             try
             {
-                var token = await centralRegistryClient.Authenticate();
+                var token = await gatewayClient.Authenticate();
                 token.MatchSome(async accessToken =>
                 {
                     try
@@ -97,11 +97,11 @@ namespace In.ProjectEKA.HipService.DataFlow
                     new StatusResponse(grantedContext.CareContextReference, hiStatus, description))
                 .ToList();
 
-            await dataFlowNotificationClient.NotifyGateway( cmSuffix,
+            await dataFlowNotificationClient.NotifyGateway(cmSuffix,
                 new DataNotificationRequest(dataResponse.TransactionId,
-                    DateTime.Now,
-                    new Notifier(Type.HIP, centralRegistryConfiguration.ClientId),
-                    new StatusNotification(sessionStatus, centralRegistryConfiguration.ClientId, statusResponses),
+                    DateTime.Now.ToUniversalTime(),
+                    new Notifier(Type.HIP, gatewayConfiguration.ClientId),
+                    new StatusNotification(sessionStatus, gatewayConfiguration.ClientId, statusResponses),
                     consentId,
                     Guid.NewGuid()));
         }
