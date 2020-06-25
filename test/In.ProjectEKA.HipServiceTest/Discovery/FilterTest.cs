@@ -1,7 +1,6 @@
-using System;
-
 namespace In.ProjectEKA.HipServiceTest.Discovery
 {
+    using System;
     using System.Linq;
     using Bogus;
     using Builder;

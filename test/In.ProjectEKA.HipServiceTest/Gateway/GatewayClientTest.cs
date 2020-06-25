@@ -4,15 +4,19 @@ namespace In.ProjectEKA.HipServiceTest.Gateway
     using System.Collections.Generic;
     using System.Net;
     using System.Net.Http;
+    using System.Net.Mime;
+    using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
+    using Common;
+    using Common.Builder;
+    using FluentAssertions;
     using HipLibrary.Patient.Model;
-    using HipService.Common;
     using HipService.Gateway;
     using HipService.Gateway.Model;
     using Moq;
     using Moq.Protected;
-    using Optional;
+    using Newtonsoft.Json;
     using Xunit;
 
     [Collection("Gateway Client Tests")]
@@ -23,41 +27,38 @@ namespace In.ProjectEKA.HipServiceTest.Gateway
         {
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
             var httpClient = new HttpClient(handlerMock.Object);
-            var centralRegistryClient = new Mock<CentralRegistryClient>(MockBehavior.Strict, null, null);
             var gatewayConfiguration = new GatewayConfiguration {Url = "http://someUrl"};
-            var expectedUri = new Uri("http://someUrl/v1/care-contexts/on-discover");
-
+            var authenticationUri = new Uri($"{gatewayConfiguration.Url}/v1/sessions");
+            var expectedUri = new Uri($"{gatewayConfiguration.Url}/v1/care-contexts/on-discover");
             var patientEnquiryRepresentation = new PatientEnquiryRepresentation(
                 "123",
                 "Jack",
                 new List<CareContextRepresentation>(),
-                new List<string>()
-            );
-
+                new List<string>());
             var gatewayDiscoveryRepresentation = new GatewayDiscoveryRepresentation(
                 patientEnquiryRepresentation,
                 Guid.NewGuid(),
                 DateTime.Now,
                 "transactionId",
                 null,
-                new Resp("requestId")
-            );
-
-            var gatewayClient = new GatewayClient(httpClient, centralRegistryClient.Object, gatewayConfiguration);
-
+                new Resp("requestId"));
+            var gatewayClient = new GatewayClient(httpClient, gatewayConfiguration);
+            var definition = new {accessToken = "Whatever", tokenType = "Bearer"};
+            var result = JsonConvert.SerializeObject(definition);
             handlerMock
                 .Protected()
                 .Setup<Task<HttpResponseMessage>>(
                     "SendAsync",
                     ItExpr.IsAny<HttpRequestMessage>(),
                     ItExpr.IsAny<CancellationToken>())
-                .ReturnsAsync(new HttpResponseMessage
+                .ReturnsInOrder(() => Task.FromResult(new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Content = new StringContent(result)
+                }), () => Task.FromResult(new HttpResponseMessage
                 {
                     StatusCode = HttpStatusCode.OK
-                })
-                .Verifiable();
-
-            centralRegistryClient.Setup(client => client.Authenticate()).ReturnsAsync(Option.Some("Something"));
+                }));
 
             gatewayClient.SendDataToGateway(GatewayPathConstants.OnDiscoverPath, gatewayDiscoveryRepresentation, "ncg");
 
@@ -67,34 +68,34 @@ namespace In.ProjectEKA.HipServiceTest.Gateway
                 ItExpr.Is<HttpRequestMessage>(message => message.Method == HttpMethod.Post
                                                          && message.RequestUri == expectedUri),
                 ItExpr.IsAny<CancellationToken>());
+            handlerMock.Protected().Verify(
+                "SendAsync",
+                Times.Exactly(1),
+                ItExpr.Is<HttpRequestMessage>(message => message.Method == HttpMethod.Post
+                                                         && message.RequestUri == authenticationUri),
+                ItExpr.IsAny<CancellationToken>());
         }
 
         [Fact]
-        private void ShouldNotPostDataIfAuthenticationWithCentralRegistryFailed()
+        private void ShouldNotPostDataIfAuthenticationWithGatewayFailed()
         {
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
             var httpClient = new HttpClient(handlerMock.Object);
-            var centralRegistryClient = new Mock<CentralRegistryClient>(MockBehavior.Strict, null, null);
             var gatewayConfiguration = new GatewayConfiguration {Url = "http://someUrl"};
-
+            var authenticationUri = new Uri($"{gatewayConfiguration.Url}/v1/sessions");
             var patientEnquiryRepresentation = new PatientEnquiryRepresentation(
                 "123",
                 "Jack",
                 new List<CareContextRepresentation>(),
-                new List<string>()
-            );
-
+                new List<string>());
             var gatewayDiscoveryRepresentation = new GatewayDiscoveryRepresentation(
                 patientEnquiryRepresentation,
                 Guid.NewGuid(),
                 DateTime.Now,
                 "transactionId",
                 null,
-                new Resp("requestId")
-            );
-
-            var gatewayClient = new GatewayClient(httpClient, centralRegistryClient.Object, gatewayConfiguration);
-
+                new Resp("requestId"));
+            var gatewayClient = new GatewayClient(httpClient, gatewayConfiguration);
             handlerMock
                 .Protected()
                 .Setup<Task<HttpResponseMessage>>(
@@ -103,14 +104,113 @@ namespace In.ProjectEKA.HipServiceTest.Gateway
                     ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(new HttpResponseMessage
                 {
-                    StatusCode = HttpStatusCode.OK
+                    StatusCode = HttpStatusCode.BadGateway
                 })
                 .Verifiable();
 
-            centralRegistryClient.Setup(client => client.Authenticate()).ReturnsAsync(Option.None<string>());
-
             gatewayClient.SendDataToGateway(GatewayPathConstants.OnDiscoverPath, gatewayDiscoveryRepresentation, "ncg");
 
+            handlerMock.Protected().Verify(
+                "SendAsync",
+                Times.Exactly(1),
+                ItExpr.Is<HttpRequestMessage>(message => message.Method == HttpMethod.Post
+                                                         && message.RequestUri == authenticationUri),
+                ItExpr.IsAny<CancellationToken>());
+        }
+
+        [Fact]
+        private async void ShouldReturnAccessToken()
+        {
+            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+            var httpClient = new HttpClient(handlerMock.Object);
+            const string rootRul = "http://someUrl";
+            var expectedUri = new Uri($"{rootRul}/v1/sessions");
+            var configuration = new GatewayConfiguration
+            {
+                Url = rootRul,
+                ClientId = TestBuilder.RandomString(),
+                ClientSecret = TestBuilder.RandomString()
+            };
+            var response = JsonConvert.SerializeObject(new {tokenType = "bearer", accessToken = "token"});
+            handlerMock
+                .Protected()
+                .Setup<Task<HttpResponseMessage>>(
+                    "SendAsync",
+                    ItExpr.IsAny<HttpRequestMessage>(),
+                    ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync(new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Content = new StringContent(response, Encoding.UTF8, MediaTypeNames.Application.Json)
+                })
+                .Verifiable();
+
+            var client = new GatewayClient(httpClient, configuration);
+
+            var result = await client.Authenticate();
+
+            result.HasValue.Should().BeTrue();
+            result.MatchSome(token => token.Should().BeEquivalentTo("bearer token"));
+            handlerMock.Protected().Verify(
+                "SendAsync",
+                Times.Exactly(1),
+                ItExpr.Is<HttpRequestMessage>(message => message.Method == HttpMethod.Post
+                                                         && message.RequestUri == expectedUri),
+                ItExpr.IsAny<CancellationToken>());
+        }
+
+        [Theory]
+        [InlineData(HttpStatusCode.Unauthorized)]
+        [InlineData(HttpStatusCode.InternalServerError)]
+        private async void ShouldNotReturnTokenWhenErrorResponse(HttpStatusCode statusCode)
+        {
+            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+            var httpClient = new HttpClient(handlerMock.Object);
+            const string centralRegistryRootUrl = "http://someUrl";
+            var expectedUri = new Uri($"{centralRegistryRootUrl}/v1/sessions");
+            var configuration = new GatewayConfiguration
+            {
+                Url = centralRegistryRootUrl,
+                ClientId = TestBuilder.RandomString(),
+                ClientSecret = TestBuilder.RandomString()
+            };
+            var response = JsonConvert.SerializeObject(new {error = "some failure happened"});
+            handlerMock
+                .Protected()
+                .Setup<Task<HttpResponseMessage>>(
+                    "SendAsync",
+                    ItExpr.IsAny<HttpRequestMessage>(),
+                    ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync(new HttpResponseMessage
+                {
+                    StatusCode = statusCode,
+                    Content = new StringContent(response, Encoding.UTF8, MediaTypeNames.Application.Json)
+                })
+                .Verifiable();
+
+            var client = new GatewayClient(httpClient, configuration);
+
+            var result = await client.Authenticate();
+
+            result.HasValue.Should().BeFalse();
+            handlerMock.Protected().Verify(
+                "SendAsync",
+                Times.Exactly(1),
+                ItExpr.Is<HttpRequestMessage>(message => message.Method == HttpMethod.Post
+                                                         && message.RequestUri == expectedUri),
+                ItExpr.IsAny<CancellationToken>());
+        }
+
+        [Fact]
+        private async void ShouldNotReturnTokenWhenAnyExceptionHappened()
+        {
+            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+            var httpClient = new HttpClient(handlerMock.Object);
+            var gatewayClient = new GatewayClient(httpClient, null);
+
+            var result = await gatewayClient.Authenticate();
+
+            result.HasValue.Should().BeFalse();
             handlerMock.Protected().Verify(
                 "SendAsync",
                 Times.Exactly(0),
