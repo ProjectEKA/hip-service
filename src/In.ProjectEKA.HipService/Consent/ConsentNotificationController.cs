@@ -1,3 +1,9 @@
+using static In.ProjectEKA.HipService.Gateway.GatewayPathConstants;
+
+using System;
+using In.ProjectEKA.HipLibrary.Patient.Model;
+using In.ProjectEKA.HipService.Gateway.Model;
+
 namespace In.ProjectEKA.HipService.Consent
 {
     using System.Threading.Tasks;
