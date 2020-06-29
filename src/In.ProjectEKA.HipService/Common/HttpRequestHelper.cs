@@ -13,7 +13,7 @@ namespace In.ProjectEKA.HipService.Common
         public static HttpRequestMessage CreateHttpRequest<T>(
             string url,
             T content,
-            string token,
+            string token = null,
             string cmSuffix = null)
         {
             var json = JsonConvert.SerializeObject(content, new JsonSerializerSettings
@@ -29,7 +29,10 @@ namespace In.ProjectEKA.HipService.Common
             {
                 Content = new StringContent(json, Encoding.UTF8, MediaTypeNames.Application.Json)
             };
-            httpRequestMessage.Headers.Add(HeaderNames.Authorization, token);
+            if (token != null)
+            {
+                httpRequestMessage.Headers.Add(HeaderNames.Authorization, token);
+            }
             if (cmSuffix != null)
             {
                 httpRequestMessage.Headers.Add( "X-CM-ID", cmSuffix);

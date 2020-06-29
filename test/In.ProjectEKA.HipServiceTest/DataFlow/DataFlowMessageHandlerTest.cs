@@ -18,14 +18,13 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
         private void ShouldProcessMessage()
         {
             var collect = new Mock<ICollect>();
-            var dataFlowClient = new Mock<DataFlowClient>(MockBehavior.Strict, null, null, null, null);
+            var dataFlowClient = new Mock<DataFlowClient>(MockBehavior.Strict, null, null, null);
             var dataEntryFactory = new Mock<DataEntryFactory>();
             var dataFlowMessageHandler =
                 new DataFlowMessageHandler(collect.Object, dataFlowClient.Object, dataEntryFactory.Object);
             var transactionId = TestBuilder.Faker().Random.Uuid().ToString();
             var dataRequest = TestBuilder.DataRequest(transactionId);
-            var careBundles = new List<CareBundle>();
-            careBundles.Add(new CareBundle("careContextReference", new Bundle()));
+            var careBundles = new List<CareBundle> {new CareBundle("careContextReference", new Bundle())};
             var entries = new Entries(careBundles);
             var data = Option.Some(entries);
             var content = TestBuilder.Faker().Random.String();

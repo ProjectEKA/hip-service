@@ -47,16 +47,13 @@ namespace In.ProjectEKA.HipServiceTest.Consent
                     notification.ConsentDetail,
                     notification.Signature,
                     ConsentStatus.GRANTED,
-                    consentMangerId
-                    )
-                ));
+                    consentMangerId)));
 
             var result = consentNotificationController.ConsentNotification(consentNotification);
 
             backgroundJobClient.Verify(client => client.Create(
                 It.Is<Job>(job => job.Method.Name == "StoreConsent" && job.Args[0] == consentNotification),
-                It.IsAny<EnqueuedState>()
-                ));
+                It.IsAny<EnqueuedState>()));
             consentRepository.Verify();
             result.StatusCode.Should().Be(StatusCodes.Status202Accepted);
         }
