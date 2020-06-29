@@ -16,6 +16,7 @@ using Optional;
 using Optional.Linq;
 using Serilog;
 using Code = In.ProjectEKA.TMHHip.DataFlow.Model.Code;
+using Coding = In.ProjectEKA.TMHHip.DataFlow.Model.Coding;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 using Resource = In.ProjectEKA.TMHHip.DataFlow.Model.Resource;
 
@@ -83,6 +84,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                             var careBundle = new CareBundle(caseId, parser.Parse<Bundle>(serializeObject));
                             careBundles.Add(careBundle);
                         }
+
                         break;
                     }
                     case HiType.Condition:
@@ -161,11 +163,16 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                         MedicationReference = new MedicationReference("Medication/" + medicationId, "Medications")
                     }
                 };
+                var coding =
+                    new In.ProjectEKA.TMHHip.DataFlow.Model.Coding(prescription.GenName, prescription.Medicine);
                 var medicationRepresentation = new MedicationRepresentation
                 {
                     FullUrl = uuidMedication,
                     Resource = new MedicationResource
-                        {Id = medicationId, ResourceType = HiType.Medication, Code = new Code(prescription.Medicine)}
+                    {
+                        Id = medicationId, ResourceType = HiType.Medication,
+                        Code = new Code(new List<Coding> {coding}, prescription.Medicine)
+                    }
                 };
 
                 list.Add(medicationRequestRepresentation);
