@@ -144,10 +144,11 @@ namespace In.ProjectEKA.HipServiceTest.Link
         {
             var sessionId = TestBuilders.Faker().Random.Hash();
             var otpToken = TestBuilders.Faker().Random.Number().ToString();
+            var dateTimeStamp = DateTime.Now.ToUniversalTime().ToString(Constants.DateTimeFormat);
             var testOtpMessage = new OtpMessage(ResponseType.OtpInvalid, "Invalid Otp");
             var patientLinkRequest = new LinkConfirmationRequest(otpToken, sessionId);
             var linkEnquires = new LinkEnquires("","","ncg","",
-                DateTime.Now.ToString(),new List<CareContext>());
+               dateTimeStamp,new List<CareContext>());
             linkRepository.Setup(e => e.GetPatientFor(sessionId))
                 .ReturnsAsync(new Tuple<LinkEnquires, Exception>(linkEnquires, null));
             
@@ -167,10 +168,11 @@ namespace In.ProjectEKA.HipServiceTest.Link
         {
             var sessionId = TestBuilders.Faker().Random.Hash();
             var otpToken = TestBuilders.Faker().Random.Number().ToString();
+            var dateTimeStamp = DateTime.Now.ToUniversalTime().ToString(Constants.DateTimeFormat);
             var testOtpMessage = new OtpMessage(ResponseType.OtpExpired, "Otp Expired");
             var patientLinkRequest = new LinkConfirmationRequest(otpToken, sessionId);
             var linkEnquires = new LinkEnquires("","","ncg","",
-                DateTime.Now.ToString(),new List<CareContext>());
+                dateTimeStamp,new List<CareContext>());
             var expectedErrorResponse =
                 new ErrorRepresentation(new Error(ErrorCode.OtpExpired, testOtpMessage.Message));
             linkRepository.Setup(e => e.GetPatientFor(sessionId))
