@@ -191,20 +191,7 @@ namespace In.ProjectEKA.HipService.Link
                 .ConfigureAwait(false);
             return linkedAccount.HasValue;
         }
-
-        public async Task<string> GetCmId(string linkReferenceNumber)
-        {
-            var (linkEnquires, exception) =
-                await linkPatientRepository.GetPatientFor(linkReferenceNumber);
-
-            if (exception != null)
-            {
-                return "";
-            }
-
-            return linkEnquires.ConsentManagerId;
-        }
-
+        
         private async Task<bool> SaveInitiatedLinkRequest(string requestId, string transactionId, string linkReferenceNumber)
         {
             var savedLinkRequest = await linkPatientRepository.Save(requestId, transactionId, linkReferenceNumber)
