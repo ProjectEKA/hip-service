@@ -38,6 +38,7 @@ namespace In.ProjectEKA.HipService
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
     using Serilog;
+    using Common.Heartbeat;
 
     public class Startup
     {
@@ -102,6 +103,7 @@ namespace In.ProjectEKA.HipService
                 .AddScoped<IDataFlowRepository, DataFlowRepository>()
                 .AddScoped<IHealthInformationRepository, HealthInformationRepository>()
                 .AddSingleton(Configuration.GetSection("Gateway").Get<GatewayConfiguration>())
+                .AddScoped<Heartbeat>()
                 .AddSingleton(new GatewayClient(HttpClient,
                     Configuration.GetSection("Gateway").Get<GatewayConfiguration>()))
                 .AddTransient<IDataFlow, DataFlow.DataFlow>()
