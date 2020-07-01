@@ -144,14 +144,20 @@ namespace In.ProjectEKA.HipServiceTest.Link
         {
             var sessionId = TestBuilders.Faker().Random.Hash();
             var otpToken = TestBuilders.Faker().Random.Number().ToString();
+            var dateTimeStamp = DateTime.Now.ToUniversalTime().ToString(Constants.DateTimeFormat);
             var testOtpMessage = new OtpMessage(ResponseType.OtpInvalid, "Invalid Otp");
             var patientLinkRequest = new LinkConfirmationRequest(otpToken, sessionId);
+            var linkEnquires = new LinkEnquires("","","ncg","",
+               dateTimeStamp,new List<CareContext>());
+            linkRepository.Setup(e => e.GetPatientFor(sessionId))
+                .ReturnsAsync(new Tuple<LinkEnquires, Exception>(linkEnquires, null));
+            
             var expectedErrorResponse =
                 new ErrorRepresentation(new Error(ErrorCode.OtpInValid, testOtpMessage.Message));
             patientVerification.Setup(e => e.Verify(sessionId, otpToken))
                 .ReturnsAsync(testOtpMessage);
 
-            var (_, error) = await linkPatient.VerifyAndLinkCareContext(patientLinkRequest);
+            var (_,cmId, error) = await linkPatient.VerifyAndLinkCareContext(patientLinkRequest);
 
             patientVerification.Verify();
             error.Should().BeEquivalentTo(expectedErrorResponse);
@@ -162,14 +168,19 @@ namespace In.ProjectEKA.HipServiceTest.Link
         {
             var sessionId = TestBuilders.Faker().Random.Hash();
             var otpToken = TestBuilders.Faker().Random.Number().ToString();
+            var dateTimeStamp = DateTime.Now.ToUniversalTime().ToString(Constants.DateTimeFormat);
             var testOtpMessage = new OtpMessage(ResponseType.OtpExpired, "Otp Expired");
             var patientLinkRequest = new LinkConfirmationRequest(otpToken, sessionId);
+            var linkEnquires = new LinkEnquires("","","ncg","",
+                dateTimeStamp,new List<CareContext>());
             var expectedErrorResponse =
                 new ErrorRepresentation(new Error(ErrorCode.OtpExpired, testOtpMessage.Message));
+            linkRepository.Setup(e => e.GetPatientFor(sessionId))
+                .ReturnsAsync(new Tuple<LinkEnquires, Exception>(linkEnquires, null));
             patientVerification.Setup(e => e.Verify(sessionId, otpToken))
                 .ReturnsAsync(testOtpMessage);
 
-            var (_, error) = await linkPatient.VerifyAndLinkCareContext(patientLinkRequest);
+            var (_,cmId,error) = await linkPatient.VerifyAndLinkCareContext(patientLinkRequest);
 
             patientVerification.Verify();
             error.Should().BeEquivalentTo(expectedErrorResponse);
@@ -189,7 +200,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
                 .ReturnsAsync(new Tuple<LinkEnquires, Exception>(null, new Exception()));
 
 
-            var (_, error) = await linkPatient.VerifyAndLinkCareContext(patientLinkRequest);
+            var (_,cmId,error) = await linkPatient.VerifyAndLinkCareContext(patientLinkRequest);
 
             patientVerification.Verify();
             error.Should().BeEquivalentTo(expectedErrorResponse);
@@ -226,7 +237,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
                     $"{testPatient.Name}",
                     new[] {new CareContextRepresentation("129", "National Cancer program")}));
 
-            var (response, _) = await linkPatient.VerifyAndLinkCareContext(patientLinkRequest);
+            var (response,cmId,_) = await linkPatient.VerifyAndLinkCareContext(patientLinkRequest);
 
             patientVerification.Verify();
             linkRepository.Verify();
