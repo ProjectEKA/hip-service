@@ -7,7 +7,6 @@ namespace In.ProjectEKA.HipService.Common.Heartbeat
 {
     // TODO: This is dummy implementation and actual implementation has to be done by respective HIPs
     [ApiController]
-    [Route("/v1")]
     public class HeartbeatController : ControllerBase
     {
         private readonly Heartbeat heartbeat;
@@ -16,7 +15,7 @@ namespace In.ProjectEKA.HipService.Common.Heartbeat
         {
             this.heartbeat = heartbeat;
         }
-        [Route("heartbeat")]
+        [Route("v1/heartbeat")]
         [HttpGet]
          public async Task<HeartbeatResponse>  GetProvidersByName()
         {
