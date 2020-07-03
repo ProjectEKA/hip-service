@@ -36,7 +36,7 @@ spec:
             - name: {{ $key }}
               valueFrom:
                 secretKeyRef:
-                  name: hip-credentials
+                  name: {{ include "hip.fullname" $ }}-credentials
                   key: {{ $key }}
             {{- end }}
           ports:
@@ -46,9 +46,9 @@ spec:
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
-      - name: credentials
+      - name: secrets
         secret:
-          secretName: hip-credentials
+          secretName: {{ include "hip.fullname" $ }}-credentials
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
