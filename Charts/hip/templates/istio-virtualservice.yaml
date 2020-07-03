@@ -1,0 +1,24 @@
+{{- if .Values.ingress.enabled -}}
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: {{ include "hip.fullname" . }}
+  labels:
+    {{- include "hip.labels" . | nindent 4 }}
+spec:
+  hips:
+  - nha-gateway
+  hosts:
+  {{- toYaml .Values.ingress.hosts | nindent 2 }}
+  http:
+  - match:
+    - uri:
+        prefix: {{ .Values.ingress.uriPrefix }}
+    rewrite:
+      uri: /
+    route:
+    - destination:
+        host: hip
+        port:
+          number: {{ .Values.service.port }}
+{{- end }}

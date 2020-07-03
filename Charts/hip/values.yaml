@@ -1,0 +1,62 @@
+# Default values for consent-manager.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: "ganesan92/health-information-provider"
+  tag: "561c229"
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  hosts:
+    - hip.dev.pmjay.gov.in
+  uriPrefix: "/"
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+environmentVariables:
+  authServer__url: http://client-registry:8080
+  authServer__clientId: "10000005"
+  Gateway__url: "http://gateway:8000"
+  Gateway__timeout: "8000"
+  Gateway__clientId: "10000005"
+  hip__url: http://hip:80
+  OtpService__Baseurl: http://otp:80
+  dataFlow__dataSizeLimitInMbs: "5"
+  rabbit__HostName: rabbitmq.nhadclmgm.tatacommunications.com
+  rabbit__Port: "5672"
+  rabbit__UserName: admin
+
+
+secrets: {}
+
+

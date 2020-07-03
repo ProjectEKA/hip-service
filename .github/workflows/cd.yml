@@ -1,0 +1,53 @@
+name: 'Deploy'
+
+on:
+  push:
+    branches:
+      - helm_deploy
+
+
+jobs:
+  deployment:
+    runs-on: 'ubuntu-latest'
+    steps:
+    - name: 'Checkout'
+      uses: 'actions/checkout@v1'
+    
+    - name: Install kubectl
+      run: "sudo apt-get update && sudo apt-get install -y apt-transport-https gnupg2 && curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -"
+    - run: "sudo echo 'deb https://apt.kubernetes.io/ kubernetes-xenial main' | sudo  tee -a /etc/apt/sources.list.d/kubernetes.list"
+    - run: "sudo apt-get update && sudo apt-get install -y kubectl && mkdir ~/.kube"
+    - shell: bash
+      env:
+        KUBECONFIG: ${{ secrets.KUBECONFIG }}
+      run: |
+        echo "$KUBECONFIG" > ~/.kube/config
+      
+    - name: Install Helm
+      run: "curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 && chmod 700 get_helm.sh &&./get_helm.sh"
+
+    - name: 'Helm Deploy'
+      run: |
+        helm upgrade --install --wait --namespace nha hip Charts/hip \
+        --set-string secrets.GATEWAY_CLIENT_ID=$GATEWAY_CLIENT_ID \
+        --set-string secrets.GATEWAY_CLIENT_SECRET=$GATEWAY_CLIENT_SECRET \
+        --set-string secrets.REDIS_HOST=$REDIS_HOST \
+        --set-string secrets.REDIS_PASSWORD=$REDIS_PASSWORD \
+        --set-string secrets.IDENTITY_CLIENTID=$IDENTITY_CLIENTID \
+        --set-string secrets.IDENTITY_CLIENTSECRET=$IDENTITY_CLIENTSECRET \
+        --set-string secrets.RABBITMQ_HOST=$RABBITMQ_HOST \
+        --set-string secrets.RABBITMQ_PORT=$RABBITMQ_PORT \
+        --set-string secrets.RABBITMQ_USERNAME=$RABBITMQ_USERNAME \
+        --set-string secrets.RABBITMQ_PASSWORD=$RABBITMQ_PASSWORD 
+      env:
+        GATEWAY_CLIENT_ID: $GATEWAY_CLIENT_ID
+        GATEWAY_CLIENT_SECRET: ${{ secrets.GATEWAY_CLIENT_SECRET }}
+        REDIS_HOST: ${{ secrets.REDIS_HOST }}
+        REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
+        IDENTITY_CLIENTID: ${{ secrets.IDENTITY_CLIENTID }}
+        IDENTITY_CLIENTSECRET: ${{ secrets.IDENTITY_CLIENTSECRET }}
+        RABBITMQ_HOST: ${{ secrets.RABBITMQ_PORT }}
+        RABBITMQ_PORT: ${{ secrets.POSTGRES_USER }}
+        RABBITMQ_USERNAME: ${{ secrets.RABBITMQ_USERNAME }}
+        RABBITMQ_PASSWORD: ${{ secrets.RABBITMQ_PASSWORD }}
+
