@@ -2,10 +2,10 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
 {
     public class LinkReferenceMeta
     {
-        public string CommunicationMedium { get; }
+        public string CommunicationMedium { get; set; }
 
-        public string CommunicationHint { get; }
-        
+        public string CommunicationHint { get; set; }
+
         public string CommunicationExpiry { get; }
 
 

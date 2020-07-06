@@ -8,7 +8,8 @@ namespace In.ProjectEKA.DefaultHipTest.Link
     [Collection("Patient Repository Tests")]
     public class PatientRepositoryTest
     {
-        private readonly PatientRepository patientRepository = new PatientRepository("demoPatients.json");
+        private readonly PatientRepository patientRepository =
+            new PatientRepository("demoPatients.json");
 
         [Fact]
         private void ReturnPatient()
@@ -20,10 +21,12 @@ namespace In.ProjectEKA.DefaultHipTest.Link
                 Identifier = patientReferenceNumber,
                 Gender = Gender.F,
                 Name = "Navjot Singh",
-                CareContexts = new []
+                CareContexts = new[]
                 {
-                    new CareContextRepresentation("NCP1007", "National Cancer program"),
-                    new CareContextRepresentation("RV-MHD-01.17.0024", "Dept of Psychiatry - Episode 1"),
+                    new CareContextRepresentation(
+                        "NCP1007", "National Cancer program"),
+                    new CareContextRepresentation(
+                        "RV-MHD-01.17.0024", "Dept of Psychiatry - Episode 1"),
                 },
                 YearOfBirth = 2001
             };

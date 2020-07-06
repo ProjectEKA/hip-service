@@ -12,5 +12,7 @@ namespace In.ProjectEKA.HipService.Discovery
         Task<bool> RequestExistsFor(string requestId, string consentManagerUserId, string patientReferenceNumber);
 
         Task<bool> RequestExistsFor(string requestId);
+        
+        Task<DiscoveryRequest> GetRequestFor(string requestTransactionId);
     }
 }

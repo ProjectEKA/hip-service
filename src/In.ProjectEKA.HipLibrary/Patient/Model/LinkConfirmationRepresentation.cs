@@ -1,8 +1,6 @@
 namespace In.ProjectEKA.HipLibrary.Patient.Model
 {
     using System.Collections.Generic;
-    using System.Text.Json.Serialization;
-    using System.Xml.Serialization;
 
     public class LinkConfirmationRepresentation
     {
