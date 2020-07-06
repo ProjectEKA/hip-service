@@ -1,17 +1,19 @@
+using System;
+using System.Threading.Tasks;
+using Hangfire;
+using In.ProjectEKA.HipLibrary.Patient.Model;
+using In.ProjectEKA.HipService.Common;
+using In.ProjectEKA.HipService.Discovery;
+using In.ProjectEKA.HipService.Gateway;
+using In.ProjectEKA.HipService.Gateway.Model;
+using In.ProjectEKA.HipService.Logger;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
 // ReSharper disable MemberCanBePrivate.Global
 namespace In.ProjectEKA.HipService.Link
 {
-    using System;
-    using System.Threading.Tasks;
-    using Discovery;
-    using Gateway;
-    using Gateway.Model;
-    using Hangfire;
-    using HipLibrary.Patient.Model;
-    using Logger;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.AspNetCore.Authorization;
-    using static Common.Constants;
+    using static Constants;
 
     [Authorize]
     [ApiController]
@@ -50,6 +52,8 @@ namespace In.ProjectEKA.HipService.Link
         [NonAction]
         public async Task LinkPatient(LinkReferenceRequest request)
         {
+            var discoveryRequest = await discoveryRequestRepository.GetRequestFor(request.TransactionId);
+            request.Patient.ReferenceNumber = discoveryRequest.PatientReferenceNumber;
             var cmUserId = request.Patient.Id;
             var cmSuffix = cmUserId.Substring(
                 cmUserId.LastIndexOf("@", StringComparison.Ordinal) + 1);
@@ -58,6 +62,7 @@ namespace In.ProjectEKA.HipService.Link
                 cmUserId,
                 request.Patient.ReferenceNumber,
                 request.Patient.CareContexts);
+            patient = MaskingUtility.GetUnmaskedLinkEnquiry(patient);
             try
             {
                 var doesRequestExists = await discoveryRequestRepository.RequestExistsFor(
@@ -84,6 +89,7 @@ namespace In.ProjectEKA.HipService.Link
                 {
                     linkedPatientRepresentation = linkReferenceResponse.Link;
                 }
+
                 var response = new GatewayLinkResponse(
                     linkedPatientRepresentation,
                     error?.Error,
@@ -105,7 +111,7 @@ namespace In.ProjectEKA.HipService.Link
         {
             try
             {
-                var (patientLinkResponse,cmId, error) = await linkPatient
+                var (patientLinkResponse, cmId, error) = await linkPatient
                     .VerifyAndLinkCareContext(new LinkConfirmationRequest(request.Confirmation.Token,
                         request.Confirmation.LinkRefNumber));
                 LinkConfirmationRepresentation linkedPatientRepresentation = null;

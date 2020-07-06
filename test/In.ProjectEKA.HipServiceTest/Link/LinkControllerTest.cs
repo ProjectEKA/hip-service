@@ -52,8 +52,8 @@ namespace In.ProjectEKA.HipServiceTest.Link
                 faker.Random.Hash());
 
             discoveryRequestRepository.Setup(x => x.RequestExistsFor(linkRequest.TransactionId,
-                id,
-                linkRequest.Patient.ReferenceNumber))
+                    id,
+                    linkRequest.Patient.ReferenceNumber))
                 .ReturnsAsync(true);
 
             var linkedResult = linkController.LinkFor(linkRequest);
@@ -61,7 +61,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
             backgroundJobClient.Verify(client => client.Create(
                 It.Is<Job>(job => job.Method.Name == "LinkPatient" && job.Args[0] == linkRequest),
                 It.IsAny<EnqueuedState>()
-                ));
+            ));
 
             link.Verify();
             discoveryRequestRepository.Verify();
@@ -79,9 +79,9 @@ namespace In.ProjectEKA.HipServiceTest.Link
                 Faker().Random.Word()
                 , careContext));
             link.Setup(e => e.VerifyAndLinkCareContext(It.Is<LinkConfirmationRequest>(p =>
-                p.Token == "1234" &&
-                p.LinkReferenceNumber == linkReferenceNumber)))
-                .ReturnsAsync((expectedResponse,cmId,null));
+                    p.Token == "1234" &&
+                    p.LinkReferenceNumber == linkReferenceNumber)))
+                .ReturnsAsync((expectedResponse, cmId, null));
 
             var linkPatientRequest = new LinkPatientRequest(Faker().Random.Hash(),
                 It.IsAny<string>(),
