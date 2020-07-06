@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace In.ProjectEKA.HipService.Discovery
 {
     using System.Threading.Tasks;
@@ -45,6 +47,12 @@ namespace In.ProjectEKA.HipService.Discovery
         {
             return discoveryContext.DiscoveryRequest
                 .AnyAsync(request => request.TransactionId == requestId);
+        }
+
+        public async Task<DiscoveryRequest> GetRequestFor(string transactionId)
+        {
+            return await discoveryContext.DiscoveryRequest
+                .FirstOrDefaultAsync(request => request.TransactionId == transactionId);
         }
     }
 }

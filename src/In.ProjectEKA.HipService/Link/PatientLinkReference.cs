@@ -7,9 +7,9 @@ namespace In.ProjectEKA.HipService.Link
     {
         public string Id { get; }
         
-        public string ReferenceNumber { get; }
-        
-        public IEnumerable<CareContextEnquiry> CareContexts { get; }
+        public string ReferenceNumber { get; set; }
+
+        public IEnumerable<CareContextEnquiry> CareContexts { get; set; }
 
         public PatientLinkReference(string id, string referenceNumber, IEnumerable<CareContextEnquiry> careContexts)
         {

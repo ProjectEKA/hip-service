@@ -4,7 +4,7 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
 
     public class PatientEnquiryRepresentation
     {
-        public string ReferenceNumber { get; }
+        public string ReferenceNumber { get; set; }
 
         public string Display { get; }
 

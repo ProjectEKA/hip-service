@@ -1,16 +1,17 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using In.ProjectEKA.HipLibrary.Matcher;
+using In.ProjectEKA.HipLibrary.Patient;
+using In.ProjectEKA.HipLibrary.Patient.Model;
+using In.ProjectEKA.HipService.Common;
+using In.ProjectEKA.HipService.Link;
+using In.ProjectEKA.HipService.Link.Model;
+using In.ProjectEKA.HipService.Logger;
+
 namespace In.ProjectEKA.HipService.Discovery
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
-    using HipLibrary.Matcher;
-    using HipLibrary.Patient;
-    using HipLibrary.Patient.Model;
-    using Link;
-    using In.ProjectEKA.HipService.Link.Model;
-    using Logger;
-
     public class PatientDiscovery
     {
         private readonly IMatchingRepository matchingRepository;
@@ -36,7 +37,8 @@ namespace In.ProjectEKA.HipService.Discovery
             if (await AlreadyExists(request.TransactionId))
             {
                 return (null,
-                    new ErrorRepresentation(new Error(ErrorCode.DuplicateDiscoveryRequest, "Discovery Request already exists")));
+                    new ErrorRepresentation(new Error(ErrorCode.DuplicateDiscoveryRequest,
+                        "Discovery Request already exists")));
             }
 
             var (linkedAccounts, exception) = await linkPatientRepository.GetLinkedCareContexts(request.Patient.Id);
@@ -57,8 +59,13 @@ namespace In.ProjectEKA.HipService.Discovery
                     {
                         await discoveryRequestRepository.Add(new Model.DiscoveryRequest(request.TransactionId,
                             request.Patient.Id, patient.Identifier));
-                        return (new DiscoveryRepresentation(patient.ToPatientEnquiryRepresentation(
-                                GetUnlinkedCareContexts(linkedCareContexts, patient))),
+
+                        var careContextRepresentations = GetUnlinkedCareContexts(linkedCareContexts, patient).ToList();
+                        var maskedPatientEnquiryRepresentation = MaskingUtility.GetMaskedPatientEnquiryRepresentation(
+                            patient.ToPatientEnquiryRepresentation(
+                                careContextRepresentations));
+
+                        return (new DiscoveryRepresentation(maskedPatientEnquiryRepresentation),
                             (ErrorRepresentation) null);
                     })
                     .ValueOr(Task.FromResult(((DiscoveryRepresentation) null,
@@ -76,7 +83,9 @@ namespace In.ProjectEKA.HipService.Discovery
 
             await discoveryRequestRepository.Add(new Model.DiscoveryRequest(request.TransactionId,
                 request.Patient.Id, patientEnquiryRepresentation.ReferenceNumber));
-            return (new DiscoveryRepresentation(patientEnquiryRepresentation), null);
+            var representation = MaskingUtility.GetMaskedPatientEnquiryRepresentation(patientEnquiryRepresentation);
+
+            return (new DiscoveryRepresentation(representation), null);
         }
 
         private async Task<bool> AlreadyExists(string transactionId)
