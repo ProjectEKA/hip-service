@@ -73,7 +73,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             return new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(response, null);
         }
 
-        public async Task<String> GetPatientId(String consentId) 
+        public async Task<string> GetPatientId(string consentId) 
         {
             var consent = await consentRepository.GetFor(consentId);
             return consent.ConsentArtefact.Patient.Id;

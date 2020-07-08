@@ -105,12 +105,11 @@ namespace In.ProjectEKA.HipService.Link
         {
             try
             {
-                var (patientLinkResponse, error) = await linkPatient
+                var (patientLinkResponse,cmId, error) = await linkPatient
                     .VerifyAndLinkCareContext(new LinkConfirmationRequest(request.Confirmation.Token,
                         request.Confirmation.LinkRefNumber));
-                var linkedPatientRepresentation = new LinkConfirmationRepresentation();
-                var cmId = await linkPatient.GetCmId(request.Confirmation.LinkRefNumber);
-                if (patientLinkResponse != null || cmId != "")
+                 LinkConfirmationRepresentation linkedPatientRepresentation = null;
+                if (patientLinkResponse != null)
                 {
                     linkedPatientRepresentation = patientLinkResponse.Patient;
                 }

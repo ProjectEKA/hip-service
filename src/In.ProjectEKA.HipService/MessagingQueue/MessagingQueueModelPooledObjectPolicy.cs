@@ -20,7 +20,9 @@ namespace In.ProjectEKA.HipService.MessagingQueue
             var factory = new ConnectionFactory  
             {  
                 HostName = options.HostName,
-                Port = options.Port  
+                Port = options.Port,
+                UserName = options.UserName,
+                Password = options.Password
             };  
   
             return factory.CreateConnection();  

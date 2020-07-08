@@ -9,7 +9,6 @@ namespace In.ProjectEKA.HipService.DataFlow
     public class DataFlowNotificationClient
     {
         private readonly GatewayClient gatewayClient;
-        private static readonly string HealthInformationNotificationPath = "/health-information/notification";
 
         public DataFlowNotificationClient(GatewayClient gatewayClient)
         {

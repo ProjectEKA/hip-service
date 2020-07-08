@@ -73,6 +73,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
         {
             var linkReferenceNumber = Faker().Random.Hash();
             const string token = "1234";
+            var cmId = "ncg";
             var careContext = new[] {new CareContextRepresentation("129", Faker().Random.Word())};
             var expectedResponse = new PatientLinkConfirmationRepresentation(new LinkConfirmationRepresentation("4",
                 Faker().Random.Word()
@@ -80,7 +81,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
             link.Setup(e => e.VerifyAndLinkCareContext(It.Is<LinkConfirmationRequest>(p =>
                 p.Token == "1234" &&
                 p.LinkReferenceNumber == linkReferenceNumber)))
-                .ReturnsAsync((expectedResponse, null));
+                .ReturnsAsync((expectedResponse,cmId,null));
 
             var linkPatientRequest = new LinkPatientRequest(Faker().Random.Hash(),
                 It.IsAny<string>(),
