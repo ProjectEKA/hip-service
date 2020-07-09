@@ -5,6 +5,7 @@ namespace In.ProjectEKA.HipService.Common.Model
         Condition,
         Observation,
         DiagnosticReport,
-        MedicationRequest
+        MedicationRequest,
+        DocumentReference
     }
 }
