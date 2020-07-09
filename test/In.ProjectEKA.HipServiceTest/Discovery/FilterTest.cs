@@ -36,6 +36,20 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
         }
 
         [Fact]
+        private void ShouldFilterAndNotReturnAPatientByFuzzyName()
+        {
+            var discoveryRequest = BuildDiscoveryRequest(Linda.Identifier, Linda.Name, Linda.Gender, Linda.PhoneNumber, Linda.YearOfBirth);
+            var patients = Patient()
+                .GenerateLazy(10)
+                .Append(BuildPatient("Lunda", Linda.Gender, Linda.PhoneNumber, Linda.YearOfBirth))
+                .Append(BuildPatient(null, Gender.M, Linda.PhoneNumber, 0));
+
+            var filteredPatients = Filter.Do(patients, discoveryRequest);
+
+            filteredPatients.Count().Should().Be(0);
+        }
+
+        [Fact]
         private void ShouldFilterAndReturnMultiplePatientsByPhoneNumber()
         {
             var discoveryRequest = BuildDiscoveryRequest(Linda.Identifier, Linda.Name, Linda.Gender, Linda.PhoneNumber, Linda.YearOfBirth);

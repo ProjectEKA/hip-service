@@ -27,7 +27,7 @@ namespace In.ProjectEKA.HipService.Discovery.Matcher
         private static Expression<Func<Patient, bool>> NameExpression(string name)
         {
             Expression<Func<Patient, bool>> nameExpression = patient =>
-                FuzzyNameMatcher.LevenshteinDistance(patient.Name, name) <= 2;
+                ExactNameMatcher.IsMatch(patient.Name, name);
             return nameExpression;
         }
 
