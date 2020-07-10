@@ -7,7 +7,7 @@ namespace In.ProjectEKA.HipService.Common.Heartbeat
     {
         public static HeartbeatResponse GetHealthStatus()
         {
-            return new HeartbeatResponse(DateTime.Now, HeartbeatStatus.UP.ToString(), null);
+            return new HeartbeatResponse(DateTime.Now.ToUniversalTime(), HeartbeatStatus.UP.ToString(), null);
         }
     }
 }
