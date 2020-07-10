@@ -78,21 +78,22 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
         [Theory]
         [InlineData(Linda.Name, Linda.Sex, Linda.PhoneNumber, Linda.YearOfBirth, true)]
 
-        [InlineData(Linda.Name, Gender.O, null, 0, false)]
+        [InlineData(Linda.Name, null, null, null, true)]
         [InlineData(null, Linda.Sex, Linda.PhoneNumber, Linda.YearOfBirth, false)]
         [InlineData(John.Name, Linda.Sex, Linda.PhoneNumber, Linda.YearOfBirth, false)]
 
-        [InlineData(null, Linda.Sex, null, 0, false)]
+        [InlineData(null, Linda.Sex, null, null, false)]
         [InlineData(Linda.Name, John.Sex, Linda.PhoneNumber, Linda.YearOfBirth, false)]
 
-        [InlineData(null, Gender.O, Linda.PhoneNumber, 0, false)]
+        [InlineData(null, null, Linda.PhoneNumber, null, false)]
 
-        [InlineData(null, Gender.O, null, Linda.YearOfBirth, false)]
+        [InlineData(null, null, null, Linda.YearOfBirth, false)]
         [InlineData(Linda.Name, Linda.Sex, Linda.PhoneNumber, John.YearOfBirth, false)]
 
         [InlineData(Linda.Name, null, Linda.PhoneNumber, Linda.YearOfBirth, true)]
+        [InlineData(Linda.Name, Linda.Sex, Linda.PhoneNumber, null, true)]
         private void ShouldFilterAndReturnAPatientWithFullDataRecordByPartialDataRequest(
-            string requestName, Gender? requestGender, string requestPhoneNumber, ushort requestYearOfBirth, bool isExpectedToMatch)
+            string requestName, Gender? requestGender, string requestPhoneNumber, ushort? requestYearOfBirth, bool isExpectedToMatch)
         {
             var discoveryRequest = BuildDiscoveryRequest(requestName, requestGender, requestPhoneNumber, requestYearOfBirth);
             var patients = Patient().GenerateLazy(0).Append(BuildPatient(Linda.Name, Linda.Sex, Linda.PhoneNumber, Linda.YearOfBirth));
