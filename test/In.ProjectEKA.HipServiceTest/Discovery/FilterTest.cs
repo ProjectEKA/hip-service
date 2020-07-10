@@ -16,26 +16,22 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
         private class Linda
         {
             public const string Name = "Linda";
-            public const string Gender2 = "F";
+            public const Gender Sex = Gender.F;
             public const string PhoneNumber = "99999999999";
             public const ushort YearOfBirth = 1972;
-
-            public static Gender Gender { get { return HipLibrary.Patient.Model.Gender.F; } } 
         }
         private class John
         {
             public const string Name = "John";
-            public const string Gender2 = "M";
+            public const Gender Sex = Gender.M;
             public const string PhoneNumber = "11111111111";
             public const ushort YearOfBirth = 1994;
-
-            public static Gender Gender { get { return HipLibrary.Patient.Model.Gender.M; } }
         }
 
         [Fact]
         private void ShouldFilterAndReturnAPatientByVerifiedIdentifierGenderAgeName()
         {
-            var discoveryRequest = BuildDiscoveryRequest(Linda.Name, Linda.Gender, Linda.PhoneNumber, Linda.YearOfBirth);
+            var discoveryRequest = BuildDiscoveryRequest(Linda.Name, Linda.Sex, Linda.PhoneNumber, Linda.YearOfBirth);
             var patients = Patient()
                 .GenerateLazy(10)
                 .Append(BuildLinda())
@@ -48,24 +44,23 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
 
 
         [Theory]
-        [InlineData(Linda.Name, Linda.Gender2, Linda.PhoneNumber, Linda.YearOfBirth, true)]
+        [InlineData(Linda.Name, Linda.Sex, Linda.PhoneNumber, Linda.YearOfBirth, true)]
 
-        [InlineData(Linda.Name, null, null, 0, false)]
-        [InlineData(null, Linda.Gender2, Linda.PhoneNumber, Linda.YearOfBirth, false)]
-        [InlineData(John.Name, Linda.Gender2, Linda.PhoneNumber, Linda.YearOfBirth, false)]
+        [InlineData(Linda.Name, Gender.O, null, 0, false)]
+        [InlineData(null, Linda.Sex, Linda.PhoneNumber, Linda.YearOfBirth, false)]
+        [InlineData(John.Name, Linda.Sex, Linda.PhoneNumber, Linda.YearOfBirth, false)]
 
-        [InlineData(null, Linda.Gender2, null, 0, false)]
-        [InlineData(Linda.Name, John.Gender2, Linda.PhoneNumber, Linda.YearOfBirth, false)]
+        [InlineData(null, Linda.Sex, null, 0, false)]
+        [InlineData(Linda.Name, John.Sex, Linda.PhoneNumber, Linda.YearOfBirth, false)]
 
-        [InlineData(null, null, Linda.PhoneNumber, 0, false)]
+        [InlineData(null, Gender.O, Linda.PhoneNumber, 0, false)]
 
-        [InlineData(null, null, null, Linda.YearOfBirth, false)]
-        [InlineData(Linda.Name, Linda.Gender2, Linda.PhoneNumber, John.YearOfBirth, false)]
+        [InlineData(null, Gender.O, null, Linda.YearOfBirth, false)]
+        [InlineData(Linda.Name, Linda.Sex, Linda.PhoneNumber, John.YearOfBirth, false)]
         private void ShouldFilterAndReturnAPatientByVerifiedIdentifierGenderAgeName2(
-            string recordedName, string recordedGenderText, string recordedPhoneNumber, ushort recordedYearOfBirth, bool isExpectedToMatch)
+            string recordedName, Gender recordedGender, string recordedPhoneNumber, ushort recordedYearOfBirth, bool isExpectedToMatch)
         {
-            var discoveryRequest = BuildDiscoveryRequest(Linda.Name, Linda.Gender, Linda.PhoneNumber, Linda.YearOfBirth);
-            var recordedGender = recordedGenderText == "F" ? Gender.F : Gender.M;
+            var discoveryRequest = BuildDiscoveryRequest(Linda.Name, Linda.Sex, Linda.PhoneNumber, Linda.YearOfBirth);
             var patients = Patient().GenerateLazy(0).Append(BuildPatient(recordedName, recordedGender, recordedPhoneNumber, recordedYearOfBirth));
 
             var filteredPatients = Filter.Do(patients, discoveryRequest);
@@ -83,8 +78,8 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
         [Fact]
         private void ShouldFilterAndReturnAPatientRegardlessThePhoneNumber()
         {
-            var discoveryRequest = BuildDiscoveryRequest(Linda.Name, Linda.Gender, Linda.PhoneNumber, Linda.YearOfBirth);
-            var patients = Patient().GenerateLazy(0).Append(BuildPatient(Linda.Name, Linda.Gender, John.PhoneNumber, Linda.YearOfBirth));
+            var discoveryRequest = BuildDiscoveryRequest(Linda.Name, Linda.Sex, Linda.PhoneNumber, Linda.YearOfBirth);
+            var patients = Patient().GenerateLazy(0).Append(BuildPatient(Linda.Name, Linda.Sex, John.PhoneNumber, Linda.YearOfBirth));
 
             var filteredPatients = Filter.Do(patients, discoveryRequest);
 
@@ -95,10 +90,10 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
         [Fact]
         private void ShouldFilterAndNotReturnAPatientByFuzzyName()
         {
-            var discoveryRequest = BuildDiscoveryRequest(Linda.Name, Linda.Gender, Linda.PhoneNumber, Linda.YearOfBirth);
+            var discoveryRequest = BuildDiscoveryRequest(Linda.Name, Linda.Sex, Linda.PhoneNumber, Linda.YearOfBirth);
             var patients = Patient()
                 .GenerateLazy(10)
-                .Append(BuildPatient("Lunda", Linda.Gender, Linda.PhoneNumber, Linda.YearOfBirth))
+                .Append(BuildPatient("Lunda", Linda.Sex, Linda.PhoneNumber, Linda.YearOfBirth))
                 .Append(BuildPatient(null, Gender.M, Linda.PhoneNumber, 0));
 
             var filteredPatients = Filter.Do(patients, discoveryRequest);
@@ -109,7 +104,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
         [Fact]
         private void ShouldFilterAndReturnMultiplePatientsByPhoneNumber()
         {
-            var discoveryRequest = BuildDiscoveryRequest(Linda.Name, Linda.Gender, Linda.PhoneNumber, Linda.YearOfBirth);
+            var discoveryRequest = BuildDiscoveryRequest(Linda.Name, Linda.Sex, Linda.PhoneNumber, Linda.YearOfBirth);
             var patients = Patient()
                 .GenerateLazy(10)
                 .Append(BuildLinda())
@@ -123,10 +118,10 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
         [Fact]
         private void ShouldFilterAndReturnAPatientWhenNameAndAgeAreNull()
         {
-            var discoveryRequest = BuildDiscoveryRequest(null, Linda.Gender, Linda.PhoneNumber, null);
+            var discoveryRequest = BuildDiscoveryRequest(null, Linda.Sex, Linda.PhoneNumber, null);
             var patients = Patient()
                 .GenerateLazy(10)
-                .Append(BuildPatient(null, Linda.Gender, Linda.PhoneNumber, 0))
+                .Append(BuildPatient(null, Linda.Sex, Linda.PhoneNumber, 0))
                 .Append(BuildPatient(null, Gender.M, Linda.PhoneNumber, 0));
 
             var filteredPatients = Filter.Do(patients, discoveryRequest);
@@ -166,7 +161,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
 
         private Patient BuildLinda()
         {
-            return BuildPatient(Linda.Name, Linda.Gender, Linda.PhoneNumber, Linda.YearOfBirth);
+            return BuildPatient(Linda.Name, Linda.Sex, Linda.PhoneNumber, Linda.YearOfBirth);
         }
 
         private Patient BuildPatient(string name, Gender gender, string phoneNumber, ushort yearOfBirth)
