@@ -58,7 +58,6 @@ namespace In.ProjectEKA.HipService.Discovery
             return patients
                 .AsEnumerable()
                 .Where(ExpressionFor(request.Patient.Name, request.Patient.YearOfBirth, request.Patient.Gender))
-                .Where(unverifiedExpression.Compile())
                 .Select(patientInfo => RankPatient(patientInfo, request))
                 .GroupBy(rankedPatient => rankedPatient.Rank.Score)
                 .OrderByDescending(rankedPatient => rankedPatient.Key)
