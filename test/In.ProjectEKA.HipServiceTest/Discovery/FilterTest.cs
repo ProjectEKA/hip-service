@@ -89,8 +89,10 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
 
         [InlineData(null, Gender.O, null, Linda.YearOfBirth, false)]
         [InlineData(Linda.Name, Linda.Sex, Linda.PhoneNumber, John.YearOfBirth, false)]
+
+        [InlineData(Linda.Name, null, Linda.PhoneNumber, Linda.YearOfBirth, true)]
         private void ShouldFilterAndReturnAPatientWithFullDataRecordByPartialDataRequest(
-            string requestName, Gender requestGender, string requestPhoneNumber, ushort requestYearOfBirth, bool isExpectedToMatch)
+            string requestName, Gender? requestGender, string requestPhoneNumber, ushort requestYearOfBirth, bool isExpectedToMatch)
         {
             var discoveryRequest = BuildDiscoveryRequest(requestName, requestGender, requestPhoneNumber, requestYearOfBirth);
             var patients = Patient().GenerateLazy(0).Append(BuildPatient(Linda.Name, Linda.Sex, Linda.PhoneNumber, Linda.YearOfBirth));
@@ -180,7 +182,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             filteredPatients.Count().Should().Be(1);
         }
 
-        private DiscoveryRequest BuildDiscoveryRequest(string name, Gender gender, string phoneNumber, ushort? yearOfBirth = null)
+        private DiscoveryRequest BuildDiscoveryRequest(string name, Gender? gender, string phoneNumber, ushort? yearOfBirth = null)
         {
             var verifiedIdentifiers = Identifier()
                    .GenerateLazy(0)

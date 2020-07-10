@@ -13,14 +13,14 @@ namespace In.ProjectEKA.HipService.Discovery.Matcher
         {
         }
 
-        public static Func<Patient, bool> ExpressionFor(string name, ushort? age, Gender gender)
+        public static Func<Patient, bool> ExpressionFor(string name, ushort? age, Gender? gender)
         {
             return GenderExpresion(gender).And(NameExpression(name)).And(AgeExpression(age)).Compile();
         }
 
-        private static Expression<Func<Patient, bool>> GenderExpresion(Gender gender)
+        private static Expression<Func<Patient, bool>> GenderExpresion(Gender? gender)
         {
-            Expression<Func<Patient, bool>> genderExpresion = patient => patient.Gender == gender;
+            Expression<Func<Patient, bool>> genderExpresion = patient => !gender.HasValue || patient.Gender == gender;
             return genderExpresion;
         }
 

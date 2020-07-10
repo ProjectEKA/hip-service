@@ -12,7 +12,7 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
 
         public string Name { get; }
 
-        public Gender Gender { get; }
+        public Gender? Gender { get; }
 
         // ReSharper disable once MemberCanBePrivate.Global
         // TODO: Need to be used while doing discovery
@@ -23,7 +23,7 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
             IEnumerable<Identifier> verifiedIdentifiers,
             IEnumerable<Identifier> unverifiedIdentifiers,
             string name,
-            Gender gender,
+            Gender? gender,
             ushort? yearOfBirth)
         {
             Id = id;
