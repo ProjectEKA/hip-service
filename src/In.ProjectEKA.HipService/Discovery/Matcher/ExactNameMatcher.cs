@@ -4,11 +4,11 @@
 
     public static class ExactNameMatcher
     {
-        public static bool IsMatch(string s1, string s2)
+        public static bool IsMatch(string left, string right)
         {
-            var string1 = s1 == null ? "" : s1;
-            var string2 = s2 == null ? "" : s2;
-            return string1.Equals(string2, StringComparison.InvariantCultureIgnoreCase);
+            left ??= "";
+            right ??= "";
+            return left.Equals(right, StringComparison.InvariantCultureIgnoreCase);
         }
     }
 }

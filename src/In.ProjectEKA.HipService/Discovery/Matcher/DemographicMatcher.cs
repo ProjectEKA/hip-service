@@ -15,7 +15,7 @@ namespace In.ProjectEKA.HipService.Discovery.Matcher
 
         public static Func<Patient, bool> ExpressionFor(string name, ushort? yearOfBirth, Gender? gender)
         {
-            if(yearOfBirth == null && gender == null)
+            if (yearOfBirth == null && gender == null)
             {
                 return _ => false;
             }

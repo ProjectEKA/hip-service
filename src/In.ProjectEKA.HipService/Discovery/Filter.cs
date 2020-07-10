@@ -52,9 +52,6 @@ namespace In.ProjectEKA.HipService.Discovery
         public static IEnumerable<PatientEnquiryRepresentation> Do(IEnumerable<Patient> patients,
             DiscoveryRequest request)
         {
-            var unverifiedExpression =
-                GetUnVerifiedExpression(request.Patient.UnverifiedIdentifiers ?? new List<Identifier>());
-
             return patients
                 .AsEnumerable()
                 .Where(ExpressionFor(request.Patient.Name, request.Patient.YearOfBirth, request.Patient.Gender))
