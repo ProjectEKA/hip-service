@@ -119,6 +119,25 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
         }
 
 
+        [Theory]
+        [InlineData("linda", "Linda")]
+        [InlineData("liNda", "Linda")]
+        [InlineData("Linda", "Linda")]
+        [InlineData("LINDA", "Linda")]
+        [InlineData("Linda", "linda")]
+        [InlineData("Linda", "linDa")]
+        [InlineData("Linda", "LINDA")]
+        [InlineData("UnicodeLïnda", "UNICODELÏNDA")]
+        private void ShouldFilterAndReturnAPatientRegardlessTheCasingOfName(string requestName, string recordedName)
+        {
+            var discoveryRequest = BuildDiscoveryRequest(requestName, Linda.Sex, Linda.PhoneNumber, Linda.YearOfBirth);
+            var patients = Patient().GenerateLazy(0).Append(BuildPatient(recordedName, Linda.Sex, John.PhoneNumber, Linda.YearOfBirth));
+
+            var filteredPatients = Filter.Do(patients, discoveryRequest);
+
+            filteredPatients.Count().Should().Be(1);
+        }
+
         [Fact]
         private void ShouldFilterAndNotReturnAPatientByFuzzyName()
         {
