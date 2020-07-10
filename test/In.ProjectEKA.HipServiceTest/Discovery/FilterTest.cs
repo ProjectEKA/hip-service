@@ -78,7 +78,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
         [Theory]
         [InlineData(Linda.Name, Linda.Sex, Linda.PhoneNumber, Linda.YearOfBirth, true)]
 
-        [InlineData(Linda.Name, null, null, null, true)]
+        [InlineData(Linda.Name, null, null, null, false)]
         [InlineData(null, Linda.Sex, Linda.PhoneNumber, Linda.YearOfBirth, false)]
         [InlineData(John.Name, Linda.Sex, Linda.PhoneNumber, Linda.YearOfBirth, false)]
 
