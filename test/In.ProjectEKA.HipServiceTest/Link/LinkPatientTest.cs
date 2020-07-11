@@ -11,6 +11,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
     using Builder;
     using HipLibrary.Patient;
     using HipLibrary.Patient.Model;
+    using HipService.Common;
     using HipService.Discovery;
     using HipService.Link;
     using HipService.Link.Model;

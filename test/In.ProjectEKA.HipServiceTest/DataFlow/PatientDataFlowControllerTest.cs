@@ -76,6 +76,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                     client.SendDataToGateway("/v1/health-information/hip/on-request",
                         It.IsAny<GatewayDataFlowRequestResponse>(), "ncg"));
             dataFlow.Setup(d => d.GetPatientId(It.IsAny<string>())).ReturnsAsync("abc@ncg");
+            
             await patientDataFlowController.HealthInformationOf(request, gatewayId);
 
             gatewayClient.Verify();

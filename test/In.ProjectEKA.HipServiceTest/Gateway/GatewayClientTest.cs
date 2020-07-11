@@ -18,6 +18,7 @@ namespace In.ProjectEKA.HipServiceTest.Gateway
     using Moq.Protected;
     using Newtonsoft.Json;
     using Xunit;
+    using static HipService.Common.Constants;
 
     [Collection("Gateway Client Tests")]
     public class GatewayClientTest
@@ -60,7 +61,7 @@ namespace In.ProjectEKA.HipServiceTest.Gateway
                     StatusCode = HttpStatusCode.OK
                 }));
 
-            gatewayClient.SendDataToGateway(GatewayPathConstants.OnDiscoverPath, gatewayDiscoveryRepresentation, "ncg");
+            gatewayClient.SendDataToGateway(PATH_ON_DISCOVER, gatewayDiscoveryRepresentation, "ncg");
 
             handlerMock.Protected().Verify(
                 "SendAsync",
@@ -108,7 +109,7 @@ namespace In.ProjectEKA.HipServiceTest.Gateway
                 })
                 .Verifiable();
 
-            gatewayClient.SendDataToGateway(GatewayPathConstants.OnDiscoverPath, gatewayDiscoveryRepresentation, "ncg");
+            gatewayClient.SendDataToGateway(PATH_ON_DISCOVER, gatewayDiscoveryRepresentation, "ncg");
 
             handlerMock.Protected().Verify(
                 "SendAsync",

@@ -1,4 +1,4 @@
-﻿using static In.ProjectEKA.HipService.Gateway.GatewayPathConstants;
+﻿using static In.ProjectEKA.HipService.Common.Constants;
 
 namespace In.ProjectEKA.HipService.Discovery
 {
@@ -13,7 +13,6 @@ namespace In.ProjectEKA.HipService.Discovery
     using Microsoft.AspNetCore.Mvc;
 
     [Authorize]
-    [Route("v1/care-contexts/discover")]
     [ApiController]
     public class CareContextDiscoveryController : Controller
     {
@@ -30,14 +29,14 @@ namespace In.ProjectEKA.HipService.Discovery
             this.backgroundJob = backgroundJob;
         }
 
-        [HttpPost]
+        [HttpPost(PATH_CARE_CONTEXTS_DISCOVER)]
         public AcceptedResult DiscoverPatientCareContexts(DiscoveryRequest request)
         {
             backgroundJob.Enqueue(() => GetPatientCareContext(request));
             return Accepted();
         }
 
-        public async Task GetPatientCareContext(DiscoveryRequest request)
+        private async Task GetPatientCareContext(DiscoveryRequest request)
         {
             try
             {
@@ -53,7 +52,7 @@ namespace In.ProjectEKA.HipService.Discovery
                     request.TransactionId, //TODO: should be reading transactionId from contract
                     error?.Error,
                     new Resp(request.RequestId));
-                await gatewayClient.SendDataToGateway(OnDiscoverPath, gatewayDiscoveryRepresentation, cmSuffix);
+                await gatewayClient.SendDataToGateway(PATH_ON_DISCOVER, gatewayDiscoveryRepresentation, cmSuffix);
             }
             catch (Exception exception)
             {

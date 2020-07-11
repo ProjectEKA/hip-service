@@ -4,6 +4,7 @@ namespace In.ProjectEKA.HipService.Link
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Common;
     using Database;
     using Logger;
     using Microsoft.EntityFrameworkCore;

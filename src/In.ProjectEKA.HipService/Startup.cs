@@ -103,7 +103,6 @@ namespace In.ProjectEKA.HipService
                 .AddScoped<IDataFlowRepository, DataFlowRepository>()
                 .AddScoped<IHealthInformationRepository, HealthInformationRepository>()
                 .AddSingleton(Configuration.GetSection("Gateway").Get<GatewayConfiguration>())
-                .AddScoped<Heartbeat>()
                 .AddSingleton(new GatewayClient(HttpClient,
                     Configuration.GetSection("Gateway").Get<GatewayConfiguration>()))
                 .AddTransient<IDataFlow, DataFlow.DataFlow>()
@@ -124,7 +123,7 @@ namespace In.ProjectEKA.HipService
                 .AddJwtBearer(options =>
                 {
                     // Need to validate Audience and Issuer properly
-                    options.Authority = $"{Configuration.GetValue<string>("Gateway:url")}/v1";
+                    options.Authority = $"{Configuration.GetValue<string>("Gateway:url")}/{Constants.CURRENT_VERSION}";
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,

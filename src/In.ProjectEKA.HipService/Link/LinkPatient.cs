@@ -5,6 +5,7 @@ namespace In.ProjectEKA.HipService.Link
     using System.Linq;
     using System.Threading.Tasks;
     using System.Transactions;
+    using Common;
     using Discovery;
     using Hangfire.Dashboard.Resources;
     using HipLibrary.Patient;
