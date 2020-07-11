@@ -5,7 +5,7 @@ namespace In.ProjectEKA.HipService.Common
         public static readonly string DateTimeFormat = "yyyy-MM-ddTHH:mm:ssZ";
 
         public const string CURRENT_VERSION = "v1";
-        public const string SESSIONS = CURRENT_VERSION + "/sessions";
+        public const string PATH_SESSIONS = CURRENT_VERSION + "/sessions";
         public const string PATH_CARE_CONTEXTS_DISCOVER = CURRENT_VERSION + "/care-contexts/discover";
         public const string PATH_CONSENTS_HIP = CURRENT_VERSION + "/consents/hip/notify";
         public const string PATH_LINKS_LINK_INIT = CURRENT_VERSION + "/links/link/init";

@@ -1,3 +1,4 @@
+// ReSharper disable MemberCanBePrivate.Global
 namespace In.ProjectEKA.HipService.Consent
 {
     using System;
@@ -37,7 +38,8 @@ namespace In.ProjectEKA.HipService.Consent
             return Accepted();
         }
 
-        private async Task StoreConsent(ConsentArtefactRepresentation consentArtefact)
+        [NonAction]
+        public async Task StoreConsent(ConsentArtefactRepresentation consentArtefact)
         {
             var notification = consentArtefact.Notification;
 

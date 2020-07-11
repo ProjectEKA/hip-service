@@ -29,8 +29,8 @@ namespace In.ProjectEKA.HipServiceTest.Gateway
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
             var httpClient = new HttpClient(handlerMock.Object);
             var gatewayConfiguration = new GatewayConfiguration {Url = "http://someUrl"};
-            var authenticationUri = new Uri($"{gatewayConfiguration.Url}/v1/sessions");
-            var expectedUri = new Uri($"{gatewayConfiguration.Url}/v1/care-contexts/on-discover");
+            var authenticationUri = new Uri($"{gatewayConfiguration.Url}/{PATH_SESSIONS}");
+            var expectedUri = new Uri($"{gatewayConfiguration.Url}{PATH_ON_DISCOVER}");
             var patientEnquiryRepresentation = new PatientEnquiryRepresentation(
                 "123",
                 "Jack",
@@ -83,7 +83,7 @@ namespace In.ProjectEKA.HipServiceTest.Gateway
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
             var httpClient = new HttpClient(handlerMock.Object);
             var gatewayConfiguration = new GatewayConfiguration {Url = "http://someUrl"};
-            var authenticationUri = new Uri($"{gatewayConfiguration.Url}/v1/sessions");
+            var authenticationUri = new Uri($"{gatewayConfiguration.Url}/{PATH_SESSIONS}");
             var patientEnquiryRepresentation = new PatientEnquiryRepresentation(
                 "123",
                 "Jack",
@@ -125,7 +125,7 @@ namespace In.ProjectEKA.HipServiceTest.Gateway
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
             var httpClient = new HttpClient(handlerMock.Object);
             const string rootRul = "http://someUrl";
-            var expectedUri = new Uri($"{rootRul}/v1/sessions");
+            var expectedUri = new Uri($"{rootRul}/{PATH_SESSIONS}");
             var configuration = new GatewayConfiguration
             {
                 Url = rootRul,
@@ -168,7 +168,7 @@ namespace In.ProjectEKA.HipServiceTest.Gateway
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
             var httpClient = new HttpClient(handlerMock.Object);
             const string centralRegistryRootUrl = "http://someUrl";
-            var expectedUri = new Uri($"{centralRegistryRootUrl}/v1/sessions");
+            var expectedUri = new Uri($"{centralRegistryRootUrl}/{PATH_SESSIONS}");
             var configuration = new GatewayConfiguration
             {
                 Url = centralRegistryRootUrl,

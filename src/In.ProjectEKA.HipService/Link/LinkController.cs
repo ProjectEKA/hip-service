@@ -1,3 +1,4 @@
+// ReSharper disable MemberCanBePrivate.Global
 namespace In.ProjectEKA.HipService.Link
 {
     using System;
@@ -46,7 +47,8 @@ namespace In.ProjectEKA.HipService.Link
             return Accepted();
         }
 
-        private async Task LinkPatient(LinkReferenceRequest request)
+        [NonAction]
+        public async Task LinkPatient(LinkReferenceRequest request)
         {
             var cmUserId = request.Patient.Id;
             var cmSuffix = cmUserId.Substring(
@@ -98,7 +100,8 @@ namespace In.ProjectEKA.HipService.Link
             }
         }
 
-        private async Task LinkPatientCareContextFor(LinkPatientRequest request)
+        [NonAction]
+        public async Task LinkPatientCareContextFor(LinkPatientRequest request)
         {
             try
             {
