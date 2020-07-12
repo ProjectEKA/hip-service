@@ -36,7 +36,9 @@ namespace In.ProjectEKA.HipService.Discovery
             return Accepted();
         }
 
-        private async Task GetPatientCareContext(DiscoveryRequest request)
+        // ReSharper disable once MemberCanBePrivate.Global
+        [NonAction]
+        public async Task GetPatientCareContext(DiscoveryRequest request)
         {
             try
             {
