@@ -5,11 +5,9 @@ namespace In.ProjectEKA.HipService.Common.Heartbeat
 {
     public class Heartbeat
     {
-        
-        public HeartbeatResponse GetHealthStatus()
+        public static HeartbeatResponse GetHealthStatus()
         {
-            var heartbeatResponse = new HeartbeatResponse(DateTime.Now, HeartbeatStatus.UP.ToString(),null);
-            return heartbeatResponse;
+            return new HeartbeatResponse(DateTime.Now, HeartbeatStatus.UP.ToString(), null);
         }
     }
 }

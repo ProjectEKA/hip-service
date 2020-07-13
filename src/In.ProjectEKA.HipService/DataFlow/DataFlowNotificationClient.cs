@@ -5,6 +5,7 @@ namespace In.ProjectEKA.HipService.DataFlow
     using Gateway;
     using Gateway.Model;
     using Model;
+    using static Common.Constants;
 
     public class DataFlowNotificationClient
     {
@@ -24,9 +25,8 @@ namespace In.ProjectEKA.HipService.DataFlow
                     dataNotificationRequest.ConsentId,
                     dataNotificationRequest.DoneAt,
                     dataNotificationRequest.Notifier,
-                    dataNotificationRequest.StatusNotification)
-                );
-            await gatewayClient.SendDataToGateway(GatewayPathConstants.HealthInformationNotifyGatewayPath,
+                    dataNotificationRequest.StatusNotification));
+            await gatewayClient.SendDataToGateway(PATH_HEALTH_INFORMATION_NOTIFY_GATEWAY,
                 notificationRequest,
                 cmSuffix);
         }
