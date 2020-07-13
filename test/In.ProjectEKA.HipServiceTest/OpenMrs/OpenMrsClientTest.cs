@@ -9,7 +9,8 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
     [Collection("Gateway Client Tests")]
     public class OpenMrsClientTest
     {
-        [Fact]
+        [Fact(Skip="it is a real call and needs local setup")]
+        [Trait("Category", "Infrastructure")]
         public async Task ShouldGetPatientDataRealCallAsync()
         {
         //Given
