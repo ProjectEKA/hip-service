@@ -37,7 +37,7 @@ namespace In.ProjectEKA.HipService.Discovery
             return Accepted();
         }
 
-        public async Task GetPatientCareContext(DiscoveryRequest request)
+        private async Task GetPatientCareContext(DiscoveryRequest request)
         {
             try
             {
