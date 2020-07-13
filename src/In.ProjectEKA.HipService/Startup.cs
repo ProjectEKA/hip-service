@@ -3,8 +3,10 @@ namespace In.ProjectEKA.HipService
     using System;
     using System.Collections.Generic;
     using System.IdentityModel.Tokens.Jwt;
+    using System.IO;
     using System.Linq;
     using System.Net.Http;
+    using System.Reflection;
     using System.Text.Json;
     using System.Threading.Tasks;
     using Common;
@@ -35,6 +37,7 @@ namespace In.ProjectEKA.HipService
     using Microsoft.Extensions.Hosting;
     using Microsoft.IdentityModel.Logging;
     using Microsoft.IdentityModel.Tokens;
+    using Microsoft.OpenApi.Models;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
     using Serilog;
@@ -106,7 +109,25 @@ namespace In.ProjectEKA.HipService
                     Configuration.GetSection("Gateway").Get<GatewayConfiguration>()))
                 .AddTransient<IDataFlow, DataFlow.DataFlow>()
                 .AddRouting(options => options.LowercaseUrls = true)
-                .AddSwaggerGen()
+                .AddSwaggerGen(c =>
+                {
+                    c.SwaggerDoc("v1", new OpenApiInfo
+                    {
+                        Version = "0.0.1",
+                        Title = "Health Information Provider",
+                        Description =
+                            "Clinical establishments which generate or store customer data in digital form."
+                            + " These include hospitals, primary or secondary health care centres,"
+                            + " nursing homes, diagnostic centres, clinics, medical device companies"
+                            + " and other such entities as may be identified by regulatory authorities from time to time.",
+                    });
+    
+
+                    // Set the comments path for the Swagger JSON and UI.
+                    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                    c.IncludeXmlComments(xmlPath);
+                })
                 .AddControllers()
                 .AddNewtonsoftJson(
                     options => { options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore; })
