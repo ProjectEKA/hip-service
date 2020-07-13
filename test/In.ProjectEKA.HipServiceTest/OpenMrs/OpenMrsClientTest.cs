@@ -39,7 +39,7 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
         }
 
         [Fact]
-        public async Task ShouldReturnWhenCredentialsFailed()
+        public async Task ShouldPropagateStatusWhenCredentialsFailed()
         {
             //Given
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
@@ -71,7 +71,7 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
         }
 
         [Fact]
-        public async Task ShouldCheck()
+        public async Task ShouldInterrogateTheRightDataSource()
         {
             //Given
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Loose);
