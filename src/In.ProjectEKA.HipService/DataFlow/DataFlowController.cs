@@ -85,6 +85,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             return Accepted();
         }
 
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task HealthInformationOf(PatientHealthInformationRequest healthInformationRequest, string gatewayId)
         {
             try

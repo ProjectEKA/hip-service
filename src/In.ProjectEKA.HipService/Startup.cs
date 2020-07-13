@@ -106,6 +106,7 @@ namespace In.ProjectEKA.HipService
                     Configuration.GetSection("Gateway").Get<GatewayConfiguration>()))
                 .AddTransient<IDataFlow, DataFlow.DataFlow>()
                 .AddRouting(options => options.LowercaseUrls = true)
+                .AddSwaggerGen()
                 .AddControllers()
                 .AddNewtonsoftJson(
                     options => { options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore; })
@@ -149,11 +150,17 @@ namespace In.ProjectEKA.HipService
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
+
             app.UseStaticFilesWithYaml()
                 .UseRouting()
                 .UseIf(!env.IsDevelopment(), x => x.UseHsts())
                 .UseIf(env.IsDevelopment(), x => x.UseDeveloperExceptionPage())
-                .UseCustomOpenApi()
+                //.UseCustomOpenApi()
                 .UseSerilogRequestLogging()
                 .UseAuthentication()
                 .UseAuthorization()

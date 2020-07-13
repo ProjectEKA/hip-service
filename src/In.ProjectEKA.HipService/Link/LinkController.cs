@@ -49,7 +49,7 @@ namespace In.ProjectEKA.HipService.Link
             return Accepted();
         }
 
-        public async Task LinkPatient(LinkReferenceRequest request)
+        private async Task LinkPatient(LinkReferenceRequest request)
         {
             var cmUserId = request.Patient.Id;
             var cmSuffix = cmUserId.Substring(
@@ -101,7 +101,7 @@ namespace In.ProjectEKA.HipService.Link
             }
         }
 
-        public async Task LinkPatientCareContextFor(LinkPatientRequest request)
+        private async Task LinkPatientCareContextFor(LinkPatientRequest request)
         {
             try
             {
