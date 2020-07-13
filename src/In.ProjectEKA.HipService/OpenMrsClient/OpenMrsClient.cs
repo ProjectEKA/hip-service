@@ -1,5 +1,8 @@
 using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace In.ProjectEKA.HipServiceTest.OpenMrs
 {
@@ -14,9 +17,15 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
             configuration = openmrsConfiguration;
         }
 
-        public object Get(string openmrsUrl)
+        public async Task<String> GetAsync(string openmrsUrl)
         {
-            throw new NotImplementedException();
+            var authToken = Encoding.ASCII.GetBytes($"{configuration.Username}:{configuration.Password}");
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic",
+                    Convert.ToBase64String(authToken));
+
+            var response = await httpClient.GetAsync(configuration.Url + openmrsUrl);
+
+            return await response.Content.ReadAsStringAsync();
         }
     }
 }
