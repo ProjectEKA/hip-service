@@ -4,7 +4,6 @@ namespace In.ProjectEKA.HipService.Discovery
     using System.Linq;
     using HipLibrary.Patient.Model;
     using Ranker;
-    using static HipLibrary.Matcher.StrongMatcherFactory;
     using static Ranker.RankBuilder;
     using static Matcher.DemographicMatcher;
 
