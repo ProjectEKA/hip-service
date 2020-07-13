@@ -98,13 +98,19 @@
                 }
             },
             { 
+                "capturedOn": "2019-12-24",
+                "data":  {
+                    "documentreference" : ["NCP1008FourthVisitDocumentReference.json"]
+                }
+            },
+            { 
                 "capturedOn": "2020-02-15",
                 "data":  {
                     "observation" : ["NCP1008SecondVisitObsWithMembers.json"],
                     "medicationrequest" : ["NCP1008SecondVisitMedications.json"],
                     "diagnosticreport" : ["NCP1008SecondVisitDiagnosticReport.json"]
                 }
-            },
+            }
         ]
     },
     "RVH1004" : {
