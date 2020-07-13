@@ -17,15 +17,13 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
             configuration = openmrsConfiguration;
         }
 
-        public async Task<String> GetAsync(string openmrsUrl)
+        public async Task<HttpResponseMessage> GetAsync(string openmrsUrl)
         {
             var authToken = Encoding.ASCII.GetBytes($"{configuration.Username}:{configuration.Password}");
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic",
                     Convert.ToBase64String(authToken));
 
-            var response = await httpClient.GetAsync(configuration.Url + openmrsUrl);
-
-            return await response.Content.ReadAsStringAsync();
+            return await httpClient.GetAsync(configuration.Url + openmrsUrl);;
         }
     }
 }

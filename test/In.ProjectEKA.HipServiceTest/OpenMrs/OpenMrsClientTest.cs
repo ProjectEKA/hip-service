@@ -29,8 +29,7 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
         var response = await openmrsClient.GetAsync("ws/fhir2/Patient");
         //Then
         response.Should().NotBeNull();
-        response.Should().NotBe(String.Empty);
-        Console.WriteLine(response);
+        response.StatusCode.Should().Be(200);
         }
     }
 }
