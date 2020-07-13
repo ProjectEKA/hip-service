@@ -208,5 +208,12 @@
       <CopyToPublishDirectory>Always</CopyToPublishDirectory>
       <Link>NCP1008FourthVisitDocumentReference.json</Link>
     </Content>
-  </ItemGroup>  
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\NCP1008FifthVisitPrescription.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>NCP1008FifthVisitPrescription.json</Link>
+    </Content>
+  </ItemGroup>
 </Project>
