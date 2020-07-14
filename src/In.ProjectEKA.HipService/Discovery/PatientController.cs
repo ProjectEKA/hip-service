@@ -53,7 +53,8 @@ namespace In.ProjectEKA.HipService.Discovery
             return Accepted();
         }
 
-        private async Task GetPatientCareContext(DiscoveryRequest request)
+        [ApiExplorerSettings(IgnoreApi = true)]
+        public async Task GetPatientCareContext(DiscoveryRequest request)
         {
             try
             {
