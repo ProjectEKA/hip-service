@@ -12,6 +12,7 @@ namespace In.ProjectEKA.HipService.Discovery
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.AspNetCore.Mvc.ModelBinding;
 
     [Authorize]
     [Route("v1/care-contexts/discover")]
@@ -36,17 +37,17 @@ namespace In.ProjectEKA.HipService.Discovery
         /// </summary>
         /// <remarks>
         /// Return only one patient record with (potentially masked) associated care contexts
-        /// 1. ** At least one of the verified identifier matches.**
-        /// 2. ** Filter out records using unverified, firstName, secondName, gender and dob
-        /// if there are more than one patient records found from step 1.**
-        /// 3. ** Store the discover request entry with transactionId and care contexts discovered for a given request**
+        /// 1. At least one of the verified identifier matches.
+        /// 2. Filter out records using unverified, firstName, secondName, gender and dob
+        /// if there are more than one patient records found from step 1.
+        /// 3. Store the discover request entry with transactionId and care contexts discovered for a given request
         /// </remarks>
         /// <response code="202">Request accepted</response>
         [HttpPost]
         [Consumes("application/json")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
-        public AcceptedResult DiscoverPatientCareContexts(DiscoveryRequest request)
+        public AcceptedResult DiscoverPatientCareContexts([FromBody, BindRequired] DiscoveryRequest request)
         {
             backgroundJob.Enqueue(() => GetPatientCareContext(request));
             return Accepted();

@@ -4,6 +4,9 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
 
     public class PatientEnquiry
     {
+        /// <summary>
+        /// Identifier of patient at consent manager
+        /// </summary>
         public string Id { get; }
 
         public IEnumerable<Identifier> VerifiedIdentifiers { get; }
