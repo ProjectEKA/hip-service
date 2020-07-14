@@ -121,6 +121,8 @@ namespace In.ProjectEKA.HipService
                             + " nursing homes, diagnostic centres, clinics, medical device companies"
                             + " and other such entities as may be identified by regulatory authorities from time to time.",
                     });
+
+                    c.DescribeAllEnumsAsStrings();
     
 
                     // Set the comments path for the Swagger JSON and UI.
@@ -128,6 +130,7 @@ namespace In.ProjectEKA.HipService
                     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                     c.IncludeXmlComments(xmlPath);
                 })
+                .AddSwaggerGenNewtonsoftSupport()
                 .AddControllers()
                 .AddNewtonsoftJson(
                     options => { options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore; })
@@ -174,7 +177,7 @@ namespace In.ProjectEKA.HipService
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "HIP Service");
             });
 
             app.UseStaticFilesWithYaml()
