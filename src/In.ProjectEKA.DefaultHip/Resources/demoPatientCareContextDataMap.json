@@ -104,6 +104,12 @@
                 }
             },
             { 
+                "capturedOn": "2020-01-01",
+                "data":  {
+                    "prescription" : ["NCP1008FifthVisitPrescription.json"]
+                }
+            },
+            { 
                 "capturedOn": "2020-02-15",
                 "data":  {
                     "observation" : ["NCP1008SecondVisitObsWithMembers.json"],

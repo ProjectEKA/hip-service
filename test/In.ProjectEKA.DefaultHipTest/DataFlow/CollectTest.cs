@@ -32,7 +32,9 @@ namespace In.ProjectEKA.DefaultHipTest.DataFlow
                 HiType.Observation,
                 HiType.DiagnosticReport,
                 HiType.MedicationRequest,
-                HiType.DocumentReference
+                HiType.DocumentReference,
+                HiType.Prescription,
+                HiType.DischargeSummary
             };
             var dataRequest = new DataRequest(grantedContexts,
                 dateRange,
@@ -45,7 +47,7 @@ namespace In.ProjectEKA.DefaultHipTest.DataFlow
                 "sometext");
 
             var entries = await collect.CollectData(dataRequest);
-            entries.ValueOrDefault().CareBundles.Count().Should().Be(9);
+            entries.ValueOrDefault().CareBundles.Count().Should().Be(10);
         }
     }
 }
