@@ -25,7 +25,7 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
             var openmrsClientMock = new Mock<IOpenMrsClient>();
             var discoveryDataSource = new DiscoveryDataSource(openmrsClientMock.Object);
 
-            openmrsClientMock.Setup(x => x.GetAsync("path/to/resource")).ReturnsAsync(new HttpResponseMessage
+            openmrsClientMock.Setup(x => x.GetAsync("ws/fhir2/Patient")).ReturnsAsync(new HttpResponseMessage
                 {
                     StatusCode = HttpStatusCode.OK,
                     Content = new StringContent(@"{
@@ -35,7 +35,7 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
         ""lastUpdated"": ""2020-07-15T12:05:34.177+05:30""
     },
     ""type"": ""searchset"",
-    ""total"": 8,
+    ""total"": 2,
     ""link"": [
         {
             ""relation"": ""self"",
@@ -71,7 +71,7 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
                         ]
                     }
                 ],
-                ""gender"": ""male"",
+                ""gender"": ""female"",
                 ""birthDate"": ""1982-05-05"",
                 ""deceasedBoolean"": false,
                 ""address"": [
@@ -119,12 +119,12 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
                         ""id"": ""e54cd2af-b8f9-4d92-a234-00b11660814d"",
                         ""family"": ""Diabetes"",
                         ""given"": [
-                            ""Test""
+                            ""David""
                         ]
                     }
                 ],
                 ""gender"": ""male"",
-                ""birthDate"": ""1961-05-05"",
+                ""birthDate"": ""1997-04-10"",
                 ""deceasedBoolean"": false,
                 ""address"": [
                     {
@@ -158,8 +158,12 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
             //Then
             var firstPatient = patients[0];
             firstPatient.Name[0].GivenElement.First().ToString().Should().Be("Test");
-            firstPatient.Gender.Should().Be(AdministrativeGender.Male);
+            firstPatient.Gender.Should().Be(AdministrativeGender.Female);
             firstPatient.BirthDate.Should().Be("1982-05-05");
+            var secondPatient = patients[1];
+            secondPatient.Name[0].GivenElement.First().ToString().Should().Be("David");
+            secondPatient.Gender.Should().Be(AdministrativeGender.Male);
+            secondPatient.BirthDate.Should().Be("1997-04-10");
         }
     }
 }
