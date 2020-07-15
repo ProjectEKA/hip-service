@@ -19,8 +19,13 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
 
         public async Task<List<Patient>> LoadPatientsAsync(string name, Gender? gender, string yearOfBirth)
         {
+            var path = DiscoveryPathConstants.OnPatientPath;
+            if (!string.IsNullOrEmpty(name)) {
+                path = string.Concat(path, $"/?name={name}");
+            }
+
             var patients = new List<Patient>();
-            var response = await openMrsClient.GetAsync(DiscoveryPathConstants.OnPatientPath);
+            var response = await openMrsClient.GetAsync(path);
             var content = await response.Content.ReadAsStringAsync();
             var bundle = new FhirJsonParser().Parse<Bundle>(content);
             bundle.Entry.ForEach(entry => {patients.Add((Patient) entry.Resource);});
