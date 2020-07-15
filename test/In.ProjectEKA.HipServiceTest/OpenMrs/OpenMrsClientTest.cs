@@ -22,7 +22,7 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
         public async System.Threading.Tasks.Task ShouldGetPatientDataRealCallAsync()
         {
             //Given
-            // Disable SSL verification in text only
+            // Disable SSL verification in test only
             var handler = new HttpClientHandler()
             {
                 ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
@@ -114,7 +114,7 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
         }
 
         [Fact]
-        [Trait("Category", "praser")]
+        [Trait("Category", "parser")]
         public async System.Threading.Tasks.Task ShouldReturnListOfPatientDto()
         {
             //Given
@@ -265,7 +265,6 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
             var response = await openmrsClient.GetAsync("path/to/resource");
             //Then
             var content = await response.Content.ReadAsStringAsync();
-            Console.WriteLine(content);
 
             var parser = new FhirJsonParser();
 
@@ -275,28 +274,5 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
             firstPatient.Gender.Should().Be(AdministrativeGender.Male);
             firstPatient.BirthDate.Should().Be("1982-05-05");
         }
-    }
-
-    internal class PatientDto
-    {
-        public string Id { get; set; }
-        public NameDto Name { get; set; }
-        public string Gender { get; set; }
-        public DateTime BirthDate { get; set; }
-        public AddressDto Address { get; set; }
-    }
-
-    public class AddressDto
-    {
-        public string Id { get; set; }
-        public string Use { get; set; }
-        public string City { get; set; }
-    }
-
-    public class NameDto
-    {
-         public string Id { get; set; }
-         public string Family { get; set; }
-         public string Given { get; set; }
     }
 }
