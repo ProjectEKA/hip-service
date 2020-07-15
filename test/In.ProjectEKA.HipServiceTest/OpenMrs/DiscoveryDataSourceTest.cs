@@ -165,5 +165,29 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
             secondPatient.Gender.Should().Be(AdministrativeGender.Male);
             secondPatient.BirthDate.Should().Be("1997-04-10");
         }
+
+        [Fact(Skip="Requires AWS access")]
+        [Trait("Category", "Infrastructure")]
+        public async System.Threading.Tasks.Task ShouldGetPatientDataRealCallAsync()
+        {
+            //Given
+            // Disable SSL verification in test only
+            var handler = new HttpClientHandler()
+            {
+                ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+            };
+            var httpClient = new HttpClient(handler);
+            var openmrsConfiguration = new OpenMrsConfiguration {
+                Url = "https://bahmni-0.92.bahmni-covid19.in/openmrs/",
+                Username = "superman",
+                Password = "Admin123"
+                };
+            var openmrsClient = new OpenMrsClient(httpClient, openmrsConfiguration);
+            var discoveryDataSource = new DiscoveryDataSource(openmrsClient);
+            //When
+            var patients = await discoveryDataSource.LoadPatientsAsync(null, null, null);
+            //Then
+            patients.Should().NotBeEmpty();
+        }
     }
 }
