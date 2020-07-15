@@ -1,13 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
-using Hl7.Fhir.Model;
-using Hl7.Fhir.Serialization;
 using Moq;
 using Moq.Protected;
 using Xunit;
@@ -19,7 +14,7 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
     {
         [Fact(Skip="it is a real call and needs local setup")]
         [Trait("Category", "Infrastructure")]
-        public async System.Threading.Tasks.Task ShouldGetPatientDataRealCallAsync()
+        public async Task ShouldGetPatientDataRealCallAsync()
         {
             //Given
             // Disable SSL verification in test only
@@ -32,7 +27,7 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
                 Url = "https://192.168.33.10/openmrs/",
                 Username = "superman",
                 Password = "Admin123"
-                };
+            };
             var openmrsClient = new OpenMrsClient(httpClient, openmrsConfiguration);
             //When
             var response = await openmrsClient.GetAsync("ws/fhir2/Patient");
@@ -42,7 +37,7 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
         }
 
         [Fact]
-        public async System.Threading.Tasks.Task ShouldPropagateStatusWhenCredentialsFailed()
+        public async Task ShouldPropagateStatusWhenCredentialsFailed()
         {
             //Given
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
@@ -73,8 +68,10 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
 
-        [Fact]
-        public async System.Threading.Tasks.Task ShouldInterrogateTheRightDataSource()
+        [Theory]
+        [InlineData("path/to/resource")]
+        [InlineData("/path/to/resource")]
+        public async Task ShouldInterrogateTheRightDataSource(string patientDiscoveryPath)
         {
             //Given
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Loose);
@@ -96,7 +93,8 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
                     ItExpr.IsAny<CancellationToken>())
                 .Callback<HttpRequestMessage, CancellationToken>((response, token) =>
                 {
-                    if (response.RequestUri.AbsoluteUri == "https://someurl/openmrs/path/to/resource")
+                    if (response.RequestUri.AbsoluteUri == "https://someurl/openmrs/path/to/resource" ||
+                        response.RequestUri.AbsoluteUri == "https://someurl/openmrs//path/to/resource")
                     {
                         wasCalledWithTheRightUri = true;
                     }
@@ -108,7 +106,7 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
                 .Verifiable();
 
             //When
-            await openmrsClient.GetAsync("path/to/resource");
+            await openmrsClient.GetAsync(patientDiscoveryPath);
             //Then
             wasCalledWithTheRightUri.Should().BeTrue();
         }

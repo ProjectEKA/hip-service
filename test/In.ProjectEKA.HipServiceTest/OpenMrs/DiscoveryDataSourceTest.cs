@@ -1,11 +1,9 @@
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
 using FluentAssertions;
 using Hl7.Fhir.Model;
 using Moq;
-using Moq.Protected;
 using Xunit;
 
 namespace In.ProjectEKA.HipServiceTest.OpenMrs
@@ -13,15 +11,11 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
     [Collection("Discovery Data Source Tests")]
     public class DiscoveryDataSourceTest
     {
-
         [Fact]
         [Trait("Category", "parser")]
         public async System.Threading.Tasks.Task ShouldReturnListOfPatientDto()
         {
             //Given
-            // var handlerMock = new Mock<HttpMessageHandler>();
-            // var httpClient = new HttpClient(handlerMock.Object);
-
             var openmrsClientMock = new Mock<IOpenMrsClient>();
             var discoveryDataSource = new DiscoveryDataSource(openmrsClientMock.Object);
 
