@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -112,7 +113,8 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
             wasCalledWithTheRightUri.Should().BeTrue();
         }
 
-        [Fact(Skip = "IncompleteReturnedMessage")]
+        [Fact]
+        [Trait("Category", "praser")]
         public async System.Threading.Tasks.Task ShouldReturnListOfPatientDto()
         {
             //Given
@@ -135,47 +137,127 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
                 .ReturnsAsync(new HttpResponseMessage
                 {
                     StatusCode = HttpStatusCode.OK,
-                    Content = new StringContent(@"
+                    Content = new StringContent(@"{
+    ""resourceType"": ""Bundle"",
+    ""id"": ""fbfee329-6108-4a7e-87b4-e047ae013c3a"",
+    ""meta"": {
+        ""lastUpdated"": ""2020-07-15T12:05:34.177+05:30""
+    },
+    ""type"": ""searchset"",
+    ""total"": 8,
+    ""link"": [
+        {
+            ""relation"": ""self"",
+            ""url"": ""http://bahmni-0.92.bahmni-covid19.in/openmrs/ws/fhir2/Patient""
+        }
+    ],
+    ""entry"": [
+        {
+            ""resource"": {
+                ""resourceType"": ""Patient"",
+                ""id"": ""1dfff08c-141b-46df-b6a2-6b69080a5000"",
+                ""identifier"": [
                     {
-                        ""lastUpdated"": ""2020 - 07 - 13T07: 35:11.171 + 00:00"",
-                        ""type"":""searchset"",
-                        ""total"":1,
-                        ""link"":[{
-                            ""relation"":""self"",
-                            ""url"":""http://192.168.33.10/openmrs/ws/fhir2/Patient""
-                        }],
-                        ""entry"":[{
-                            ""resource"":{
-                                ""resourceType"":""Patient"",
-                                ""id"":""f22d0221-d927-40da-a72c-b8145dcc4b50"",
-                                ""identifier"":[{
-                                    ""id"":""bdfaf98a-9e23-4cf5-889a-4346c3586458"",
-                                    ""use"":""official"",
-                                    ""system"":""Patient Identifier"",
-                                    ""value"":""GAN203006""
-                                },{
-                                    ""id"":""cb8e66de-b428-42f4-b7da-5da0eddf95c4"",
-                                    ""use"":""usual"",
-                                    ""system"":""National ID"",
-                                    ""value"":""NAT2804""
-                                }],
-                                ""active"":true,
-                                ""name"":[{
-                                    ""id"":""9544d7ed-327d-4800-9a26-2a9c60c740fa"",
-                                    ""family"":""Test"",
-                                    ""given"":[""Gwan""]
-                                }],
-                                ""gender"":""male"",
-                                ""birthDate"":""2005-02-07"",
-                                ""deceasedBoolean"":false,
-                                ""address"":[{
-                                    ""id"":""5c1b2f63-3c74-48e2-b76e-fcb9121049ea"",
-                                    ""use"":""home"",
-                                    ""city"":""Betong""
-                                }]
+                        ""id"": ""b760a6a5-dcdd-4529-86f9-c4f91c507b16"",
+                        ""use"": ""official"",
+                        ""system"": ""Patient Identifier"",
+                        ""value"": ""GAN203006""
+                    },
+                    {
+                        ""id"": ""bb9a7f86-37ea-481a-8f05-be9f32d89bab"",
+                        ""use"": ""usual"",
+                        ""system"": ""National ID"",
+                        ""value"": ""NAT2804""
+                    }
+                ],
+                ""active"": true,
+                ""name"": [
+                    {
+                        ""id"": ""71b58b75-3cde-4430-996a-8e6f2d117971"",
+                        ""family"": ""Hyperthyroidism"",
+                        ""given"": [
+                            ""Test""
+                        ]
+                    }
+                ],
+                ""gender"": ""male"",
+                ""birthDate"": ""1982-05-05"",
+                ""deceasedBoolean"": false,
+                ""address"": [
+                    {
+                        ""id"": ""6a48a417-8f7b-4f8e-96f8-6c2cb02b4393"",
+                        ""extension"": [
+                            {
+                                ""url"": ""https://fhir.openmrs.org/ext/address"",
+                                ""extension"": [
+                                    {
+                                        ""url"": ""https://fhir.openmrs.org/ext/address#address3"",
+                                        ""valueString"": ""Masturi""
+                                    }
+                                ]
                             }
-                        }]
-                    }")
+                        ],
+                        ""use"": ""home"",
+                        ""city"": ""AAGDIH"",
+                        ""state"": ""Chattisgarh""
+                    }
+                ]
+            }
+        },
+        {
+            ""resource"": {
+                ""resourceType"": ""Patient"",
+                ""id"": ""0b573f9a-d75d-47fe-a655-043dc2f6b4fa"",
+                ""identifier"": [
+                    {
+                        ""id"": ""51356861-8ef6-44bb-af81-58d36b13943b"",
+                        ""use"": ""official"",
+                        ""system"": ""Patient Identifier"",
+                        ""value"": ""GAN203007""
+                    },
+                    {
+                        ""id"": ""4330e82a-679a-47d0-baa6-17a5bee302fd"",
+                        ""use"": ""usual"",
+                        ""system"": ""National ID"",
+                        ""value"": ""NAT2805""
+                    }
+                ],
+                ""active"": true,
+                ""name"": [
+                    {
+                        ""id"": ""e54cd2af-b8f9-4d92-a234-00b11660814d"",
+                        ""family"": ""Diabetes"",
+                        ""given"": [
+                            ""Test""
+                        ]
+                    }
+                ],
+                ""gender"": ""male"",
+                ""birthDate"": ""1961-05-05"",
+                ""deceasedBoolean"": false,
+                ""address"": [
+                    {
+                        ""id"": ""cb5f7a58-a604-4534-8fc2-9f57ffed0468"",
+                        ""extension"": [
+                            {
+                                ""url"": ""https://fhir.openmrs.org/ext/address"",
+                                ""extension"": [
+                                    {
+                                        ""url"": ""https://fhir.openmrs.org/ext/address#address3"",
+                                        ""valueString"": ""Kota""
+                                    }
+                                ]
+                            }
+                        ],
+                        ""use"": ""home"",
+                        ""city"": ""AAMAGOHAN"",
+                        ""state"": ""Chattisgarh""
+                    }
+                ]
+            }
+        }
+    ]
+}")
                         })
                 .Verifiable();
 
@@ -187,20 +269,11 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
 
             var parser = new FhirJsonParser();
 
-            var patient = parser.Parse<Patient>(content);
-
-            patient.Should().Be(new Patient
-            {
-                Name = new List<HumanName>{ new HumanName
-                    {
-                        Family = "Test",
-                        Given = new List<string>{"Gwan"}
-                    }
-                },
-                BirthDate = "2005-02-07",
-                Gender = AdministrativeGender.Male
-            });
-
+            var bundle = parser.Parse<Bundle>(content);
+            var firstPatient = (Patient)bundle.Entry[0].Resource;
+            firstPatient.Name[0].GivenElement.First().ToString().Should().Be("Test");
+            firstPatient.Gender.Should().Be(AdministrativeGender.Male);
+            firstPatient.BirthDate.Should().Be("1982-05-05");
         }
     }
 
