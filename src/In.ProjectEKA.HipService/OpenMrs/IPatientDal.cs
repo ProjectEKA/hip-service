@@ -5,6 +5,6 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
 {
     public interface IPatientDal
     {
-        List<Hl7.Fhir.Model.Patient> LoadPatients(string name, Gender? gender, string yearOfBirth);
+        System.Threading.Tasks.Task<List<Hl7.Fhir.Model.Patient>> LoadPatientsAsync(string name, Gender? gender, string yearOfBirth);
     }
 }
