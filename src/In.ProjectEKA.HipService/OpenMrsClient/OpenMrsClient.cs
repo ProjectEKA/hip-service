@@ -1,12 +1,14 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using In.ProjectEKA.HipLibrary.Patient.Model;
 
 namespace In.ProjectEKA.HipServiceTest.OpenMrs
 {
-    public class OpenMrsClient
+    public class OpenMrsClient: IPatientDal
     {
         private readonly HttpClient httpClient;
         private readonly OpenMrsConfiguration configuration;
@@ -24,6 +26,11 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
                     Convert.ToBase64String(authToken));
 
             return await httpClient.GetAsync(configuration.Url + openmrsUrl);;
+        }
+
+        public List<Hl7.Fhir.Model.Patient> LoadPatients(string name, Gender? gender, string yearOfBirth)
+        {
+            throw new NotImplementedException();
         }
     }
 }
