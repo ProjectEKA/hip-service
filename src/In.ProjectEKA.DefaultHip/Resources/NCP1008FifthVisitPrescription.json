@@ -69,6 +69,9 @@
                 "reference": "MedicationRequest/2"
               },
               {
+                "reference": "MedicationRequest/3"
+              },
+              {
                 "reference": "DocumentReference/1"
               }
             ]
@@ -234,8 +237,62 @@
         ],
         "reasonReference": [{
           "reference": "Condition/1"
-        }]
+        }],
+        "note": [
+            {
+                "text" : "Check if the fever returns tomorrow"
+            },
+            {
+                "text": "Patient told to take with food"
+            }
+        ]
       }
+    },
+    {
+        "fullUrl": "MedicationRequest/3",
+        "resource": {
+          "id": "3",  
+          "resourceType": "MedicationRequest",
+          "subject": {
+            "reference": "Patient/1",
+            "display": "Dinseh Kale"
+          },
+          "status": "active",
+          "intent": "order",
+          "requester": {
+            "reference": "Practitioner/1",
+            "display": "Praksah Sathe"
+          },
+          "medicationReference": {
+            "reference": "Medication/c2b8f3fd-6da0-44ed-bc91-8bb05ff614d2",
+            "display": "Azythral 500mg Antibiotics "
+          },
+          "authoredOn": "2020-01-01",
+          "dosageInstruction": [
+            {
+              "text": "Take one tablets orally with or after meal twice a day, 8 hours gap. 1-0-1"
+            }
+          ],
+          "reasonReference": [{
+            "reference": "Condition/1"
+          }]
+        }
+    },
+    {
+        "fullUrl": "Medication/c2b8f3fd-6da0-44ed-bc91-8bb05ff614d2",
+        "resource": {
+          "resourceType": "Medication",
+          "id": "c2b8f3fd-6da0-44ed-bc91-8bb05ff614d2",
+          "code": {
+            "coding": [
+              {
+                "system": "http://hl7.org/fhir/sid/ndc",
+                "code": "76388-713-25",
+                "display": "Azythral 500mg"
+              }
+            ]
+          }
+        }
     },
     {
       "fullUrl": "Condition/1",
