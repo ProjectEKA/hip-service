@@ -1,6 +1,7 @@
 
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Web;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Serialization;
 using In.ProjectEKA.HipLibrary.Patient.Model;
@@ -20,14 +21,18 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
         public async Task<List<Patient>> LoadPatientsAsync(string name, Gender? gender, string yearOfBirth)
         {
             var path = DiscoveryPathConstants.OnPatientPath;
+            var query = HttpUtility.ParseQueryString(string.Empty);
             if (!string.IsNullOrEmpty(name)) {
-                path = $"{path}/?name={name}";
+                query["name"]=name;
             }
             if (!string.IsNullOrEmpty(yearOfBirth)) {
-                path =  $"{path}/?birthdate={yearOfBirth}";
+                query["birthdate"]=yearOfBirth;
             }
             if (gender != null) {
-                path =  $"{path}/?gender={gender}";
+                query["gender"]=gender.ToString();
+            }
+            if (query.ToString() != ""){
+                path = $"{path}/?{query}";
             }
 
             var patients = new List<Patient>();
