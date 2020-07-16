@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Http;
 using FluentAssertions;
 using Hl7.Fhir.Model;
+using In.ProjectEKA.HipLibrary.Patient.Model;
 using Moq;
 using Xunit;
 
@@ -39,8 +40,10 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
             secondPatient.BirthDate.Should().Be("1997-04-10");
         }
 
-        [Fact]
-        public async System.Threading.Tasks.Task ShouldQueryDataSourceByNameAccordingToTheFilter()
+        [Theory]
+        [InlineData("ws/fhir2/Patient/?name=David", "David", null, null)]
+        public async System.Threading.Tasks.Task ShouldQueryDataSourceByNameAccordingToTheFilter(
+            string expectedPath, string name, Gender? gender, string yearOfBrith)
         {
             //Given
             var openmrsClientMock = new Mock<IOpenMrsClient>();
@@ -56,10 +59,10 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
                 .Verifiable();
 
             //When
-            var patients = await discoveryDataSource.LoadPatientsAsync("David", null, null);
+            var patients = await discoveryDataSource.LoadPatientsAsync(name, gender, yearOfBrith);
 
             //Then
-            openmrsClientMock.Verify(client => client.GetAsync("ws/fhir2/Patient/?name=David"), Times.Once);
+            openmrsClientMock.Verify(client => client.GetAsync(expectedPath), Times.Once);
         }
 
         [Fact(Skip="Requires AWS access")]
