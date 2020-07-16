@@ -21,7 +21,13 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
         {
             var path = DiscoveryPathConstants.OnPatientPath;
             if (!string.IsNullOrEmpty(name)) {
-                path = string.Concat(path, $"/?name={name}");
+                path = $"{path}/?name={name}";
+            }
+            if (!string.IsNullOrEmpty(yearOfBirth)) {
+                path =  $"{path}/?birthdate={yearOfBirth}";
+            }
+            if (gender != null) {
+                path =  $"{path}/?gender={gender}";
             }
 
             var patients = new List<Patient>();

@@ -42,6 +42,9 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
 
         [Theory]
         [InlineData("ws/fhir2/Patient/?name=David", "David", null, null)]
+        [InlineData("ws/fhir2/Patient/?gender=M", null, Gender.M, null)]
+        [InlineData("ws/fhir2/Patient/?gender=F", null, Gender.F, null)]
+        [InlineData("ws/fhir2/Patient/?birthdate=1982-05-05", null, null, "1982-05-05")]
         public async System.Threading.Tasks.Task ShouldQueryDataSourceByNameAccordingToTheFilter(
             string expectedPath, string name, Gender? gender, string yearOfBrith)
         {
