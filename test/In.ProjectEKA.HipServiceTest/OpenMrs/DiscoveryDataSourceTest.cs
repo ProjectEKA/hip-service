@@ -40,6 +40,27 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
             secondPatient.BirthDate.Should().Be("1997-04-10");
         }
 
+        [Fact]
+        public async System.Threading.Tasks.Task ShouldReturnEmptyPatientWhenGotNoRecord()
+        {
+            //Given
+            var openmrsClientMock = new Mock<IOpenMrsClient>();
+            var discoveryDataSource = new DiscoveryDataSource(openmrsClientMock.Object);
+
+            openmrsClientMock.Setup(x => x.GetAsync("ws/fhir2/Patient")).ReturnsAsync(new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Content = new StringContent(notFoundData)
+                })
+                .Verifiable();
+
+            //When
+            var patients = await discoveryDataSource.LoadPatientsAsync(null, null, null);
+
+            //Then
+            patients.Count.Should().Be(0);
+        }
+
         [Theory]
         [InlineData("ws/fhir2/Patient/?name=David", "David", null, null)]
         [InlineData("ws/fhir2/Patient/?gender=M", null, Gender.M, null)]
@@ -210,6 +231,21 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
                             }
                         ]
                     }
+                }
+            ]
+        }";
+        private const string notFoundData = @"{
+            ""resourceType"": ""Bundle"",
+            ""id"": ""aa12ec40-c9e8-40e9-9475-88a8fbab2793"",
+            ""meta"": {
+                ""lastUpdated"": ""2020-07-16T11:35:30.250+05:30""
+            },
+            ""type"": ""searchset"",
+            ""total"": 0,
+            ""link"": [
+                {
+                    ""relation"": ""self"",
+                    ""url"": ""http://bahmni-0.92.bahmni-covid19.in/openmrs/ws/fhir2/Patient/?gender=O""
                 }
             ]
         }";
