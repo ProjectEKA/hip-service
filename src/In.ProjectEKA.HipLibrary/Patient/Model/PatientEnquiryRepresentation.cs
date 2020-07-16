@@ -6,7 +6,7 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
     {
         public string ReferenceNumber { get; set; }
 
-        public string Display { get; }
+        public string Display { get; set; }
 
         public IEnumerable<CareContextRepresentation> CareContexts { get; }
 

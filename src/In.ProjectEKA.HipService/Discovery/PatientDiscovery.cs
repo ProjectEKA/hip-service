@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using In.ProjectEKA.HipLibrary.Matcher;
 using In.ProjectEKA.HipLibrary.Patient;
 using In.ProjectEKA.HipLibrary.Patient.Model;
-using In.ProjectEKA.HipService.Common;
 using In.ProjectEKA.HipService.Link;
 using In.ProjectEKA.HipService.Link.Model;
 using In.ProjectEKA.HipService.Logger;
@@ -61,7 +60,7 @@ namespace In.ProjectEKA.HipService.Discovery
                             request.Patient.Id, patient.Identifier));
 
                         var careContextRepresentations = GetUnlinkedCareContexts(linkedCareContexts, patient).ToList();
-                        var maskedPatientEnquiryRepresentation = MaskingUtility.GetMaskedPatientEnquiryRepresentation(
+                        var maskedPatientEnquiryRepresentation = GetMaskedPatientEnquiryRepresentation(
                             patient.ToPatientEnquiryRepresentation(
                                 careContextRepresentations));
 
@@ -83,7 +82,7 @@ namespace In.ProjectEKA.HipService.Discovery
 
             await discoveryRequestRepository.Add(new Model.DiscoveryRequest(request.TransactionId,
                 request.Patient.Id, patientEnquiryRepresentation.ReferenceNumber));
-            var representation = MaskingUtility.GetMaskedPatientEnquiryRepresentation(patientEnquiryRepresentation);
+            var representation =GetMaskedPatientEnquiryRepresentation(patientEnquiryRepresentation);
 
             return (new DiscoveryRepresentation(representation), null);
         }
@@ -110,6 +109,23 @@ namespace In.ProjectEKA.HipService.Discovery
                 .Where(careContext =>
                     allLinkedCareContexts.Find(linkedCareContext =>
                         linkedCareContext == careContext.ReferenceNumber) == null);
+        }
+        
+        private PatientEnquiryRepresentation GetMaskedPatientEnquiryRepresentation(
+            PatientEnquiryRepresentation patient)
+        {
+            var maskingUtility = new DefaultHip.Patient.MaskingUtility();
+            patient.ReferenceNumber = maskingUtility.MaskReference(patient.ReferenceNumber);
+            patient.Display = maskingUtility.MaskPatientName(patient.Display);
+            foreach (var careContextRepresentation in patient.CareContexts.AsEnumerable())
+            {
+                careContextRepresentation.ReferenceNumber =
+                    new DefaultHip.Patient.MaskingUtility().MaskReference(careContextRepresentation.ReferenceNumber);
+                careContextRepresentation.Display =
+                    new DefaultHip.Patient.MaskingUtility().MaskCareContextDisplay(careContextRepresentation.Display);
+            }
+
+            return patient;
         }
     }
 }
