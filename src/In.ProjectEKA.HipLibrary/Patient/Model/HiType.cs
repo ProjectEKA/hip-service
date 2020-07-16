@@ -6,6 +6,9 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
         Observation,
         DiagnosticReport,
         MedicationRequest,
-        Medication
+        Medication,
+        DocumentReference,
+        Prescription,
+        DischargeSummary
     }
 }

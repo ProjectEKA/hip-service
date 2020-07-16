@@ -1,5 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
-
+// ReSharper disable MemberCanBePrivate.Global
 namespace In.ProjectEKA.HipService.Link
 {
     using System;
@@ -11,10 +10,11 @@ namespace In.ProjectEKA.HipService.Link
     using HipLibrary.Patient.Model;
     using Logger;
     using Microsoft.AspNetCore.Mvc;
-    
+    using Microsoft.AspNetCore.Authorization;
+    using static Common.Constants;
+
     [Authorize]
     [ApiController]
-    [Route("/v1/links/link")]
     public class LinkController : ControllerBase
     {
         private readonly IDiscoveryRequestRepository discoveryRequestRepository;
@@ -33,22 +33,21 @@ namespace In.ProjectEKA.HipService.Link
             this.gatewayClient = gatewayClient;
         }
 
-        [Route("init")]
-        [HttpPost]
+        [HttpPost(PATH_LINKS_LINK_INIT)]
         public AcceptedResult LinkFor(LinkReferenceRequest request)
         {
             backgroundJob.Enqueue(() => LinkPatient(request));
             return Accepted();
         }
 
-        [Route("confirm")]
-        [HttpPost]
+        [HttpPost(PATH_LINKS_LINK_CONFIRM)]
         public AcceptedResult LinkPatientFor(LinkPatientRequest request)
         {
             backgroundJob.Enqueue(() => LinkPatientCareContextFor(request));
             return Accepted();
         }
 
+        [NonAction]
         public async Task LinkPatient(LinkReferenceRequest request)
         {
             var cmUserId = request.Patient.Id;
@@ -93,7 +92,7 @@ namespace In.ProjectEKA.HipService.Link
                     DateTime.Now.ToUniversalTime(),
                     Guid.NewGuid());
 
-                await gatewayClient.SendDataToGateway(GatewayPathConstants.OnLinkInitPath, response, cmSuffix);
+                await gatewayClient.SendDataToGateway(PATH_ON_LINK_INIT, response, cmSuffix);
             }
             catch (Exception exception)
             {
@@ -101,16 +100,16 @@ namespace In.ProjectEKA.HipService.Link
             }
         }
 
+        [NonAction]
         public async Task LinkPatientCareContextFor(LinkPatientRequest request)
         {
             try
             {
-                var (patientLinkResponse, error) = await linkPatient
+                var (patientLinkResponse,cmId, error) = await linkPatient
                     .VerifyAndLinkCareContext(new LinkConfirmationRequest(request.Confirmation.Token,
                         request.Confirmation.LinkRefNumber));
-                var linkedPatientRepresentation = new LinkConfirmationRepresentation();
-                var cmId = await linkPatient.GetCmId(request.Confirmation.LinkRefNumber);
-                if (patientLinkResponse != null || cmId != "")
+                LinkConfirmationRepresentation linkedPatientRepresentation = null;
+                if (patientLinkResponse != null)
                 {
                     linkedPatientRepresentation = patientLinkResponse.Patient;
                 }
@@ -120,11 +119,10 @@ namespace In.ProjectEKA.HipService.Link
                     DateTime.Now.ToUniversalTime(),
                     linkedPatientRepresentation,
                     error?.Error,
-                    new Resp(request.RequestId)
-                );
-                await gatewayClient.SendDataToGateway(GatewayPathConstants.OnLinkConfirmPath, response, cmId);
+                    new Resp(request.RequestId));
+                await gatewayClient.SendDataToGateway(PATH_ON_LINK_CONFIRM, response, cmId);
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 Log.Error(exception, exception.StackTrace);
             }

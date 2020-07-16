@@ -1,20 +1,18 @@
-using static In.ProjectEKA.HipService.Gateway.GatewayPathConstants;
-
-using System;
-using In.ProjectEKA.HipLibrary.Patient.Model;
-using In.ProjectEKA.HipService.Gateway.Model;
-
+// ReSharper disable MemberCanBePrivate.Global
 namespace In.ProjectEKA.HipService.Consent
 {
+    using System;
     using System.Threading.Tasks;
     using Common.Model;
+    using Gateway;
+    using Gateway.Model;
     using Hangfire;
+    using HipLibrary.Patient.Model;
     using Microsoft.AspNetCore.Mvc;
     using Model;
-    using Gateway;
+    using static Common.Constants;
 
     [ApiController]
-    [Route("v1/consents/hip")]
     public class ConsentNotificationController : ControllerBase
     {
         private readonly IConsentRepository consentRepository;
@@ -33,14 +31,14 @@ namespace In.ProjectEKA.HipService.Consent
             this.gatewayClient = gatewayClient;
         }
 
-        [Route("notify")]
-        [HttpPost]
+        [HttpPost(PATH_CONSENTS_HIP)]
         public AcceptedResult ConsentNotification([FromBody] ConsentArtefactRepresentation consentArtefact)
         {
             backgroundJob.Enqueue(() => StoreConsent(consentArtefact));
             return Accepted();
         }
 
+        [NonAction]
         public async Task StoreConsent(ConsentArtefactRepresentation consentArtefact)
         {
             var notification = consentArtefact.Notification;
@@ -63,12 +61,11 @@ namespace In.ProjectEKA.HipService.Consent
                     var cmSuffix = consent.ConsentArtefact.ConsentManager.Id;
                     var gatewayResponse = new GatewayRevokedConsentRepresentation(
                         Guid.NewGuid(),
-                        DateTime.Now.ToUniversalTime(), 
-                        new ConsentUpdateResponse(ConsentUpdateStatus.OK.ToString(),
-                            notification.ConsentId),
+                        DateTime.Now.ToUniversalTime(),
+                        new ConsentUpdateResponse(ConsentUpdateStatus.OK.ToString(), notification.ConsentId),
                         null,
                         new Resp(consentArtefact.RequestId));
-                    await gatewayClient.SendDataToGateway(ConsentOnNotifyPath, gatewayResponse, cmSuffix);
+                    await gatewayClient.SendDataToGateway(PATH_CONSENT_ON_NOTIFY, gatewayResponse, cmSuffix);
                 }
             }
         }

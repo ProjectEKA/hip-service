@@ -5,6 +5,7 @@ namespace In.ProjectEKA.HipService.Link
     using System.Linq;
     using System.Threading.Tasks;
     using System.Transactions;
+    using Common;
     using Discovery;
     using Hangfire.Dashboard.Resources;
     using HipLibrary.Patient;
@@ -128,25 +129,26 @@ namespace In.ProjectEKA.HipService.Link
                     new ErrorRepresentation(new Error(ErrorCode.NoPatientFound, ErrorMessage.NoPatientFound))));
         }
 
-        public virtual async Task<ValueTuple<PatientLinkConfirmationRepresentation, ErrorRepresentation>>
+        public virtual async Task<ValueTuple<PatientLinkConfirmationRepresentation,string, ErrorRepresentation>>
             VerifyAndLinkCareContext(
                 LinkConfirmationRequest request)
         {
+            var (linkEnquires, exception) =
+                await linkPatientRepository.GetPatientFor(request.LinkReferenceNumber);
+            var cmId = "";
+            if (exception != null)
+            {
+                return (null,cmId,
+                    new ErrorRepresentation(new Error(ErrorCode.NoLinkRequestFound, ErrorMessage.NoLinkRequestFound)));
+            }
+            cmId = linkEnquires.ConsentManagerId;
+            
             var errorResponse = await patientVerification.Verify(request.LinkReferenceNumber, request.Token);
             if (errorResponse != null)
             {
-                return (null, new ErrorRepresentation(errorResponse.toError()));
+                return (null,cmId, new ErrorRepresentation(errorResponse.toError()));
             }
-
-            var (linkEnquires, exception) =
-                await linkPatientRepository.GetPatientFor(request.LinkReferenceNumber);
-
-            if (exception != null)
-            {
-                return (null,
-                    new ErrorRepresentation(new Error(ErrorCode.NoLinkRequestFound, ErrorMessage.NoLinkRequestFound)));
-            }
-
+            
             return await patientRepository.PatientWith(linkEnquires.PatientReferenceNumber)
                 .Map( async patient =>
                 {
@@ -172,11 +174,11 @@ namespace In.ProjectEKA.HipService.Link
                             $"{patient.Name}",
                             representations));
                     return await SaveLinkedAccounts(linkEnquires)
-                        ? (patientLinkResponse, (ErrorRepresentation) null)
-                        : (null,
+                        ? (patientLinkResponse,cmId, (ErrorRepresentation) null)
+                        : (null,cmId,
                             new ErrorRepresentation(new Error(ErrorCode.NoPatientFound,
                                 ErrorMessage.NoPatientFound)));
-                }).ValueOr(Task.FromResult<ValueTuple<PatientLinkConfirmationRepresentation, ErrorRepresentation>>((null, new ErrorRepresentation(new Error(ErrorCode.CareContextNotFound,
+                }).ValueOr(Task.FromResult<ValueTuple<PatientLinkConfirmationRepresentation,string, ErrorRepresentation>>((null, cmId,new ErrorRepresentation(new Error(ErrorCode.CareContextNotFound,
                         ErrorMessage.CareContextNotFound)))) );
         }
 
@@ -190,20 +192,7 @@ namespace In.ProjectEKA.HipService.Link
                 .ConfigureAwait(false);
             return linkedAccount.HasValue;
         }
-
-        public async Task<string> GetCmId(string linkReferenceNumber)
-        {
-            var (linkEnquires, exception) =
-                await linkPatientRepository.GetPatientFor(linkReferenceNumber);
-
-            if (exception != null)
-            {
-                return "";
-            }
-
-            return linkEnquires.ConsentManagerId;
-        }
-
+        
         private async Task<bool> SaveInitiatedLinkRequest(string requestId, string transactionId, string linkReferenceNumber)
         {
             var savedLinkRequest = await linkPatientRepository.Save(requestId, transactionId, linkReferenceNumber)

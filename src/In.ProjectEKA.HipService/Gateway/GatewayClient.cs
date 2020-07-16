@@ -5,6 +5,7 @@ namespace In.ProjectEKA.HipService.Gateway
     using System.Net.Mime;
     using System.Text;
     using System.Threading.Tasks;
+    using Common;
     using Logger;
     using static Common.HttpRequestHelper;
     using Newtonsoft.Json;
@@ -40,7 +41,7 @@ namespace In.ProjectEKA.HipService.Gateway
                 });
                 var message = new HttpRequestMessage
                 {
-                    RequestUri = new Uri($"{configuration.Url}/v1/sessions"),
+                    RequestUri = new Uri($"{configuration.Url}/{Constants.PATH_SESSIONS}"),
                     Method = HttpMethod.Post,
                     Content = new StringContent(json, Encoding.UTF8, MediaTypeNames.Application.Json)
                 };
