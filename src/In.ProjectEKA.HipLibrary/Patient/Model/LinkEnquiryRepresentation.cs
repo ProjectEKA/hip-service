@@ -9,7 +9,7 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
 
         public string AuthenticationType { get; }
 
-        public LinkReferenceMeta Meta { get; }
+        public LinkReferenceMeta Meta { get; set; }
 
         public LinkEnquiryRepresentation()
         {

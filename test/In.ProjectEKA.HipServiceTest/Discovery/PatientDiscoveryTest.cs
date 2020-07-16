@@ -40,13 +40,13 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             var verifiedIdentifiers = new[] {new Identifier(IdentifierType.MOBILE, phoneNumber)};
             var unverifiedIdentifiers = new[] {new Identifier(IdentifierType.MR, Faker().Random.String())};
             var patientId = "pat";
-            var name = Faker().Name.FullName();
+            var name = "Hina Patel";
             var display = "display";
             var alreadyLinked =
                 new CareContextRepresentation(Faker().Random.String(), display);
             var expectedPatient = new PatientEnquiryRepresentation(
-                "tap",
-                name,
+                "Xat",
+                "HiXXXXXXel",
                 Array.Empty<CareContextRepresentation>(),
                 new[] {Match.ConsentManagerUserId.ToString()});
             var transactionId = Faker().Random.String();
@@ -102,21 +102,22 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 linkPatientRepository.Object,
                 patientRepository.Object);
             var referenceNumber = "abc";
-            var name = Faker().Random.String();
-            var phoneNumber = Faker().Phone.PhoneNumber();
+            var name = "Hina Patel";
+            var phoneNumber = "+91-8888888888";
             var consentManagerUserId = Faker().Random.String();
             var transactionId = Faker().Random.String();
             const ushort yearOfBirth = 2019;
-            var MaskedReferenceNumber = "cba";
-            var MaskedCareContextReferenceNumber1 = "xyz";
-            var MaskedCareContextReferenceNumber2 = "def";
+            var MaskedReferenceNumber = "Xbc";
+            var MaskedCareContextReferenceNumber1 = "Xyx";
+            var MaskedCareContextReferenceNumber2 = "Xed";
             var display = "display";
+            var maskedDisplay = "XXXay";
             var careContextRepresentationsExpected = new[]
             {
                 new CareContextRepresentation(MaskedCareContextReferenceNumber1,
-                    display),
+                    maskedDisplay),
                 new CareContextRepresentation(MaskedCareContextReferenceNumber2,
-                    display)
+                    maskedDisplay)
             };
             var careContextRepresentationsActual = new[]
             {
@@ -126,7 +127,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                     display)
             };
             var expectedPatient = new PatientEnquiryRepresentation(MaskedReferenceNumber,
-                name,
+                "HiXXXXXXel",
                 careContextRepresentationsExpected,
                 new List<string>
                 {
@@ -186,15 +187,15 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 linkPatientRepository.Object,
                 patientRepository.Object);
             var referenceNumber = "abc";
-            var MaskedReferenceNumber = "cba";
+            var MaskedReferenceNumber = "Xbc";
             var consentManagerUserId = Faker().Random.String();
             var transactionId = Faker().Random.String();
-            var name = Faker().Name.FullName();
+            var name = "Hina patel";
             const ushort yearOfBirth = 2019;
             var phoneNumber = Faker().Phone.PhoneNumber();
             var expectedPatient = new PatientEnquiryRepresentation(
                 MaskedReferenceNumber,
-                name,
+                "HiXXXXXXel",
                 Array.Empty<CareContextRepresentation>(),
                 new List<string>
                 {

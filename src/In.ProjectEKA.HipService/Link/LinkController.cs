@@ -1,6 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using Hangfire;
+using In.ProjectEKA.DefaultHip.Patient;
 using In.ProjectEKA.HipLibrary.Patient.Model;
 using In.ProjectEKA.HipService.Common;
 using In.ProjectEKA.HipService.Discovery;
@@ -62,7 +63,7 @@ namespace In.ProjectEKA.HipService.Link
                 cmUserId,
                 request.Patient.ReferenceNumber,
                 request.Patient.CareContexts);
-            patient = MaskingUtility.GetUnmaskedLinkEnquiry(patient);
+            patient = GetUnmaskedLinkEnquiry(patient);
             try
             {
                 var doesRequestExists = await discoveryRequestRepository.RequestExistsFor(
@@ -89,7 +90,8 @@ namespace In.ProjectEKA.HipService.Link
                 {
                     linkedPatientRepresentation = linkReferenceResponse.Link;
                 }
-
+                linkedPatientRepresentation.Meta.CommunicationHint = 
+                    new MaskingUtility().MaskMobileNumber(linkedPatientRepresentation.Meta.CommunicationHint);
                 var response = new GatewayLinkResponse(
                     linkedPatientRepresentation,
                     error?.Error,
@@ -133,5 +135,16 @@ namespace In.ProjectEKA.HipService.Link
                 Log.Error(exception, exception.StackTrace);
             }
         }
+        private LinkEnquiry GetUnmaskedLinkEnquiry(LinkEnquiry linkEnquiry)
+        {
+            var maskingUtility = new MaskingUtility();
+            foreach (var careContextEnquiry in linkEnquiry.CareContexts)
+            {
+                careContextEnquiry.ReferenceNumber = maskingUtility.UnmaskData(careContextEnquiry.ReferenceNumber);
+            }
+            return linkEnquiry;
+        }
+        
+           
     }
 }
