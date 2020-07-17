@@ -4,7 +4,6 @@ namespace In.ProjectEKA.HipService.Discovery
     using System.Linq;
     using HipLibrary.Patient.Model;
     using Ranker;
-    using static HipLibrary.Matcher.StrongMatcherFactory;
     using static Ranker.RankBuilder;
     using static Matcher.DemographicMatcher;
 
@@ -52,13 +51,9 @@ namespace In.ProjectEKA.HipService.Discovery
         public static IEnumerable<PatientEnquiryRepresentation> Do(IEnumerable<Patient> patients,
             DiscoveryRequest request)
         {
-            var unverifiedExpression =
-                GetUnVerifiedExpression(request.Patient.UnverifiedIdentifiers ?? new List<Identifier>());
-
             return patients
                 .AsEnumerable()
                 .Where(ExpressionFor(request.Patient.Name, request.Patient.YearOfBirth, request.Patient.Gender))
-                .Where(unverifiedExpression.Compile())
                 .Select(patientInfo => RankPatient(patientInfo, request))
                 .GroupBy(rankedPatient => rankedPatient.Rank.Score)
                 .OrderByDescending(rankedPatient => rankedPatient.Key)

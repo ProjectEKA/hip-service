@@ -8,6 +8,12 @@
         <GenerateRuntimeConfigurationFiles>True</GenerateRuntimeConfigurationFiles>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(RunConfiguration)' == 'hip_service' ">
+      <StartAction>Project</StartAction>
+      <ExternalConsole>true</ExternalConsole>
+      <LaunchBrowser></LaunchBrowser>
+      <ApplicationURL>http://localhost:9052</ApplicationURL>
+    </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="BouncyCastle.NetCore" Version="1.8.6" />
         <PackageReference Include="Curve25519" Version="1.0.1" />

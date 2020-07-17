@@ -13,28 +13,32 @@ namespace In.ProjectEKA.HipService.Discovery.Matcher
         {
         }
 
-        public static Func<Patient, bool> ExpressionFor(string name, ushort? age, Gender gender)
+        public static Func<Patient, bool> ExpressionFor(string name, ushort? yearOfBirth, Gender? gender)
         {
-            return GenderExpresion(gender).And(NameExpression(name)).And(AgeExpression(age)).Compile();
+            if (yearOfBirth == null && gender == null)
+            {
+                return _ => false;
+            }
+            return GenderExpression(gender).And(NameExpression(name)).And(AgeExpression(yearOfBirth)).Compile();
         }
 
-        private static Expression<Func<Patient, bool>> GenderExpresion(Gender gender)
+        private static Expression<Func<Patient, bool>> GenderExpression(Gender? gender)
         {
-            Expression<Func<Patient, bool>> genderExpresion = patient => patient.Gender == gender;
+            Expression<Func<Patient, bool>> genderExpresion = patient => !gender.HasValue || patient.Gender == gender;
             return genderExpresion;
         }
 
         private static Expression<Func<Patient, bool>> NameExpression(string name)
         {
             Expression<Func<Patient, bool>> nameExpression = patient =>
-                FuzzyNameMatcher.LevenshteinDistance(patient.Name, name) <= 2;
+                ExactNameMatcher.IsMatch(patient.Name, name);
             return nameExpression;
         }
 
-        private static Expression<Func<Patient, bool>> AgeExpression(ushort? age)
+        private static Expression<Func<Patient, bool>> AgeExpression(ushort? yearOfBirth)
         {
-            return patient => !age.HasValue
-                              || AgeGroupMatcher.IsMatching(AgeCalculator.From(age.Value),
+            return patient => !yearOfBirth.HasValue
+                              || AgeGroupMatcher.IsMatching(AgeCalculator.From(yearOfBirth.Value),
                                   AgeCalculator.From(patient.YearOfBirth));
         }
     }
