@@ -41,6 +41,7 @@ namespace In.ProjectEKA.HipService.Consent
             return Accepted();
         }
 
+        [ApiExplorerSettings(IgnoreApi = true)]
         public async Task StoreConsent(ConsentArtefactRepresentation consentArtefact)
         {
             var notification = consentArtefact.Notification;

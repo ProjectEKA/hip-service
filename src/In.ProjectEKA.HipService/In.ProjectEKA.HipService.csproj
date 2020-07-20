@@ -14,6 +14,15 @@
       <LaunchBrowser></LaunchBrowser>
       <ApplicationURL>http://localhost:9052</ApplicationURL>
     </PropertyGroup>
+    <PropertyGroup>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    </PropertyGroup>
+    <PropertyGroup>
+        <ExcludeXmlAssemblyFiles>false</ExcludeXmlAssemblyFiles>
+    </PropertyGroup>
+    <PropertyGroup>
+        <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\In.ProjectEKA.HipService.xml</DocumentationFile>
+    </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="BouncyCastle.NetCore" Version="1.8.6" />
         <PackageReference Include="Curve25519" Version="1.0.1" />
@@ -41,10 +50,10 @@
         <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.1-dev-00237" />
         <PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="5.5.0" />
         <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="5.5.0" />
-        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="5.5.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.5" />
         <PackageReference Include="HangFire" Version="1.7.11" />
         <PackageReference Include="Hangfire.MemoryStorage" Version="1.7.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="5.5.1" />
     </ItemGroup>
 
     <ItemGroup>

@@ -3,8 +3,10 @@ namespace In.ProjectEKA.HipService
     using System;
     using System.Collections.Generic;
     using System.IdentityModel.Tokens.Jwt;
+    using System.IO;
     using System.Linq;
     using System.Net.Http;
+    using System.Reflection;
     using System.Text.Json;
     using System.Threading.Tasks;
     using Common;
@@ -35,6 +37,7 @@ namespace In.ProjectEKA.HipService
     using Microsoft.Extensions.Hosting;
     using Microsoft.IdentityModel.Logging;
     using Microsoft.IdentityModel.Tokens;
+    using Microsoft.OpenApi.Models;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
     using Serilog;
@@ -106,6 +109,28 @@ namespace In.ProjectEKA.HipService
                     Configuration.GetSection("Gateway").Get<GatewayConfiguration>()))
                 .AddTransient<IDataFlow, DataFlow.DataFlow>()
                 .AddRouting(options => options.LowercaseUrls = true)
+                .AddSwaggerGen(c =>
+                {
+                    c.SwaggerDoc("v1", new OpenApiInfo
+                    {
+                        Version = "0.0.1",
+                        Title = "Health Information Provider",
+                        Description =
+                            "Clinical establishments which generate or store customer data in digital form."
+                            + " These include hospitals, primary or secondary health care centres,"
+                            + " nursing homes, diagnostic centres, clinics, medical device companies"
+                            + " and other such entities as may be identified by regulatory authorities from time to time.",
+                    });
+
+                    c.DescribeAllEnumsAsStrings();
+    
+
+                    // Set the comments path for the Swagger JSON and UI.
+                    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                    c.IncludeXmlComments(xmlPath);
+                })
+                .AddSwaggerGenNewtonsoftSupport()
                 .AddControllers()
                 .AddNewtonsoftJson(
                     options => { options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore; })
@@ -149,11 +174,17 @@ namespace In.ProjectEKA.HipService
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "HIP Service");
+            });
+
             app.UseStaticFilesWithYaml()
                 .UseRouting()
                 .UseIf(!env.IsDevelopment(), x => x.UseHsts())
                 .UseIf(env.IsDevelopment(), x => x.UseDeveloperExceptionPage())
-                .UseCustomOpenApi()
+                //.UseCustomOpenApi()
                 .UseSerilogRequestLogging()
                 .UseAuthentication()
                 .UseAuthorization()
