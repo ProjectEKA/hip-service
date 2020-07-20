@@ -25,6 +25,7 @@ namespace In.ProjectEKA.HipService
     using Hangfire.MemoryStorage;
     using HipLibrary.Matcher;
     using HipLibrary.Patient;
+    using In.ProjectEKA.HipService.OpenMrs;
     using Link;
     using Link.Database;
     using MessagingQueue;
@@ -107,6 +108,11 @@ namespace In.ProjectEKA.HipService
                 .AddSingleton(Configuration.GetSection("Gateway").Get<GatewayConfiguration>())
                 .AddSingleton(new GatewayClient(HttpClient,
                     Configuration.GetSection("Gateway").Get<GatewayConfiguration>()))
+                .AddSingleton(Configuration.GetSection("OpenMrs").Get<OpenMrsConfiguration>())
+                .AddSingleton(new OpenMrsClient(HttpClient,
+                    Configuration.GetSection("OpenMrs").Get<OpenMrsConfiguration>()))
+                .AddScoped<IOpenMrsClient, OpenMrsClient>()
+                .AddScoped<IPatientDal, DiscoveryDataSource>()
                 .AddTransient<IDataFlow, DataFlow.DataFlow>()
                 .AddRouting(options => options.LowercaseUrls = true)
                 .AddSwaggerGen(c =>
