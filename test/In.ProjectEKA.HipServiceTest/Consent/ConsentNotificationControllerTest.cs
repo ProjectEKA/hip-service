@@ -47,35 +47,15 @@ namespace In.ProjectEKA.HipServiceTest.Consent
                     notification.ConsentDetail,
                     notification.Signature,
                     ConsentStatus.GRANTED,
-                    consentMangerId
-                    )
-                ));
+                    consentMangerId)));
 
             var result = consentNotificationController.ConsentNotification(consentNotification);
 
             backgroundJobClient.Verify(client => client.Create(
                 It.Is<Job>(job => job.Method.Name == "StoreConsent" && job.Args[0] == consentNotification),
-                It.IsAny<EnqueuedState>()
-                ));
+                It.IsAny<EnqueuedState>()));
             consentRepository.Verify();
             result.StatusCode.Should().Be(StatusCodes.Status202Accepted);
         }
-
-        // [Fact]
-        // private async void ShouldUpdateRevokedConsentAndReturnAccepted()
-        // {
-        //     var notification = TestBuilder.RevokedNotification("hinapatel@ncg");
-        //     var faker = new Faker();
-        //     var consentNotification = new ConsentArtefactRepresentation(notification,
-        //         DateTime.Now,
-        //         faker.Random.Hash());
-        //     consentRepository.Setup(x => 
-        //         x.UpdateAsync(notification.ConsentId, ConsentStatus.REVOKED));
-        //     gatewayClient.Setup(client => client.SendDataToGateway("/v1/consents/hip/on-notify",
-        //         It.IsAny<GatewayRevokedConsentRepresentation>(), "ncg")).Returns(Task.CompletedTask);
-        //     await consentNotificationController.StoreConsent(consentNotification);
-        //     consentRepository.Verify();
-        //     gatewayClient.Verify();
-        // }
     }
 }

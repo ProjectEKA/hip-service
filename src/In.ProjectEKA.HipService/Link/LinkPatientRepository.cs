@@ -5,6 +5,7 @@ namespace In.ProjectEKA.HipService.Link
     using System.Globalization;
     using System.Linq;
     using System.Threading.Tasks;
+    using Common;
     using Database;
     using Database.Migrations;
     using Logger;

@@ -39,6 +39,7 @@ namespace In.ProjectEKA.HipService
 	using Newtonsoft.Json;
 	using Newtonsoft.Json.Linq;
 	using Serilog;
+    using Common.Heartbeat;
 
     public class Startup
     {
@@ -101,17 +102,14 @@ namespace In.ProjectEKA.HipService
                 .AddHostedService<MessagingQueueListener>()
                 .AddScoped<IDataFlowRepository, DataFlowRepository>()
                 .AddScoped<IHealthInformationRepository, HealthInformationRepository>()
-                .AddSingleton(
-                    Configuration.GetSection("Gateway").Get<GatewayConfiguration>())
-                .AddSingleton(new GatewayClient(HttpClient, 
+                .AddSingleton(Configuration.GetSection("Gateway").Get<GatewayConfiguration>())
+                .AddSingleton(new GatewayClient(HttpClient,
                     Configuration.GetSection("Gateway").Get<GatewayConfiguration>()))
                 .AddTransient<IDataFlow, DataFlow.DataFlow>()
                 .AddRouting(options => options.LowercaseUrls = true)
                 .AddControllers()
-                .AddNewtonsoftJson(options =>
-                {
-                    options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-                })
+                .AddNewtonsoftJson(
+                    options => { options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore; })
                 .AddJsonOptions(options =>
                 {
                     options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
@@ -125,7 +123,7 @@ namespace In.ProjectEKA.HipService
                 .AddJwtBearer(options =>
                 {
                     // Need to validate Audience and Issuer properly
-                    options.Authority = $"{Configuration.GetValue<string>("Gateway:url")}/v1";
+                    options.Authority = $"{Configuration.GetValue<string>("Gateway:url")}/{Constants.CURRENT_VERSION}";
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
