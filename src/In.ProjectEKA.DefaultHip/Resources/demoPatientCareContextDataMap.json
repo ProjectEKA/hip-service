@@ -44,13 +44,24 @@
         ],
         "NCP1007" : [
             { 
-                "capturedOn": "2019-06-01",
+                "capturedOn": "2019-01-01",
                 "data":  {
-                    "observation" : [],
-                    "condition" : [],
-                    "diagnosticreport" : [],
+                    "prescription" : ["NCP1007PrescriptionDocument1.json"]
+                }
+            },
+            { 
+                "capturedOn": "2019-01-02",
+                "data":  {
+                    "prescription" : ["NCP1007PrescriptionDocument2.json"],
+                    "diagnosticreport" : ["NCP1007DiagnosticReportDocument.json"],
                     "medicationrequest" : [],
                     "dischargesummary" : []
+                }
+            },
+            { 
+                "capturedOn": "2019-01-03",
+                "data":  {
+                    "prescription" : ["NCP1007PrescriptionDocument3.json"]
                 }
             },
             { 
