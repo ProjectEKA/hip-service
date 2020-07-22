@@ -244,4 +244,11 @@
       <Link>NCP1007PrescriptionDocument3.json</Link>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\NCP1007DiagnosticReportDocument1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>NCP1007DiagnosticReportDocument1.json</Link>
+    </Content>
+  </ItemGroup>
 </Project>

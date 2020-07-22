@@ -12,10 +12,10 @@
   "type": "document",
   "entry": [
     {
-      "fullUrl": "Composition/10072",
+      "fullUrl": "Composition/10072PR1",
       "resource": {
         "resourceType": "Composition",
-        "id": "10072",
+        "id": "10072PR1",
         "date": "2019-01-01T15:32:26.605+05:30",
         "meta": {
           "versionId": "1",
@@ -27,7 +27,7 @@
         },
         "identifier": {
           "system": "https://www.max.in/composition",
-          "value": "10072"
+          "value": "10072PR1"
         },
         "status": "final",
         "type": {

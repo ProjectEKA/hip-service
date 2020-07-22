@@ -82,7 +82,7 @@ namespace In.ProjectEKA.DefaultHipTest.DataFlow
                 "sometext");
 
             var entries = await collect.CollectData(dataRequest);
-            entries.ValueOrDefault().CareBundles.Count().Should().Be(4);
+            entries.ValueOrDefault().CareBundles.Count().Should().Be(5);
         }
     }
 }

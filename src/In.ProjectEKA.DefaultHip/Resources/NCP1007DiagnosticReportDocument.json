@@ -12,10 +12,10 @@
     "type":"document",
     "entry":[
        {
-          "fullUrl":"Composition/10071",
+          "fullUrl":"Composition/1007DR",
           "resource":{
              "resourceType":"Composition",
-             "id":"10071",
+             "id":"1007DR",
              "date":"2019-01-02T15:32:26.605+05:30",
              "text":{
                 "status":"generated",
@@ -23,7 +23,7 @@
              },
              "identifier":{
                 "system":"https://www.max.in/composition",
-                "value":"10071"
+                "value":"1007DR"
              },
              "status":"final",
              "type":{

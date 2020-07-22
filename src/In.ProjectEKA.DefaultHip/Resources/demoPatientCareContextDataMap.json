@@ -61,7 +61,8 @@
             { 
                 "capturedOn": "2019-01-03",
                 "data":  {
-                    "prescription" : ["NCP1007PrescriptionDocument3.json"]
+                    "prescription" : ["NCP1007PrescriptionDocument3.json"],
+                    "diagnosticreport" : ["NCP1007DiagnosticReportDocument1.json"]
                 }
             },
             { 
