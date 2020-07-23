@@ -5,13 +5,13 @@ namespace In.ProjectEKA.HipService.Link
         public string SessionId { get; }
         
         public Communication Communication { get; }
-        public OtpCreationDetail CreationDetail { get; }
+        public OtpGenerationDetail GenerationDetail { get; }
         
-        public Session(string sessionId, Communication communication, OtpCreationDetail creationDetail)
+        public Session(string sessionId, Communication communication, OtpGenerationDetail generationDetail)
         {
             SessionId = sessionId;
             Communication = communication;
-            CreationDetail = creationDetail;
+            GenerationDetail = generationDetail;
         }
     }
 }

@@ -31,7 +31,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
         {
             var session = new Session(TestBuilders.Faker().Random.Hash(),
                 new Communication(CommunicationMode.MOBILE, "+91666666666666"),
-                new OtpCreationDetail(TestBuilder.Faker().Random.Word(), OtpAction.LINK_PATIENT_CARECONTEXT.ToString()));
+                new OtpGenerationDetail(TestBuilder.Faker().Random.Word(), OtpAction.LINK_PATIENT_CARECONTEXT.ToString()));
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
             handlerMock
                 .Protected()
@@ -63,7 +63,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
         {
             var session = new Session(TestBuilders.Faker().Random.Hash(),
                 new Communication(CommunicationMode.MOBILE, "+91666666666666"),
-                new OtpCreationDetail(TestBuilder.Faker().Random.Word(), OtpAction.LINK_PATIENT_CARECONTEXT.ToString()));
+                new OtpGenerationDetail(TestBuilder.Faker().Random.Word(), OtpAction.LINK_PATIENT_CARECONTEXT.ToString()));
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
             handlerMock
                 .Protected()

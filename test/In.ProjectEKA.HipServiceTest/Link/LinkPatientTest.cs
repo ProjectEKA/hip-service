@@ -73,7 +73,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
             guidGenerator.Setup(x => x.NewGuid()).Returns(linkReferenceNumber);
             patientVerification.Setup(x => x.SendTokenFor(new Session(linkReferenceNumber
                     , new Communication(CommunicationMode.MOBILE, testPatient.PhoneNumber)
-                    , new OtpCreationDetail(TestBuilder.Faker().Random.Word(), OtpAction.LINK_PATIENT_CARECONTEXT.ToString()))))
+                    , new OtpGenerationDetail(TestBuilder.Faker().Random.Word(), OtpAction.LINK_PATIENT_CARECONTEXT.ToString()))))
                 .ReturnsAsync((OtpMessage) null);
             var initiatedLinkRequest = new InitiatedLinkRequest(patientReferenceRequest.RequestId,
                                                                 patientReferenceRequest.TransactionId,
@@ -264,7 +264,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
             guidGenerator.Setup(x => x.NewGuid()).Returns(linkReferenceNumber);
             patientVerification.Setup(x => x.SendTokenFor(new Session(linkReferenceNumber
                     , new Communication(CommunicationMode.MOBILE, testPatient.PhoneNumber),
-                    new OtpCreationDetail(TestBuilder.Faker().Random.Word(), OtpAction.LINK_PATIENT_CARECONTEXT.ToString()))))
+                    new OtpGenerationDetail(TestBuilder.Faker().Random.Word(), OtpAction.LINK_PATIENT_CARECONTEXT.ToString()))))
                 .ReturnsAsync((OtpMessage) null);
             linkRepository.Setup(x => x.SaveRequestWith(linkReferenceNumber,
                     patientReferenceRequest.Patient.ConsentManagerId,
