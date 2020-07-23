@@ -150,7 +150,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                 careBundles.Add(careBundle);
             }
 
-            if (tmhPatientData.SurgeryHistories == null) return careBundles;
+            if (tmhPatientData.SurgeryHistories != null)
             {
                 var serializeObject = JsonConvert.SerializeObject(
                     FetchSurgeryHistoryData(dataRequest, tmhPatientData.SurgeryHistories, patientName).Result,
@@ -302,7 +302,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                     continue;
                 }
 
-                var conditionRepresentation = new ConditionRepresentation()
+                var conditionRepresentation = new ConditionRepresentation
                 {
                     FullUrl = uuid,
                     Resource = new ConditionResource(HiType.Condition, id,
@@ -318,7 +318,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                 conditions.Add(conditionRepresentation);
             }
 
-            var conditionResponse = new ConditionResponse()
+            var conditionResponse = new ConditionResponse
             {
                 Entry = conditions,
                 Id = Uuid.Generate().Value.Split(":").Last(),
@@ -460,7 +460,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                     new Member("Observation/" + tongueObservationId, "TONGUE"),
                     new Member("Observation/" + buccalmcsaObservationId, "BUCCALMCSA")
                 };
-                var observationRepresentation = new ObservationRepresentation()
+                var observationRepresentation = new ObservationRepresentation
                 {
                     FullUrl = uuid,
                     Resource = new Resource(HiType.Observation, id, "final",
@@ -478,7 +478,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                 observations.Add(new OralCavityExaminationObservationRepresention(buccalmcsaResource));
             }
 
-            var oralCavityExmResponse = new ObservationResponse()
+            var oralCavityExmResponse = new ObservationResponse
             {
                 Entry = observations,
                 Id = Uuid.Generate().Value.Split(":").Last(),
