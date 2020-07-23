@@ -1,9 +1,9 @@
-using System.Collections.Generic;
-using System.Linq;
-using In.ProjectEKA.HipLibrary.Patient;
-
 namespace In.ProjectEKA.DefaultHip.Patient
 {
+    using System.Collections.Generic;
+    using System.Linq;
+    using HipLibrary.Patient;
+
     public class MaskingUtility : IMaskUtility
     {
         private static Dictionary<string,string>  maskedDataMap = new Dictionary<string, string>();

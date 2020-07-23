@@ -1,20 +1,18 @@
-using System;
-using System.Threading.Tasks;
-using Hangfire;
-using In.ProjectEKA.DefaultHip.Patient;
-using In.ProjectEKA.HipLibrary.Patient.Model;
-using In.ProjectEKA.HipService.Common;
-using In.ProjectEKA.HipService.Discovery;
-using In.ProjectEKA.HipService.Gateway;
-using In.ProjectEKA.HipService.Gateway.Model;
-using In.ProjectEKA.HipService.Logger;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-
 // ReSharper disable MemberCanBePrivate.Global
 namespace In.ProjectEKA.HipService.Link
 {
-    using static Constants;
+    using System;
+    using System.Threading.Tasks;
+    using DefaultHip.Patient;
+    using Discovery;
+    using Gateway;
+    using Gateway.Model;
+    using Hangfire;
+    using HipLibrary.Patient.Model;
+    using Logger;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+    using static Common.Constants;
 
     [Authorize]
     [ApiController]
