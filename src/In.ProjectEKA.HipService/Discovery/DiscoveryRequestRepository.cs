@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace In.ProjectEKA.HipService.Discovery
 {
     using System.Threading.Tasks;
