@@ -1,27 +1,27 @@
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-using Hl7.Fhir.Model;
-using Hl7.Fhir.Serialization;
-using In.ProjectEKA.HipLibrary.Patient;
-using In.ProjectEKA.HipLibrary.Patient.Model;
-using In.ProjectEKA.TMHHip.DataFlow.Model;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using Optional;
-using Optional.Linq;
-using Serilog;
-using Code = In.ProjectEKA.TMHHip.DataFlow.Model.Code;
-using Coding = In.ProjectEKA.TMHHip.DataFlow.Model.Coding;
-using JsonSerializer = System.Text.Json.JsonSerializer;
-using Resource = In.ProjectEKA.TMHHip.DataFlow.Model.Resource;
-
 namespace In.ProjectEKA.TMHHip.DataFlow
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+    using System.Net.Http;
+    using System.Text;
+    using System.Threading.Tasks;
+    using HipLibrary.Patient;
+    using HipLibrary.Patient.Model;
+    using Hl7.Fhir.Model;
+    using Hl7.Fhir.Serialization;
+    using Model;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Serialization;
+    using Optional;
+    using Optional.Linq;
+    using Serilog;
+    using Code = Model.Code;
+    using Coding = Model.Coding;
+    using JsonSerializer = System.Text.Json.JsonSerializer;
+    using Resource = Model.Resource;
+
     public class Collect : ICollect
     {
         private readonly HttpClient client;
@@ -57,7 +57,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                     }
                     case HiType.MedicationRequest:
                     {
-                        if (tmhPatientData.Prescriptions != null)
+                        if (tmhPatientData.Prescriptions != null && tmhPatientData.Prescriptions.Count > 0)
                         {
                             var medicationResponse =
                                 FindMedicationRequestData(dataRequest, tmhPatientData.Prescriptions, patientName)
@@ -76,7 +76,8 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                     }
                     case HiType.Condition:
                     {
-                        if (tmhPatientData.SwellingSymptomsData != null)
+                        if (tmhPatientData.SwellingSymptomsData != null &&
+                            tmhPatientData.SwellingSymptomsData.Count > 0)
                         {
                             var symptomResponse = FetchSwellingSymptomData(dataRequest,
                                 tmhPatientData.SwellingSymptomsData, patientName).Result;
@@ -115,7 +116,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             };
 
-            if (tmhPatientData.ClinicalNotes != null)
+            if (tmhPatientData.ClinicalNotes != null && tmhPatientData.ClinicalNotes.Count > 0)
             {
                 var serializeObject = JsonConvert.SerializeObject(
                     FetchClinicalNotes(dataRequest, tmhPatientData.ClinicalNotes, patientName).Result,
@@ -124,7 +125,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                 careBundles.Add(careBundle);
             }
 
-            if (tmhPatientData.AllergiesData != null)
+            if (tmhPatientData.AllergiesData != null && tmhPatientData.AllergiesData.Count > 0)
             {
                 var serializeObject = JsonConvert.SerializeObject(
                     FetchAllergiesData(dataRequest, tmhPatientData.AllergiesData, patientName).Result,
@@ -133,7 +134,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                 careBundles.Add(careBundle);
             }
 
-            if (tmhPatientData.AbdomenExaminationsData != null)
+            if (tmhPatientData.AbdomenExaminationsData != null && tmhPatientData.AbdomenExaminationsData.Count > 0)
             {
                 var serializeObject = JsonConvert.SerializeObject(FetchAbdomenExaminationData(dataRequest,
                     tmhPatientData.AbdomenExaminationsData, patientName).Result, jsonSerializerSettings);
@@ -141,7 +142,8 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                 careBundles.Add(careBundle);
             }
 
-            if (tmhPatientData.OralCavityExaminationsData != null)
+            if (tmhPatientData.OralCavityExaminationsData != null &&
+                tmhPatientData.OralCavityExaminationsData.Count > 0)
             {
                 var serializeObject = JsonConvert.SerializeObject(FetchOralCavityExaminationsData(dataRequest,
                         tmhPatientData.OralCavityExaminationsData, patientName).Result, jsonSerializerSettings
@@ -150,7 +152,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                 careBundles.Add(careBundle);
             }
 
-            if (tmhPatientData.SurgeryHistories != null)
+            if (tmhPatientData.SurgeryHistories != null && tmhPatientData.SurgeryHistories.Count > 0)
             {
                 var serializeObject = JsonConvert.SerializeObject(
                     FetchSurgeryHistoryData(dataRequest, tmhPatientData.SurgeryHistories, patientName).Result,
@@ -225,7 +227,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                     }
                 };
                 var coding =
-                    new In.ProjectEKA.TMHHip.DataFlow.Model.Coding(prescription.GenName, prescription.Medicine);
+                    new Coding(prescription.GenName, prescription.Medicine);
                 var medicationRepresentation = new MedicationRepresentation
                 {
                     FullUrl = uuidMedication,
