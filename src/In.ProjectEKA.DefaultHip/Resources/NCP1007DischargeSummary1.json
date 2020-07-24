@@ -720,51 +720,41 @@
         {
             "fullUrl": "Observation/cholesterol",
             "resource": {
-            "resourceType": "Observation",
-            "id": "cholesterol",
-            "status": "final",
-            "code": {
-                "text": "Cholesterol"
-            },
-            "subject": {
-                "reference": "Patient/pat2"
-            },
-            "performer": [
-                {
-                    "display": "Acme Laboratory, Inc"
-                }
-            ],
-            "resultsInterpreter"  : [
-                {
-                    "reference":"Practitioner/DHID5001"
-                }    
-            ],
-            "valueString": "6.3mmol/L"
+              "resourceType": "Observation",
+              "id": "cholesterol",
+              "status": "final",
+              "code": {
+                  "text": "Cholesterol"
+              },
+              "subject": {
+                  "reference": "Patient/pat2"
+              },
+              "performer": [
+                  {
+                      "display": "Acme Laboratory, Inc"
+                  }
+              ],
+              "valueString": "6.3mmol/L"
             }
         }, 
         {
             "fullUrl": "Observation/triglyceride",
             "resource": {
-            "resourceType": "Observation",
-            "id": "triglyceride",
-            "status": "final",
-            "code": {
-                "text": "Triglyceride"
-            },
-            "subject": {
-                "reference": "Patient/pat2"
-            },
-            "performer": [
-                {
-                    "display": "Acme Laboratory, Inc"
-                }
-            ],
-            "resultsInterpreter"  : [
-                {
-                    "reference":"Practitioner/DHID5001"
-                }    
-            ],
-            "valueString": "1.3 mmol/L"
+              "resourceType": "Observation",
+              "id": "triglyceride",
+              "status": "final",
+              "code": {
+                  "text": "Triglyceride"
+              },
+              "subject": {
+                  "reference": "Patient/pat2"
+              },
+              "performer": [
+                  {
+                      "display": "Acme Laboratory, Inc"
+                  }
+              ],
+              "valueString": "1.3 mmol/L"
             }
         }
     ]
