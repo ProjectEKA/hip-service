@@ -90,3 +90,20 @@ Once ran the application, navigate to
 ```alpha
 {HOST}/swagger/index.html
 ```
+
+## Gateway and authentication stubs
+
+In the docker compose file there are two additional containers for development purposes.
+'gateway' is for simulating the Gateway service. It logs incoming requests to its console. Hence you can use it to get insight into the requests sent from HIP service to the Gateway service.
+'oidc-server-mock' is used to simulate the OpenID Connect authentication provided by the Gateway service.
+To make them work, you first need to get a authentication token from the oidc-server-mock by providing the configured clientid, client secret, grant type and scope (see these settings in the client configuration file: /gatewayStubConfigurations/oicdConfigs/clients-config.json). Using this authentication token as an Oath 2.0 token, you can send a request to the HIP service that will be accepted by the authentication.
+Please note in the docker compose file the ports that these containers need to use to be able to run. 
+You can use the described flow with any tooling, however, we included a sample Postman collection (/gatewayStubConfigurations/postmanCollections/HIPSamplePostmanCollections.json) that you can use for sending the requests, or for reference.
+Please follow the following steps with the Postman collection:
+1. make sure that the docker stack is running - in case needed, (re)build docker stack (docker-compose -f docker-compose.yml up --build -d)
+2. open postman and import the collection
+3. if you don't have, create an environment in postman (https://learning.postman.com/docs/sending-requests/managing-environments/)
+4. run the Post Token request from the imported collection
+5. run the Happy Case request from the imported collection -> you should get a 202 response
+6. if you go go to the logs for the gateway stub container, you will see the response posted to gateway
+

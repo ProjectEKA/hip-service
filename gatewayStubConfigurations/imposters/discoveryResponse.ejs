@@ -1,0 +1,11 @@
+(request, state, logger) => {
+    logger.info("/v1/care-contexts/on-discover is called");
+    logger.info(request.body);
+    return {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      // response is not handled by HIP Service, so here just returning some mock JSON response
+      body: JSON.stringify({ hello: "world" })
+    };
+}

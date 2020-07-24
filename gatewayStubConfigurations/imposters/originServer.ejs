@@ -1,0 +1,37 @@
+{
+    "port": 8000,
+    "protocol": "http",
+    "name": "origin",
+    "stubs": [
+      {
+        "predicates": [{
+          "equals": {
+            "method": "POST",
+            "path": "/v1/care-contexts/on-discover"
+          }
+        }],
+        "responses": [{ "inject": "<%- stringify('discoveryResponse.ejs') %>" }]
+      },
+      {
+        "predicates": [{
+          "equals": {
+            "method": "POST",
+            "path": "/v1/sessions"
+          }
+        }],
+        "responses": [{ "inject": "<%- stringify('sessionsResponse.ejs') %>" }]
+      },
+      {
+        "predicates": [{
+          "equals": {
+            "method": "GET",
+            "path": "/v1/.well-known/openid-configuration"
+          }
+        }],
+        "responses": [{ "inject": "<%- stringify('openidResponse.ejs') %>" }]
+      },
+      {
+        "responses": [{ "inject": "<%- stringify('defaultResponse.ejs') %>" }]
+      }
+    ]
+}

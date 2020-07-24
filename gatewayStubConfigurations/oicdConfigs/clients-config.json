@@ -1,0 +1,27 @@
+[{
+    "ClientId": "client-credentials-mock-client",
+    "ClientSecrets": [
+      "client-credentials-mock-client-secret"
+    ],
+    "Description": "Client for client credentials flow",
+    "AllowedGrantTypes": [
+        "client_credentials"
+    ],
+    "AllowedScopes": [
+        "some-app-scope-1"
+    ],
+    "ClientClaimsPrefix": "",
+    "Claims": [
+        {
+            "Type": "clientId",
+            "Value": "this is the client id claim type"
+        },
+        {
+            "Type": "realm_access",
+            "Value": "{'roles':['gateway']}",
+            "ValueType": "json"
+        }
+    ]
+
+}
+]

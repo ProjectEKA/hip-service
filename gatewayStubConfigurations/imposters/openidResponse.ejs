@@ -1,0 +1,16 @@
+(request, state, logger) => {
+    logger.info("/v1/.well-known/openid-configuration is called");
+    logger.info(request.body);
+    return {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      // this is the redacted response that would come from the openid connect mock server, but we need to replace the host in the url, 
+      // so the response is copied here with the updated host and the only entry that is required
+      body: JSON.stringify(
+        {
+            "jwks_uri": "http://oidc-server-mock:80/.well-known/openid-configuration/jwks"
+        }
+      )
+    };
+  }

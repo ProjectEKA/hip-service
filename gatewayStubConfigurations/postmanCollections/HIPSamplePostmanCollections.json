@@ -1,0 +1,161 @@
+{
+	"info": {
+		"_postman_id": "81d81127-5476-49d4-8c22-6d5bb3097acc",
+		"name": "HIP sample request",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Happy Case",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"transactionId\": \"2\",\n    \"patient\": {\n        \"id\": \"<patient-id>@<consent-manager-id>\",\n        \"verifiedIdentifiers\": [\n            {\n                \"type\": \"MOBILE\",\n                \"value\": \"+919800083232\"\n            }\n        ],\n        \"unverifiedIdentifiers\": [\n            {\n                \"type\": \"MOBILE\",\n                \"value\": \"+919800083232\"\n            }\n        ],\n        \"name\": \"kalyan\",\n        \"gender\": \"M\",\n        \"yearOfBirth\": 1997\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9052/v1/care-contexts/discover",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9052",
+					"path": [
+						"v1",
+						"care-contexts",
+						"discover"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0a05bddd-10a9-487b-8e8e-a94ec19debef",
+						"exec": [
+							"var res = JSON.parse(responseBody);",
+							"pm.environment.set(\"Token\", res.access_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "client-credentials-mock-client",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "client-credentials-mock-client-secret",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "grant_type",
+							"value": "client_credentials",
+							"type": "text"
+						},
+						{
+							"key": "scope",
+							"value": "some-app-scope-1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:8080/connect/token",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "oauth2",
+		"oauth2": [
+			{
+				"key": "accessToken",
+				"value": "",
+				"type": "string"
+			},
+			{
+				"key": "tokenType",
+				"value": "Bearer",
+				"type": "string"
+			},
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "a0bb0091-7cbe-44f7-b4c5-60ee2596f854",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "be1a3f03-46e0-47e8-843e-42331ce3fda6",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

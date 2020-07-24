@@ -1,0 +1,9 @@
+(request, state, logger) => {
+    logger.info('default called for ' + request.method + ' ' + request.path);
+    return {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ message: 'no mapping found for this url' })
+    };
+}
