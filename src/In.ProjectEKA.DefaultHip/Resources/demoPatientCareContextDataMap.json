@@ -66,13 +66,13 @@
                 }
             },
             { 
-                "capturedOn": "2019-06-02",
+                "capturedOn": "2019-02-03",
                 "data":  {
                     "observation" : [],
                     "condition" : [],
                     "diagnosticreport" : [],
                     "medicationrequest" : [],
-                    "dischargesummary" : []
+                    "dischargesummary" : ["NCP1007DischargeSummary1.json"]
                 }
             }
         ]
