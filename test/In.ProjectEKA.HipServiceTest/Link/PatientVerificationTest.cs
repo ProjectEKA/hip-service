@@ -11,6 +11,7 @@ using Xunit;
 namespace In.ProjectEKA.HipServiceTest.Link
 {
     using Builder;
+    using DataFlow.Builder;
     using FluentAssertions;
     using HipService.Link;
 
@@ -28,8 +29,9 @@ namespace In.ProjectEKA.HipServiceTest.Link
         [Fact]
         private async void ReturnFailureOnOtpCreation()
         {
-            var session = new Session(TestBuilders.Faker().Random.Hash()
-                , new Communication(CommunicationMode.MOBILE, "+91666666666666"));
+            var session = new Session(TestBuilders.Faker().Random.Hash(),
+                new Communication(CommunicationMode.MOBILE, "+91666666666666"),
+                new OtpGenerationDetail(TestBuilder.Faker().Random.Word(), OtpAction.LINK_PATIENT_CARECONTEXT.ToString()));
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
             handlerMock
                 .Protected()
@@ -59,8 +61,9 @@ namespace In.ProjectEKA.HipServiceTest.Link
         [Fact]
         private async void ReturnSuccessOnOtpCreation()
         {
-            var session = new Session(TestBuilders.Faker().Random.Hash()
-                , new Communication(CommunicationMode.MOBILE, "+91666666666666"));
+            var session = new Session(TestBuilders.Faker().Random.Hash(),
+                new Communication(CommunicationMode.MOBILE, "+91666666666666"),
+                new OtpGenerationDetail(TestBuilder.Faker().Random.Word(), OtpAction.LINK_PATIENT_CARECONTEXT.ToString()));
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
             handlerMock
                 .Protected()
