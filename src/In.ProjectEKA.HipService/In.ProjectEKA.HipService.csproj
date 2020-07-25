@@ -35,7 +35,7 @@
         <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.1-dev-00237" />
         <PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="5.5.0" />
         <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="5.5.1" />
-        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="5.5.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="5.5.1" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.6" />
         <PackageReference Include="HangFire" Version="1.7.11" />
         <PackageReference Include="Hangfire.MemoryStorage" Version="1.7.0" />
