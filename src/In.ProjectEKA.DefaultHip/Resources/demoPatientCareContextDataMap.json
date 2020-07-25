@@ -44,23 +44,35 @@
         ],
         "NCP1007" : [
             { 
-                "capturedOn": "2019-06-01",
+                "capturedOn": "2019-01-01",
                 "data":  {
-                    "observation" : [],
-                    "condition" : [],
-                    "diagnosticreport" : [],
+                    "prescription" : ["NCP1007PrescriptionDocument1.json"]
+                }
+            },
+            { 
+                "capturedOn": "2019-01-02",
+                "data":  {
+                    "prescription" : ["NCP1007PrescriptionDocument2.json"],
+                    "diagnosticreport" : ["NCP1007DiagnosticReportDocument.json"],
                     "medicationrequest" : [],
                     "dischargesummary" : []
                 }
             },
             { 
-                "capturedOn": "2019-06-02",
+                "capturedOn": "2019-01-03",
+                "data":  {
+                    "prescription" : ["NCP1007PrescriptionDocument3.json"],
+                    "diagnosticreport" : ["NCP1007DiagnosticReportDocument1.json"]
+                }
+            },
+            { 
+                "capturedOn": "2019-02-03",
                 "data":  {
                     "observation" : [],
                     "condition" : [],
                     "diagnosticreport" : [],
                     "medicationrequest" : [],
-                    "dischargesummary" : []
+                    "dischargesummary" : ["NCP1007DischargeSummary1.json"]
                 }
             }
         ]
@@ -101,6 +113,12 @@
                 "capturedOn": "2019-12-24",
                 "data":  {
                     "documentreference" : ["NCP1008FourthVisitDocumentReference.json"]
+                }
+            },
+            { 
+                "capturedOn": "2020-01-01",
+                "data":  {
+                    "prescription" : ["NCP1008FifthVisitPrescription.json"]
                 }
             },
             { 

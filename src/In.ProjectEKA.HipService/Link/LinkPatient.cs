@@ -82,7 +82,8 @@ namespace In.ProjectEKA.HipService.Link
 
                 var session = new Session(
                     linkRefNumber,
-                    new Communication(CommunicationMode.MOBILE, patient.PhoneNumber));
+                    new Communication(CommunicationMode.MOBILE, patient.PhoneNumber),
+                    new OtpGenerationDetail(otpService.Value.SenderSystemName, OtpAction.LINK_PATIENT_CARECONTEXT.ToString()));
                 var otpGeneration = await patientVerification.SendTokenFor(session);
                 if (otpGeneration != null)
                 {

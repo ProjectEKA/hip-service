@@ -4,5 +4,6 @@ namespace In.ProjectEKA.HipService.Link
     {
         public string BaseUrl { get; set; }
         public int OffsetInMinutes { get; set; }
+        public string SenderSystemName { get; set; }
     }
 }
