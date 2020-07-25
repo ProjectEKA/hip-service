@@ -251,4 +251,11 @@
       <Link>NCP1007DiagnosticReportDocument1.json</Link>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\NCP1007DischargeSummary1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>NCP1007DischargeSummary1.json</Link>
+    </Content>
+  </ItemGroup>
 </Project>
