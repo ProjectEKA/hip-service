@@ -258,4 +258,39 @@
       <Link>NCP1007DischargeSummary1.json</Link>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\NCP1007DischargeSummary2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>NCP1007DischargeSummary2.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\RVMHD01PrescriptionDocument1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>RVMHD01PrescriptionDocument1.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\RVMHD01PrescriptionDocument2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>RVMHD01PrescriptionDocument2.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\RVMHD01PrescriptionDocument3.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>RVMHD01PrescriptionDocument3.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\RVMHD01PrescriptionDocument4.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>RVMHD01PrescriptionDocument4.json</Link>
+    </Content>
+  </ItemGroup>
 </Project>

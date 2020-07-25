@@ -38,7 +38,7 @@
              },
              "encounter":{
                 "reference":"Encounter/7fce6ec8-5013-4a27-b0a6-c43232608cda",
-                "display":"OPD Visit - patient walked in"
+                "display":"Hospitalization - Patient admitted"
              },
              "subject":{
                 "reference":"Patient/RVH1002"
@@ -312,7 +312,7 @@
                     }
                   ]
               },
-              "authoredOn": "2019-01-01",
+              "authoredOn": "2019-01-31",
               "dosageInstruction": [
                 {
                   "text": "Two tablets at once",
@@ -377,7 +377,7 @@
               "medicationCodeableConcept": {
                   "text": "Paracetemol 500mg Oral Tab"
               },
-              "authoredOn": "2019-01-01",
+              "authoredOn": "2019-01-31",
               "dosageInstruction": [
                 {
                   "text": "two tablets orally with or after meal once a day"
@@ -415,7 +415,7 @@
                   "reference": "Medication/c2b8f3fd-6da0-44ed-bc91-8bb05ff614d2",
                   "display": "Azythral 500mg Antibiotics "
                 },
-                "authoredOn": "2019-01-01",
+                "authoredOn": "2019-02-01",
                 "dosageInstruction": [
                   {
                     "text": "Take one tablets orally with or after meal twice a day, 8 hours gap. 1-0-1"

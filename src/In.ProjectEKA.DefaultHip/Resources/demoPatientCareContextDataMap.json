@@ -32,13 +32,27 @@
     "RVH1002" : {
         "RV-MHD-01.17.0024" : [
             { 
-                "capturedOn": "2018-02-02",
+                "capturedOn": "2019-04-02",
                 "data":  {
-                    "observation" : [],
-                    "condition" : [],
-                    "diagnosticreport" : [],
-                    "medicationrequest" : [],
-                    "dischargesummary" : []
+                    "prescription" : ["RVMHD01PrescriptionDocument1.json"]
+                }
+            },
+            { 
+                "capturedOn": "2019-04-15",
+                "data":  {
+                    "prescription" : ["RVMHD01PrescriptionDocument2.json"]
+                }
+            },
+            { 
+                "capturedOn": "2019-04-27",
+                "data":  {
+                    "prescription" : ["RVMHD01PrescriptionDocument3.json"]
+                }
+            },
+            { 
+                "capturedOn": "2019-05-21",
+                "data":  {
+                    "prescription" : ["RVMHD01PrescriptionDocument4.json"]
                 }
             }
         ],
@@ -73,6 +87,16 @@
                     "diagnosticreport" : [],
                     "medicationrequest" : [],
                     "dischargesummary" : ["NCP1007DischargeSummary1.json"]
+                }
+            },
+            { 
+                "capturedOn": "2019-10-03",
+                "data":  {
+                    "observation" : [],
+                    "condition" : [],
+                    "diagnosticreport" : [],
+                    "medicationrequest" : [],
+                    "dischargesummary" : ["NCP1007DischargeSummary2.json"]
                 }
             }
         ]
