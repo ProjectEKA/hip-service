@@ -201,5 +201,61 @@
       <CopyToPublishDirectory>Always</CopyToPublishDirectory>
       <Link>NCP1008DiagnosticReportWithRadiologyImageInline.json</Link>
     </Content>
-  </ItemGroup>  
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\NCP1008FourthVisitDocumentReference.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>NCP1008FourthVisitDocumentReference.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\NCP1008FifthVisitPrescription.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>NCP1008FifthVisitPrescription.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\NCP1007DiagnosticReportDocument.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>NCP1007DiagnosticReportDocument.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\NCP1007PrescriptionDocument1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>NCP1007PrescriptionDocument1.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\NCP1007PrescriptionDocument2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>NCP1007PrescriptionDocument2.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\NCP1007PrescriptionDocument3.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>NCP1007PrescriptionDocument3.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\NCP1007DiagnosticReportDocument1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>NCP1007DiagnosticReportDocument1.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\NCP1007DischargeSummary1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>NCP1007DischargeSummary1.json</Link>
+    </Content>
+  </ItemGroup>
 </Project>

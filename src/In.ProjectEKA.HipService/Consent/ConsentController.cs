@@ -1,11 +1,13 @@
 namespace In.ProjectEKA.HipService.Consent
 {
+    using System;
     using System.Threading.Tasks;
     using In.ProjectEKA.HipService.Common.Model;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Model;
 
+    [Obsolete]
     [Authorize]
     [Route("consent/notification")]
     public class ConsentController : Controller

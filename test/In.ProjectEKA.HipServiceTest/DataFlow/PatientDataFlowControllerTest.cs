@@ -7,6 +7,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
     using Hangfire.Common;
     using Hangfire.States;
     using HipLibrary.Patient.Model;
+    using static HipService.Common.Constants;
     using HipService.DataFlow;
     using Microsoft.AspNetCore.Http;
     using Moq;
@@ -73,9 +74,10 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                     new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(expectedResponse, null));
             gatewayClient.Setup(
                 client =>
-                    client.SendDataToGateway("/v1/health-information/hip/on-request",
+                    client.SendDataToGateway(PATH_HEALTH_INFORMATION_ON_REQUEST,
                         It.IsAny<GatewayDataFlowRequestResponse>(), "ncg"));
             dataFlow.Setup(d => d.GetPatientId(It.IsAny<string>())).ReturnsAsync("abc@ncg");
+            
             await patientDataFlowController.HealthInformationOf(request, gatewayId);
 
             gatewayClient.Verify();
