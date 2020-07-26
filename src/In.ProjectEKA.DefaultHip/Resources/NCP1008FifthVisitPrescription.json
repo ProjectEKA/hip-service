@@ -153,7 +153,7 @@
         "intent": "order",
         "requester": {
           "reference": "Practitioner/1",
-          "display": "Prakash Kale"
+          "display": "Prakash Sathe"
         },
         "medicationCodeableConcept": {
             "coding": [
@@ -218,7 +218,7 @@
         "resourceType": "MedicationRequest",
         "subject": {
           "reference": "Patient/1",
-          "display": "Dinseh Kale"
+          "display": "Hina Patel"
         },
         "status": "active",
         "intent": "order",
@@ -255,7 +255,7 @@
           "resourceType": "MedicationRequest",
           "subject": {
             "reference": "Patient/1",
-            "display": "Dinseh Kale"
+            "display": "Hina Patel"
           },
           "status": "active",
           "intent": "order",
