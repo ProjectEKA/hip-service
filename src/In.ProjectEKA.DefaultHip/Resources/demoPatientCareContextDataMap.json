@@ -226,5 +226,77 @@
                 }
             }
         ]
+    },
+    "RVH1012" : {
+        "RV-MHD-01.17.3112" : [
+            { 
+                "capturedOn": "2019-04-02",
+                "data":  {
+                    "prescription" : ["RVMHD01PrescriptionDocument1.json"]
+                }
+            },
+            { 
+                "capturedOn": "2019-04-15",
+                "data":  {
+                    "prescription" : ["RVMHD01PrescriptionDocument2.json"]
+                }
+            },
+            { 
+                "capturedOn": "2019-04-27",
+                "data":  {
+                    "prescription" : ["RVMHD01PrescriptionDocument3.json"]
+                }
+            },
+            { 
+                "capturedOn": "2019-05-21",
+                "data":  {
+                    "prescription" : ["RVMHD01PrescriptionDocument4.json"]
+                }
+            }
+        ],
+        "NCP9999" : [
+            { 
+                "capturedOn": "2019-01-01",
+                "data":  {
+                    "prescription" : ["NCP1007PrescriptionDocument1.json"]
+                }
+            },
+            { 
+                "capturedOn": "2019-01-02",
+                "data":  {
+                    "prescription" : ["NCP1007PrescriptionDocument2.json"],
+                    "diagnosticreport" : ["NCP1007DiagnosticReportDocument.json"],
+                    "medicationrequest" : [],
+                    "dischargesummary" : []
+                }
+            },
+            { 
+                "capturedOn": "2019-01-03",
+                "data":  {
+                    "prescription" : ["NCP1007PrescriptionDocument3.json"],
+                    "diagnosticreport" : ["NCP1007DiagnosticReportDocument1.json"]
+                }
+            },
+            { 
+                "capturedOn": "2019-02-03",
+                "data":  {
+                    "observation" : [],
+                    "condition" : [],
+                    "diagnosticreport" : [],
+                    "medicationrequest" : [],
+                    "dischargesummary" : ["NCP1007DischargeSummary1.json"]
+                }
+            },
+            { 
+                "capturedOn": "2019-10-03",
+                "data":  {
+                    "observation" : [],
+                    "condition" : [],
+                    "diagnosticreport" : [],
+                    "medicationrequest" : [],
+                    "dischargesummary" : ["NCP1007DischargeSummary2.json"]
+                }
+            }
+        ]
     }
 }
