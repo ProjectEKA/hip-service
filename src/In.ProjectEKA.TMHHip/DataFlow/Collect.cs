@@ -57,43 +57,58 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                     }
                     case HiType.MedicationRequest:
                     {
-                        if (tmhPatientData.Prescriptions != null && tmhPatientData.Prescriptions.Count > 0)
+                        if (tmhPatientData.Prescriptions != null && tmhPatientData.Prescriptions.Any())
                         {
                             var medicationResponse =
                                 FindMedicationRequestData(dataRequest, tmhPatientData.Prescriptions, patientName)
-                                    .Result;
-                            var serializeObject = JsonConvert.SerializeObject(medicationResponse,
-                                new JsonSerializerSettings
-                                {
-                                    Formatting = Formatting.Indented,
-                                    ContractResolver = new CamelCasePropertyNamesContractResolver()
-                                });
-                            var careBundle = new CareBundle(caseId, parser.Parse<Bundle>(serializeObject));
-                            careBundles.Add(careBundle);
+                                    .GetAwaiter().GetResult();
+                            if (medicationResponse.HasValue)
+                            {
+                                var serializeObject = JsonConvert.SerializeObject(
+                                    medicationResponse.ValueOr((MedicationResponse) null),
+                                    new JsonSerializerSettings
+                                    {
+                                        Formatting = Formatting.Indented,
+                                        ContractResolver = new CamelCasePropertyNamesContractResolver()
+                                    });
+                                var careBundle = new CareBundle(caseId, parser.Parse<Bundle>(serializeObject));
+                                careBundles.Add(careBundle);
+                            }
                         }
 
                         break;
                     }
                     case HiType.Condition:
                     {
-                        if (tmhPatientData.SwellingSymptomsData != null &&
-                            tmhPatientData.SwellingSymptomsData.Count > 0)
+                        if (tmhPatientData.SwellingSymptomsData != null && tmhPatientData.SwellingSymptomsData.Any())
                         {
                             var symptomResponse = FetchSwellingSymptomData(dataRequest,
-                                tmhPatientData.SwellingSymptomsData, patientName).Result;
-                            var serializeObject = JsonConvert.SerializeObject(symptomResponse,
-                                new JsonSerializerSettings
-                                {
-                                    Formatting = Formatting.Indented,
-                                    ContractResolver = new CamelCasePropertyNamesContractResolver()
-                                });
-                            var careBundle = new CareBundle(caseId, parser.Parse<Bundle>(serializeObject));
-                            careBundles.Add(careBundle);
+                                tmhPatientData.SwellingSymptomsData, patientName).GetAwaiter().GetResult();
+                            if (symptomResponse.HasValue)
+                            {
+                                var serializeObject = JsonConvert.SerializeObject(
+                                    symptomResponse.ValueOr((ConditionResponse) null),
+                                    new JsonSerializerSettings
+                                    {
+                                        Formatting = Formatting.Indented,
+                                        ContractResolver = new CamelCasePropertyNamesContractResolver()
+                                    });
+                                var careBundle = new CareBundle(caseId, parser.Parse<Bundle>(serializeObject));
+                                careBundles.Add(careBundle);
+                            }
                         }
 
                         break;
                     }
                     case HiType.DiagnosticReport:
+                        break;
+                    case HiType.Medication:
+                        break;
+                    case HiType.DocumentReference:
+                        break;
+                    case HiType.Prescription:
+                        break;
+                    case HiType.DischargeSummary:
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -104,7 +119,8 @@ namespace In.ProjectEKA.TMHHip.DataFlow
             return Option.Some(entries);
         }
 
-        private IEnumerable<CareBundle> ProcessObservationsData(DataRequest dataRequest, PatientData tmhPatientData,
+        private static IEnumerable<CareBundle> ProcessObservationsData(DataRequest dataRequest,
+            PatientData tmhPatientData,
             string patientName)
         {
             var careBundles = new List<CareBundle>();
@@ -116,46 +132,70 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                 ContractResolver = new CamelCasePropertyNamesContractResolver()
             };
 
-            if (tmhPatientData.ClinicalNotes != null && tmhPatientData.ClinicalNotes.Count > 0)
+            if (tmhPatientData.ClinicalNotes != null && tmhPatientData.ClinicalNotes.Any())
             {
+                var clinicalNotes = FetchClinicalNotes(dataRequest, tmhPatientData.ClinicalNotes, patientName)
+                    .GetAwaiter().GetResult();
+                if (clinicalNotes.HasValue)
+                {
+                    var serializeObject = JsonConvert.SerializeObject(clinicalNotes.ValueOr((ObservationResponse) null),
+                        jsonSerializerSettings);
+                    var careBundle = new CareBundle(caseId, parser.Parse<Bundle>(serializeObject));
+                    careBundles.Add(careBundle);
+                }
+            }
+
+            if (tmhPatientData.AllergiesData != null && tmhPatientData.AllergiesData.Any())
+            {
+                var allergiesData =
+                    FetchAllergiesData(dataRequest, tmhPatientData.AllergiesData, patientName).GetAwaiter().GetResult();
+                if (allergiesData.HasValue)
+                {
+                    var serializeObject = JsonConvert.SerializeObject(
+                        allergiesData.ValueOr((ObservationResponse) null),
+                        jsonSerializerSettings);
+                    var careBundle = new CareBundle(caseId, parser.Parse<Bundle>(serializeObject));
+                    careBundles.Add(careBundle);
+                }
+            }
+
+            if (tmhPatientData.AbdomenExaminationsData != null && tmhPatientData.AbdomenExaminationsData.Any())
+            {
+                var abdomenExaminationsData = FetchAbdomenExaminationData(dataRequest,
+                    tmhPatientData.AbdomenExaminationsData, patientName).GetAwaiter().GetResult();
+                if (abdomenExaminationsData.HasValue)
+                {
+                    var serializeObject =
+                        JsonConvert.SerializeObject(abdomenExaminationsData.ValueOr((ObservationResponse) null),
+                            jsonSerializerSettings);
+                    var careBundle = new CareBundle(caseId, parser.Parse<Bundle>(serializeObject));
+                    careBundles.Add(careBundle);
+                }
+            }
+
+            if (tmhPatientData.OralCavityExaminationsData != null && tmhPatientData.OralCavityExaminationsData.Any())
+            {
+                var oralCavityExaminationsData = FetchOralCavityExaminationsData(dataRequest,
+                    tmhPatientData.OralCavityExaminationsData, patientName).GetAwaiter().GetResult();
+                if (oralCavityExaminationsData.HasValue)
+                {
+                    var serializeObject = JsonConvert.SerializeObject(
+                        oralCavityExaminationsData.ValueOr((ObservationResponse) null),
+                        jsonSerializerSettings
+                    );
+                    var careBundle = new CareBundle(caseId, parser.Parse<Bundle>(serializeObject));
+                    careBundles.Add(careBundle);
+                }
+            }
+
+            if (tmhPatientData.SurgeryHistories == null || !tmhPatientData.SurgeryHistories.Any()) return careBundles;
+            {
+                var surgeryHistoriesData =
+                    FetchSurgeryHistoryData(dataRequest, tmhPatientData.SurgeryHistories, patientName).GetAwaiter()
+                        .GetResult();
+                if (!surgeryHistoriesData.HasValue) return careBundles;
                 var serializeObject = JsonConvert.SerializeObject(
-                    FetchClinicalNotes(dataRequest, tmhPatientData.ClinicalNotes, patientName).Result,
-                    jsonSerializerSettings);
-                var careBundle = new CareBundle(caseId, parser.Parse<Bundle>(serializeObject));
-                careBundles.Add(careBundle);
-            }
-
-            if (tmhPatientData.AllergiesData != null && tmhPatientData.AllergiesData.Count > 0)
-            {
-                var serializeObject = JsonConvert.SerializeObject(
-                    FetchAllergiesData(dataRequest, tmhPatientData.AllergiesData, patientName).Result,
-                    jsonSerializerSettings);
-                var careBundle = new CareBundle(caseId, parser.Parse<Bundle>(serializeObject));
-                careBundles.Add(careBundle);
-            }
-
-            if (tmhPatientData.AbdomenExaminationsData != null && tmhPatientData.AbdomenExaminationsData.Count > 0)
-            {
-                var serializeObject = JsonConvert.SerializeObject(FetchAbdomenExaminationData(dataRequest,
-                    tmhPatientData.AbdomenExaminationsData, patientName).Result, jsonSerializerSettings);
-                var careBundle = new CareBundle(caseId, parser.Parse<Bundle>(serializeObject));
-                careBundles.Add(careBundle);
-            }
-
-            if (tmhPatientData.OralCavityExaminationsData != null &&
-                tmhPatientData.OralCavityExaminationsData.Count > 0)
-            {
-                var serializeObject = JsonConvert.SerializeObject(FetchOralCavityExaminationsData(dataRequest,
-                        tmhPatientData.OralCavityExaminationsData, patientName).Result, jsonSerializerSettings
-                );
-                var careBundle = new CareBundle(caseId, parser.Parse<Bundle>(serializeObject));
-                careBundles.Add(careBundle);
-            }
-
-            if (tmhPatientData.SurgeryHistories != null && tmhPatientData.SurgeryHistories.Count > 0)
-            {
-                var serializeObject = JsonConvert.SerializeObject(
-                    FetchSurgeryHistoryData(dataRequest, tmhPatientData.SurgeryHistories, patientName).Result,
+                    surgeryHistoriesData.ValueOr((ObservationResponse) null),
                     jsonSerializerSettings);
                 var careBundle = new CareBundle(caseId, parser.Parse<Bundle>(serializeObject));
                 careBundles.Add(careBundle);
@@ -194,7 +234,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
         }
 
 
-        private async Task<MedicationResponse> FindMedicationRequestData(DataRequest dataRequest,
+        private static async Task<Option<MedicationResponse>> FindMedicationRequestData(DataRequest dataRequest,
             List<Prescription> prescriptions, string patientName)
         {
             LogDataRequest(dataRequest);
@@ -242,6 +282,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                 list.Add(medicationRepresentation);
             }
 
+            if (!list.Any()) return Option.None<MedicationResponse>();
             var medicationResponse = new MedicationResponse
             {
                 Entry = list,
@@ -249,36 +290,26 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                 ResourceType = "Bundle",
                 Type = "collection"
             };
-            return medicationResponse;
+            return Option.Some(medicationResponse);
         }
 
-        private async Task<ObservationResponse> FetchClinicalNotes(DataRequest dataRequest,
+        private static async Task<Option<ObservationResponse>> FetchClinicalNotes(DataRequest dataRequest,
             List<ClinicalNote> clinicalNotes, string patientName)
         {
             LogDataRequest(dataRequest);
             var uuid = Uuid.Generate().Value;
             var id = uuid.Split(":").Last();
-            var observations = new List<ObservationRepresentation>();
-
-            foreach (var clinicalNote in clinicalNotes)
-            {
-                if (!WithinRange(dataRequest.DateRange, clinicalNote.CreatedDate))
-                {
-                    continue;
-                }
-
-                var observationRepresentation = new ObservationRepresentation
+            var observations = (from clinicalNote in clinicalNotes
+                where WithinRange(dataRequest.DateRange, clinicalNote.CreatedDate)
+                select new ObservationRepresentation
                 {
                     FullUrl = uuid,
-                    Resource = new Resource(HiType.Observation, id, "final",
-                        new Code("Clinical notes"),
+                    Resource = new Resource(HiType.Observation, id, "final", new Code("Clinical notes"),
                         new Subject(patientName), new List<Performer> {new Performer(clinicalNote.UserName)},
-                        clinicalNote.CreatedDate,
-                        clinicalNote.Note),
-                };
-                observations.Add(observationRepresentation);
-            }
+                        clinicalNote.CreatedDate, clinicalNote.Note),
+                }).ToList();
 
+            if (!observations.Any()) return Option.None<ObservationResponse>();
             var observationResponse = new ObservationResponse
             {
                 Entry = observations,
@@ -286,40 +317,30 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                 ResourceType = "Bundle",
                 Type = "collection"
             };
-            return observationResponse;
+            return Option.Some(observationResponse);
         }
 
-        private async Task<ConditionResponse> FetchSwellingSymptomData(DataRequest dataRequest,
+        private static async Task<Option<ConditionResponse>> FetchSwellingSymptomData(DataRequest dataRequest,
             List<SwellingSymptomData> swellingSymptomsData, string patientName)
         {
             LogDataRequest(dataRequest);
             var uuid = Uuid.Generate().Value;
             var id = uuid.Split(":").Last();
-            var conditions = new List<ICondition>();
-
-            foreach (var swellingSymptomData in swellingSymptomsData)
-            {
-                if (!WithinRange(dataRequest.DateRange, swellingSymptomData.RecordedDate))
-                {
-                    continue;
-                }
-
-                var conditionRepresentation = new ConditionRepresentation
+            var conditions = (from swellingSymptomData in swellingSymptomsData
+                where WithinRange(dataRequest.DateRange, swellingSymptomData.RecordedDate)
+                select new ConditionRepresentation
                 {
                     FullUrl = uuid,
-                    Resource = new ConditionResource(HiType.Condition, id,
-                        new Code("Symptoms of Swelling"),
-                        new Subject(patientName),
-                        swellingSymptomData.RecordedDate,
+                    Resource = new ConditionResource(HiType.Condition, id, new Code("Symptoms of Swelling"),
+                        new Subject(patientName), swellingSymptomData.RecordedDate,
                         new List<Note>
                         {
                             new Note(swellingSymptomData.SwellingSite), new Note(swellingSymptomData.SwellingLtrl),
                             new Note(swellingSymptomData.SwellingSize)
                         }),
-                };
-                conditions.Add(conditionRepresentation);
-            }
+                }).Cast<ICondition>().ToList();
 
+            if (!conditions.Any()) return Option.None<ConditionResponse>();
             var conditionResponse = new ConditionResponse
             {
                 Entry = conditions,
@@ -327,36 +348,26 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                 ResourceType = "Bundle",
                 Type = "collection"
             };
-            return conditionResponse;
+            return Option.Some(conditionResponse);
         }
 
-        private async Task<ObservationResponse> FetchAllergiesData(DataRequest dataRequest,
+        private static async Task<Option<ObservationResponse>> FetchAllergiesData(DataRequest dataRequest,
             List<AllergyData> allergiesData, string patientName)
         {
             LogDataRequest(dataRequest);
             var uuid = Uuid.Generate().Value;
             var id = uuid.Split(":").Last();
-            var observations = new List<ObservationRepresentation>();
-
-            foreach (var allergyData in allergiesData)
-            {
-                if (!WithinRange(dataRequest.DateRange, allergyData.AllergyDate))
-                {
-                    continue;
-                }
-
-                var observationRepresentation = new ObservationRepresentation
+            var observations = (from allergyData in allergiesData
+                where WithinRange(dataRequest.DateRange, allergyData.AllergyDate)
+                select new ObservationRepresentation
                 {
                     FullUrl = uuid,
-                    Resource = new Resource(HiType.Observation, id, "final",
-                        new Code("Allergies"),
-                        new Subject(patientName),
-                        allergyData.AllergyDate,
-                        allergyData.Allergies, new List<Note> {new Note(allergyData.AllergyRemark)}),
-                };
-                observations.Add(observationRepresentation);
-            }
+                    Resource = new Resource(HiType.Observation, id, "final", new Code("Allergies"),
+                        new Subject(patientName), allergyData.AllergyDate, allergyData.Allergies,
+                        new List<Note> {new Note(allergyData.AllergyRemark)}),
+                }).ToList();
 
+            if (!observations.Any()) return Option.None<ObservationResponse>();
             var observationResponse = new ObservationResponse
             {
                 Entry = observations,
@@ -364,34 +375,26 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                 ResourceType = "Bundle",
                 Type = "collection"
             };
-            return observationResponse;
+            return Option.Some(observationResponse);
         }
 
-        private async Task<ObservationResponse> FetchAbdomenExaminationData(DataRequest dataRequest,
+        private static async Task<Option<ObservationResponse>> FetchAbdomenExaminationData(DataRequest dataRequest,
             List<AbdomenExaminationData> abdomenExaminationsData, string patientName)
         {
             LogDataRequest(dataRequest);
             var uuid = Uuid.Generate().Value;
             var id = uuid.Split(":").Last();
-            var observations = new List<ObservationRepresentation>();
-
-            foreach (var abdomenExaminationData in abdomenExaminationsData)
-            {
-                if (!WithinRange(dataRequest.DateRange, abdomenExaminationData.EffectiveDateTime))
-                {
-                    continue;
-                }
-
-                var observationRepresentation = new ObservationRepresentation
+            var observations = (from abdomenExaminationData in abdomenExaminationsData
+                where WithinRange(dataRequest.DateRange, abdomenExaminationData.EffectiveDateTime)
+                select new ObservationRepresentation
                 {
                     FullUrl = uuid,
-                    Resource = new Resource(HiType.Observation, id, "final",
-                        new Code("Examination notes for Abdomen"), new Subject(patientName),
-                        abdomenExaminationData.EffectiveDateTime, abdomenExaminationData.CAbdomen),
-                };
-                observations.Add(observationRepresentation);
-            }
+                    Resource = new Resource(HiType.Observation, id, "final", new Code("Examination notes for Abdomen"),
+                        new Subject(patientName), abdomenExaminationData.EffectiveDateTime,
+                        abdomenExaminationData.CAbdomen),
+                }).ToList();
 
+            if (!observations.Any()) return Option.None<ObservationResponse>();
             var observationResponse = new ObservationResponse
             {
                 Entry = observations,
@@ -399,35 +402,27 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                 ResourceType = "Bundle",
                 Type = "collection"
             };
-            return observationResponse;
+            return Option.Some(observationResponse);
         }
 
-        private async Task<ObservationResponse> FetchSurgeryHistoryData(DataRequest dataRequest,
+        private static async Task<Option<ObservationResponse>> FetchSurgeryHistoryData(DataRequest dataRequest,
             List<SurgeryHistory> surgeryHistories, string patientName)
         {
             LogDataRequest(dataRequest);
             var uuid = Uuid.Generate().Value;
             var id = uuid.Split(":").Last();
-            var observations = new List<ObservationRepresentation>();
-            foreach (var surgeryHistory in surgeryHistories)
-            {
-                if (!WithinRange(dataRequest.DateRange, surgeryHistory.SurgeryWhen))
-                {
-                    continue;
-                }
-
-                var observationRepresentation = new ObservationRepresentation
+            var observations = (from surgeryHistory in surgeryHistories
+                where WithinRange(dataRequest.DateRange, surgeryHistory.SurgeryWhen)
+                select new ObservationRepresentation
                 {
                     FullUrl = uuid,
-                    Resource = new Resource(HiType.Observation, id, "final",
-                        new Code("Past history of surgery"), new Subject(patientName),
-                        new List<Performer> {new Performer(surgeryHistory.HospitalDtls)},
+                    Resource = new Resource(HiType.Observation, id, "final", new Code("Past history of surgery"),
+                        new Subject(patientName), new List<Performer> {new Performer(surgeryHistory.HospitalDtls)},
                         surgeryHistory.SurgeryWhen, surgeryHistory.SurgeryDtls,
                         new List<Note> {new Note(surgeryHistory.SurgeryRemarks)}),
-                };
-                observations.Add(observationRepresentation);
-            }
+                }).ToList();
 
+            if (!observations.Any()) return Option.None<ObservationResponse>();
             var observationResponse = new ObservationResponse
             {
                 Entry = observations,
@@ -435,10 +430,10 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                 ResourceType = "Bundle",
                 Type = "collection"
             };
-            return observationResponse;
+            return Option.Some(observationResponse);
         }
 
-        private async Task<ObservationResponse> FetchOralCavityExaminationsData(DataRequest dataRequest,
+        private static async Task<Option<ObservationResponse>> FetchOralCavityExaminationsData(DataRequest dataRequest,
             List<OralCavityExaminationData> oralCavityExaminationsData, string patientName)
         {
             LogDataRequest(dataRequest);
@@ -480,6 +475,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                 observations.Add(new OralCavityExaminationObservationRepresention(buccalmcsaResource));
             }
 
+            if (!observations.Any()) return Option.None<ObservationResponse>();
             var oralCavityExmResponse = new ObservationResponse
             {
                 Entry = observations,
@@ -487,7 +483,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                 ResourceType = "Bundle",
                 Type = "collection"
             };
-            return oralCavityExmResponse;
+            return Option.Some(oralCavityExmResponse);
         }
 
         private async Task<PatientData> FetchPatientData(
