@@ -171,6 +171,45 @@
                 }
             },
             { 
+                "capturedOn": "2019-08-01",
+                "data":  {
+                    "prescription" : ["NCP1008PrescriptionDoc20190801.json"]
+                    
+                }
+            },
+            { 
+                "capturedOn": "2019-08-03",
+                "data":  {
+                    "prescription" : ["NCP1008PrescriptionDoc20190803.json"]
+                    
+                }
+            },
+            { 
+                "capturedOn": "2019-08-05",
+                "data":  {
+                    "prescription" : ["NCP1008PrescriptionDoc20190805.json"]
+                    
+                }
+            },
+            { 
+                "capturedOn": "2019-10-01",
+                "data":  {
+                    "diagnosticreport" : ["NCP1008DiagnosticReportDoc20191001.json"]
+                }
+            },
+            { 
+                "capturedOn": "2019-10-03",
+                "data":  {
+                    "diagnosticreport" : ["NCP1008DiagnosticReportDoc20191003.json"]
+                }
+            },
+            { 
+                "capturedOn": "2019-10-05",
+                "data":  {
+                    "diagnosticreport" : ["NCP1008DiagnosticReportDoc20191005.json"]
+                }
+            },
+            { 
                 "capturedOn": "2019-12-24",
                 "data":  {
                     "documentreference" : ["NCP1008FourthVisitDocumentReference.json"]
