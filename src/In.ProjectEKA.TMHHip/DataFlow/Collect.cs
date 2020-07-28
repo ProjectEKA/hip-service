@@ -188,12 +188,16 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                 }
             }
 
-            if (tmhPatientData.SurgeryHistories == null || !tmhPatientData.SurgeryHistories.Any()) return careBundles;
+            if (tmhPatientData.SurgeryHistories != null && tmhPatientData.SurgeryHistories.Any())
             {
                 var surgeryHistoriesData =
                     FetchSurgeryHistoryData(dataRequest, tmhPatientData.SurgeryHistories, patientName).GetAwaiter()
                         .GetResult();
-                if (!surgeryHistoriesData.HasValue) return careBundles;
+                if (!surgeryHistoriesData.HasValue)
+                {
+                    return careBundles;
+                }
+
                 var serializeObject = JsonConvert.SerializeObject(
                     surgeryHistoriesData.ValueOr((ObservationResponse) null),
                     jsonSerializerSettings);
@@ -282,7 +286,11 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                 list.Add(medicationRepresentation);
             }
 
-            if (!list.Any()) return Option.None<MedicationResponse>();
+            if (!list.Any())
+            {
+                return Option.None<MedicationResponse>();
+            }
+
             var medicationResponse = new MedicationResponse
             {
                 Entry = list,
@@ -309,7 +317,11 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                         clinicalNote.CreatedDate, clinicalNote.Note),
                 }).ToList();
 
-            if (!observations.Any()) return Option.None<ObservationResponse>();
+            if (!observations.Any())
+            {
+                return Option.None<ObservationResponse>();
+            }
+
             var observationResponse = new ObservationResponse
             {
                 Entry = observations,
@@ -340,7 +352,11 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                         }),
                 }).Cast<ICondition>().ToList();
 
-            if (!conditions.Any()) return Option.None<ConditionResponse>();
+            if (!conditions.Any())
+            {
+                return Option.None<ConditionResponse>();
+            }
+
             var conditionResponse = new ConditionResponse
             {
                 Entry = conditions,
@@ -367,7 +383,11 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                         new List<Note> {new Note(allergyData.AllergyRemark)}),
                 }).ToList();
 
-            if (!observations.Any()) return Option.None<ObservationResponse>();
+            if (!observations.Any())
+            {
+                return Option.None<ObservationResponse>();
+            }
+
             var observationResponse = new ObservationResponse
             {
                 Entry = observations,
@@ -394,7 +414,11 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                         abdomenExaminationData.CAbdomen),
                 }).ToList();
 
-            if (!observations.Any()) return Option.None<ObservationResponse>();
+            if (!observations.Any())
+            {
+                return Option.None<ObservationResponse>();
+            }
+
             var observationResponse = new ObservationResponse
             {
                 Entry = observations,
@@ -422,7 +446,11 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                         new List<Note> {new Note(surgeryHistory.SurgeryRemarks)}),
                 }).ToList();
 
-            if (!observations.Any()) return Option.None<ObservationResponse>();
+            if (!observations.Any())
+            {
+                return Option.None<ObservationResponse>();
+            }
+
             var observationResponse = new ObservationResponse
             {
                 Entry = observations,
@@ -475,7 +503,11 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                 observations.Add(new OralCavityExaminationObservationRepresention(buccalmcsaResource));
             }
 
-            if (!observations.Any()) return Option.None<ObservationResponse>();
+            if (!observations.Any())
+            {
+                return Option.None<ObservationResponse>();
+            }
+
             var oralCavityExmResponse = new ObservationResponse
             {
                 Entry = observations,
