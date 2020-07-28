@@ -1,36 +1,36 @@
 {
-    "RVH/NCC-1701" : {
-        "SC1701" : [
+    "RVH/WBH-1702" : {
+        "WBH-1701" : [
             { 
                 "capturedOn": "2018-02-02",
                 "data":  {
-                    "diagnosticreport" : ["SC1701FirstVisitDiagnosticReport.json"]
+                    "diagnosticreport" : ["WBH1701FirstVisitDiagnosticReport.json"]
                 }
             }
         ],
-        "NCP1006" : [
+        "WBCP1006" : [
             { 
                 "capturedOn": "2019-06-01",
                 "data":  {
-                    "diagnosticreport" : ["NCP1006FirstVisitDiagnosticReports.json"]
+                    "diagnosticreport" : ["WBCP1006FirstVisitDiagnosticReports.json"]
                 }
             },
             { 
                 "capturedOn": "2019-06-02",
                 "data":  {
-                    "diagnosticreport" : ["NCP1006SecondVisitDiagnosticRepots.json"]
+                    "diagnosticreport" : ["WBCP1006SecondVisitDiagnosticRepots.json"]
                 }
             },
             { 
                 "capturedOn": "2019-06-04",
                 "data":  {
-                    "diagnosticreport" : ["NCP1006DiagnosticReportWithRadiologyImageInline.json"]
+                    "diagnosticreport" : ["WBCP1006DiagnosticReportWithRadiologyImageInline.json"]
                 }
             }
         ]
     },
-    "RVH1002" : {
-        "RV-MHD-01.17.0024" : [
+    "RVH/WBH-1002" : {
+        "WB-MHD-01.17.0024" : [
             { 
                 "capturedOn": "2019-04-02",
                 "data":  {
@@ -56,18 +56,18 @@
                 }
             }
         ],
-        "NCP1007" : [
+        "WBCP-1007" : [
             { 
                 "capturedOn": "2019-01-01",
                 "data":  {
-                    "prescription" : ["NCP1007PrescriptionDocument1.json"]
+                    "prescription" : ["WBCP1007PrescriptionDocument1.json"]
                 }
             },
             { 
                 "capturedOn": "2019-01-02",
                 "data":  {
-                    "prescription" : ["NCP1007PrescriptionDocument2.json"],
-                    "diagnosticreport" : ["NCP1007DiagnosticReportDocument.json"],
+                    "prescription" : ["WBCP1007PrescriptionDocument2.json"],
+                    "diagnosticreport" : ["WBCP1007DiagnosticReportDocument.json"],
                     "medicationrequest" : [],
                     "dischargesummary" : []
                 }
@@ -75,8 +75,8 @@
             { 
                 "capturedOn": "2019-01-03",
                 "data":  {
-                    "prescription" : ["NCP1007PrescriptionDocument3.json"],
-                    "diagnosticreport" : ["NCP1007DiagnosticReportDocument1.json"]
+                    "prescription" : ["WBCP1007PrescriptionDocument3.json"],
+                    "diagnosticreport" : ["WBCP1007DiagnosticReportDocument1.json"]
                 }
             },
             { 
@@ -86,7 +86,7 @@
                     "condition" : [],
                     "diagnosticreport" : [],
                     "medicationrequest" : [],
-                    "dischargesummary" : ["NCP1007DischargeSummary1.json"]
+                    "dischargesummary" : ["WBCP1007DischargeSummary1.json"]
                 }
             },
             { 
@@ -96,13 +96,13 @@
                     "condition" : [],
                     "diagnosticreport" : [],
                     "medicationrequest" : [],
-                    "dischargesummary" : ["NCP1007DischargeSummary2.json"]
+                    "dischargesummary" : ["WBCP1007DischargeSummary2.json"]
                 }
             }
         ]
     },
-    "RVH1003" : {
-        "BI-KTH-12.05.0024" : [
+    "RVH/WBH-10003" : {
+        "WB-KTH-12.05.0024" : [
             { 
                 "capturedOn": "2018-02-02",
                 "data":  {
@@ -113,50 +113,50 @@
                 }
             }
         ],
-        "NCP1008" : [
+        "WBCP1008" : [
             { 
                 "capturedOn": "2019-06-01",
                 "data":  {
-                    "observation" : ["NCP1008FirstVisitObservations.json"],
-                    "condition" : ["NCP1008FirstVisitCondition.json"]
+                    "observation" : ["WBCP1008FirstVisitObservations.json"],
+                    "condition" : ["WBCP1008FirstVisitCondition.json"]
                 }
             },
             { 
                 "capturedOn": "2019-06-02",
                 "data":  {
-                    "diagnosticreport" : ["NCP1008FirstVisitDiagnosticReport.json"]
+                    "diagnosticreport" : ["WBCP1008FirstVisitDiagnosticReport.json"]
                 }
             },
             { 
                 "capturedOn": "2019-06-04",
                 "data":  {
-                    "diagnosticreport" : ["NCP1008DiagnosticReportWithRadiologyImageInline.json"]
+                    "diagnosticreport" : ["WBCP1008DiagnosticReportWithRadiologyImageInline.json"]
                 }
             },
             { 
                 "capturedOn": "2019-12-24",
                 "data":  {
-                    "documentreference" : ["NCP1008FourthVisitDocumentReference.json"]
+                    "documentreference" : ["WBCP1008FourthVisitDocumentReference.json"]
                 }
             },
             { 
                 "capturedOn": "2020-01-01",
                 "data":  {
-                    "prescription" : ["NCP1008FifthVisitPrescription.json"]
+                    "prescription" : ["WBCP1008FifthVisitPrescription.json"]
                 }
             },
             { 
                 "capturedOn": "2020-02-15",
                 "data":  {
-                    "observation" : ["NCP1008SecondVisitObsWithMembers.json"],
-                    "medicationrequest" : ["NCP1008SecondVisitMedications.json"],
-                    "diagnosticreport" : ["NCP1008SecondVisitDiagnosticReport.json"]
+                    "observation" : ["WBCP1008SecondVisitObsWithMembers.json"],
+                    "medicationrequest" : ["WBCP1008SecondVisitMedications.json"],
+                    "diagnosticreport" : ["WBCP1008SecondVisitDiagnosticReport.json"]
                 }
             }
         ]
     },
-    "RVH1004" : {
-        "NCP10091" : [
+    "RVH/WBH-1004" : {
+        "WBCP10091" : [
             { 
                 "capturedOn": "2018-02-02",
                 "data":  {
@@ -168,7 +168,7 @@
                 }
             }
         ],
-        "NCP10092" : [
+        "WBCP10092" : [
             { 
                 "capturedOn": "2019-06-01",
                 "data":  {
@@ -190,7 +190,7 @@
                 }
             }
         ],
-        "NCP10093" : [
+        "WBCP10093" : [
             { 
                 "capturedOn": "2018-02-02",
                 "data":  {
@@ -203,8 +203,8 @@
             }
         ]
     },
-    "RVH1005" : {
-        "NCP1031" : [
+    "RVH/WNH-1005" : {
+        "WBCP1031" : [
             { 
                 "capturedOn": "2019-06-01",
                 "data":  {
@@ -227,8 +227,8 @@
             }
         ]
     },
-    "RVH1012" : {
-        "RV-MHD-01.17.3112" : [
+    "RVH/WBH-1012" : {
+        "RV-WBH-01.17.3112" : [
             { 
                 "capturedOn": "2019-04-02",
                 "data":  {
@@ -254,18 +254,18 @@
                 }
             }
         ],
-        "NCP9999" : [
+        "WBCP9999" : [
             { 
                 "capturedOn": "2019-01-01",
                 "data":  {
-                    "prescription" : ["NCP1007PrescriptionDocument1.json"]
+                    "prescription" : ["WBCP1007PrescriptionDocument1.json"]
                 }
             },
             { 
                 "capturedOn": "2019-01-02",
                 "data":  {
-                    "prescription" : ["NCP1007PrescriptionDocument2.json"],
-                    "diagnosticreport" : ["NCP1007DiagnosticReportDocument.json"],
+                    "prescription" : ["WBCP1007PrescriptionDocument2.json"],
+                    "diagnosticreport" : ["WBCP1007DiagnosticReportDocument.json"],
                     "medicationrequest" : [],
                     "dischargesummary" : []
                 }
@@ -273,8 +273,8 @@
             { 
                 "capturedOn": "2019-01-03",
                 "data":  {
-                    "prescription" : ["NCP1007PrescriptionDocument3.json"],
-                    "diagnosticreport" : ["NCP1007DiagnosticReportDocument1.json"]
+                    "prescription" : ["WBCP1007PrescriptionDocument3.json"],
+                    "diagnosticreport" : ["WBCP1007DiagnosticReportDocument1.json"]
                 }
             },
             { 
@@ -284,7 +284,7 @@
                     "condition" : [],
                     "diagnosticreport" : [],
                     "medicationrequest" : [],
-                    "dischargesummary" : ["NCP1007DischargeSummary1.json"]
+                    "dischargesummary" : ["WBCP1007DischargeSummary1.json"]
                 }
             },
             { 
@@ -294,7 +294,7 @@
                     "condition" : [],
                     "diagnosticreport" : [],
                     "medicationrequest" : [],
-                    "dischargesummary" : ["NCP1007DischargeSummary2.json"]
+                    "dischargesummary" : ["WBCP1007DischargeSummary2.json"]
                 }
             }
         ]
