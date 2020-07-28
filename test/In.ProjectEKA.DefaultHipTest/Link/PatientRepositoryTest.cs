@@ -13,7 +13,7 @@ namespace In.ProjectEKA.DefaultHipTest.Link
         [Fact]
         private void ReturnPatient()
         {
-            const string patientReferenceNumber = "RVH/WBH-1002";
+            const string patientReferenceNumber = "RVH/WBH-10002";
             var testPatient = new Patient
             {
                 PhoneNumber = "+91-7777777777",
@@ -22,7 +22,7 @@ namespace In.ProjectEKA.DefaultHipTest.Link
                 Name = "Navjot Singh",
                 CareContexts = new []
                 {
-                    new CareContextRepresentation("WBCP1007", "National Cancer program"),
+                    new CareContextRepresentation("WBCP1007", "Well Being Cancer program"),
                     new CareContextRepresentation("WB-MHD-01.17.0024", "Dept of Psychiatry - Episode 1"),
                 },
                 YearOfBirth = 2001
