@@ -47,7 +47,7 @@ namespace In.ProjectEKA.DefaultHipTest.DataFlow
                 "sometext");
 
             var entries = await collect.CollectData(dataRequest);
-            entries.ValueOrDefault().CareBundles.Count().Should().Be(10);
+            entries.ValueOrDefault().CareBundles.Count().Should().Be(16);
         }
 
         [Fact]
@@ -82,7 +82,7 @@ namespace In.ProjectEKA.DefaultHipTest.DataFlow
                 "sometext");
 
             var entries = await collect.CollectData(dataRequest);
-            entries.ValueOrDefault().CareBundles.Count().Should().Be(11);
+            entries.ValueOrDefault().CareBundles.Count().Should().Be(17);
         }
     }
 }
