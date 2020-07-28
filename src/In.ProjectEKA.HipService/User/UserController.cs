@@ -16,10 +16,11 @@ namespace In.ProjectEKA.HipService.User
         private readonly GatewayClient gatewayClient;
         private readonly ILogger<UserController> logger;
 
-        public UserController(IBackgroundJobClient backgroundJob, GatewayClient gatewayClient)
+        public UserController(IBackgroundJobClient backgroundJob, GatewayClient gatewayClient,  ILogger<UserController> logger)
         {
             this.backgroundJob = backgroundJob;
             this.gatewayClient = gatewayClient;
+            this.logger = logger;
         }
 
         [HttpPost(Constants.AUTH_CONFIRM)]
