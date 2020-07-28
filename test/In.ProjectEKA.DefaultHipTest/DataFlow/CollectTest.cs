@@ -22,8 +22,8 @@ namespace In.ProjectEKA.DefaultHipTest.DataFlow
             const string consentManagerId = "ConsentManagerId";
             var grantedContexts = new List<GrantedContext>
             {
-                new GrantedContext("RVH1003", "BI-KTH-12.05.0024"),
-                new GrantedContext("RVH1003", "NCP1008")
+                new GrantedContext("RVH/WBH-10003", "WB-KTH-12.05.0024"),
+                new GrantedContext("RVH/WBH-10003", "WBCP1008")
             };
             var dateRange = new DateRange("2017-12-01T15:43:00.000+0000", "2020-03-31T15:43:19.279+0000");
             var hiTypes = new List<HiType>
@@ -57,8 +57,8 @@ namespace In.ProjectEKA.DefaultHipTest.DataFlow
             const string consentManagerId = "ConsentManagerId";
             var grantedContexts = new List<GrantedContext>
             {
-                new GrantedContext("RVH1002", "NCP1007"),
-                new GrantedContext("RVH1002", "RV-MHD-01.17.0024")
+                new GrantedContext("RVH/WBH-1002", "WBCP1007"),
+                new GrantedContext("RVH/WBH-1002", "WB-MHD-01.17.0024")
             };
             var dateRange = new DateRange("2017-12-01T15:43:00.000+0000", "2020-03-31T15:43:19.279+0000");
             var hiTypes = new List<HiType>
