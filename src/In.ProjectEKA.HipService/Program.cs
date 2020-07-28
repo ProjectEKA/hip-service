@@ -8,6 +8,8 @@
     using Microsoft.Extensions.DependencyInjection;
     using Serilog;
     using Serilog.Exceptions;
+    using Serilog.Formatting.Compact;
+    using Serilog.Sinks.SystemConsole.Themes;
 
     public class Program
     {
@@ -20,7 +22,7 @@
             {
                 throw new ArgumentNullException(nameof(host));
             }
-            
+
             Log.Logger = CreateLogger(host);
             try
             {
@@ -38,6 +40,7 @@
                 Log.CloseAndFlush();
             }
         }
+
         private static ILogger CreateLogger(IWebHost host) =>
             new LoggerConfiguration()
                 .Enrich.FromLogContext()
@@ -46,8 +49,8 @@
                 .Enrich.WithProperty("Environment", Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"))
                 .ReadFrom.Configuration(host.Services.GetRequiredService<IConfiguration>())
                 .CreateLogger();
-                
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
+
+        private static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             return WebHost.CreateDefaultBuilder(args)
                 .UseSerilog()
