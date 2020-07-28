@@ -266,17 +266,17 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\RVMHD01PrescriptionDocument1.json">
+    <Content Include="Resources\WBCP1007PrescriptionDoc20190405.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <CopyToPublishDirectory>Always</CopyToPublishDirectory>
-      <Link>RVMHD01PrescriptionDocument1.json</Link>
+      <Link>WBCP1007PrescriptionDoc20190405.json</Link>
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\RVMHD01PrescriptionDocument2.json">
+    <Content Include="Resources\WBCP1007PrescriptionDoc20190403.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <CopyToPublishDirectory>Always</CopyToPublishDirectory>
-      <Link>RVMHD01PrescriptionDocument2.json</Link>
+      <Link>WBCP1007PrescriptionDoc20190403.json</Link>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -291,6 +291,139 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <CopyToPublishDirectory>Always</CopyToPublishDirectory>
       <Link>RVMHD01PrescriptionDocument4.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\WBCP1008PrescriptionDoc20191201.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>WBCP1008PrescriptionDoc20191201.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\WBCP1008PrescriptionDoc20191203.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>WBCP1008PrescriptionDoc20191203.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\WBCP1008PrescriptionDoc20191205.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>WBCP1008PrescriptionDoc20191205.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\WBCP1008PrescriptionDoc20191207.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>WBCP1008PrescriptionDoc20191207.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\WBCP1008PrescriptionDoc20191209.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>WBCP1008PrescriptionDoc20191209.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\WBCP1008PrescriptionDoc20191211.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>WBCP1008PrescriptionDoc20191211.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\WBCP1008PrescriptionDoc20191213.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>WBCP1008PrescriptionDoc20191213.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\WBCP1008PrescriptionDoc20191215.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>WBCP1008PrescriptionDoc20191215.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\WBCP1008DiagnosticReportDoc20200103.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>WBCP1008DiagnosticReportDoc20200103.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\WBCP1008DiagnosticReportDoc20200105.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>WBCP1008DiagnosticReportDoc20200105.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\WBCP1008DiagnosticReportDoc20200107.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>WBCP1008DiagnosticReportDoc20200107.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\WBCP1007DiagnosticReportDoc20200103.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>WBCP1007DiagnosticReportDoc20200103.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\WBCP1007DiagnosticReportDoc20200105.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>WBCP1007DiagnosticReportDoc20200105.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\WBCP1007DiagnosticReportDoc20200107.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>WBCP1007DiagnosticReportDoc20200107.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\WBCP1007PrescriptionDoc20191103.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>WBCP1007PrescriptionDoc20191103.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\WBCP1007PrescriptionDoc20191105.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>WBCP1007PrescriptionDoc20191105.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\WBCP1007PrescriptionDoc20191107.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>WBCP1007PrescriptionDoc20191107.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\WBCP1007PrescriptionDoc20191109.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>WBCP1007PrescriptionDoc20191109.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\WBCP1007PrescriptionDoc20191111.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>WBCP1007PrescriptionDoc20191111.json</Link>
     </Content>
   </ItemGroup>
 </Project>
