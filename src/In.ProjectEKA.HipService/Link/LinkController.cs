@@ -1,4 +1,7 @@
 // ReSharper disable MemberCanBePrivate.Global
+
+using In.ProjectEKA.HipService.Link.Model;
+
 namespace In.ProjectEKA.HipService.Link
 {
     using System;
@@ -126,6 +129,25 @@ namespace In.ProjectEKA.HipService.Link
             {
                 Log.Error(exception, exception.StackTrace);
             }
+        }
+        
+        [HttpPost(PATH_ON_LINK_ADD_CONTEXTS)]
+        public AcceptedResult LinkFor(LinkCareContextResultRequest request)
+        {
+            Log.Information("Link Care Context Result Request received." +
+                            $" RequestId:{request.RequestId}, " +
+                            $" Timestamp:{request.Timestamp},");
+            if (request.Error != null)
+            {
+                Log.Information($" Error Code:{request.Error.Code}," +
+                                $" Error Message:{request.Error.Message},");
+            }
+            else if (request.Acknowledgement != null)
+            {
+                Log.Information($" Acknowledgement Status:{request.Acknowledgement.Status},");
+            }
+            Log.Information($" Resp RequestId:{request.Resp.RequestId}");
+            return Accepted();
         }
     }
 }
