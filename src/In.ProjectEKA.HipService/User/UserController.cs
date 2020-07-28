@@ -6,6 +6,7 @@ namespace In.ProjectEKA.HipService.User
     using Gateway;
     using Hangfire;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Logging;
     using Newtonsoft.Json.Linq;
 
     [ApiController]
@@ -13,6 +14,7 @@ namespace In.ProjectEKA.HipService.User
     {
         private readonly IBackgroundJobClient backgroundJob;
         private readonly GatewayClient gatewayClient;
+        private readonly ILogger<UserController> logger;
 
         public UserController(IBackgroundJobClient backgroundJob, GatewayClient gatewayClient)
         {
@@ -44,7 +46,7 @@ namespace In.ProjectEKA.HipService.User
         [NonAction]
         public async Task OnAuthConfirmFor(JObject request)
         {
-            Console.Write(request);
+            logger.LogInformation(LogEvents.AuthOnConfirm, "Response received: {Request} ",request.ToString());
         }
         
     }
