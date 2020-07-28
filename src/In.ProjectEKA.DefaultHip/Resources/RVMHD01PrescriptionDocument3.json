@@ -1,0 +1,276 @@
+{
+    "resourceType": "Bundle",
+    "id": "8fd6565d-fccc-487a-8b06-c5a3c40c86d8",
+    "meta": {
+      "lastUpdated": "2019-04-27T15:32:26.605+05:30"
+    },
+    "timestamp": "2019-04-27T15:32:26.605+05:30",
+    "identifier": {
+      "system": "https://www.max.in/bundle",
+      "value": "8fd6565d-fccc-487a-8b06-c5a3c40c86d8"
+    },
+    "type": "document",
+    "entry": [
+      {
+        "fullUrl": "Composition/RVHMHD01PR3",
+        "resource": {
+          "resourceType": "Composition",
+          "id": "RVHMHD01PR3",
+          "date": "2019-04-27T15:32:26.605+05:30",
+          "meta": {
+            "versionId": "1",
+            "lastUpdated": "2019-04-27T15:32:26.605+05:30"
+          },
+          "text": {
+            "status": "generated",
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Prescription report</div>"
+          },
+          "identifier": {
+            "system": "https://www.max.in/composition",
+            "value": "10072PR2"
+          },
+          "status": "final",
+          "type": {
+            "coding": [
+              {
+                "system": "https://projecteka.in/sct",
+                "code": "440545006",
+                "display": "Prescription record"
+              }
+            ],
+            "text": "Prescription record"
+          },
+          "subject": {
+            "reference": "Patient/RVHMHD01"
+          },
+          "author": [
+            {
+              "reference": "Practitioner/31"
+            }
+          ],
+          "title": "Prescription record",
+          "section": [
+            {
+              "title": "Prescription record",
+              "code": {
+                "coding": [
+                  {
+                    "system": "https://projecteka.in/sct",
+                    "code": "440545006",
+                    "display": "Prescription record"
+                  }
+                ]
+              },
+              "entry": [
+                {
+                  "reference": "MedicationRequest/31"
+                },
+                {
+                  "reference": "MedicationRequest/32"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "fullUrl": "Patient/RVHMHD01",
+        "resource": {
+          "resourceType": "Patient",
+          "id": "RVHMHD01",
+          "meta": {
+            "versionId": "1",
+            "lastUpdated": "2019-04-27T14:58:58.181+05:30"
+          },
+          "text": {
+            "status": "generated",
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Navjot Singh, 19 year, female</div>"
+          },
+          "identifier": [
+            {
+              "system": "https://www.max.in/PHRID",
+              "value": "navjot@ncg"
+            }
+          ],
+          "name": [
+            {
+              "text": "Navjot Singh"
+            }
+          ],
+          "telecom": [
+            {
+              "system": "phone",
+              "value": "+919818512600",
+              "use": "home"
+            }
+          ],
+          "gender": "female",
+          "birthDate": "2001-01-01"
+        }
+      },
+      {
+        "fullUrl": "Practitioner/31",
+        "resource": {
+          "resourceType": "Practitioner",
+          "id": "31",
+          "meta": {
+            "versionId": "1",
+            "lastUpdated": "2019-04-27T14:58:58.181+05:30"
+          },
+          "text": {
+            "status": "generated",
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Dr. Parkash Sathe, MD (Medicine)</div>"
+          },
+          "identifier": [
+            {
+              "system": "https://www.max.in/DigiDoc",
+              "value": "7601003178999"
+            }
+          ],
+          "name": [
+            {
+              "text": "Prakash P Seth"
+            }
+          ]
+        }
+      },
+      {
+        "fullUrl": "MedicationRequest/31",
+        "resource": {
+          "id": "31",
+          "resourceType": "MedicationRequest",
+          "subject": {
+            "reference": "Patient/RVHMHD01",
+            "display": "Navjot Singh"
+          },
+          "status": "active",
+          "intent": "order",
+          "requester": {
+            "reference": "Practitioner/31",
+            "display": "Prakash P"
+          },
+          "medicationCodeableConcept": {
+              "coding": [
+                {
+                  "system": "https://projecteka.in/sct",
+                  "code": "324252006",
+                  "display": "Albendazole 400"
+                }
+              ]
+          },
+          "authoredOn": "2019-04-27",
+          "dosageInstruction": [
+            {
+              "text": "Two tablets at once",
+              "additionalInstruction": [
+                {
+                  "coding": [
+                    {
+                      "system": "https://projecteka.in/sct",
+                      "code": "311504000",
+                      "display": "With or after food"
+                    }
+                  ]
+                }
+              ],
+              "timing": {
+                "repeat": {
+                  "frequency": 1,
+                  "period": 1,
+                  "periodUnit": "d"
+                }
+              },
+              "route": {
+                "coding": [
+                  {
+                    "system": "https://projecteka.in/sct",
+                    "code": "26643006",
+                    "display": "Oral Route"
+                  }
+                ]
+              },
+              "method": {
+                "coding": [
+                  {
+                    "system": "https://projecteka.in/sct",
+                    "code": "421521009",
+                    "display": "Swallow"
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      {
+          "fullUrl": "MedicationRequest/32",
+          "resource": {
+            "id": "32",  
+            "resourceType": "MedicationRequest",
+            "subject": {
+              "reference": "Patient/RVHMHD01",
+              "display": "Navjot Singh"
+            },
+            "status": "active",
+            "intent": "order",
+            "requester": {
+              "reference": "Practitioner/31",
+              "display": "Praksah P"
+            },
+            "medicationReference": {
+              "reference": "Medication/c2b8f3fd-6da0-44ed-bc91-8bb05ff614d2",
+              "display": "Azythral 500mg Antibiotics "
+            },
+            "authoredOn": "2019-04-27",
+            "dosageInstruction": [
+              {
+                "text": "Take one tablets orally with or after meal twice a day, 8 hours gap. 1-0-1"
+              }
+            ],
+            "reasonReference": [{
+              "reference": "Condition/1"
+            }]
+          }
+      },
+      {
+          "fullUrl": "Medication/c2b8f3fd-6da0-44ed-bc91-8bb05ff614d2",
+          "resource": {
+            "resourceType": "Medication",
+            "id": "c2b8f3fd-6da0-44ed-bc91-8bb05ff614d2",
+            "code": {
+              "coding": [
+                {
+                  "system": "http://hl7.org/fhir/sid/ndc",
+                  "code": "76388-713-25",
+                  "display": "Azythral 500mg"
+                }
+              ]
+            }
+          }
+      },
+      {
+        "fullUrl": "Condition/1",
+        "resource": {
+          "resourceType": "Condition",
+          "id": "1",
+          "text": {
+            "status": "generated",
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Abdominal pain on 19 Dec 2018</div>"
+          },
+          "subject": {
+            "reference": "Patient/RVHMHD01"
+          },
+          "code": {
+            "coding": [
+              {
+                "system": "https://projecteka.in/sct",
+                "code": "21522001",
+                "display": "Abdominal pain"
+              }
+            ],
+            "text": "Abdominal pain"
+          }
+        }
+      }
+    ]
+}

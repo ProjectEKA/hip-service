@@ -32,15 +32,66 @@
     "RVH1002" : {
         "RV-MHD-01.17.0024" : [
             { 
-                "capturedOn": "2018-02-02",
+                "capturedOn": "2019-04-02",
                 "data":  {
-                    "observation" : [],
-                    "condition" : [],
-                    "diagnosticreport" : [],
-                    "medicationrequest" : [],
-                    "dischargesummary" : []
+                    "prescription" : ["RVMHD01PrescriptionDocument1.json"]
+                }
+            },
+            { 
+                "capturedOn": "2019-04-15",
+                "data":  {
+                    "prescription" : ["RVMHD01PrescriptionDocument2.json"]
+                }
+            },
+            { 
+                "capturedOn": "2019-04-27",
+                "data":  {
+                    "prescription" : ["RVMHD01PrescriptionDocument3.json"]
+                }
+            },
+            { 
+                "capturedOn": "2019-05-21",
+                "data":  {
+                    "prescription" : ["RVMHD01PrescriptionDocument4.json"]
+                }
+            },
+            { 
+                "capturedOn": "2019-06-01",
+                "data":  {
+                    "prescription" : ["RVMHD01PrescriptionDoc06012019.json"]
+                }
+            },
+            { 
+                "capturedOn": "2019-06-03",
+                "data":  {
+                    "prescription" : ["RVMHD01PrescriptionDoc06032019.json"]
+                }
+            },
+            { 
+                "capturedOn": "2019-06-05",
+                "data":  {
+                    "prescription" : ["RVMHD01PrescriptionDoc06052019.json"]
+                }
+            },
+            { 
+                "capturedOn": "2019-06-07",
+                "data":  {
+                    "prescription" : ["RVMHD01PrescriptionDoc06072019.json"]
+                }
+            },
+            { 
+                "capturedOn": "2019-06-09",
+                "data":  {
+                    "prescription" : ["RVMHD01PrescriptionDoc06092019.json"]
+                }
+            },
+            { 
+                "capturedOn": "2019-08-01",
+                "data":  {
+                    "prescription" : ["RVMHD01PrescriptionDoc08012019.json"]
                 }
             }
+
         ],
         "NCP1007" : [
             { 
@@ -73,6 +124,16 @@
                     "diagnosticreport" : [],
                     "medicationrequest" : [],
                     "dischargesummary" : ["NCP1007DischargeSummary1.json"]
+                }
+            },
+            { 
+                "capturedOn": "2019-10-03",
+                "data":  {
+                    "observation" : [],
+                    "condition" : [],
+                    "diagnosticreport" : [],
+                    "medicationrequest" : [],
+                    "dischargesummary" : ["NCP1007DischargeSummary2.json"]
                 }
             }
         ]
@@ -107,6 +168,45 @@
                 "capturedOn": "2019-06-04",
                 "data":  {
                     "diagnosticreport" : ["NCP1008DiagnosticReportWithRadiologyImageInline.json"]
+                }
+            },
+            { 
+                "capturedOn": "2019-08-01",
+                "data":  {
+                    "prescription" : ["NCP1008PrescriptionDoc20190801.json"]
+                    
+                }
+            },
+            { 
+                "capturedOn": "2019-08-03",
+                "data":  {
+                    "prescription" : ["NCP1008PrescriptionDoc20190803.json"]
+                    
+                }
+            },
+            { 
+                "capturedOn": "2019-08-05",
+                "data":  {
+                    "prescription" : ["NCP1008PrescriptionDoc20190805.json"]
+                    
+                }
+            },
+            { 
+                "capturedOn": "2019-10-01",
+                "data":  {
+                    "diagnosticreport" : ["NCP1008DiagnosticReportDoc20191001.json"]
+                }
+            },
+            { 
+                "capturedOn": "2019-10-03",
+                "data":  {
+                    "diagnosticreport" : ["NCP1008DiagnosticReportDoc20191003.json"]
+                }
+            },
+            { 
+                "capturedOn": "2019-10-05",
+                "data":  {
+                    "diagnosticreport" : ["NCP1008DiagnosticReportDoc20191005.json"]
                 }
             },
             { 
@@ -199,6 +299,78 @@
                     "diagnosticreport" : [],
                     "medicationrequest" : [],
                     "dischargesummary" : []
+                }
+            }
+        ]
+    },
+    "RVH1012" : {
+        "RV-MHD-01.17.3112" : [
+            { 
+                "capturedOn": "2019-04-02",
+                "data":  {
+                    "prescription" : ["RVMHD01PrescriptionDocument1.json"]
+                }
+            },
+            { 
+                "capturedOn": "2019-04-15",
+                "data":  {
+                    "prescription" : ["RVMHD01PrescriptionDocument2.json"]
+                }
+            },
+            { 
+                "capturedOn": "2019-04-27",
+                "data":  {
+                    "prescription" : ["RVMHD01PrescriptionDocument3.json"]
+                }
+            },
+            { 
+                "capturedOn": "2019-05-21",
+                "data":  {
+                    "prescription" : ["RVMHD01PrescriptionDocument4.json"]
+                }
+            }
+        ],
+        "NCP9999" : [
+            { 
+                "capturedOn": "2019-01-01",
+                "data":  {
+                    "prescription" : ["NCP1007PrescriptionDocument1.json"]
+                }
+            },
+            { 
+                "capturedOn": "2019-01-02",
+                "data":  {
+                    "prescription" : ["NCP1007PrescriptionDocument2.json"],
+                    "diagnosticreport" : ["NCP1007DiagnosticReportDocument.json"],
+                    "medicationrequest" : [],
+                    "dischargesummary" : []
+                }
+            },
+            { 
+                "capturedOn": "2019-01-03",
+                "data":  {
+                    "prescription" : ["NCP1007PrescriptionDocument3.json"],
+                    "diagnosticreport" : ["NCP1007DiagnosticReportDocument1.json"]
+                }
+            },
+            { 
+                "capturedOn": "2019-02-03",
+                "data":  {
+                    "observation" : [],
+                    "condition" : [],
+                    "diagnosticreport" : [],
+                    "medicationrequest" : [],
+                    "dischargesummary" : ["NCP1007DischargeSummary1.json"]
+                }
+            },
+            { 
+                "capturedOn": "2019-10-03",
+                "data":  {
+                    "observation" : [],
+                    "condition" : [],
+                    "diagnosticreport" : [],
+                    "medicationrequest" : [],
+                    "dischargesummary" : ["NCP1007DischargeSummary2.json"]
                 }
             }
         ]
