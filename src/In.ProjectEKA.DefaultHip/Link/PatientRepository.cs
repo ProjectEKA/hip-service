@@ -30,7 +30,7 @@ namespace In.ProjectEKA.DefaultHip.Link
                 return Option.None<Patient>();
             }
         }
-
+        
         private IEnumerable<Patient> All()
         {
             var patientsInfo = FileReader.ReadJson(filePath);
