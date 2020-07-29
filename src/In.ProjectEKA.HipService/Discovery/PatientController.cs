@@ -1,16 +1,16 @@
-﻿using static In.ProjectEKA.HipService.Common.Constants;
-
-namespace In.ProjectEKA.HipService.Discovery
+﻿namespace In.ProjectEKA.HipService.Discovery
 {
     using System;
-    using System.Threading.Tasks;
+    using Common;
     using Gateway;
     using Gateway.Model;
     using Hangfire;
     using HipLibrary.Patient.Model;
-    using Logger;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Logging;
+    using Task = System.Threading.Tasks.Task;
+    using static Common.Constants;
 
     [Authorize]
     [ApiController]
@@ -19,19 +19,23 @@ namespace In.ProjectEKA.HipService.Discovery
         private readonly PatientDiscovery patientDiscovery;
         private readonly GatewayClient gatewayClient;
         private readonly IBackgroundJobClient backgroundJob;
+        private readonly ILogger<CareContextDiscoveryController> logger;
 
         public CareContextDiscoveryController(PatientDiscovery patientDiscovery,
             GatewayClient gatewayClient,
-            IBackgroundJobClient backgroundJob)
+            IBackgroundJobClient backgroundJob, ILogger<CareContextDiscoveryController> logger)
         {
             this.patientDiscovery = patientDiscovery;
             this.gatewayClient = gatewayClient;
             this.backgroundJob = backgroundJob;
+            this.logger = logger;
         }
 
         [HttpPost(PATH_CARE_CONTEXTS_DISCOVER)]
         public AcceptedResult DiscoverPatientCareContexts(DiscoveryRequest request)
         {
+            logger.LogInformation(LogEvents.Discovery, "discovery request received for {Id} with {RequestId}",
+                request.Patient.Id, request.RequestId);
             backgroundJob.Enqueue(() => GetPatientCareContext(request));
             return Accepted();
         }
@@ -46,7 +50,6 @@ namespace In.ProjectEKA.HipService.Discovery
                 var patientId = request.Patient.Id;
                 var cmSuffix = patientId.Substring(
                     patientId.LastIndexOf("@", StringComparison.Ordinal) + 1);
-
                 var gatewayDiscoveryRepresentation = new GatewayDiscoveryRepresentation(
                     response?.Patient,
                     Guid.NewGuid(),
@@ -54,11 +57,15 @@ namespace In.ProjectEKA.HipService.Discovery
                     request.TransactionId, //TODO: should be reading transactionId from contract
                     error?.Error,
                     new Resp(request.RequestId));
+                logger.LogInformation(LogEvents.Discovery,
+                    "Response about to be send for {RequestId} with {@Patient}",
+                    request.RequestId,
+                    response?.Patient);
                 await gatewayClient.SendDataToGateway(PATH_ON_DISCOVER, gatewayDiscoveryRepresentation, cmSuffix);
             }
             catch (Exception exception)
             {
-                Log.Error(exception, exception.StackTrace);
+                logger.LogError(LogEvents.Discovery, exception, "Error happened for {RequestId}", request.RequestId);
             }
         }
     }
