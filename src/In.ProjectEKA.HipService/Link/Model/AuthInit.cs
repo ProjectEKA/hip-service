@@ -4,7 +4,7 @@ namespace In.ProjectEKA.HipService.Link.Model
 
     public class AuthInit
     {
-        public String TransactionId { get; }
+        public string TransactionId { get; }
         public AuthType AuthType { get; }
         public Meta Meta { get; }
         
