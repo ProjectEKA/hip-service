@@ -1,5 +1,4 @@
 // ReSharper disable MemberCanBePrivate.Global
-
 namespace In.ProjectEKA.HipService.Link
 {
     using System;
@@ -89,10 +88,8 @@ namespace In.ProjectEKA.HipService.Link
                 {
                     linkedPatientRepresentation = linkReferenceResponse.Link;
                 }
-
-                linkedPatientRepresentation.Meta.CommunicationHint =
+                linkedPatientRepresentation.Meta.CommunicationHint = 
                     new MaskingUtility().MaskMobileNumber(linkedPatientRepresentation.Meta.CommunicationHint);
-
                 var response = new GatewayLinkResponse(
                     linkedPatientRepresentation,
                     error?.Error,
@@ -136,7 +133,6 @@ namespace In.ProjectEKA.HipService.Link
                 Log.Error(exception, exception.StackTrace);
             }
         }
-
         private LinkEnquiry GetUnmaskedLinkEnquiry(LinkEnquiry linkEnquiry)
         {
             var maskingUtility = new MaskingUtility();
@@ -144,8 +140,9 @@ namespace In.ProjectEKA.HipService.Link
             {
                 careContextEnquiry.ReferenceNumber = maskingUtility.UnmaskData(careContextEnquiry.ReferenceNumber);
             }
-
             return linkEnquiry;
         }
+        
+           
     }
 }
