@@ -5,7 +5,7 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
         public string CommunicationMedium { get; }
 
         public string CommunicationHint { get; }
-        
+
         public string CommunicationExpiry { get; }
 
 
