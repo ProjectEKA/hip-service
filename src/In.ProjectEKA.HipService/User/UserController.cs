@@ -31,9 +31,9 @@ namespace In.ProjectEKA.HipService.User
         }
 
         [HttpPost(Constants.ON_AUTH_CONFIRM)]
-        public AcceptedResult OnAuthConfirm(JObject request)
+        public AcceptedResult OnAuthConfirm(JObject response)
         {
-            backgroundJob.Enqueue(() => OnAuthConfirmFor(request));
+            backgroundJob.Enqueue(() => OnAuthConfirmFor(response));
             return Accepted();
         }
         
@@ -45,9 +45,18 @@ namespace In.ProjectEKA.HipService.User
         }
 
         [NonAction]
-        public async Task OnAuthConfirmFor(JObject request)
+        public async Task OnAuthConfirmFor(JObject response)
         {
-            logger.LogInformation(LogEvents.AuthOnConfirm, "Response received: {Request} ",request.ToString());
+            var authOnConfirmResponse = response.ToObject<AuthOnConfirmResponse>();
+            if (authOnConfirmResponse.Error == null)
+            {
+                logger.LogInformation($"Access Token is: {authOnConfirmResponse.Auth.AccessToken}");
+            }
+            else
+            {
+                logger.LogInformation($" Error Code:{authOnConfirmResponse.Error.Code}," +
+                                      $" Error Message:{authOnConfirmResponse.Error.Message}");
+            }
         }
         
     }
