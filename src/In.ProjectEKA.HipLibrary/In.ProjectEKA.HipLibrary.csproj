@@ -11,4 +11,7 @@
         <PackageReference Include="System.Text.Json" Version="4.7.2" />
         <PackageReference Include="Optional" Version="4.0.0" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Validation\" />
+    </ItemGroup>
 </Project>

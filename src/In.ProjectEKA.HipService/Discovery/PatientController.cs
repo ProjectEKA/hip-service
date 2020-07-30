@@ -47,8 +47,13 @@ namespace In.ProjectEKA.HipService.Discovery
         [Consumes("application/json")]
         [Produces("application/json")]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
-        public AcceptedResult DiscoverPatientCareContexts([FromBody, BindRequired] DiscoveryRequest request)
+        public ActionResult DiscoverPatientCareContexts([FromBody, BindRequired] DiscoveryRequest request)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             backgroundJob.Enqueue(() => GetPatientCareContext(request));
             return Accepted();
         }

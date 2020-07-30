@@ -6,13 +6,13 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
     {
         public string Identifier { get; set; }
 
-        public Gender Gender { get; set; }
+        public Gender? Gender { get; set; }
 
         public string PhoneNumber { get; set; }
 
         public string Name { get; set; }
 
-        public ushort YearOfBirth { get; set; }
+        public ushort? YearOfBirth { get; set; }
 
         public IEnumerable<CareContextRepresentation> CareContexts { get; set; }
 

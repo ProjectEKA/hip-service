@@ -35,6 +35,7 @@ namespace In.ProjectEKA.HipService.Discovery
         {
             if (await AlreadyExists(request.TransactionId))
             {
+                Log.Information($"Discovery Request already exists for {request.TransactionId}.");
                 return (null,
                     new ErrorRepresentation(new Error(ErrorCode.DuplicateDiscoveryRequest, "Discovery Request already exists")));
             }
@@ -52,6 +53,8 @@ namespace In.ProjectEKA.HipService.Discovery
             var linkedCareContexts = linkedAccounts.ToList();
             if (HasAny(linkedCareContexts))
             {
+                Log.Information($"Found already linked care contexts for transaction {request.TransactionId}.");
+
                 return await patientRepository.PatientWith(linkedCareContexts.First().PatientReferenceNumber)
                     .Map(async patient =>
                     {
@@ -71,6 +74,7 @@ namespace In.ProjectEKA.HipService.Discovery
                 DiscoveryUseCase.DiscoverPatient(Filter.Do(patients, request).AsQueryable());
             if (patientEnquiryRepresentation == null)
             {
+                Log.Information($"No matching unique patient found for transaction {request.TransactionId}.", error);
                 return (null, error);
             }
 

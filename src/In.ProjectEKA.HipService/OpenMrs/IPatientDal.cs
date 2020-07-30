@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Hl7.Fhir.Model;
-using Patient = Hl7.Fhir.Model.Patient;
 
 namespace In.ProjectEKA.HipService.OpenMrs
 {

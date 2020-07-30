@@ -61,4 +61,8 @@
         <ProjectReference Include="..\In.ProjectEKA.HipLibrary\In.ProjectEKA.HipLibrary.csproj" />
     </ItemGroup>
     
+    <ItemGroup>
+      <Folder Include="OpenMrs\" />
+      <Folder Include="OpenMrs\Mappings\" />
+    </ItemGroup>
 </Project>

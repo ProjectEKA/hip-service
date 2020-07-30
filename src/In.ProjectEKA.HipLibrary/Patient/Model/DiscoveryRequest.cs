@@ -1,5 +1,6 @@
 using System;
-
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 namespace In.ProjectEKA.HipLibrary.Patient.Model
 {
     public class DiscoveryRequest
@@ -8,6 +9,7 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
 
         public string RequestId { get; }
 
+        [Required, MaxLength(50)]
         public string TransactionId { get; }
 
         public DateTime Timestamp { get; }

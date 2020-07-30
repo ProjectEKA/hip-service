@@ -46,19 +46,19 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
         [Theory]
         [InlineData(Linda.Name, Linda.Sex, Linda.PhoneNumber, Linda.YearOfBirth, true)]
 
-        [InlineData(Linda.Name, Gender.O, null, 0, false)]
+        [InlineData(Linda.Name, null, null, 0, false)]
         [InlineData(null, Linda.Sex, Linda.PhoneNumber, Linda.YearOfBirth, false)]
         [InlineData(John.Name, Linda.Sex, Linda.PhoneNumber, Linda.YearOfBirth, false)]
 
         [InlineData(null, Linda.Sex, null, 0, false)]
         [InlineData(Linda.Name, John.Sex, Linda.PhoneNumber, Linda.YearOfBirth, false)]
 
-        [InlineData(null, Gender.O, Linda.PhoneNumber, 0, false)]
+        [InlineData(null, null, Linda.PhoneNumber, 0, false)]
 
-        [InlineData(null, Gender.O, null, Linda.YearOfBirth, false)]
+        [InlineData(null, null, null, Linda.YearOfBirth, false)]
         [InlineData(Linda.Name, Linda.Sex, Linda.PhoneNumber, John.YearOfBirth, false)]
         private void ShouldFilterAndReturnAPatientWithPartialDataRecordByFullDataRequest(
-            string recordedName, Gender recordedGender, string recordedPhoneNumber, ushort recordedYearOfBirth, bool isExpectedToMatch)
+            string recordedName, Gender? recordedGender, string recordedPhoneNumber, ushort recordedYearOfBirth, bool isExpectedToMatch)
         {
             var discoveryRequest = BuildDiscoveryRequest(Linda.Name, Linda.Sex, Linda.PhoneNumber, Linda.YearOfBirth);
             var patients = Patient().GenerateLazy(0).Append(BuildPatient(recordedName, recordedGender, recordedPhoneNumber, recordedYearOfBirth));
@@ -218,7 +218,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             return BuildPatient(Linda.Name, Linda.Sex, Linda.PhoneNumber, Linda.YearOfBirth);
         }
 
-        private Patient BuildPatient(string name, Gender gender, string phoneNumber, ushort yearOfBirth)
+        private Patient BuildPatient(string name, Gender? gender, string phoneNumber, ushort? yearOfBirth)
         {
             return Patient().Rules((_, patient) =>
             {

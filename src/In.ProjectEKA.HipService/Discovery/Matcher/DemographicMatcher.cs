@@ -38,8 +38,9 @@ namespace In.ProjectEKA.HipService.Discovery.Matcher
         private static Expression<Func<Patient, bool>> AgeExpression(ushort? yearOfBirth)
         {
             return patient => !yearOfBirth.HasValue
-                              || AgeGroupMatcher.IsMatching(AgeCalculator.From(yearOfBirth.Value),
-                                  AgeCalculator.From(patient.YearOfBirth));
+                              || (patient.YearOfBirth.HasValue
+                                    && AgeGroupMatcher.IsMatching(AgeCalculator.From(yearOfBirth.Value),
+                                    AgeCalculator.From(patient.YearOfBirth.Value)));
         }
     }
 }
