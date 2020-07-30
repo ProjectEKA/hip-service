@@ -151,5 +151,23 @@ namespace In.ProjectEKA.HipService.Link
             Log.Information($" Resp RequestId:{request.Resp.RequestId}");
             return Accepted();
         }
+
+        [HttpPost(PATH_ON_ADD_CONTEXTS)]
+        public AcceptedResult HipLinkOnAddContexts(HipLinkContextConfirmation confirmation) {
+            Log.Information("Link on-add-context received." +
+                            $" RequestId:{confirmation.RequestId}, " +
+                            $" Timestamp:{confirmation.Timestamp}");
+            if (confirmation.Error != null)
+            {
+                Log.Information($" Error Code:{confirmation.Error.Code}," +
+                                $" Error Message:{confirmation.Error.Message}");
+            }
+            else if (confirmation.Acknowledgement != null)
+            {
+                Log.Information($" Acknowledgment Status:{confirmation.Acknowledgement.Status}");
+            }
+            Log.Information($" Resp RequestId:{confirmation.Resp.RequestId}");
+            return Accepted();
+        }
     }
 }

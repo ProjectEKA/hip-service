@@ -15,7 +15,7 @@ namespace In.ProjectEKA.HipService.Common
         public const string ON_AUTH_CONFIRM = CURRENT_VERSION + "/users/auth/on-confirm";
         public const string AUTH_CONFIRM = CURRENT_VERSION + "/users/auth/confirm";
         public const string PATH_ON_AUTH_INIT = "/" + CURRENT_VERSION + "/users/auth/on-init";
-
+        public const string PATH_ON_ADD_CONTEXTS =  "/" + CURRENT_VERSION + "/links/link/on-add-contexts";
         public static readonly string PATH_ON_DISCOVER = "/" + CURRENT_VERSION + "/care-contexts/on-discover";
         public static readonly string PATH_ON_LINK_INIT = "/" + CURRENT_VERSION + "/links/link/on-init";
         public static readonly string PATH_ON_LINK_CONFIRM = "/" + CURRENT_VERSION + "/links/link/on-confirm";
