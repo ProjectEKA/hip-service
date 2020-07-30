@@ -13,12 +13,13 @@ namespace In.ProjectEKA.HipService.Common
         public const string PATH_HEALTH_INFORMATION_HIP_REQUEST = CURRENT_VERSION + "/health-information/hip/request";
         public const string PATH_HEART_BEAT = CURRENT_VERSION + "/heartbeat";
         public const string PATH_ON_AUTH_INIT = "/" + CURRENT_VERSION + "/users/auth/on-init";
-
+        public const string PATH_ON_ADD_CONTEXTS =  "/" + CURRENT_VERSION + "/links/link/on-add-contexts";
         public static readonly string PATH_ON_DISCOVER = "/" + CURRENT_VERSION + "/care-contexts/on-discover";
         public static readonly string PATH_ON_LINK_INIT = "/" + CURRENT_VERSION + "/links/link/on-init";
         public static readonly string PATH_ON_LINK_CONFIRM = "/" + CURRENT_VERSION + "/links/link/on-confirm";
         public static readonly string PATH_CONSENT_ON_NOTIFY = "/" + CURRENT_VERSION + "/consents/hip/on-notify";
         public static readonly string PATH_HEALTH_INFORMATION_ON_REQUEST = "/" + CURRENT_VERSION + "/health-information/hip/on-request";
         public static readonly string PATH_HEALTH_INFORMATION_NOTIFY_GATEWAY = "/" + CURRENT_VERSION + "/health-information/notify";
+        
     }
 }
