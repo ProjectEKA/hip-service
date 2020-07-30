@@ -41,7 +41,7 @@ namespace In.ProjectEKA.HipServiceTest.Gateway
                 DateTime.Now,
                 "transactionId",
                 null,
-                new Resp("requestId"));
+                new DiscoveryResponse("requestId", HttpStatusCode.OK, "uselessMessage"));
             var gatewayClient = new GatewayClient(httpClient, gatewayConfiguration);
             var definition = new {accessToken = "Whatever", tokenType = "Bearer"};
             var result = JsonConvert.SerializeObject(definition);
@@ -94,7 +94,7 @@ namespace In.ProjectEKA.HipServiceTest.Gateway
                 DateTime.Now,
                 "transactionId",
                 null,
-                new Resp("requestId"));
+                new DiscoveryResponse("requestId", HttpStatusCode.OK, "uselessMessage"));
             var gatewayClient = new GatewayClient(httpClient, gatewayConfiguration);
             handlerMock
                 .Protected()

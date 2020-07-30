@@ -11,7 +11,7 @@ namespace In.ProjectEKA.HipService.Discovery
     using In.ProjectEKA.HipService.Link.Model;
     using Logger;
 
-    public class PatientDiscovery
+    public class PatientDiscovery: IPatientDiscovery
     {
         private readonly IMatchingRepository matchingRepository;
         private readonly IDiscoveryRequestRepository discoveryRequestRepository;

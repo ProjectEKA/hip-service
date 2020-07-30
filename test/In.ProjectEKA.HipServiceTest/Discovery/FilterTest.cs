@@ -9,7 +9,6 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
     using Xunit;
     using static Builder.TestBuilders;
 
-
     [Collection("Patient Filter Tests")]
     public class FilterTest
     {
@@ -22,7 +21,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
         }
         private class John
         {
-            public const string Name = "John";
+            public const string Name = "John Doe";
             public const Gender Sex = Gender.M;
             public const string PhoneNumber = "11111111111";
             public const ushort YearOfBirth = 1994;
@@ -185,32 +184,17 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
 
         private DiscoveryRequest BuildDiscoveryRequest(string name, Gender? gender, string phoneNumber, ushort? yearOfBirth = null)
         {
-            var verifiedIdentifiers = Identifier()
-                   .GenerateLazy(0)
-                   .Select(builder => builder.Build())
-                   .Append(new IdentifierBuilder
-                   {
-                       Type = IdentifierType.MOBILE,
-                       Value = phoneNumber
-                   }.Build());
-            var unverifiedIdentifiers = Identifier()
-                .GenerateLazy(0)
-                .Select(builder => builder.Build())
-                .Append(new IdentifierBuilder
-                {
-                    Type = IdentifierType.MOBILE,
-                    Value = phoneNumber
-                }.Build());
-            return new DiscoveryRequest(
-                new PatientEnquiry(Faker().Random.Hash(),
-                    verifiedIdentifiers,
-                    unverifiedIdentifiers,
-                    name,
-                    gender,
-                    yearOfBirth),
-                Faker().Random.String(),
-                RandomString(),
-                DateTime.Now);
+            return new DiscoveryRequestPayloadBuilder()
+                .WithPatientId(Faker().Random.Hash())
+                .WithPatientName(name)
+                .WithPatientYearOfBirth(yearOfBirth)
+                .WithPatientGender(gender)
+                .WithRequestId(Faker().Random.String())
+                .WithVerifiedIdentifiers(IdentifierType.MOBILE, phoneNumber)
+                .WithUnverifiedIdentifiers(IdentifierType.MOBILE, phoneNumber)  
+                .WithTransactionId(RandomString())
+                .RequestedOn(DateTime.Now)
+                .Build();
         }
 
         private Patient BuildLinda()

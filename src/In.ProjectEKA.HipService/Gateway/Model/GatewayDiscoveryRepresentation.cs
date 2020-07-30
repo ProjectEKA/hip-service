@@ -10,14 +10,15 @@ namespace In.ProjectEKA.HipService.Gateway.Model
         public DateTime Timestamp { get; }
         public string TransactionId { get; }
         public Error Error { get; }
-        public Resp Resp { get; }
+        public DiscoveryResponse Resp { get; }
 
-        public GatewayDiscoveryRepresentation(PatientEnquiryRepresentation patient,
+        public GatewayDiscoveryRepresentation(
+            PatientEnquiryRepresentation patient,
             Guid requestId,
             DateTime timestamp,
             string transactionId,
             Error error,
-            Resp resp)
+            DiscoveryResponse resp)
         {
             Patient = patient;
             RequestId = requestId;

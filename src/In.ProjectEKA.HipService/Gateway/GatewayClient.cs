@@ -11,7 +11,12 @@ namespace In.ProjectEKA.HipService.Gateway
     using Newtonsoft.Json.Serialization;
     using Optional;
 
-    public class GatewayClient
+    public interface IGatewayClient
+    {
+        Task SendDataToGateway<T>(string urlPath, T response, string cmSuffix);
+    }
+    
+    public class GatewayClient: IGatewayClient
     {
         private readonly HttpClient httpClient;
         private readonly GatewayConfiguration configuration;

@@ -47,8 +47,8 @@
             var gatewayClient = new GatewayClient(httpClient, gatewayConfiguration);
 
             services
-                .AddScoped(provider => patientDiscovery)
-                .AddScoped(provider => gatewayClient)
+                .AddScoped<IPatientDiscovery, PatientDiscovery>(provider => patientDiscovery)
+                .AddScoped<IGatewayClient, GatewayClient>(provider => gatewayClient)
                 .AddScoped(provider => backgroundJobClient.Object)
                 .AddRouting(options => options.LowercaseUrls = true)
                 .AddControllers()

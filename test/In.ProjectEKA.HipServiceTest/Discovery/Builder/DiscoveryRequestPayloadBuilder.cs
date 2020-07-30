@@ -1,25 +1,35 @@
 ﻿namespace In.ProjectEKA.HipServiceTest.Discovery.Builder
 {
     using System;
+    using System.Collections.Generic;
     using System.Linq;
     using System.Net.Http;
     using System.Net.Mime;
     using System.Text;
-    using In.ProjectEKA.HipLibrary.Patient.Model;
+    using HipLibrary.Patient.Model;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
-
+    using static Builder.TestBuilders;
     public class DiscoveryRequestPayloadBuilder
     {
         string _requestId;
+        private DateTime _requestTime;
         string _transactionId;
         string _patientId;
         string _patientName;
         Gender? _patientGender;
+        ushort? _patientYearOfBirth;
+        IEnumerable<Identifier> _patientVerifiedIdentifiers;
+        IEnumerable<Identifier> _patientUnverifiedIdentifiers;
 
         public DiscoveryRequestPayloadBuilder WithRequestId()
         {
             _requestId = "3fa85f64 - 5717 - 4562 - b3fc - 2c963f66afa6";
+            return this;
+        }
+        public DiscoveryRequestPayloadBuilder WithRequestId(string requestId)
+        {
+            _requestId = requestId;
             return this;
         }
         public DiscoveryRequestPayloadBuilder WithTransactionId()
@@ -27,9 +37,25 @@
             _transactionId = "4fa85f64 - 5717 - 4562 - b3fc - 2c963f66afa6";
             return this;
         }
+        public DiscoveryRequestPayloadBuilder WithTransactionId(string transactionId)
+        {
+            _transactionId = transactionId;
+            return this;
+        }
+        public DiscoveryRequestPayloadBuilder FromUser(User user)
+        {
+            return WithPatientId(user.Id)
+                .WithPatientName(user.Name)
+                .WithPatientGender(user.Gender);
+        }
         public DiscoveryRequestPayloadBuilder WithPatientId()
         {
             _patientId = "<patient-id>@<consent-manager-id>";
+            return this;
+        }
+        public DiscoveryRequestPayloadBuilder WithPatientId(string userId)
+        {
+            _patientId = userId;
             return this;
         }
         public DiscoveryRequestPayloadBuilder WithPatientName()
@@ -37,9 +63,39 @@
             _patientName = "chandler bing";
             return this;
         }
+        public DiscoveryRequestPayloadBuilder WithPatientName(string userName)
+        {
+            _patientName = userName;
+            return this;
+        }
         public DiscoveryRequestPayloadBuilder WithPatientGender()
         {
             _patientGender = Gender.M;
+            return this;
+        }
+        public DiscoveryRequestPayloadBuilder WithPatientGender(Gender? userGender)
+        {
+            _patientGender = userGender;
+            return this;
+        }
+        public DiscoveryRequestPayloadBuilder WithPatientYearOfBirth(ushort? yearOfBirth)
+        {
+            _patientYearOfBirth = yearOfBirth;
+            return this;
+        }
+        public DiscoveryRequestPayloadBuilder WithVerifiedIdentifiers(IdentifierType type, string value)
+        {
+            _patientVerifiedIdentifiers = new List<Identifier> { new Identifier(type, value) };
+            return this;
+        }
+        public DiscoveryRequestPayloadBuilder WithUnverifiedIdentifiers(IdentifierType type, string value)
+        {
+            _patientUnverifiedIdentifiers = new List<Identifier> { new Identifier(type, value) };
+            return this;
+        }
+        public DiscoveryRequestPayloadBuilder RequestedOn(DateTime requestTime)
+        {
+            _requestTime = requestTime;
             return this;
         }
 
@@ -67,7 +123,18 @@
             return this;
         }
 
-        public StringContent Build()
+        public DiscoveryRequest Build()
+        {
+            return new DiscoveryRequest(
+                new PatientEnquiry(
+                    _patientId, _patientVerifiedIdentifiers, _patientUnverifiedIdentifiers,
+                    _patientName, _patientGender, _patientYearOfBirth),
+                _requestId,
+                _transactionId,
+                _requestTime);
+        }
+
+        public StringContent BuildSerializedFormat()
         {
             var requestObject = new DiscoveryRequest(
                 new PatientEnquiry(

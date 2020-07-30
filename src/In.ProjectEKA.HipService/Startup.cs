@@ -92,7 +92,7 @@ namespace In.ProjectEKA.HipService
                 .AddScoped<ILinkPatientRepository, LinkPatientRepository>()
                 .AddSingleton<IMatchingRepository, OpenMrsPatientMatchingRepository>()
                 .AddScoped<IDiscoveryRequestRepository, DiscoveryRequestRepository>()
-                .AddScoped<PatientDiscovery>()
+                .AddScoped<IPatientDiscovery, PatientDiscovery>()
                 .AddScoped<LinkPatient>()
                 .AddScoped<ReferenceNumberGenerator>()
                 .AddSingleton(Configuration)
@@ -109,6 +109,7 @@ namespace In.ProjectEKA.HipService
                 .AddSingleton(Configuration.GetSection("Gateway").Get<GatewayConfiguration>())
                 .AddSingleton(new GatewayClient(HttpClient,
                     Configuration.GetSection("Gateway").Get<GatewayConfiguration>()))
+                .AddScoped<IGatewayClient, GatewayClient>()
                 .AddSingleton(Configuration.GetSection("OpenMrs").Get<OpenMrsConfiguration>())
                 .AddSingleton(new OpenMrsClient(HttpClient,
                     Configuration.GetSection("OpenMrs").Get<OpenMrsConfiguration>()))
