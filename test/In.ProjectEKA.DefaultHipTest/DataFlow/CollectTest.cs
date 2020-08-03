@@ -34,7 +34,8 @@ namespace In.ProjectEKA.DefaultHipTest.DataFlow
                 HiType.MedicationRequest,
                 HiType.DocumentReference,
                 HiType.Prescription,
-                HiType.DischargeSummary
+                HiType.DischargeSummary,
+                HiType.OPConsultation
             };
             var dataRequest = new DataRequest(grantedContexts,
                 dateRange,
