@@ -143,7 +143,7 @@
             { 
                 "capturedOn": "2018-02-02",
                 "data":  {
-                    "opconsultation" : ["BI-KTH-12FirstVisitConditions.json"],
+                    "condition" : ["BI-KTH-12FirstVisitConditions.json"],
                     "diagnosticreport" : [],
                     "medicationrequest" : [],
                     "dischargesummary" : []
@@ -154,7 +154,8 @@
             { 
                 "capturedOn": "2019-06-01",
                 "data":  {
-                    "opconsultation" : ["NCP1008FirstVisitObservations.json","NCP1008FirstVisitCondition.json"]
+                    "observation" : ["NCP1008FirstVisitObservations.json"],
+                    "condition" : ["NCP1008FirstVisitCondition.json"]
                 }
             },
             { 
@@ -223,7 +224,8 @@
             { 
                 "capturedOn": "2020-02-15",
                 "data":  {
-                    "opconsultation" : ["NCP1008SecondVisitObsWithMembers.json","NCP1008SecondVisitMedications.json"],
+                    "observation" : ["NCP1008SecondVisitObsWithMembers.json"],
+                    "medicationrequest" : ["NCP1008SecondVisitMedications.json"],
                     "diagnosticreport" : ["NCP1008SecondVisitDiagnosticReport.json"]
                 }
             }
