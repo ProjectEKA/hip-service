@@ -8,6 +8,7 @@ namespace In.ProjectEKA.HipService.Link
     using Gateway.Model;
     using Hangfire;
     using HipLibrary.Patient.Model;
+    using In.ProjectEKA.HipService.Link.Model;
     using Logger;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Authorization;
@@ -126,6 +127,47 @@ namespace In.ProjectEKA.HipService.Link
             {
                 Log.Error(exception, exception.StackTrace);
             }
+        }
+
+        [HttpPost(PATH_ON_AUTH_INIT)]
+        public AcceptedResult OnAuthInit(AuthOnInitRequest request)
+        {
+            Log.Information("Auth on init request received." +
+                            $" RequestId:{request.RequestId}, " +
+                            $" Timestamp:{request.Timestamp},");
+            if (request.Error != null)
+            {
+                Log.Information($" Error Code:{request.Error.Code}," +
+                                $" Error Message:{request.Error.Message},");
+            }
+            else if (request.AuthInit != null)
+            {
+                Log.Information($" Transaction Id:{request.AuthInit.TransactionId},");
+                Log.Information($" Auth Type:{request.AuthInit.AuthType},");
+                Log.Information($" Auth Meta Mode:{request.AuthInit.Meta.Mode},");
+                Log.Information($" Auth Meta Hint:{request.AuthInit.Meta.Hint},");
+                Log.Information($" Auth Meta Expiry:{request.AuthInit.Meta.Expiry},");
+            }
+            Log.Information($" Resp RequestId:{request.Resp.RequestId}");
+            return Accepted();
+        }
+
+        [HttpPost(PATH_ON_ADD_CONTEXTS)]
+        public AcceptedResult HipLinkOnAddContexts(HipLinkContextConfirmation confirmation) {
+            Log.Information("Link on-add-context received." +
+                            $" RequestId:{confirmation.RequestId}, " +
+                            $" Timestamp:{confirmation.Timestamp}");
+            if (confirmation.Error != null)
+            {
+                Log.Information($" Error Code:{confirmation.Error.Code}," +
+                                $" Error Message:{confirmation.Error.Message}");
+            }
+            else if (confirmation.Acknowledgement != null)
+            {
+                Log.Information($" Acknowledgment Status:{confirmation.Acknowledgement.Status}");
+            }
+            Log.Information($" Resp RequestId:{confirmation.Resp.RequestId}");
+            return Accepted();
         }
     }
 }
