@@ -16,7 +16,7 @@ namespace In.ProjectEKA.DefaultHipTest.Link
             const string patientReferenceNumber = "RVH1002";
             var testPatient = new Patient
             {
-                PhoneNumber = "+91-7777777777",
+                PhoneNumber = "+91-9743526546",
                 Identifier = patientReferenceNumber,
                 Gender = Gender.F,
                 Name = "Navjot Singh",
