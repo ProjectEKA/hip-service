@@ -377,4 +377,18 @@
       <Link>NCP1008DiagnosticReportDoc20191005.json</Link>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\NCP1008WEBEMROPConsultationNote.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>NCP1008WEBEMROPConsultationNote.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\NCP1008NRCOPConsultationNote.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>NCP1008NRCOPConsultationNote.json</Link>
+    </Content>
+  </ItemGroup>
 </Project>
