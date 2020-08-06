@@ -228,6 +228,18 @@
                     "medicationrequest" : ["NCP1008SecondVisitMedications.json"],
                     "diagnosticreport" : ["NCP1008SecondVisitDiagnosticReport.json"]
                 }
+            },
+            {
+                "capturedOn": "2020-07-09",
+                "data":  {
+                    "opconsultation" : ["NCP1008WEBEMROPConsultationNote.json"]
+                }
+            },
+            {
+                "capturedOn": "2020-07-10",
+                "data":  {
+                    "opconsultation" : ["NCP1008NRCOPConsultationNote.json"]
+                }
             }
         ]
     },

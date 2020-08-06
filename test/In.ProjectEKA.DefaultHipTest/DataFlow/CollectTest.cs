@@ -25,7 +25,7 @@ namespace In.ProjectEKA.DefaultHipTest.DataFlow
                 new GrantedContext("RVH1003", "BI-KTH-12.05.0024"),
                 new GrantedContext("RVH1003", "NCP1008")
             };
-            var dateRange = new DateRange("2017-12-01T15:43:00.000+0000", "2020-03-31T15:43:19.279+0000");
+            var dateRange = new DateRange("2017-12-01T15:43:00.000+0000", "2021-12-31T15:43:19.279+0000");
             var hiTypes = new List<HiType>
             {
                 HiType.Condition,
@@ -48,7 +48,7 @@ namespace In.ProjectEKA.DefaultHipTest.DataFlow
                 "sometext");
 
             var entries = await collect.CollectData(dataRequest);
-            entries.ValueOrDefault().CareBundles.Count().Should().Be(16);
+            entries.ValueOrDefault().CareBundles.Count().Should().Be(18);
         }
 
         [Fact]
@@ -61,7 +61,7 @@ namespace In.ProjectEKA.DefaultHipTest.DataFlow
                 new GrantedContext("RVH1002", "NCP1007"),
                 new GrantedContext("RVH1002", "RV-MHD-01.17.0024")
             };
-            var dateRange = new DateRange("2017-12-01T15:43:00.000+0000", "2020-03-31T15:43:19.279+0000");
+            var dateRange = new DateRange("2017-12-01T15:43:00.000+0000", "2021-12-31T15:43:19.279+0000");
             var hiTypes = new List<HiType>
             {
                 HiType.Condition,
