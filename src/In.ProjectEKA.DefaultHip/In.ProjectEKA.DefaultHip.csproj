@@ -391,4 +391,67 @@
       <Link>NCP1008NRCOPConsultationNote.json</Link>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\MAXNCC1702PrescriptionDoc20180801.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>MAXNCC1702PrescriptionDoc20180801.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\MAXNCC1702PrescriptionDoc20180803.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>MAXNCC1702PrescriptionDoc20180803.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\MAXNCC1702PrescriptionDoc20180805.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>MAXNCC1702PrescriptionDoc20180805.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\MAXNCP1702DiagnosticReportDoc20190101.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>MAXNCP1702DiagnosticReportDoc20190101.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\MAXNCP1702DiagnosticReportDoc20190103.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>MAXNCP1702DiagnosticReportDoc20190103.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\NCP1702OPConsultationNote20200709.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>NCP1702OPConsultationNote20200709.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\NCP1702OPConsultationNote20200710.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>NCP1702OPConsultationNote20200710.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\NCP1702DischargeSummary20190203.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>NCP1702DischargeSummary20190203.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\NCP1702DischargeSummary20191003.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>NCP1702DischargeSummary20191003.json</Link>
+    </Content>
+  </ItemGroup>
 </Project>
