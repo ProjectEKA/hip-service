@@ -1,1 +1,195 @@
-{"resourceType":"Bundle","id":"8ceadcb6-6e4b-4b17-a28e-f139cb49da29","meta":{"lastUpdated":"2019-04-03T00:00:00.000+05:30"},"identifier":{"system":"https://www.wbc.in/bundle","value":"8ceadcb6-6e4b-4b17-a28e-f139cb49da29"},"type":"document","timestamp":"2019-04-03T00:00:00.000+05:30","entry":[{"fullUrl":"Composition/35a33131-b727-43fb-a218-b4c034dfa1b8","resource":{"resourceType":"Composition","id":"35a33131-b727-43fb-a218-b4c034dfa1b8","identifier":{"system":"https://www.wbc.in/document","value":"35a33131-b727-43fb-a218-b4c034dfa1b8"},"status":"final","type":{"coding":[{"system":"https://projecteka.in/sct","code":"440545006","display":"Prescription record"}]},"subject":{"reference":"Patient/RVH1002"},"date":"2019-04-03T00:00:00+05:30","author":[{"reference":"Practitioner/WBC5001","display":"Dr Laxmikanth J"}],"title":"Prescription","section":[{"title":"OPD Prescription","code":{"coding":[{"system":"https://projecteka.in/sct","code":"440545006","display":"Prescription record"}]},"entry":[{"reference":"MedicationRequest/99c9323e-d256-4cd5-ae63-ceafdf86a6b0"},{"reference":"MedicationRequest/802f2bd4-75a1-4d41-85c4-2ba3c6c3b6cf"}]}]}},{"fullUrl":"Practitioner/WBC5001","resource":{"resourceType":"Practitioner","id":"WBC5001","identifier":[{"system":"https://www.mciindia.in/doctor","value":"WBC5001"}],"name":[{"text":"Laxmikanth J","prefix":["Dr"],"suffix":["MD"]}]}},{"fullUrl":"Patient/RVH1002","resource":{"resourceType":"Patient","id":"RVH1002","name":[{"text":"Navjot Singh"}],"gender":"female"}},{"fullUrl":"Condition/22de0e2a-64e9-451d-8f9e-2617cf754994","resource":{"resourceType":"Condition","id":"22de0e2a-64e9-451d-8f9e-2617cf754994","code":{"text":"ear inflection"},"subject":{"reference":"Patient/RVH1002"}}},{"fullUrl":"MedicationRequest/99c9323e-d256-4cd5-ae63-ceafdf86a6b0","resource":{"resourceType":"MedicationRequest","id":"99c9323e-d256-4cd5-ae63-ceafdf86a6b0","status":"active","intent":"order","medicationCodeableConcept":{"text":"azithromycin 500mg"},"subject":{"reference":"Patient/RVH1002"},"authoredOn":"2019-04-03T00:00:00+05:30","requester":{"reference":"Practitioner/WBC5001"},"reasonReference":[{"reference":"Condition/22de0e2a-64e9-451d-8f9e-2617cf754994"}],"note":[{"text":"Do not discontinue"}],"dosageInstruction":[{"text":"1 capsule 2 times a day"}]}},{"fullUrl":"Condition/4ef9e3f9-453a-4aea-8c34-d6d7e00e719c","resource":{"resourceType":"Condition","id":"4ef9e3f9-453a-4aea-8c34-d6d7e00e719c","code":{"text":"cough"},"subject":{"reference":"Patient/RVH1002"}}},{"fullUrl":"MedicationRequest/802f2bd4-75a1-4d41-85c4-2ba3c6c3b6cf","resource":{"resourceType":"MedicationRequest","id":"802f2bd4-75a1-4d41-85c4-2ba3c6c3b6cf","status":"active","intent":"order","medicationCodeableConcept":{"text":"dextromethorphan 90 mg"},"subject":{"reference":"Patient/RVH1002"},"authoredOn":"2019-04-03T00:00:00+05:30","requester":{"reference":"Practitioner/WBC5001"},"reasonReference":[{"reference":"Condition/4ef9e3f9-453a-4aea-8c34-d6d7e00e719c"}],"dosageInstruction":[{"text":"1 capsule 2 times a day with food"}]}}]}
+{
+  "resourceType": "Bundle",
+  "id": "8ceadcb6-6e4b-4b17-a28e-f139cb49da29",
+  "meta": {
+    "lastUpdated": "2019-04-03T00:00:00.000+05:30"
+  },
+  "identifier": {
+    "system": "https://www.wbc.in/bundle",
+    "value": "8ceadcb6-6e4b-4b17-a28e-f139cb49da29"
+  },
+  "type": "document",
+  "timestamp": "2019-04-03T00:00:00.000+05:30",
+  "entry": [
+    {
+      "fullUrl": "Composition/35a33131-b727-43fb-a218-b4c034dfa1b8",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "35a33131-b727-43fb-a218-b4c034dfa1b8",
+        "identifier": {
+          "system": "https://www.wbc.in/document",
+          "value": "35a33131-b727-43fb-a218-b4c034dfa1b8"
+        },
+        "status": "final",
+        "type": {
+          "coding": [
+            {
+              "system": "https://projecteka.in/sct",
+              "code": "440545006",
+              "display": "Prescription record"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/RVH1002"
+        },
+        "date": "2019-04-03T00:00:00+05:30",
+        "author": [
+          {
+            "reference": "Practitioner/WBC5001",
+            "display": "Dr Laxmikanth J"
+          }
+        ],
+        "title": "Prescription 1",
+        "section": [
+          {
+            "title": "OPD Prescription",
+            "code": {
+              "coding": [
+                {
+                  "system": "https://projecteka.in/sct",
+                  "code": "440545006",
+                  "display": "Prescription record"
+                }
+              ]
+            },
+            "entry": [
+              {
+                "reference": "MedicationRequest/99c9323e-d256-4cd5-ae63-ceafdf86a6b0"
+              },
+              {
+                "reference": "MedicationRequest/802f2bd4-75a1-4d41-85c4-2ba3c6c3b6cf"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Practitioner/WBC5001",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "WBC5001",
+        "identifier": [
+          {
+            "system": "https://www.mciindia.in/doctor",
+            "value": "WBC5001"
+          }
+        ],
+        "name": [
+          {
+            "text": "Laxmikanth J",
+            "prefix": [
+              "Dr"
+            ],
+            "suffix": [
+              "MD"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Patient/RVH1002",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "RVH1002",
+        "name": [
+          {
+            "text": "Navjot Singh"
+          }
+        ],
+        "gender": "female"
+      }
+    },
+    {
+      "fullUrl": "Condition/22de0e2a-64e9-451d-8f9e-2617cf754994",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "22de0e2a-64e9-451d-8f9e-2617cf754994",
+        "code": {
+          "text": "ear inflection"
+        },
+        "subject": {
+          "reference": "Patient/RVH1002"
+        }
+      }
+    },
+    {
+      "fullUrl": "MedicationRequest/99c9323e-d256-4cd5-ae63-ceafdf86a6b0",
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "99c9323e-d256-4cd5-ae63-ceafdf86a6b0",
+        "status": "active",
+        "intent": "order",
+        "medicationCodeableConcept": {
+          "text": "azithromycin 500mg"
+        },
+        "subject": {
+          "reference": "Patient/RVH1002"
+        },
+        "authoredOn": "2019-04-03T00:00:00+05:30",
+        "requester": {
+          "reference": "Practitioner/WBC5001"
+        },
+        "reasonReference": [
+          {
+            "reference": "Condition/22de0e2a-64e9-451d-8f9e-2617cf754994"
+          }
+        ],
+        "note": [
+          {
+            "text": "Do not discontinue"
+          }
+        ],
+        "dosageInstruction": [
+          {
+            "text": "1 capsule 2 times a day"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Condition/4ef9e3f9-453a-4aea-8c34-d6d7e00e719c",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "4ef9e3f9-453a-4aea-8c34-d6d7e00e719c",
+        "code": {
+          "text": "cough"
+        },
+        "subject": {
+          "reference": "Patient/RVH1002"
+        }
+      }
+    },
+    {
+      "fullUrl": "MedicationRequest/802f2bd4-75a1-4d41-85c4-2ba3c6c3b6cf",
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "802f2bd4-75a1-4d41-85c4-2ba3c6c3b6cf",
+        "status": "active",
+        "intent": "order",
+        "medicationCodeableConcept": {
+          "text": "dextromethorphan 90 mg"
+        },
+        "subject": {
+          "reference": "Patient/RVH1002"
+        },
+        "authoredOn": "2019-04-03T00:00:00+05:30",
+        "requester": {
+          "reference": "Practitioner/WBC5001"
+        },
+        "reasonReference": [
+          {
+            "reference": "Condition/4ef9e3f9-453a-4aea-8c34-d6d7e00e719c"
+          }
+        ],
+        "dosageInstruction": [
+          {
+            "text": "1 capsule 2 times a day with food"
+          }
+        ]
+      }
+    }
+  ]
+}

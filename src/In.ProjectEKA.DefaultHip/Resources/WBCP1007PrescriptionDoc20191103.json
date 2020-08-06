@@ -1,1 +1,205 @@
-{"resourceType":"Bundle","id":"83b9a8bd-2b29-4da6-897a-f8d550ae167c","meta":{"lastUpdated":"2019-11-03T00:00:00.000+05:30"},"identifier":{"system":"https://www.wbc.in/bundle","value":"83b9a8bd-2b29-4da6-897a-f8d550ae167c"},"type":"document","timestamp":"2019-11-03T00:00:00.000+05:30","entry":[{"fullUrl":"Composition/007876bd-4df5-4f3d-9a62-66da2b052632","resource":{"resourceType":"Composition","id":"007876bd-4df5-4f3d-9a62-66da2b052632","identifier":{"system":"https://www.wbc.in/document","value":"007876bd-4df5-4f3d-9a62-66da2b052632"},"status":"final","type":{"coding":[{"system":"https://projecteka.in/sct","code":"440545006","display":"Prescription record"}]},"subject":{"reference":"Patient/RVH1002"},"date":"2019-11-03T00:00:00+05:30","author":[{"reference":"Practitioner/WBC191101"}],"title":"Prescription","section":[{"title":"OPD Prescription","code":{"coding":[{"system":"https://projecteka.in/sct","code":"440545006","display":"Prescription record"}]},"entry":[{"reference":"MedicationRequest/5d3523ce-71f1-442c-b46f-39d8287347d3"},{"reference":"MedicationRequest/9aac257f-dfb1-4966-b115-cf54555c9ef5"}]}]}},{"fullUrl":"Practitioner/WBC191101","resource":{"resourceType":"Practitioner","id":"WBC191101","identifier":[{"system":"https://www.mciindia.in/doctor","value":"WBC191101"}],"name":[{"text":"Akshatha M K","prefix":["Dr"],"suffix":["MD"]}]}},{"fullUrl":"Patient/RVH1002","resource":{"resourceType":"Patient","id":"RVH1002","name":[{"text":"Navjot Singh"}],"gender":"female"}},{"fullUrl":"Condition/ce82d2b5-5b02-40ad-9b8c-3862cbf6f568","resource":{"resourceType":"Condition","id":"ce82d2b5-5b02-40ad-9b8c-3862cbf6f568","code":{"text":"cough"},"subject":{"reference":"Patient/RVH1002"}}},{"fullUrl":"Medication/53184b9a-d908-4980-8b2a-1b9b7a69f52f","resource":{"resourceType":"Medication","id":"53184b9a-d908-4980-8b2a-1b9b7a69f52f","code":{"coding":[{"system":"https://projecteka.in/act","code":"R05DA09","display":"dextromethorphan 90 mg"}]}}},{"fullUrl":"MedicationRequest/5d3523ce-71f1-442c-b46f-39d8287347d3","resource":{"resourceType":"MedicationRequest","id":"5d3523ce-71f1-442c-b46f-39d8287347d3","status":"active","intent":"order","medicationReference":{"reference":"Medication/53184b9a-d908-4980-8b2a-1b9b7a69f52f"},"subject":{"reference":"Patient/RVH1002"},"authoredOn":"2019-11-03T00:00:00+05:30","requester":{"reference":"Practitioner/WBC191101"},"reasonReference":[{"reference":"Condition/ce82d2b5-5b02-40ad-9b8c-3862cbf6f568"}],"dosageInstruction":[{"text":"1 capsule 2 times a day with food"}]}},{"fullUrl":"Condition/fb282a1b-df92-4c39-95b4-a01c275bda02","resource":{"resourceType":"Condition","id":"fb282a1b-df92-4c39-95b4-a01c275bda02","code":{"text":"worm infection"},"subject":{"reference":"Patient/RVH1002"}}},{"fullUrl":"MedicationRequest/9aac257f-dfb1-4966-b115-cf54555c9ef5","resource":{"resourceType":"MedicationRequest","id":"9aac257f-dfb1-4966-b115-cf54555c9ef5","status":"active","intent":"order","medicationCodeableConcept":{"text":"albendazole 400 mg"},"subject":{"reference":"Patient/RVH1002"},"authoredOn":"2019-11-03T00:00:00+05:30","requester":{"reference":"Practitioner/WBC191101"},"reasonReference":[{"reference":"Condition/fb282a1b-df92-4c39-95b4-a01c275bda02"}],"dosageInstruction":[{"text":"1 time only"}]}}]}
+{
+  "resourceType": "Bundle",
+  "id": "83b9a8bd-2b29-4da6-897a-f8d550ae167c",
+  "meta": {
+    "lastUpdated": "2019-11-03T00:00:00.000+05:30"
+  },
+  "identifier": {
+    "system": "https://www.wbc.in/bundle",
+    "value": "83b9a8bd-2b29-4da6-897a-f8d550ae167c"
+  },
+  "type": "document",
+  "timestamp": "2019-11-03T00:00:00.000+05:30",
+  "entry": [
+    {
+      "fullUrl": "Composition/007876bd-4df5-4f3d-9a62-66da2b052632",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "007876bd-4df5-4f3d-9a62-66da2b052632",
+        "identifier": {
+          "system": "https://www.wbc.in/document",
+          "value": "007876bd-4df5-4f3d-9a62-66da2b052632"
+        },
+        "status": "final",
+        "type": {
+          "coding": [
+            {
+              "system": "https://projecteka.in/sct",
+              "code": "440545006",
+              "display": "Prescription record"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/RVH1002"
+        },
+        "date": "2019-11-03T00:00:00+05:30",
+        "author": [
+          {
+            "reference": "Practitioner/WBC191101"
+          }
+        ],
+        "title": "Prescription 3",
+        "section": [
+          {
+            "title": "OPD Prescription",
+            "code": {
+              "coding": [
+                {
+                  "system": "https://projecteka.in/sct",
+                  "code": "440545006",
+                  "display": "Prescription record"
+                }
+              ]
+            },
+            "entry": [
+              {
+                "reference": "MedicationRequest/5d3523ce-71f1-442c-b46f-39d8287347d3"
+              },
+              {
+                "reference": "MedicationRequest/9aac257f-dfb1-4966-b115-cf54555c9ef5"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Practitioner/WBC191101",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "WBC191101",
+        "identifier": [
+          {
+            "system": "https://www.mciindia.in/doctor",
+            "value": "WBC191101"
+          }
+        ],
+        "name": [
+          {
+            "text": "Akshatha M K",
+            "prefix": [
+              "Dr"
+            ],
+            "suffix": [
+              "MD"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Patient/RVH1002",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "RVH1002",
+        "name": [
+          {
+            "text": "Navjot Singh"
+          }
+        ],
+        "gender": "female"
+      }
+    },
+    {
+      "fullUrl": "Condition/ce82d2b5-5b02-40ad-9b8c-3862cbf6f568",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "ce82d2b5-5b02-40ad-9b8c-3862cbf6f568",
+        "code": {
+          "text": "cough"
+        },
+        "subject": {
+          "reference": "Patient/RVH1002"
+        }
+      }
+    },
+    {
+      "fullUrl": "Medication/53184b9a-d908-4980-8b2a-1b9b7a69f52f",
+      "resource": {
+        "resourceType": "Medication",
+        "id": "53184b9a-d908-4980-8b2a-1b9b7a69f52f",
+        "code": {
+          "coding": [
+            {
+              "system": "https://projecteka.in/act",
+              "code": "R05DA09",
+              "display": "dextromethorphan 90 mg"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "MedicationRequest/5d3523ce-71f1-442c-b46f-39d8287347d3",
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "5d3523ce-71f1-442c-b46f-39d8287347d3",
+        "status": "active",
+        "intent": "order",
+        "medicationReference": {
+          "reference": "Medication/53184b9a-d908-4980-8b2a-1b9b7a69f52f"
+        },
+        "subject": {
+          "reference": "Patient/RVH1002"
+        },
+        "authoredOn": "2019-11-03T00:00:00+05:30",
+        "requester": {
+          "reference": "Practitioner/WBC191101"
+        },
+        "reasonReference": [
+          {
+            "reference": "Condition/ce82d2b5-5b02-40ad-9b8c-3862cbf6f568"
+          }
+        ],
+        "dosageInstruction": [
+          {
+            "text": "1 capsule 2 times a day with food"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Condition/fb282a1b-df92-4c39-95b4-a01c275bda02",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "fb282a1b-df92-4c39-95b4-a01c275bda02",
+        "code": {
+          "text": "worm infection"
+        },
+        "subject": {
+          "reference": "Patient/RVH1002"
+        }
+      }
+    },
+    {
+      "fullUrl": "MedicationRequest/9aac257f-dfb1-4966-b115-cf54555c9ef5",
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "9aac257f-dfb1-4966-b115-cf54555c9ef5",
+        "status": "active",
+        "intent": "order",
+        "medicationCodeableConcept": {
+          "text": "albendazole 400 mg"
+        },
+        "subject": {
+          "reference": "Patient/RVH1002"
+        },
+        "authoredOn": "2019-11-03T00:00:00+05:30",
+        "requester": {
+          "reference": "Practitioner/WBC191101"
+        },
+        "reasonReference": [
+          {
+            "reference": "Condition/fb282a1b-df92-4c39-95b4-a01c275bda02"
+          }
+        ],
+        "dosageInstruction": [
+          {
+            "text": "1 time only"
+          }
+        ]
+      }
+    }
+  ]
+}
