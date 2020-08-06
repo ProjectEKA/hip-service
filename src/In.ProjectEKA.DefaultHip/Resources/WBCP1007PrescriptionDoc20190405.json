@@ -1,1 +1,204 @@
-{"resourceType":"Bundle","id":"f89c023a-ee6b-4810-8a54-21f3d57a1a04","meta":{"lastUpdated":"2019-04-05T00:00:00.000+05:30"},"identifier":{"system":"https://www.wbc.in/bundle","value":"f89c023a-ee6b-4810-8a54-21f3d57a1a04"},"type":"document","timestamp":"2019-04-05T00:00:00.000+05:30","entry":[{"fullUrl":"Composition/77248e68-b5c7-4522-939c-8e891ed27049","resource":{"resourceType":"Composition","id":"77248e68-b5c7-4522-939c-8e891ed27049","identifier":{"system":"https://www.wbc.in/document","value":"77248e68-b5c7-4522-939c-8e891ed27049"},"status":"final","type":{"coding":[{"system":"https://projecteka.in/sct","code":"440545006","display":"Prescription record"}]},"subject":{"reference":"Patient/RVH1002"},"encounter":{"reference":"Encounter/82a080a6-253e-4d30-b5c7-6aa549c1e694"},"date":"2019-04-05T00:00:00+05:30","author":[{"reference":"Practitioner/WBC191101","display":"Dr Akshatha M K"}],"title":"Prescription","section":[{"title":"OPD Prescription","code":{"coding":[{"system":"https://projecteka.in/sct","code":"440545006","display":"Prescription record"}]},"entry":[{"reference":"MedicationRequest/e447c53d-395f-4a7c-8008-5944fc6c3472"},{"reference":"MedicationRequest/6f41077d-0f19-49c1-a814-db4eaa16d570"}]}]}},{"fullUrl":"Practitioner/WBC191101","resource":{"resourceType":"Practitioner","id":"WBC191101","identifier":[{"system":"https://www.mciindia.in/doctor","value":"WBC191101"}],"name":[{"text":"Akshatha M K","prefix":["Dr"],"suffix":["MD"]}]}},{"fullUrl":"Patient/RVH1002","resource":{"resourceType":"Patient","id":"RVH1002","name":[{"text":"Navjot Singh"}],"gender":"female"}},{"fullUrl":"Encounter/82a080a6-253e-4d30-b5c7-6aa549c1e694","resource":{"resourceType":"Encounter","id":"82a080a6-253e-4d30-b5c7-6aa549c1e694","status":"finished","class":{"system":"http://terminology.hl7.org/CodeSystem/v3-ActCode","code":"AMB","display":"Outpatient visit"},"subject":{"reference":"Patient/RVH1002"},"period":{"start":"2019-04-05T00:00:00+05:30"}}},{"fullUrl":"Medication/a7b5a5b4-226a-4017-9304-97cf491a71f2","resource":{"resourceType":"Medication","id":"a7b5a5b4-226a-4017-9304-97cf491a71f2","code":{"text":"tramadol and paracetamol 500 mg"}}},{"fullUrl":"MedicationRequest/e447c53d-395f-4a7c-8008-5944fc6c3472","resource":{"resourceType":"MedicationRequest","id":"e447c53d-395f-4a7c-8008-5944fc6c3472","status":"active","intent":"order","medicationReference":{"reference":"Medication/a7b5a5b4-226a-4017-9304-97cf491a71f2"},"subject":{"reference":"Patient/RVH1002"},"authoredOn":"2019-04-05T00:00:00+05:30","requester":{"reference":"Practitioner/WBC191101"},"dosageInstruction":[{"text":"1 tablet once a day"}]}},{"fullUrl":"Condition/240a171e-f6d1-4732-93b2-455d23bba285","resource":{"resourceType":"Condition","id":"240a171e-f6d1-4732-93b2-455d23bba285","code":{"text":"worm infection"},"subject":{"reference":"Patient/RVH1002"}}},{"fullUrl":"MedicationRequest/6f41077d-0f19-49c1-a814-db4eaa16d570","resource":{"resourceType":"MedicationRequest","id":"6f41077d-0f19-49c1-a814-db4eaa16d570","status":"active","intent":"order","medicationCodeableConcept":{"text":"albendazole 400 mg"},"subject":{"reference":"Patient/RVH1002"},"authoredOn":"2019-04-05T00:00:00+05:30","requester":{"reference":"Practitioner/WBC191101"},"reasonReference":[{"reference":"Condition/240a171e-f6d1-4732-93b2-455d23bba285"}],"dosageInstruction":[{"text":"1 time only"}]}}]}
+{
+  "resourceType": "Bundle",
+  "id": "f89c023a-ee6b-4810-8a54-21f3d57a1a04",
+  "meta": {
+    "lastUpdated": "2019-04-05T00:00:00.000+05:30"
+  },
+  "identifier": {
+    "system": "https://www.wbc.in/bundle",
+    "value": "f89c023a-ee6b-4810-8a54-21f3d57a1a04"
+  },
+  "type": "document",
+  "timestamp": "2019-04-05T00:00:00.000+05:30",
+  "entry": [
+    {
+      "fullUrl": "Composition/77248e68-b5c7-4522-939c-8e891ed27049",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "77248e68-b5c7-4522-939c-8e891ed27049",
+        "identifier": {
+          "system": "https://www.wbc.in/document",
+          "value": "77248e68-b5c7-4522-939c-8e891ed27049"
+        },
+        "status": "final",
+        "type": {
+          "coding": [
+            {
+              "system": "https://projecteka.in/sct",
+              "code": "440545006",
+              "display": "Prescription record"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/RVH1002"
+        },
+        "encounter": {
+          "reference": "Encounter/82a080a6-253e-4d30-b5c7-6aa549c1e694"
+        },
+        "date": "2019-04-05T00:00:00+05:30",
+        "author": [
+          {
+            "reference": "Practitioner/WBC191101",
+            "display": "Dr Akshatha M K"
+          }
+        ],
+        "title": "Prescription 2",
+        "section": [
+          {
+            "title": "OPD Prescription",
+            "code": {
+              "coding": [
+                {
+                  "system": "https://projecteka.in/sct",
+                  "code": "440545006",
+                  "display": "Prescription record"
+                }
+              ]
+            },
+            "entry": [
+              {
+                "reference": "MedicationRequest/e447c53d-395f-4a7c-8008-5944fc6c3472"
+              },
+              {
+                "reference": "MedicationRequest/6f41077d-0f19-49c1-a814-db4eaa16d570"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Practitioner/WBC191101",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "WBC191101",
+        "identifier": [
+          {
+            "system": "https://www.mciindia.in/doctor",
+            "value": "WBC191101"
+          }
+        ],
+        "name": [
+          {
+            "text": "Akshatha M K",
+            "prefix": [
+              "Dr"
+            ],
+            "suffix": [
+              "MD"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Patient/RVH1002",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "RVH1002",
+        "name": [
+          {
+            "text": "Navjot Singh"
+          }
+        ],
+        "gender": "female"
+      }
+    },
+    {
+      "fullUrl": "Encounter/82a080a6-253e-4d30-b5c7-6aa549c1e694",
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "82a080a6-253e-4d30-b5c7-6aa549c1e694",
+        "status": "finished",
+        "class": {
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+          "code": "AMB",
+          "display": "Outpatient visit"
+        },
+        "subject": {
+          "reference": "Patient/RVH1002"
+        },
+        "period": {
+          "start": "2019-04-05T00:00:00+05:30"
+        }
+      }
+    },
+    {
+      "fullUrl": "Medication/a7b5a5b4-226a-4017-9304-97cf491a71f2",
+      "resource": {
+        "resourceType": "Medication",
+        "id": "a7b5a5b4-226a-4017-9304-97cf491a71f2",
+        "code": {
+          "text": "tramadol and paracetamol 500 mg"
+        }
+      }
+    },
+    {
+      "fullUrl": "MedicationRequest/e447c53d-395f-4a7c-8008-5944fc6c3472",
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "e447c53d-395f-4a7c-8008-5944fc6c3472",
+        "status": "active",
+        "intent": "order",
+        "medicationReference": {
+          "reference": "Medication/a7b5a5b4-226a-4017-9304-97cf491a71f2"
+        },
+        "subject": {
+          "reference": "Patient/RVH1002"
+        },
+        "authoredOn": "2019-04-05T00:00:00+05:30",
+        "requester": {
+          "reference": "Practitioner/WBC191101"
+        },
+        "dosageInstruction": [
+          {
+            "text": "1 tablet once a day"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Condition/240a171e-f6d1-4732-93b2-455d23bba285",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "240a171e-f6d1-4732-93b2-455d23bba285",
+        "code": {
+          "text": "worm infection"
+        },
+        "subject": {
+          "reference": "Patient/RVH1002"
+        }
+      }
+    },
+    {
+      "fullUrl": "MedicationRequest/6f41077d-0f19-49c1-a814-db4eaa16d570",
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "6f41077d-0f19-49c1-a814-db4eaa16d570",
+        "status": "active",
+        "intent": "order",
+        "medicationCodeableConcept": {
+          "text": "albendazole 400 mg"
+        },
+        "subject": {
+          "reference": "Patient/RVH1002"
+        },
+        "authoredOn": "2019-04-05T00:00:00+05:30",
+        "requester": {
+          "reference": "Practitioner/WBC191101"
+        },
+        "reasonReference": [
+          {
+            "reference": "Condition/240a171e-f6d1-4732-93b2-455d23bba285"
+          }
+        ],
+        "dosageInstruction": [
+          {
+            "text": "1 time only"
+          }
+        ]
+      }
+    }
+  ]
+}
