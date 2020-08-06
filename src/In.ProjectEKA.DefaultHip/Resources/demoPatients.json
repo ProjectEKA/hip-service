@@ -150,6 +150,25 @@
         "display": "Dept of Psychiatry - Episode 1"
       }
     ]
+  },
+  {
+    "phoneNumber": "+91-9743526546",
+    "identifier": "NCC1702",
+    "email": "aks@eka.in",
+    "name": "Navajot Singhal",
+    "caseReferenceNumber": "1702",
+    "Gender": "F",
+    "yearOfBirth": 1985,
+    "careContexts": [
+      {
+        "referenceNumber": "SC1702",
+        "display": "Speciality Care"
+      },
+      {
+        "referenceNumber": "NCP1702",
+        "display": "National Cancer program"
+      }
+    ]
   }
 ]
   

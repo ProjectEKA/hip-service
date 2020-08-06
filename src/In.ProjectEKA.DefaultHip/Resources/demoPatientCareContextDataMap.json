@@ -209,19 +209,19 @@
                     "diagnosticreport" : ["NCP1008DiagnosticReportDoc20191005.json"]
                 }
             },
-            { 
+            {
                 "capturedOn": "2019-12-24",
                 "data":  {
                     "documentreference" : ["NCP1008FourthVisitDocumentReference.json"]
                 }
             },
-            { 
+            {
                 "capturedOn": "2020-01-01",
                 "data":  {
                     "prescription" : ["NCP1008FifthVisitPrescription.json"]
                 }
             },
-            { 
+            {
                 "capturedOn": "2020-02-15",
                 "data":  {
                     "observation" : ["NCP1008SecondVisitObsWithMembers.json"],
@@ -386,5 +386,70 @@
                 }
             }
         ]
+    },
+    "NCC1702" : {
+        "SC1702" : [
+            {
+                "capturedOn": "2018-08-01",
+                "data":  {
+                    "prescription" : ["MAXNCC1702PrescriptionDoc20180801.json"],
+                    "dischargesummary" : []
+                }
+            }
+        ],
+        "NCP1702" : [
+            {
+                "capturedOn": "2018-08-03",
+                "data":  {
+                    "prescription" : ["MAXNCC1702PrescriptionDoc20180803.json"],
+                    "dischargesummary" : []
+                }
+            },
+            {
+                "capturedOn": "2018-08-05",
+                "data":  {
+                    "prescription" : ["MAXNCC1702PrescriptionDoc20180805.json"],
+                    "dischargesummary" : []
+                }
+            },
+            {
+                "capturedOn": "2019-01-01",
+                "data":  {
+                    "diagnosticreport" : ["MAXNCP1702DiagnosticReportDoc20190101.json"]
+                }
+            },
+            {
+                "capturedOn": "2019-01-03",
+                "data":  {
+                    "diagnosticreport" : ["MAXNCP1702DiagnosticReportDoc20190103.json"]
+                }
+            },
+            {
+                "capturedOn": "2019-02-03",
+                "data":  {
+                    "dischargesummary" : ["NCP1702DischargeSummary20190203.json"]
+                }
+            },
+            {
+                "capturedOn": "2019-10-03",
+                "data":  {
+                    "dischargesummary" : ["NCP1702DischargeSummary20191003.json"]
+                }
+            },
+            {
+                "capturedOn": "2020-07-10",
+                "data":  {
+                    "opconsultation" : ["NCP1702OPConsultationNote20200709.json"]
+                }
+            },
+            {
+                "capturedOn": "2020-07-10",
+                "data":  {
+                    "opconsultation" : ["NCP1702OPConsultationNote20200710.json"]
+                }
+            }
+        ]
     }
 }
+
+

@@ -41,7 +41,7 @@
                 "display":"Hospitalization - Patient Admitted"
              },
              "subject":{
-                "reference":"Patient/RVH1002"
+                "reference":"Patient/NCC1702"
              },
              "author":[
                 {
@@ -328,7 +328,7 @@
             }
         },
         {
-            "fullUrl": "Patient/RVH1002",
+            "fullUrl": "Patient/NCC1702",
             "resource": {
               "resourceType": "Patient",
               "id": "RVH1002",
@@ -361,7 +361,7 @@
                 "end": "2019-10-03T20:32:26.605+05:30"
               },
               "subject": {
-                  "reference" : "Patient/RVH1002"
+                  "reference" : "Patient/NCC1702"
               },
               "diagnosis": [
                   {
@@ -383,7 +383,7 @@
               "id": "2IPD1",
               "resourceType": "MedicationRequest",
               "subject": {
-                "reference": "Patient/RVH1002",
+                "reference": "Patient/NCC1702",
                 "display": "Navjot Singh"
               },
               "status": "active",
@@ -454,7 +454,7 @@
               "id": "2IPD2",  
               "resourceType": "MedicationRequest",
               "subject": {
-                "reference": "Patient/RVH1002",
+                "reference": "Patient/NCC1702",
                 "display": "Navjot Singh"
               },
               "status": "active",
@@ -491,7 +491,7 @@
                 "id": "2IPD3",  
                 "resourceType": "MedicationRequest",
                 "subject": {
-                  "reference": "Patient/RVH1002",
+                  "reference": "Patient/NCC1702",
                   "display": "Navjot Singh"
                 },
                 "status": "active",
@@ -537,7 +537,7 @@
             "resourceType": "Condition",
             "id": "2IPD31",
             "subject": {
-              "reference": "Patient/RVH1002"
+              "reference": "Patient/NCC1702"
             },
             "code": {
               "text": "General health fair"
@@ -551,7 +551,7 @@
             "resourceType": "Condition",
             "id": "2IPD32",
             "subject": {
-              "reference": "Patient/RVH1002"
+              "reference": "Patient/NCC1702"
             },
             "code": {
               "coding": [
@@ -571,7 +571,7 @@
               "resourceType": "Condition",
               "id": "2OPD1",
               "subject": {
-                "reference": "Patient/RVH1002"
+                "reference": "Patient/NCC1702"
               },
               "code": {
                 "coding": [
@@ -592,7 +592,7 @@
               "resourceType": "Condition",
               "id": "2OPD2",
               "subject": {
-                "reference": "Patient/RVH1002"
+                "reference": "Patient/NCC1702"
               },
               "code": {
                 "coding": [
@@ -617,7 +617,7 @@
                 "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Swinging fever</div>"
               },
               "subject": {
-                "reference": "Patient/RVH1002"
+                "reference": "Patient/NCC1702"
               },
               "code": {
                 "coding": [
@@ -643,7 +643,7 @@
                 "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Abdominal pain since 1 day</div>"
               },
               "subject": {
-                "reference": "Patient/RVH1002"
+                "reference": "Patient/NCC1702"
               },
               "code": {
                 "coding": [
@@ -665,7 +665,7 @@
               "resourceType": "Condition",
               "id": "2IPD2",
               "subject": {
-                "reference": "Patient/RVH1002"
+                "reference": "Patient/NCC1702"
               },
               "code": {
                 "coding": [
@@ -686,7 +686,7 @@
               "resourceType": "Condition",
               "id": "2DIA1",
               "subject": {
-                "reference": "Patient/RVH1002"
+                "reference": "Patient/NCC1702"
               },
               "code": {
                 "coding": [
@@ -711,7 +711,7 @@
              },
              "subject":{
                 "display":"Navjot Singh",
-                "reference":"Patient/RVH1002"
+                "reference":"Patient/NCC1702"
              },
              "performer" : [
                 {
@@ -805,7 +805,7 @@
                     "text": "Lipid Panel"
                 },
                 "subject": {
-                    "reference": "Patient/RVH1002"
+                    "reference": "Patient/NCC1702"
                 },
                 "effectiveDateTime": "2019-02-02T10:00:26.605+05:30",
                 "issued": "2019-02-02T08:15:26.605+05:30",
@@ -839,7 +839,7 @@
                   "text": "Cholesterol"
               },
               "subject": {
-                  "reference": "Patient/RVH1002"
+                  "reference": "Patient/NCC1702"
               },
               "performer": [
                   {
@@ -859,7 +859,7 @@
                   "text": "Triglyceride"
               },
               "subject": {
-                  "reference": "Patient/RVH1002"
+                  "reference": "Patient/NCC1702"
               },
               "performer": [
                   {
@@ -947,7 +947,7 @@
                 "text": "Biopsy of suspected melanoma L) arm"
               },
               "subject": {
-                "reference": "Patient/RVH1002"
+                "reference": "Patient/NCC1702"
               },
               "performedDateTime": "2019-10-02",
               "performer": [
@@ -999,7 +999,7 @@
             "id": "2DIS1",  
             "resourceType": "MedicationRequest",
             "subject": {
-              "reference": "Patient/RVH1002",
+              "reference": "Patient/NCC1702",
               "display": "Navjot Singh"
             },
             "status": "active",
@@ -1056,7 +1056,7 @@
             "status": "current",
             "docStatus": "final",
             "subject": {
-              "reference": "Patient/RVH1002"
+              "reference": "Patient/NCC1702"
             },
             "description": "Normal Study. Yeast strains applied in bioethanol production are highlighted. Fermentation in bioethanol production by yeasts are discussed. Factors that affect bioethanol production are considered. Immobilization of yeasts in bioethanol production are highlighted.",
             "type": {
@@ -1097,7 +1097,7 @@
             "participant": [
               {
                 "actor": {
-                  "reference": "Patient/RVH1002",
+                  "reference": "Patient/NCC1702",
                   "display": "Navjot Singh"
                 },
                 "required": "required",
@@ -1172,7 +1172,7 @@
               ]
             },
             "patient": {
-              "reference": "Patient/RVH1002"
+              "reference": "Patient/NCC1702"
             },
             "recordedDate": "2010-10-02",
             "recorder": {
