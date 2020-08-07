@@ -45,7 +45,7 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
 
         private static bool WithinRange(DateRange range, DateTime date)
         {
-            var fromDate = ParseDate(range.From);
+            var fromDate = ParseDate(range.From).AddMinutes(2);
             var toDate = ParseDate(range.To);
             return date >= fromDate && date < toDate;
         }
