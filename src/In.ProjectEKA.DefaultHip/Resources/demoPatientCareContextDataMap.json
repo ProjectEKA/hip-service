@@ -85,8 +85,8 @@
                     "prescription" : ["RVMHD01PrescriptionDoc06092019.json"]
                 }
             },
-            { 
-                "capturedOn": "2019-08-01T10:00:00.605+05:30",
+            {
+                "capturedOn": "2019-08-01T10:00:00.818234",
                 "data":  {
                     "prescription" : ["RVMHD01PrescriptionDoc08012019.json"]
                 }
