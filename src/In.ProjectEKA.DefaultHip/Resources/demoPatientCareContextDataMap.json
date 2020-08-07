@@ -56,37 +56,37 @@
                 }
             },
             {
-                "capturedOn": "2019-06-01T00:00:00+05:30",
+                "capturedOn": "2019-06-01T10:00:00.605+05:30",
                 "data":  {
                     "prescription" : ["RVMHD01PrescriptionDoc06012019.json"]
                 }
             },
             { 
-                "capturedOn": "2019-06-03T00:00:00+05:30",
+                "capturedOn": "2019-06-03T10:00:00.605+05:30",
                 "data":  {
                     "prescription" : ["RVMHD01PrescriptionDoc06032019.json"]
                 }
             },
             { 
-                "capturedOn": "2019-06-05T00:00:00+05:30",
+                "capturedOn": "2019-06-05T10:00:00.605+05:30",
                 "data":  {
                     "prescription" : ["RVMHD01PrescriptionDoc06052019.json"]
                 }
             },
             { 
-                "capturedOn": "2019-06-07T00:00:00+05:30",
+                "capturedOn": "2019-06-07T10:00:00.605+05:30",
                 "data":  {
                     "prescription" : ["RVMHD01PrescriptionDoc06072019.json"]
                 }
             },
             { 
-                "capturedOn": "2019-06-09T00:00:00+05:30",
+                "capturedOn": "2019-06-09T10:00:00.605+05:30",
                 "data":  {
                     "prescription" : ["RVMHD01PrescriptionDoc06092019.json"]
                 }
             },
             { 
-                "capturedOn": "2019-08-01T00:00:00+05:30",
+                "capturedOn": "2019-08-01T10:00:00.605+05:30",
                 "data":  {
                     "prescription" : ["RVMHD01PrescriptionDoc08012019.json"]
                 }

@@ -52,6 +52,7 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
 
         private static DateTime ParseDate(string dateString)
         {
+            // "2019-06-01T10:00:00+05:30",
             var formatStrings = new[]
             {
                 "yyyy-MM-dd", "yyyy-MM-dd hh:mm:ss", "yyyy-MM-dd hh:mm:ss tt", "yyyy-MM-ddTHH:mm:ss.fffzzz",
