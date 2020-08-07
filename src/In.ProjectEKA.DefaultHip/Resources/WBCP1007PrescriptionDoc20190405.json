@@ -36,7 +36,7 @@
         "encounter": {
           "reference": "Encounter/82a080a6-253e-4d30-b5c7-6aa549c1e694"
         },
-        "date": "2019-04-05T00:00:00+05:30",
+        "date": "2019-04-05T10:00:00.605+05:30",
         "author": [
           {
             "reference": "Practitioner/WBC191101",
