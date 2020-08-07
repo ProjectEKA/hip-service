@@ -2,14 +2,14 @@
   "resourceType": "Bundle",
   "id": "1a1b4ceb-2407-4bf4-a6a0-3fea47c3d81f",
   "meta": {
-    "lastUpdated": "2020-01-07T00:00:00.000+05:30"
+    "lastUpdated": "2020-01-07T10:00:00.605+05:30"
   },
   "identifier": {
     "system": "https://www.wbc.in/bundle",
     "value": "1a1b4ceb-2407-4bf4-a6a0-3fea47c3d81f"
   },
   "type": "document",
-  "timestamp": "2020-01-07T00:00:00.000+05:30",
+  "timestamp": "2020-01-07T10:00:00.605+05:30",
   "entry": [
     {
       "fullUrl": "Composition/fab85982-0b7d-4fbc-91a1-08d09c5a378d",
@@ -36,7 +36,7 @@
         "encounter": {
           "reference": "Encounter/18490937-c685-42e7-b231-6621b77335fd"
         },
-        "date": "2020-01-07T00:00:00.605+05:30",
+        "date": "2020-01-07T10:00:00.605+05:30",
         "author": [
           {
             "reference": "Practitioner/WBC180414"
@@ -138,7 +138,7 @@
         "subject": {
           "reference": "Patient/RVH1002"
         },
-        "issued": "2020-01-07T00:00:00.000+05:30",
+        "issued": "2020-01-07T10:00:00.605+05:30",
         "performer": [
           {
             "reference": "Organization/Wbc01"
