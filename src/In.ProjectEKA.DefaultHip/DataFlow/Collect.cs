@@ -47,7 +47,7 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
         {
             var fromDate = ParseDate(range.From);
             var toDate = ParseDate(range.To);
-            return date >= fromDate && date < toDate;
+            return date > fromDate && date < toDate;
         }
 
         private static DateTime ParseDate(string dateString)
