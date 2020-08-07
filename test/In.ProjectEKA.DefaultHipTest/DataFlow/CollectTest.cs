@@ -62,7 +62,7 @@ namespace In.ProjectEKA.DefaultHipTest.DataFlow
                 new GrantedContext("RVH1002", "NCP1007"),
                 new GrantedContext("RVH1002", "RV-MHD-01.17.0024")
             };
-            var dateRange = new DateRange("2017-12-01T15:43:00.000+0000", "2021-12-31T15:43:19.279+0000");
+            var dateRange = new DateRange("2013-12-01T15:43:00.000+0000", "2021-12-31T15:43:19.279+0000");
             var hiTypes = new List<HiType>
             {
                 HiType.Condition,
