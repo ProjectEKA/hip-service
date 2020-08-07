@@ -31,31 +31,31 @@
     },
     "RVH1002" : {
         "RV-MHD-01.17.0024" : [
-            { 
+            {
                 "capturedOn": "2019-04-02T15:32:26.605+05:30",
                 "data":  {
                     "prescription" : ["RVMHD01PrescriptionDocument1.json"]
                 }
             },
-            { 
+            {
                 "capturedOn": "2019-04-15T15:32:26.605+05:30",
                 "data":  {
                     "prescription" : ["RVMHD01PrescriptionDocument2.json"]
                 }
             },
-            { 
+            {
                 "capturedOn": "2019-04-27T15:32:26.605+05:30",
                 "data":  {
                     "prescription" : ["RVMHD01PrescriptionDocument3.json"]
                 }
             },
-            { 
+            {
                 "capturedOn": "2019-05-21T15:32:26.605+05:30",
                 "data":  {
                     "prescription" : ["RVMHD01PrescriptionDocument4.json"]
                 }
             },
-            { 
+            {
                 "capturedOn": "2019-06-01T00:00:00+05:30",
                 "data":  {
                     "prescription" : ["RVMHD01PrescriptionDoc06012019.json"]
