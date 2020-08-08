@@ -22,6 +22,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             GatewayConfiguration gatewayConfiguration)
         {
             this.httpClient = httpClient;
+            this.httpClient.Timeout = TimeSpan.FromSeconds(20);
             this.dataFlowNotificationClient = dataFlowNotificationClient;
             this.gatewayConfiguration = gatewayConfiguration;
         }
