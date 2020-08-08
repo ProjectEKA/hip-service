@@ -390,7 +390,7 @@
     "NCC1702" : {
         "SC1702" : [
             {
-                "capturedOn": "2018-08-01T00:00:00+05:30",
+                "capturedOn": "2018-08-01T15:32:26.605+05:30",
                 "data":  {
                     "prescription" : ["MAXNCC1702PrescriptionDoc20180801.json"],
                     "dischargesummary" : []
@@ -399,27 +399,27 @@
         ],
         "NCP1702" : [
             {
-                "capturedOn": "2018-08-03T00:00:00+05:30",
+                "capturedOn": "2018-08-03T15:32:26.605+05:30",
                 "data":  {
                     "prescription" : ["MAXNCC1702PrescriptionDoc20180803.json"],
                     "dischargesummary" : []
                 }
             },
             {
-                "capturedOn": "2018-08-05T00:00:00+05:30",
+                "capturedOn": "2018-08-05T15:32:26.605+05:30",
                 "data":  {
                     "prescription" : ["MAXNCC1702PrescriptionDoc20180805.json"],
                     "dischargesummary" : []
                 }
             },
             {
-                "capturedOn": "2019-01-01T00:00:00+05:30",
+                "capturedOn": "2019-01-01T15:32:26.605+05:30",
                 "data":  {
                     "diagnosticreport" : ["MAXNCP1702DiagnosticReportDoc20190101.json"]
                 }
             },
             {
-                "capturedOn": "2019-01-03T00:00:00+05:30",
+                "capturedOn": "2019-01-03T15:32:26.605+05:30",
                 "data":  {
                     "diagnosticreport" : ["MAXNCP1702DiagnosticReportDoc20190103.json"]
                 }
