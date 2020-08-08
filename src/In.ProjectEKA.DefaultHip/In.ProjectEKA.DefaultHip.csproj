@@ -454,4 +454,31 @@
       <Link>NCP1702DischargeSummary20191003.json</Link>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\MAXLIVNO10PrescriptionDoc20180801.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>MAXLIVNO10PrescriptionDoc20180801.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\MAXLIVNO10DiagnosticReportDoc20190801.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>MAXLIVNO10DiagnosticReportDoc20190801.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\MAXLIVNO11OPConsultationDoc20180801.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>MAXLIVNO11OPConsultationDoc20180801.json</Link>
+    </Content>
+  </ItemGroup><ItemGroup>
+    <Content Include="Resources\MAXLIVNO11PrescriptionDoc20190801.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>MAXLIVNO11PrescriptionDoc20190801.json</Link>
+    </Content>
+  </ItemGroup>
 </Project>
