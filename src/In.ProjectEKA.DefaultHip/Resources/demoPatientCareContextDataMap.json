@@ -453,7 +453,7 @@
     "LIVNO10" : {
         "SC0010" : [
             {
-                "capturedOn": "2018-08-01T00:00:00+05:30",
+                "capturedOn": "2018-08-01T00:00:00.605+05:30",
                 "data":  {
                     "prescription" : ["MAXLIVNO10PrescriptionDoc20180801.json"]
                 }
@@ -461,7 +461,7 @@
         ],
         "NCP0010" : [
             {
-                "capturedOn": "2019-08-01T00:00:00+05:30",
+                "capturedOn": "2019-08-01T00:00:00.605+05:30",
                 "data":  {
                     "diagnosticreport" : ["MAXLIVNO10DiagnosticReportDoc20190801.json"]
                 }
@@ -471,7 +471,7 @@
   "LIVNO11" : {
     "SC0011" : [
       {
-        "capturedOn": "2018-08-01T00:00:00+05:30",
+        "capturedOn": "2018-08-01T00:00:00.605+05:30",
         "data":  {
           "opconsultation" : ["MAXLIVNO11OPConsultationDoc20180801.json"]
         }
@@ -479,7 +479,7 @@
     ],
     "NCP0011" : [
       {
-        "capturedOn": "2019-08-01T00:00:00+05:30",
+        "capturedOn": "2019-08-01T00:00:00.605+05:30",
         "data":  {
           "prescription" : ["MAXLIVNO11PrescriptionDoc20190801.json"]
         }
