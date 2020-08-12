@@ -7,6 +7,7 @@ namespace In.ProjectEKA.DefaultHip.Link
     using System.Collections.Generic;
     using System.Linq;
     using Optional;
+    using System.Threading.Tasks;
 
     public class PatientRepository : IPatientRepository
     {
@@ -17,7 +18,7 @@ namespace In.ProjectEKA.DefaultHip.Link
             this.filePath = filePath;
         }
 
-        public Option<Patient> PatientWith(string referenceNumber)
+        public async Task<Option<Patient>> PatientWithAsync(string referenceNumber)
         {
             try
             {

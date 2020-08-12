@@ -11,7 +11,7 @@ namespace In.ProjectEKA.DefaultHipTest.Link
         private readonly PatientRepository patientRepository = new PatientRepository("demoPatients.json");
 
         [Fact]
-        private void ReturnPatient()
+        private async System.Threading.Tasks.Task ReturnPatientAsync()
         {
             const string patientReferenceNumber = "RVH1002";
             var testPatient = new Patient
@@ -28,17 +28,17 @@ namespace In.ProjectEKA.DefaultHipTest.Link
                 YearOfBirth = 2001
             };
 
-            var patient = patientRepository.PatientWith(patientReferenceNumber);
+            var patient = await patientRepository.PatientWithAsync(patientReferenceNumber);
 
             patient.ValueOr(new Patient()).Should().BeEquivalentTo(testPatient);
         }
 
         [Fact]
-        private void ReturnNullForUnknownPatient()
+        private async System.Threading.Tasks.Task ReturnNullForUnknownPatientAsync()
         {
             const string patientReferenceNumber = "1234";
 
-            var patient = patientRepository.PatientWith(patientReferenceNumber);
+            var patient = await patientRepository.PatientWithAsync(patientReferenceNumber);
 
             patient.ValueOr((Patient) null).Should().BeNull();
         }

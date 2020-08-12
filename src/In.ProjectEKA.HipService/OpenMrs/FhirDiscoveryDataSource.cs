@@ -48,5 +48,13 @@ namespace In.ProjectEKA.HipService.OpenMrs
             
             return patients;
         }
+    
+        public async Task<Patient> LoadPatientAsync(string patientId) {
+            var path = $"{DiscoveryPathConstants.OnPatientPath}/{patientId}";
+            var response = await openMrsClient.GetAsync(path);
+            var content = await response.Content.ReadAsStringAsync();
+            var patient = new FhirJsonParser().Parse<Patient>(content);
+            return patient;
+        }
     }
 }

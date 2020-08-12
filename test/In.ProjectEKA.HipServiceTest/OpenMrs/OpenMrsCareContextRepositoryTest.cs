@@ -17,6 +17,9 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
         private readonly Mock<IOpenMrsClient> openmrsClientMock;
         private readonly OpenMrsCareContextRepository careContextRepository;
 
+        private const string programReferenceNumber = "c1720ca0-8ea3-4ef7-a4fa-a7849ab99d87";
+        private const string programDisplayName = "HIV Program";
+
         public OpenMrsCareContextRepositoryTest()
         {
             openmrsClientMock = new Mock<IOpenMrsClient>();

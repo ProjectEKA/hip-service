@@ -331,8 +331,8 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                         unlinkedCareContext
                     }
                 };
-            patientRepository.Setup(x => x.PatientWith(testPatient.Identifier))
-                .Returns(Option.Some(testPatient));
+            patientRepository.Setup(x => x.PatientWithAsync(testPatient.Identifier))
+                .ReturnsAsync(Option.Some(testPatient));
         }
     }
 

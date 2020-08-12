@@ -45,7 +45,7 @@ namespace In.ProjectEKA.HipService.Link
         public virtual async Task<ValueTuple<PatientLinkEnquiryRepresentation, ErrorRepresentation>> LinkPatients(
             PatientLinkEnquiry request)
         {
-            var (patient, error) = PatientAndCareContextValidation(request);
+            var (patient, error) = await PatientAndCareContextValidation(request);
             if (error != null)
             {
                 Log.Error(error.Error.Message);
@@ -103,12 +103,11 @@ namespace In.ProjectEKA.HipService.Link
             return (patientLinkReferenceResponse, null);
         }
 
-        private ValueTuple<Patient, ErrorRepresentation> PatientAndCareContextValidation(
+        private async Task<ValueTuple<Patient, ErrorRepresentation>> PatientAndCareContextValidation(
             PatientLinkEnquiry request)
         {
-            return patientRepository.PatientWith(request.Patient.ReferenceNumber)
-                .Map(
-                    patient =>
+            var patient = await patientRepository.PatientWithAsync(request.Patient.ReferenceNumber);
+            return patient.Map(patient =>
                     {
                         var programs = request.Patient.CareContexts
                             .Where(careContext =>
@@ -147,8 +146,8 @@ namespace In.ProjectEKA.HipService.Link
                     new ErrorRepresentation(new Error(ErrorCode.NoLinkRequestFound, ErrorMessage.NoLinkRequestFound)));
             }
 
-            return await patientRepository.PatientWith(linkEnquires.PatientReferenceNumber)
-                .Map( async patient =>
+            var patient = await patientRepository.PatientWithAsync(linkEnquires.PatientReferenceNumber);
+            return await patient.Map( async patient =>
                 {
                     var savedLinkRequests = await linkPatientRepository.Get(request.LinkReferenceNumber);
                     savedLinkRequests.MatchSome(linkRequests =>

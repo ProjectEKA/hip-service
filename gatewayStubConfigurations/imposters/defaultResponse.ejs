@@ -1,5 +1,6 @@
 (request, state, logger) => {
     logger.info('default called for ' + request.method + ' ' + request.path);
+    logger.info(request.body);
     return {
       headers: {
         'Content-Type': 'application/json'
