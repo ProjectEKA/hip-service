@@ -10,6 +10,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
     using Xunit;
     using HipService.Consent;
     using HipService.MessagingQueue;
+    using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using DataFlowService = HipService.DataFlow.DataFlow;
 
@@ -18,6 +19,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
     {
         private readonly Mock<IDataFlowRepository> dataFlowRepository = new Mock<IDataFlowRepository>();
         private readonly Mock<IConsentRepository> consentRepository = new Mock<IConsentRepository>();
+        private readonly Mock<ILogger<DataFlow>> loggerMock = new Mock<ILogger<DataFlow>>();
 
         private readonly Mock<IHealthInformationRepository> healthInformationRepository =
             new Mock<IHealthInformationRepository>();
@@ -35,7 +37,8 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                 messagingQueueManager.Object,
                 consentRepository.Object,
                 healthInformationRepository.Object,
-                dataFlowConfiguration);
+                dataFlowConfiguration,
+                loggerMock.Object);
         }
 
         [Fact]
