@@ -91,6 +91,7 @@ namespace In.ProjectEKA.HipService
                 .Configure<HipConfiguration>(Configuration.GetSection("hip"))
                 .AddScoped<ILinkPatientRepository, LinkPatientRepository>()
                 .AddSingleton<IMatchingRepository, OpenMrsPatientMatchingRepository>()
+                .AddScoped<ICareContextRepository, OpenMrsCareContextRepository>()
                 .AddScoped<IDiscoveryRequestRepository, DiscoveryRequestRepository>()
                 .AddScoped<IPatientDiscovery, PatientDiscovery>()
                 .AddScoped<LinkPatient>()
@@ -111,10 +112,10 @@ namespace In.ProjectEKA.HipService
                     Configuration.GetSection("Gateway").Get<GatewayConfiguration>()))
                 .AddScoped<IGatewayClient, GatewayClient>()
                 .AddSingleton(Configuration.GetSection("OpenMrs").Get<OpenMrsConfiguration>())
-                .AddSingleton(new OpenMrsClient(HttpClient,
+                .AddSingleton(new FhirClient(HttpClient,
                     Configuration.GetSection("OpenMrs").Get<OpenMrsConfiguration>()))
-                .AddScoped<IOpenMrsClient, OpenMrsClient>()
-                .AddScoped<IPatientDal, DiscoveryDataSource>()
+                .AddScoped<IOpenMrsClient, FhirClient>()
+                .AddScoped<IPatientDal, FhirDiscoveryDataSource>()
                 .AddTransient<IDataFlow, DataFlow.DataFlow>()
                 .AddRouting(options => options.LowercaseUrls = true)
                 .AddSwaggerGen(c =>

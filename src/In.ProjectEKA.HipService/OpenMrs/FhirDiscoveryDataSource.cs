@@ -8,11 +8,11 @@ using Patient = Hl7.Fhir.Model.Patient;
 
 namespace In.ProjectEKA.HipService.OpenMrs
 {
-    public class DiscoveryDataSource : IPatientDal
+    public class FhirDiscoveryDataSource : IPatientDal
     {
         private readonly IOpenMrsClient openMrsClient;
 
-        public DiscoveryDataSource(IOpenMrsClient openMrsClient)
+        public FhirDiscoveryDataSource(IOpenMrsClient openMrsClient)
         {
             this.openMrsClient = openMrsClient;
         }

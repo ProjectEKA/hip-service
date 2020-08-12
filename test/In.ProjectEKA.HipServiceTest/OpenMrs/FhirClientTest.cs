@@ -8,11 +8,36 @@ using In.ProjectEKA.HipService.OpenMrs;
 using Moq;
 using Moq.Protected;
 using Xunit;
+
 namespace In.ProjectEKA.HipServiceTest.OpenMrs
 {
-    [Collection("OpenMrs Gateway Client Tests")]
-    public class OpenMrsclientTest
+    [Collection("Fhir Gateway Client Tests")]
+    public class FhirClientTest
     {
+        [Fact(Skip="it is a real call and needs local setup")]
+        [Trait("Category", "Infrastructure")]
+        public async Task ShouldGetPatientDataRealCallAsync()
+        {
+            //Given
+            // Disable SSL verification in test only
+            var handler = new HttpClientHandler()
+            {
+                ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+            };
+            var httpClient = new HttpClient(handler);
+            var openmrsConfiguration = new OpenMrsConfiguration {
+                Url = "https://someurl/openmrs/",
+                Username = "someusername",
+                Password = "somepassword"
+            };
+            var openmrsClient = new FhirClient(httpClient, openmrsConfiguration);
+            //When
+            var response = await openmrsClient.GetAsync("ws/fhir2/Patient");
+            //Then
+            response.Should().NotBeNull();
+            response.StatusCode.Should().Be(200);
+        }
+
         [Fact]
         public async Task ShouldPropagateStatusWhenCredentialsFailed()
         {
@@ -25,24 +50,22 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
                 Username = "someusername",
                 Password = "somepassword"
             };
-            var openmrsClient = new OpenMrsClient(httpClient, openmrsConfiguration);
+            var openmrsClient = new FhirClient(httpClient, openmrsConfiguration);
             handlerMock
                 .Protected()
                 .Setup<Task<HttpResponseMessage>>(
                     "SendAsync",
                     ItExpr.IsAny<HttpRequestMessage>(),
-                    ItExpr.IsAny<CancellationToken>()
-                )
-                .ReturnsAsync( new HttpResponseMessage
+                    ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync(new HttpResponseMessage
                 {
                     StatusCode = HttpStatusCode.BadRequest
-                } )
+                })
                 .Verifiable();
 
             //When
             var response = await openmrsClient.GetAsync("path/to/resource");
-
-            //then
+            //Then
             response.Should().NotBeNull();
             response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
         }
@@ -59,15 +82,14 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
                 Username = "someusername",
                 Password = "somepassword"
             };
-            var openmrsClient = new OpenMrsClient(httpClient, openmrsConfiguration);
+            var openmrsClient = new FhirClient(httpClient, openmrsConfiguration);
             handlerMock
                 .Protected()
                 .Setup<Task<HttpResponseMessage>>(
                     "SendAsync",
                     ItExpr.IsAny<HttpRequestMessage>(),
-                    ItExpr.IsAny<CancellationToken>()
-                )
-                .ThrowsAsync(new Exception("some message here"))
+                    ItExpr.IsAny<CancellationToken>())
+                .ThrowsAsync(new Exception("Some message here"))
                 .Verifiable();
 
             //When
@@ -90,7 +112,8 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
                 Username = "someusername",
                 Password = "somepassword"
             };
-            var openmrsClient = new OpenMrsClient(httpClient, openmrsConfiguration);
+            var openmrsClient = new FhirClient(httpClient, openmrsConfiguration);
+
             var wasCalledWithTheRightUri = false;
             handlerMock
                 .Protected()
@@ -98,24 +121,24 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
                     "SendAsync",
                     ItExpr.IsAny<HttpRequestMessage>(),
                     ItExpr.IsAny<CancellationToken>())
-                    .Callback<HttpRequestMessage, CancellationToken>((response, token) =>
-                    {
-                        if (response.RequestUri.AbsoluteUri == "https://someurl/openmrs/path/to/resource" ||
+                .Callback<HttpRequestMessage, CancellationToken>((response, token) =>
+                {
+                    if (response.RequestUri.AbsoluteUri == "https://someurl/openmrs/path/to/resource" ||
                         response.RequestUri.AbsoluteUri == "https://someurl/openmrs//path/to/resource")
-                        {
-                        wasCalledWithTheRightUri = true;
-                        }
-                    })
-                    .ReturnsAsync(new HttpResponseMessage
                     {
-                        StatusCode = HttpStatusCode.OK
-                    })
-                    .Verifiable();
+                        wasCalledWithTheRightUri = true;
+                    }
+                })
+                .ReturnsAsync(new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.OK
+                })
+                .Verifiable();
 
-                //When
-                await openmrsClient.GetAsync(patientDiscoveryPath);
-                wasCalledWithTheRightUri.Should().BeTrue();
+            //When
+            await openmrsClient.GetAsync(patientDiscoveryPath);
+            //Then
+            wasCalledWithTheRightUri.Should().BeTrue();
         }
-
     }
 }

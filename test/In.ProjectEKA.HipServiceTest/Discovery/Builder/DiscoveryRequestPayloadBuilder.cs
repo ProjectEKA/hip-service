@@ -93,6 +93,14 @@
             _patientUnverifiedIdentifiers = new List<Identifier> { new Identifier(type, value) };
             return this;
         }
+
+        public DiscoveryRequestPayloadBuilder WithUnverifiedIdentifiers(List<Identifier> identifiers)
+        {
+            _patientUnverifiedIdentifiers = identifiers;
+            return this;
+        }
+    
+
         public DiscoveryRequestPayloadBuilder RequestedOn(DateTime requestTime)
         {
             _requestTime = requestTime;
