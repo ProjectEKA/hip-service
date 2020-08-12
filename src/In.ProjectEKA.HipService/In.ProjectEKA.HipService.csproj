@@ -30,7 +30,7 @@
     <PackageReference Include="Serilog.Settings.AppSettings" Version="2.2.2" />
     <PackageReference Include="Serilog.Sinks.Debug" Version="1.0.1" />
     <PackageReference Include="Serilog.Sinks.Seq" Version="4.0.0" />
-    <PackageReference Include="Serilog.Sinks.Http" Version="6.0.0" />
+    <PackageReference Include="Serilog.Sinks.Http" Version="7.0.0" />
     <PackageReference Include="Serilog.Settings.Configuration" Version="3.1.1-dev-00237" />
     <PackageReference Include="Swashbuckle.AspNetCore.ReDoc" Version="5.5.1" />
     <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="5.5.1" />
