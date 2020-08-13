@@ -16,7 +16,7 @@
           "resource":{
              "resourceType":"Composition",
              "id":"1007DR1",
-             "date":"2019-01-03T15:32:26.605+05:30",
+             "date": "2019-01-03T10:00:00.605+05:30",
              "text":{
                 "status":"generated",
                 "div":"<div xmlns=\"http://www.w3.org/1999/xhtml\">Diagnostic Report for Navjot Singh (RVH1002) </div>"
@@ -51,7 +51,7 @@
                     "reference":"Practitioner/DHID1234"
                 }
              ],
-             "title":"Doc: Surgical Pathology Report",
+             "title":"Doc: Surgical Pathology Report 2",
              "section":[
                 {
                    "title":"Section - Diagnostic report: Surgical Pathology",

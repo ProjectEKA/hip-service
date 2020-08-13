@@ -1,0 +1,231 @@
+{
+  "resourceType": "Bundle",
+  "id": "1a1b4ceb-2407-4bf4-a6a0-3fea47c3d81f",
+  "meta": {
+    "lastUpdated": "2020-01-07T10:00:00.605+05:30"
+  },
+  "identifier": {
+    "system": "https://www.wbc.in/bundle",
+    "value": "1a1b4ceb-2407-4bf4-a6a0-3fea47c3d81f"
+  },
+  "type": "document",
+  "timestamp": "2020-01-07T10:00:00.605+05:30",
+  "entry": [
+    {
+      "fullUrl": "Composition/fab85982-0b7d-4fbc-91a1-08d09c5a378d",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "fab85982-0b7d-4fbc-91a1-08d09c5a378d",
+        "identifier": {
+          "system": "https://www.wbc.in/document",
+          "value": "fab85982-0b7d-4fbc-91a1-08d09c5a378d"
+        },
+        "status": "final",
+        "type": {
+          "coding": [
+            {
+              "system": "https://projecteka.in/sct",
+              "code": "721981007",
+              "display": "Diagnostic Report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/RVH1002"
+        },
+        "encounter": {
+          "reference": "Encounter/18490937-c685-42e7-b231-6621b77335fd"
+        },
+        "date": "2020-01-07T10:00:00.605+05:30",
+        "author": [
+          {
+            "reference": "Practitioner/WBC180414"
+          }
+        ],
+        "title": "Diagnostic Report Document 3",
+        "section": [
+          {
+            "title": "# Diagnostic Report",
+            "code": {
+              "coding": [
+                {
+                  "system": "https://projecteka.in/sct",
+                  "code": "721981007",
+                  "display": "Diagnostic Report"
+                }
+              ]
+            },
+            "entry": [
+              {
+                "reference": "DiagnosticReport/111572b1-1655-4e8e-b267-528f94b81345"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Practitioner/WBC180414",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "WBC180414",
+        "identifier": [
+          {
+            "system": "https://www.mciindia.in/doctor",
+            "value": "WBC180414"
+          }
+        ],
+        "name": [
+          {
+            "text": "Lakshmi G",
+            "prefix": [
+              "Dr"
+            ],
+            "suffix": [
+              "MBBS"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Patient/RVH1002",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "RVH1002",
+        "name": [
+          {
+            "text": "Navjot Singh"
+          }
+        ],
+        "gender": "female"
+      }
+    },
+    {
+      "fullUrl": "Encounter/18490937-c685-42e7-b231-6621b77335fd",
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "18490937-c685-42e7-b231-6621b77335fd",
+        "status": "finished",
+        "class": {
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+          "code": "AMB",
+          "display": "Outpatient visit"
+        },
+        "subject": {
+          "reference": "Patient/RVH1002"
+        },
+        "period": {
+          "start": "2020-01-07T00:00:00+05:30"
+        }
+      }
+    },
+    {
+      "fullUrl": "DiagnosticReport/111572b1-1655-4e8e-b267-528f94b81345",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "111572b1-1655-4e8e-b267-528f94b81345",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "https://projecteka.in/loinc",
+              "code": "58410-2",
+              "display": "Complete Blood Count"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/RVH1002"
+        },
+        "issued": "2020-01-07T10:00:00.605+05:30",
+        "performer": [
+          {
+            "reference": "Organization/Wbc01"
+          }
+        ],
+        "resultsInterpreter": [
+          {
+            "reference": "Practitioner/WBC1234"
+          }
+        ],
+        "result": [
+          {
+            "reference": "Observation/14458daa-a1a2-4b5a-bc3e-74b7ae99b2df"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Organization/Wbc01",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "Wbc01",
+        "name": "Well Being Hospital And Clinic",
+        "alias": [
+          "WBH",
+          "WBC"
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "(+91) 044-2417-7000"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "99 Greams Lane,Thousand Lights West, Chennai, Tamil Nadu 600006"
+            ],
+            "city": "Chennai",
+            "state": "Tamil Nadu",
+            "postalCode": "600006",
+            "country": "INDIA"
+          }
+        ],
+        "endpoint": [
+          {
+            "reference": "https://www.wbh.in/",
+            "display": "Website"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Practitioner/WBC1234",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "WBC1234",
+        "identifier": [
+          {
+            "system": "https://www.mciindia.in/doctor",
+            "value": "WBC1234"
+          }
+        ],
+        "name": [
+          {
+            "text": "Manju Sengar",
+            "prefix": [
+              "Dr"
+            ],
+            "suffix": [
+              "MD"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Observation/14458daa-a1a2-4b5a-bc3e-74b7ae99b2df",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "14458daa-a1a2-4b5a-bc3e-74b7ae99b2df",
+        "status": "final",
+        "code": {
+          "text": "Cholesterol"
+        },
+        "valueString": "6.3mmol/L"
+      }
+    }
+  ]
+}

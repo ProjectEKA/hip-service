@@ -1,9 +1,9 @@
-name: master
+name: well-being-hospital
 
 on:
   push:
     branches:
-      - master
+      - well-being-hospital
 
 jobs:
   build:
@@ -31,12 +31,12 @@ jobs:
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD $DOCKER_REGISTRY_URL
       - name: Build docker image
         env:
-          CONTAINER_REPO_NAME: health-information-provider
+          CONTAINER_REPO_NAME: well-being-hospital-health-information-provider
           DOCKER_USERNAME: ${{ secrets.SE_DOCKER_USERNAME }}
         run: docker build -t $DOCKER_USERNAME/$CONTAINER_REPO_NAME:$RELEASE_VERSION .
       - name: Push Docker Container to Registry
         env:
-          CONTAINER_REPO_NAME: health-information-provider
+          CONTAINER_REPO_NAME: well-being-hospital-health-information-provider
           DOCKER_USERNAME: ${{ secrets.SE_DOCKER_USERNAME }}
         run: docker push $DOCKER_USERNAME/$CONTAINER_REPO_NAME:$RELEASE_VERSION
   sonarCodeAnalysis:

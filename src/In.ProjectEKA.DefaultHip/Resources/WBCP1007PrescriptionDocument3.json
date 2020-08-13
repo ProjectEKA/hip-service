@@ -38,7 +38,7 @@
               "display": "Prescription record"
             }
           ],
-          "text": "Prescription record"
+          "text": "Prescription record 10"
         },
         "subject": {
           "reference": "Patient/RVH1002"
