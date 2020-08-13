@@ -1,0 +1,155 @@
+{
+  "resourceType": "Bundle",
+  "id": "744719b9-0590-4560-a60f-db27092d63bf",
+  "meta": {
+    "lastUpdated": "2018-08-01T00:00:00.000+05:30"
+  },
+  "identifier": {
+    "system": "https://www.max.in/bundle",
+    "value": "744719b9-0590-4560-a60f-db27092d63bf"
+  },
+  "type": "document",
+  "timestamp": "2018-08-01T00:00:00.000+05:30",
+  "entry": [
+    {
+      "fullUrl": "Composition/784953a5-097c-4265-959a-9fa9d62833d5",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "784953a5-097c-4265-959a-9fa9d62833d5",
+        "identifier": {
+          "system": "https://www.max.in/document",
+          "value": "784953a5-097c-4265-959a-9fa9d62833d5"
+        },
+        "status": "final",
+        "type": {
+          "coding": [
+            {
+              "system": "https://projecteka.in/sct",
+              "code": "440545006",
+              "display": "Prescription record"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/LIVNO10"
+        },
+        "date": "2018-08-01T00:00:00.605+05:30",
+        "author": [
+          {
+            "reference": "Practitioner/MAX191101",
+            "display": "Dr Akshatha M K"
+          }
+        ],
+        "title": "Prescription",
+        "section": [
+          {
+            "title": "OPD Prescription",
+            "code": {
+              "coding": [
+                {
+                  "system": "https://projecteka.in/sct",
+                  "code": "440545006",
+                  "display": "Prescription record"
+                }
+              ]
+            },
+            "entry": [
+              {
+                "reference": "MedicationRequest/67fa1415-6834-41b8-99b2-ca73d241fb07"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Practitioner/MAX191101",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "MAX191101",
+        "identifier": [
+          {
+            "system": "https://www.mciindia.in/doctor",
+            "value": "MAX191101"
+          }
+        ],
+        "name": [
+          {
+            "text": "Akshatha M K",
+            "prefix": [
+              "Dr"
+            ],
+            "suffix": [
+              "MD"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Patient/LIVNO10",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "LIVNO10",
+        "name": [
+          {
+            "text": "Sadio Mane"
+          }
+        ],
+        "gender": "male"
+      }
+    },
+    {
+      "fullUrl": "Condition/87974d86-0a41-4b92-9ae2-933edaf8fd2c",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "87974d86-0a41-4b92-9ae2-933edaf8fd2c",
+        "code": {
+          "text": "worm infection"
+        },
+        "subject": {
+          "reference": "Patient/LIVNO10"
+        }
+      }
+    },
+    {
+      "fullUrl": "Medication/7741f00b-fb45-4562-9c8f-d3bc316bb971",
+      "resource": {
+        "resourceType": "Medication",
+        "id": "7741f00b-fb45-4562-9c8f-d3bc316bb971",
+        "code": {
+          "text": "albendazole 400 mg"
+        }
+      }
+    },
+    {
+      "fullUrl": "MedicationRequest/67fa1415-6834-41b8-99b2-ca73d241fb07",
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "67fa1415-6834-41b8-99b2-ca73d241fb07",
+        "status": "active",
+        "intent": "order",
+        "medicationReference": {
+          "reference": "Medication/7741f00b-fb45-4562-9c8f-d3bc316bb971"
+        },
+        "subject": {
+          "reference": "Patient/LIVNO10"
+        },
+        "authoredOn": "2018-08-01T00:00:00+05:30",
+        "requester": {
+          "reference": "Practitioner/MAX191101"
+        },
+        "reasonReference": [
+          {
+            "reference": "Condition/87974d86-0a41-4b92-9ae2-933edaf8fd2c"
+          }
+        ],
+        "dosageInstruction": [
+          {
+            "text": "1 time only"
+          }
+        ]
+      }
+    }
+  ]
+}

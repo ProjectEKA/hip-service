@@ -1,24 +1,24 @@
 {
     "resourceType": "Bundle",
-    "id": "bd017d6b-7e7d-496e-b62f-038365fcd22d",
+    "id": "841b92b5-efa8-4668-999a-c08219d78f8e",
     "meta": {
-      "lastUpdated": "2019-06-01T00:00:00.000+05:30"
+      "lastUpdated": "2018-08-05T00:00:00.000+05:30"
     },
     "identifier": {
       "system": "https://www.max.in/bundle",
-      "value": "bd017d6b-7e7d-496e-b62f-038365fcd22d"
+      "value": "841b92b5-efa8-4668-999a-c08219d78f8e"
     },
     "type": "document",
-    "timestamp": "2019-06-01T00:00:00.000+05:30",
+    "timestamp": "2018-08-05T00:00:00.000+05:30",
     "entry": [
       {
-        "fullUrl": "Composition/33002577-b1f7-4169-9470-a155cc90fa4f",
+        "fullUrl": "Composition/5f70bccd-e13b-43c0-9671-8a596211dfd0",
         "resource": {
           "resourceType": "Composition",
-          "id": "33002577-b1f7-4169-9470-a155cc90fa4f",
+          "id": "5f70bccd-e13b-43c0-9671-8a596211dfd0",
           "identifier": {
             "system": "https://www.max.in/document",
-            "value": "33002577-b1f7-4169-9470-a155cc90fa4f"
+            "value": "5f70bccd-e13b-43c0-9671-8a596211dfd0"
           },
           "status": "final",
           "type": {
@@ -31,16 +31,16 @@
             ]
           },
           "subject": {
-            "reference": "Patient/RVH1002"
+            "reference": "Patient/NCC1702"
           },
           "encounter": {
-            "reference": "Encounter/ed80e71b-2322-441a-a3c9-3e6e25e9255b"
+            "reference": "Encounter/cd90b39a-144e-4f83-9d9a-2dd519808a05"
           },
-          "date": "2019-06-01T10:00:00+05:30",
+          "date": "2018-08-05T15:32:26.605+05:30",
           "author": [
             {
-                "reference": "Practitioner/MAX1234",
-                "display": "Dr Manju Sengar"
+              "reference": "Practitioner/MAX1456",
+              "display": "Dr Harsh Dhave"
             }
           ],
           "title": "Prescription",
@@ -58,10 +58,10 @@
               },
               "entry": [
                 {
-                  "reference": "MedicationRequest/576df458-7490-4019-9aa3-5895e38431b5"
+                  "reference": "MedicationRequest/93bbc20e-8bec-4df7-b779-420c011d6edf"
                 },
                 {
-                  "reference": "MedicationRequest/473bbf23-e0a8-4352-819d-973f7b938ac1"
+                  "reference": "MedicationRequest/66f483fc-5536-4352-a8d2-b826cb15442c"
                 }
               ]
             }
@@ -69,47 +69,47 @@
         }
       },
       {
-        "fullUrl": "Practitioner/MAX1234",
+        "fullUrl": "Practitioner/MAX1456",
         "resource": {
           "resourceType": "Practitioner",
-          "id": "MAX1234",
+          "id": "MAX1456",
           "identifier": [
             {
               "system": "https://www.mciindia.in/doctor",
-              "value": "MAX1234"
+              "value": "MAX1456"
             }
           ],
           "name": [
             {
-              "text": "Manju Sengar",
+              "text": "Harsh Dhave",
               "prefix": [
                 "Dr"
               ],
               "suffix": [
-                "MD"
+                "MBBS"
               ]
             }
           ]
         }
       },
       {
-        "fullUrl": "Patient/RVH1002",
+        "fullUrl": "Patient/NCC1702",
         "resource": {
           "resourceType": "Patient",
-          "id": "RVH1002",
+          "id": "NCC1702",
           "name": [
             {
-              "text": "Navjot Singh"
+              "text": "Navjot Singhal"
             }
           ],
           "gender": "female"
         }
       },
       {
-        "fullUrl": "Encounter/ed80e71b-2322-441a-a3c9-3e6e25e9255b",
+        "fullUrl": "Encounter/cd90b39a-144e-4f83-9d9a-2dd519808a05",
         "resource": {
           "resourceType": "Encounter",
-          "id": "ed80e71b-2322-441a-a3c9-3e6e25e9255b",
+          "id": "cd90b39a-144e-4f83-9d9a-2dd519808a05",
           "status": "finished",
           "class": {
             "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
@@ -117,29 +117,45 @@
             "display": "Outpatient visit"
           },
           "subject": {
-            "reference": "Patient/RVH1002"
+            "reference": "Patient/NCC1702"
           },
           "period": {
-            "start": "2019-06-01T00:00:00+05:30"
+            "start": "2018-08-05T00:00:00+05:30"
           }
         }
       },
       {
-        "fullUrl": "MedicationRequest/576df458-7490-4019-9aa3-5895e38431b5",
+        "fullUrl": "Medication/ad938b27-bd88-4b43-a79c-1d2abddee4cb",
+        "resource": {
+          "resourceType": "Medication",
+          "id": "ad938b27-bd88-4b43-a79c-1d2abddee4cb",
+          "code": {
+            "coding": [
+              {
+                "system": "https://projecteka.in/act",
+                "code": "R02AX02",
+                "display": "ibuprofen 500 mg"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "fullUrl": "MedicationRequest/93bbc20e-8bec-4df7-b779-420c011d6edf",
         "resource": {
           "resourceType": "MedicationRequest",
-          "id": "576df458-7490-4019-9aa3-5895e38431b5",
+          "id": "93bbc20e-8bec-4df7-b779-420c011d6edf",
           "status": "active",
           "intent": "order",
-          "medicationCodeableConcept": {
-            "text": "ibuprofen 500 mg"
+          "medicationReference": {
+            "reference": "Medication/ad938b27-bd88-4b43-a79c-1d2abddee4cb"
           },
           "subject": {
-            "reference": "Patient/RVH1002"
+            "reference": "Patient/NCC1702"
           },
-          "authoredOn": "2019-06-01T00:00:00+05:30",
+          "authoredOn": "2018-08-05T00:00:00+05:30",
           "requester": {
-            "reference": "Practitioner/MAX1234"
+            "reference": "Practitioner/MAX1456"
           },
           "dosageInstruction": [
             {
@@ -149,25 +165,30 @@
         }
       },
       {
-        "fullUrl": "MedicationRequest/473bbf23-e0a8-4352-819d-973f7b938ac1",
+        "fullUrl": "MedicationRequest/66f483fc-5536-4352-a8d2-b826cb15442c",
         "resource": {
           "resourceType": "MedicationRequest",
-          "id": "473bbf23-e0a8-4352-819d-973f7b938ac1",
+          "id": "66f483fc-5536-4352-a8d2-b826cb15442c",
           "status": "active",
           "intent": "order",
           "medicationCodeableConcept": {
-            "text": "albendazole 400 mg"
+            "text": "azithromycin 500mg"
           },
           "subject": {
-            "reference": "Patient/RVH1002"
+            "reference": "Patient/NCC1702"
           },
-          "authoredOn": "2019-06-01T00:00:00+05:30",
+          "authoredOn": "2018-08-05T00:00:00+05:30",
           "requester": {
-            "reference": "Practitioner/MAX1234"
+            "reference": "Practitioner/MAX1456"
           },
+          "note": [
+            {
+              "text": "Do not discontinue"
+            }
+          ],
           "dosageInstruction": [
             {
-              "text": "1 time only"
+              "text": "1 capsule 2 times a day"
             }
           ]
         }
