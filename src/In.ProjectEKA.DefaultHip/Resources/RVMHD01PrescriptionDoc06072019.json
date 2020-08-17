@@ -1,0 +1,123 @@
+{
+    "resourceType": "Bundle",
+    "id": "8527187e-762b-4624-9737-3a1860d6e5ac",
+    "meta": {
+      "lastUpdated": "2019-06-07T00:00:00.000+05:30"
+    },
+    "identifier": {
+      "system": "https://www.max.in/bundle",
+      "value": "8527187e-762b-4624-9737-3a1860d6e5ac"
+    },
+    "type": "document",
+    "timestamp": "2019-06-07T00:00:00.000+05:30",
+    "entry": [
+      {
+        "fullUrl": "Composition/6b267427-61ce-43c7-85ac-ea6475aa91c8",
+        "resource": {
+          "resourceType": "Composition",
+          "id": "6b267427-61ce-43c7-85ac-ea6475aa91c8",
+          "identifier": {
+            "system": "https://www.max.in/document",
+            "value": "6b267427-61ce-43c7-85ac-ea6475aa91c8"
+          },
+          "status": "final",
+          "type": {
+            "coding": [
+              {
+                "system": "https://projecteka.in/sct",
+                "code": "440545006",
+                "display": "Prescription record"
+              }
+            ]
+          },
+          "date": "2019-06-07T10:00:00+05:30",
+          "author": [
+            {
+                "reference": "Practitioner/MAX5001"
+            }
+          ],
+          "title": "Prescription",
+          "section": [
+            {
+              "title": "OPD Prescription",
+              "code": {
+                "coding": [
+                  {
+                    "system": "https://projecteka.in/sct",
+                    "code": "440545006",
+                    "display": "Prescription record"
+                  }
+                ]
+              },
+              "entry": [
+                {
+                  "reference": "MedicationRequest/008c0f1b-5c6a-415e-b2c0-1fcea81a8243"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "fullUrl": "Practitioner/MAX5001",
+        "resource": {
+          "resourceType": "Practitioner",
+          "id": "MAX5001",
+          "identifier": [
+            {
+              "system": "https://www.mciindia.in/doctor",
+              "value": "MAX5001"
+            }
+          ],
+          "name": [
+            {
+              "text": "Laxmikanth J",
+              "prefix": [
+                "Dr"
+              ],
+              "suffix": [
+                "MD"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "fullUrl": "Patient/RVH1002",
+        "resource": {
+          "resourceType": "Patient",
+          "id": "RVH1002",
+          "name": [
+            {
+              "text": "Navjot Singh"
+            }
+          ],
+          "gender": "female"
+        }
+      },
+      {
+        "fullUrl": "MedicationRequest/008c0f1b-5c6a-415e-b2c0-1fcea81a8243",
+        "resource": {
+          "resourceType": "MedicationRequest",
+          "id": "008c0f1b-5c6a-415e-b2c0-1fcea81a8243",
+          "status": "active",
+          "intent": "order",
+          "medicationCodeableConcept": {
+            "text": "bromhexine 24 mg"
+          },
+          "subject": {
+            "reference": "Patient/RVH1002"
+          },
+          "authoredOn": "2019-06-07T00:00:00+05:30",
+          "requester": {
+            "reference": "Practitioner/MAX5001"
+          },
+          "dosageInstruction": [
+            {
+              "text": "1 capsule 2 times a day"
+            }
+          ]
+        }
+      }
+    ]
+  }

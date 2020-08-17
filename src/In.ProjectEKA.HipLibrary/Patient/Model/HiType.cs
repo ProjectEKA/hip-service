@@ -9,6 +9,7 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
         Medication,
         DocumentReference,
         Prescription,
-        DischargeSummary
+        DischargeSummary,
+        OPConsultation
     }
 }

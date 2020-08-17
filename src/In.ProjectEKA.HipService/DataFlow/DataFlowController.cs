@@ -2,14 +2,15 @@ namespace In.ProjectEKA.HipService.DataFlow
 {
     using System;
     using System.Threading.Tasks;
+    using Common;
     using Gateway;
     using Gateway.Model;
     using Hangfire;
     using HipLibrary.Patient.Model;
-    using Logger;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
+    using Microsoft.Extensions.Logging;
     using Model;
     using static Common.Constants;
 
@@ -17,7 +18,7 @@ namespace In.ProjectEKA.HipService.DataFlow
     public class DataFlowController : ControllerBase
     {
         private readonly IDataFlow dataFlow;
-        
+
         public DataFlowController(IDataFlow dataFlow)
         {
             this.dataFlow = dataFlow;
@@ -65,20 +66,27 @@ namespace In.ProjectEKA.HipService.DataFlow
         private readonly IDataFlow dataFlow;
         private readonly IBackgroundJobClient backgroundJob;
         private readonly GatewayClient gatewayClient;
+        private readonly GatewayConfiguration gatewayConfiguration;
+        private readonly ILogger<PatientDataFlowController> logger;
 
         public PatientDataFlowController(IDataFlow dataFlow,
             IBackgroundJobClient backgroundJob,
-            GatewayClient gatewayClient)
+            GatewayClient gatewayClient,
+            GatewayConfiguration gatewayConfiguration,
+            ILogger<PatientDataFlowController> logger)
         {
             this.dataFlow = dataFlow;
             this.backgroundJob = backgroundJob;
             this.gatewayClient = gatewayClient;
+            this.logger = logger;
+            this.gatewayConfiguration = gatewayConfiguration;
         }
 
         [HttpPost(PATH_HEALTH_INFORMATION_HIP_REQUEST)]
         public AcceptedResult HealthInformationRequestFor(PatientHealthInformationRequest healthInformationRequest,
             [FromHeader(Name = "X-GatewayID")] string gatewayId)
         {
+            logger.Log(LogLevel.Information, LogEvents.DataFlow, "Data request received");
             backgroundJob.Enqueue(() => HealthInformationOf(healthInformationRequest, gatewayId));
             return Accepted();
         }
@@ -96,25 +104,45 @@ namespace In.ProjectEKA.HipService.DataFlow
                     hiRequest.DataPushUrl,
                     hiRequest.KeyMaterial);
                 var (_, error) = await dataFlow.HealthInformationRequestFor(request, gatewayId);
-                var patientId = await dataFlow.GetPatientId(hiRequest.Consent.Id);
-                var cmSuffix = patientId.Split("@")[1];
-                var sessionStatus = DataFlowRequestStatus.ACKNOWLEDGED;
+                GatewayDataFlowRequestResponse gatewayResponse;
                 if (error != null)
                 {
-                    sessionStatus = DataFlowRequestStatus.ERRORED;
+                    gatewayResponse = new GatewayDataFlowRequestResponse(
+                        Guid.NewGuid(),
+                        DateTime.Now.ToUniversalTime(),
+                        new DataFlowRequestResponse(healthInformationRequest.TransactionId,
+                            DataFlowRequestStatus.ERRORED.ToString()),
+                        error.Error,
+                        new Resp(healthInformationRequest.RequestId));
+                    logger.Log(LogLevel.Error,
+                        LogEvents.DataFlow,
+                        "Response for data request {@GatewayResponse}",
+                        gatewayResponse);
                 }
-
-                var gatewayResponse = new GatewayDataFlowRequestResponse(
-                    Guid.NewGuid(),
-                    DateTime.Now.ToUniversalTime(),
-                    new DataFlowRequestResponse(healthInformationRequest.TransactionId, sessionStatus.ToString()),
-                    error?.Error,
-                    new Resp(healthInformationRequest.RequestId));
-                await gatewayClient.SendDataToGateway(PATH_HEALTH_INFORMATION_ON_REQUEST, gatewayResponse, cmSuffix);
+                else
+                {
+                    gatewayResponse = new GatewayDataFlowRequestResponse(
+                        Guid.NewGuid(),
+                        DateTime.Now.ToUniversalTime(),
+                        new DataFlowRequestResponse(healthInformationRequest.TransactionId,
+                            DataFlowRequestStatus.ACKNOWLEDGED.ToString()),
+                        null,
+                        new Resp(healthInformationRequest.RequestId));
+                    logger.Log(LogLevel.Information,
+                        LogEvents.DataFlow,
+                        "Response for data request {@GatewayResponse}",
+                        gatewayResponse);
+                }
+                await gatewayClient.SendDataToGateway(PATH_HEALTH_INFORMATION_ON_REQUEST,
+                    gatewayResponse,
+                    gatewayConfiguration.CmSuffix);
             }
             catch (Exception exception)
             {
-                Log.Error(exception, exception.StackTrace);
+                logger.Log(LogLevel.Error,
+                    LogEvents.DataFlow,
+                    exception,
+                    "Error happened when responding gateway");
             }
         }
     }

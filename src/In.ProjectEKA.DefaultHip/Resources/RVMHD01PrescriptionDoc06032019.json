@@ -1,0 +1,128 @@
+{
+    "resourceType": "Bundle",
+    "id": "2ee535d1-faf2-4342-b32d-d4d0f839e8e3",
+    "meta": {
+      "lastUpdated": "2019-06-03T00:00:00.000+05:30"
+    },
+    "identifier": {
+      "system": "https://www.max.in/bundle",
+      "value": "2ee535d1-faf2-4342-b32d-d4d0f839e8e3"
+    },
+    "type": "document",
+    "timestamp": "2019-06-03T00:00:00.000+05:30",
+    "entry": [
+      {
+        "fullUrl": "Composition/26885bdd-e675-4d13-9465-43fdce6a5316",
+        "resource": {
+          "resourceType": "Composition",
+          "id": "26885bdd-e675-4d13-9465-43fdce6a5316",
+          "identifier": {
+            "system": "https://www.max.in/document",
+            "value": "26885bdd-e675-4d13-9465-43fdce6a5316"
+          },
+          "status": "final",
+          "type": {
+            "coding": [
+              {
+                "system": "https://projecteka.in/sct",
+                "code": "440545006",
+                "display": "Prescription record"
+              }
+            ]
+          },
+          "date": "2019-06-03T10:00:00+05:30",
+          "author": [
+            {
+              "reference": "Practitioner/MAX5001"
+            }
+          ],
+          "title": "Prescription",
+          "section": [
+            {
+              "title": "OPD Prescription",
+              "code": {
+                "coding": [
+                  {
+                    "system": "https://projecteka.in/sct",
+                    "code": "440545006",
+                    "display": "Prescription record"
+                  }
+                ]
+              },
+              "entry": [
+                {
+                  "reference": "MedicationRequest/4cbca045-b753-4afc-b8d7-23fb6541ff7d"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "fullUrl": "Practitioner/MAX5001",
+        "resource": {
+          "resourceType": "Practitioner",
+          "id": "MAX5001",
+          "identifier": [
+            {
+              "system": "https://www.mciindia.in/doctor",
+              "value": "MAX5001"
+            }
+          ],
+          "name": [
+            {
+              "text": "Laxmikanth J",
+              "prefix": [
+                "Dr"
+              ],
+              "suffix": [
+                "MD"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "fullUrl": "Patient/RVH1002",
+        "resource": {
+          "resourceType": "Patient",
+          "id": "RVH1002",
+          "name": [
+            {
+              "text": "Navjot Singh"
+            }
+          ],
+          "gender": "female"
+        }
+      },
+      {
+        "fullUrl": "MedicationRequest/4cbca045-b753-4afc-b8d7-23fb6541ff7d",
+        "resource": {
+          "resourceType": "MedicationRequest",
+          "id": "4cbca045-b753-4afc-b8d7-23fb6541ff7d",
+          "status": "active",
+          "intent": "order",
+          "medicationCodeableConcept": {
+            "text": "azithromycin 500mg"
+          },
+          "subject": {
+            "reference": "Patient/RVH1002"
+          },
+          "authoredOn": "2019-06-03T00:00:00+05:30",
+          "requester": {
+            "reference": "Practitioner/MAX5001"
+          },
+          "note": [
+            {
+              "text": "Do not discontinue"
+            }
+          ],
+          "dosageInstruction": [
+            {
+              "text": "1 capsule 2 times a day"
+            }
+          ]
+        }
+      }
+    ]
+  }

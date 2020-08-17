@@ -1,0 +1,176 @@
+{
+    "resourceType": "Bundle",
+    "id": "bd017d6b-7e7d-496e-b62f-038365fcd22d",
+    "meta": {
+      "lastUpdated": "2019-06-01T00:00:00.000+05:30"
+    },
+    "identifier": {
+      "system": "https://www.max.in/bundle",
+      "value": "bd017d6b-7e7d-496e-b62f-038365fcd22d"
+    },
+    "type": "document",
+    "timestamp": "2019-06-01T00:00:00.000+05:30",
+    "entry": [
+      {
+        "fullUrl": "Composition/33002577-b1f7-4169-9470-a155cc90fa4f",
+        "resource": {
+          "resourceType": "Composition",
+          "id": "33002577-b1f7-4169-9470-a155cc90fa4f",
+          "identifier": {
+            "system": "https://www.max.in/document",
+            "value": "33002577-b1f7-4169-9470-a155cc90fa4f"
+          },
+          "status": "final",
+          "type": {
+            "coding": [
+              {
+                "system": "https://projecteka.in/sct",
+                "code": "440545006",
+                "display": "Prescription record"
+              }
+            ]
+          },
+          "subject": {
+            "reference": "Patient/RVH1002"
+          },
+          "encounter": {
+            "reference": "Encounter/ed80e71b-2322-441a-a3c9-3e6e25e9255b"
+          },
+          "date": "2019-06-01T10:00:00+05:30",
+          "author": [
+            {
+                "reference": "Practitioner/MAX1234",
+                "display": "Dr Manju Sengar"
+            }
+          ],
+          "title": "Prescription",
+          "section": [
+            {
+              "title": "OPD Prescription",
+              "code": {
+                "coding": [
+                  {
+                    "system": "https://projecteka.in/sct",
+                    "code": "440545006",
+                    "display": "Prescription record"
+                  }
+                ]
+              },
+              "entry": [
+                {
+                  "reference": "MedicationRequest/576df458-7490-4019-9aa3-5895e38431b5"
+                },
+                {
+                  "reference": "MedicationRequest/473bbf23-e0a8-4352-819d-973f7b938ac1"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "fullUrl": "Practitioner/MAX1234",
+        "resource": {
+          "resourceType": "Practitioner",
+          "id": "MAX1234",
+          "identifier": [
+            {
+              "system": "https://www.mciindia.in/doctor",
+              "value": "MAX1234"
+            }
+          ],
+          "name": [
+            {
+              "text": "Manju Sengar",
+              "prefix": [
+                "Dr"
+              ],
+              "suffix": [
+                "MD"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "fullUrl": "Patient/RVH1002",
+        "resource": {
+          "resourceType": "Patient",
+          "id": "RVH1002",
+          "name": [
+            {
+              "text": "Navjot Singh"
+            }
+          ],
+          "gender": "female"
+        }
+      },
+      {
+        "fullUrl": "Encounter/ed80e71b-2322-441a-a3c9-3e6e25e9255b",
+        "resource": {
+          "resourceType": "Encounter",
+          "id": "ed80e71b-2322-441a-a3c9-3e6e25e9255b",
+          "status": "finished",
+          "class": {
+            "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+            "code": "AMB",
+            "display": "Outpatient visit"
+          },
+          "subject": {
+            "reference": "Patient/RVH1002"
+          },
+          "period": {
+            "start": "2019-06-01T00:00:00+05:30"
+          }
+        }
+      },
+      {
+        "fullUrl": "MedicationRequest/576df458-7490-4019-9aa3-5895e38431b5",
+        "resource": {
+          "resourceType": "MedicationRequest",
+          "id": "576df458-7490-4019-9aa3-5895e38431b5",
+          "status": "active",
+          "intent": "order",
+          "medicationCodeableConcept": {
+            "text": "ibuprofen 500 mg"
+          },
+          "subject": {
+            "reference": "Patient/RVH1002"
+          },
+          "authoredOn": "2019-06-01T00:00:00+05:30",
+          "requester": {
+            "reference": "Practitioner/MAX1234"
+          },
+          "dosageInstruction": [
+            {
+              "text": "1 tablet 3 times a day"
+            }
+          ]
+        }
+      },
+      {
+        "fullUrl": "MedicationRequest/473bbf23-e0a8-4352-819d-973f7b938ac1",
+        "resource": {
+          "resourceType": "MedicationRequest",
+          "id": "473bbf23-e0a8-4352-819d-973f7b938ac1",
+          "status": "active",
+          "intent": "order",
+          "medicationCodeableConcept": {
+            "text": "albendazole 400 mg"
+          },
+          "subject": {
+            "reference": "Patient/RVH1002"
+          },
+          "authoredOn": "2019-06-01T00:00:00+05:30",
+          "requester": {
+            "reference": "Practitioner/MAX1234"
+          },
+          "dosageInstruction": [
+            {
+              "text": "1 time only"
+            }
+          ]
+        }
+      }
+    ]
+  }
