@@ -10,7 +10,6 @@ using Task = System.Threading.Tasks.Task;
 
 namespace In.ProjectEKA.HipServiceTest.OpenMrs
 {
-     
     [Collection("Fhir Discovery Data Source Tests")]
     public class FhirDiscoveryDataSourceTest
     {

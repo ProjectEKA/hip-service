@@ -102,12 +102,12 @@ namespace In.ProjectEKA.HipService.OpenMrs
             for (int i = 0; i < results.GetArrayLength(); i++)
             {
                 var visitType = results[i].GetProperty("visitType");
-                var display = visitType.GetProperty("display").GetString();
-                careContexts.Add(new CareContextRepresentation(null, display));
+                var referenceNumber = visitType.GetProperty("display").GetString();
+                careContexts.Add(new CareContextRepresentation(referenceNumber, null));
             }
 
             List<CareContextRepresentation> uniqueCareContexts = careContexts
-                .GroupBy(careContext => careContext.Display)
+                .GroupBy(careContext => careContext.ReferenceNumber)
                 .Select(visitType => visitType.First())
                 .ToList();
 

@@ -18,6 +18,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
     {
         private Mock<IPatientDal> patientDal = new Mock<IPatientDal>();
         private Mock<ICareContextRepository> careContextRepository = new Mock<ICareContextRepository>();
+        private Mock<IPhoneNumberRepository> phoneNumberRepository = new Mock<IPhoneNumberRepository>();
 
         public PatientRepositoryTest()
         {
@@ -26,6 +27,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
                 new CareContextRepresentation("testReferrenceNumber1", "display1"),
                 new CareContextRepresentation("testReferenceNumber2", "display2")
             };
+            var phoneNumber = "+91-9999999999";
             patientDal.Setup(e => e.LoadPatientAsync(It.IsAny<string>()))
                 .Returns(Task.FromResult(
                     new OpenMrsPatient() {
@@ -41,13 +43,14 @@ namespace In.ProjectEKA.HipServiceTest.Link
             careContextRepository.Setup(e => e.GetCareContexts(It.IsAny<string>())).Returns(Task.FromResult(
                 new List<CareContextRepresentation>(careContextRepresentations).AsEnumerable()
             ));
+            phoneNumberRepository.Setup(e => e.GetPhoneNumber(It.IsAny<string>())).ReturnsAsync(phoneNumber);
         }
 
         [Fact]
         private async void PatientRepositoryPatientWith_ReturnHIPPatient()
         {
             var patientId = "someid";
-            var repo = new OpenMrsPatientRepository(patientDal.Object, careContextRepository.Object);
+            var repo = new OpenMrsPatientRepository(patientDal.Object, careContextRepository.Object, phoneNumberRepository.Object);
 
             var patient = await repo.PatientWithAsync(patientId);
 
@@ -59,6 +62,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
             patientValue.YearOfBirth.Should().Be(1981);
             patientValue.CareContexts.First().ReferenceNumber.Should().Be("testReferrenceNumber1");
             patientValue.CareContexts.Count().Should().Be(2);
+            patientValue.PhoneNumber.Should().Be("+91-9999999999");
         }
     }
 }

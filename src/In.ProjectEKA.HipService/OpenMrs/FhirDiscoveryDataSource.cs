@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using System.Web;
 using Hl7.Fhir.Model;
 using Hl7.Fhir.Serialization;
-using In.ProjectEKA.HipLibrary.Patient.Model;
 using Patient = Hl7.Fhir.Model.Patient;
 
 namespace In.ProjectEKA.HipService.OpenMrs
@@ -45,10 +44,10 @@ namespace In.ProjectEKA.HipService.OpenMrs
                     patients.Add((Patient) entry.Resource);
                 }
             });
-            
+
             return patients;
         }
-    
+
         public async Task<Patient> LoadPatientAsync(string patientId) {
             var path = $"{DiscoveryPathConstants.OnPatientPath}/{patientId}";
             var response = await openMrsClient.GetAsync(path);

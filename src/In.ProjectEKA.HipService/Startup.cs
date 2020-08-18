@@ -115,6 +115,7 @@ namespace In.ProjectEKA.HipService
                     Configuration.GetSection("OpenMrs").Get<OpenMrsConfiguration>()))
                 .AddScoped<IOpenMrsClient, FhirClient>()
                 .AddScoped<IPatientDal, FhirDiscoveryDataSource>()
+                .AddScoped<IPhoneNumberRepository, OpenMrsPhoneNumberRepository>()
                 .AddTransient<IDataFlow, DataFlow.DataFlow>()
                 .AddRouting(options => options.LowercaseUrls = true)
                 .AddSwaggerGen(c =>

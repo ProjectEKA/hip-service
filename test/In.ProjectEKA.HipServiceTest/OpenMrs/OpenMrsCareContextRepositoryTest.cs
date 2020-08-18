@@ -84,7 +84,8 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
 
             //Then
             var visit = visits[0];
-            visit.Display.Should().Be("OPD");
+            visit.ReferenceNumber.Should().Be("OPD");
+            visit.Display.Should().Be(null);
         }
 
         [Fact]
@@ -100,9 +101,9 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
             var numberOfVisitTypes = visits.Count();
             numberOfVisitTypes.Should().Be(2);
             var firstVisitType = visits[0];
-            firstVisitType.Display.Should().Be("OPD");
+            firstVisitType.ReferenceNumber.Should().Be("OPD");
             var secondVisitType = visits[1];
-            secondVisitType.Display.Should().Be("Emergency");
+            secondVisitType.ReferenceNumber.Should().Be("Emergency");
         }
 
         [Fact]
@@ -139,8 +140,8 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
                 .ReturnsAsync(
                     new List<CareContextRepresentation>
                     {
-                        new CareContextRepresentation(null, "OPD"),
-                        new CareContextRepresentation(null, "Emergency")
+                        new CareContextRepresentation("OPD", null),
+                        new CareContextRepresentation("Emergency", null)
                     })
                 .Verifiable();
 
@@ -153,8 +154,10 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
             combinedCareContexts[0].ReferenceNumber.Should().Be("12345");
             combinedCareContexts[0].Display.Should().Be("HIV Program");
 
-            combinedCareContexts[1].Display.Should().Be("OPD");
-            combinedCareContexts[2].Display.Should().Be("Emergency");
+            combinedCareContexts[1].ReferenceNumber.Should().Be("OPD");
+            combinedCareContexts[1].Display.Should().Be(null);
+            combinedCareContexts[2].ReferenceNumber.Should().Be("Emergency");
+            combinedCareContexts[2].Display.Should().Be(null);
         }
 
         private void openMrsClientReturnsCareContexts(string path, string response)
