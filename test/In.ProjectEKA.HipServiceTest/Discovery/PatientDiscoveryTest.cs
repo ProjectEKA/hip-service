@@ -17,6 +17,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
     using Match = HipLibrary.Patient.Model.Match;
     using static Builder.TestBuilders;
     using In.ProjectEKA.HipServiceTest.Discovery.Builder;
+    using In.ProjectEKA.HipService.OpenMrs;
 
     public class PatientDiscoveryTest
     {
@@ -245,6 +246,25 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                     r => r.TransactionId == transactionId && r.ConsentManagerUserId == consentManagerUserId)),
                 Times.Once);
             error.Should().BeNull();
+        }
+
+        [Fact]
+        private async void ShouldReturnErrorIfFailedToFetchCareContexts()
+        {
+            var expectedError =
+                new ErrorRepresentation(new Error(ErrorCode.CareContextConfiguration, "HIP configuration error. If you encounter this issue repeatedly, please report it."));
+            var discoveryRequest = discoveryRequestBuilder.WithUnverifiedIdentifiers(null).Build();
+            SetupLinkRepositoryWithLinkedPatient();
+            SetupMatchingRepositoryForDiscoveryRequest(discoveryRequest);
+
+            careContextRepository
+                .Setup(e => e.GetCareContexts(openMrsPatientReferenceNumber))
+                .Throws<OpenMrsFormatException>();
+
+            var (discoveryResponse, error) = await patientDiscovery.PatientFor(discoveryRequest);
+
+            discoveryResponse.Should().BeNull();
+            error.Should().BeEquivalentTo(expectedError);
         }
 
         private PatientEnquiryRepresentation BuildExpectedPatientByExpectedMatchTypes(

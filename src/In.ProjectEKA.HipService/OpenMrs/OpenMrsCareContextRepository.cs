@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Web;
 using In.ProjectEKA.HipLibrary.Patient;
 using In.ProjectEKA.HipLibrary.Patient.Model;
+using In.ProjectEKA.HipService.Logger;
 
 namespace In.ProjectEKA.HipService.OpenMrs
 {
@@ -52,13 +53,28 @@ namespace In.ProjectEKA.HipService.OpenMrs
             var results = root.GetProperty("results");
             for (int i = 0; i < results.GetArrayLength(); i++)
             {
-                var attributes = results[i].GetProperty("attributes");
-                var referenceNumber = attributes[0].GetProperty("value").GetString();
-                var display = results[i].GetProperty("display").GetString();
-                careContexts.Add(new CareContextRepresentation(referenceNumber, display));
+                var attributes = TryGetProperty(results[i], "attributes");
+                if (attributes.GetArrayLength() == 0) {
+                    LogAndThrowException($"Property 'attributes' is empty when getting program enrollments.");
+                }
+                var referenceNumber = TryGetProperty(attributes[0], "value");
+                var display = TryGetProperty(results[i], "display");
+                careContexts.Add(new CareContextRepresentation(referenceNumber.GetString(), display.GetString()));
             }
 
             return careContexts;
+        }
+
+        private JsonElement TryGetProperty(JsonElement data, string propertyName) {
+            if (!data.TryGetProperty(propertyName, out var property)) {
+                LogAndThrowException($"Property '{propertyName}' is missing when getting program enrollments.");
+            }
+            return property;
+        }
+
+        private void LogAndThrowException(string message) {
+            Log.Error(message);
+            throw new OpenMrsFormatException();
         }
 
         public virtual async Task<List<CareContextRepresentation>> LoadVisits(string uuid)

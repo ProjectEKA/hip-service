@@ -8,6 +8,7 @@ namespace In.ProjectEKA.HipService.Discovery
     using HipLibrary.Patient;
     using HipLibrary.Patient.Model;
     using In.ProjectEKA.HipService.Link.Model;
+    using In.ProjectEKA.HipService.OpenMrs;
     using Link;
     using Logger;
 
@@ -74,10 +75,23 @@ namespace In.ProjectEKA.HipService.Discovery
             }
 
             var patients = await matchingRepository.Where(request);
-            foreach (var patient in patients)
+            try
             {
-                var careContexts = await careContextRepository.GetCareContexts(patient.Identifier);
-                patient.CareContexts = careContexts;
+                foreach (var patient in patients)
+                {
+                    var careContexts = await careContextRepository.GetCareContexts(patient.Identifier);
+                    patient.CareContexts = careContexts;
+                }
+            }
+            catch (OpenMrsFormatException e)
+            {
+                Log.Error($"Could not get care contexts for transaction {request.TransactionId}.", e);
+                return (
+                    null,
+                    new ErrorRepresentation(
+                        new Error(
+                            ErrorCode.CareContextConfiguration,
+                            "HIP configuration error. If you encounter this issue repeatedly, please report it.")));
             }
 
             var (patientEnquiryRepresentation, error) =

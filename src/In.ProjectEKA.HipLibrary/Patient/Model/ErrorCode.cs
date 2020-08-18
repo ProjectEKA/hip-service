@@ -18,6 +18,7 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
         ExpiredKeyPair = 1013,
         FailedToGetLinkedCareContexts = 1014,
         DuplicateDiscoveryRequest = 1015,
-        DuplicateRequestId = 1016
+        DuplicateRequestId = 1016,
+        CareContextConfiguration = 1017
     }
 }
