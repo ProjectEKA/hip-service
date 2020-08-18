@@ -7,15 +7,15 @@ namespace In.ProjectEKA.HipService.Gateway
     using System.Threading.Tasks;
     using Common;
     using Logger;
-    using static Common.HttpRequestHelper;
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
     using Optional;
+    using static Common.HttpRequestHelper;
 
     public class GatewayClient
     {
-        private readonly HttpClient httpClient;
         private readonly GatewayConfiguration configuration;
+        private readonly HttpClient httpClient;
 
         public GatewayClient(HttpClient httpClient, GatewayConfiguration gatewayConfiguration)
         {

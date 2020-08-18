@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace In.ProjectEKA.HipService.Discovery.Database.Migrations
+﻿namespace In.ProjectEKA.HipService.Discovery.Database.Migrations
 {
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class RenamingRequestID : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -12,25 +12,25 @@ namespace In.ProjectEKA.HipService.Discovery.Database.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropIndex(
-                name: "IX_DiscoveryRequest_TransactionId",
-                table: "DiscoveryRequest");
+                "IX_DiscoveryRequest_TransactionId",
+                "DiscoveryRequest");
 
             migrationBuilder.DropColumn(
-                name: "TransactionId",
-                table: "DiscoveryRequest");
+                "TransactionId",
+                "DiscoveryRequest");
 
             migrationBuilder.AddColumn<string>(
-                name: "RequestId",
-                table: "DiscoveryRequest",
-                type: "character varying(50)",
+                "RequestId",
+                "DiscoveryRequest",
+                "character varying(50)",
                 maxLength: 50,
                 nullable: false,
                 defaultValue: "");
 
             migrationBuilder.CreateIndex(
-                name: "IX_DiscoveryRequest_RequestId",
-                table: "DiscoveryRequest",
-                column: "RequestId",
+                "IX_DiscoveryRequest_RequestId",
+                "DiscoveryRequest",
+                "RequestId",
                 unique: true);
         }
     }

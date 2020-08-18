@@ -8,12 +8,12 @@ namespace In.ProjectEKA.HipService.Logger
         {
             Serilog.Log.Information(format, arg);
         }
-        
+
         public static void Error(string format, params object[] arg)
         {
             Serilog.Log.Error(format, arg);
         }
-        
+
         public static void Fatal(Exception exception, string format, params object[] arg)
         {
             Serilog.Log.Error(exception, format, arg);

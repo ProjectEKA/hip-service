@@ -30,13 +30,9 @@ namespace In.ProjectEKA.HipService.Common
                 Content = new StringContent(json, Encoding.UTF8, MediaTypeNames.Application.Json)
             };
             if (token != null)
-            {
                 httpRequestMessage.Headers.Add(HeaderNames.Authorization, token);
-            }
             if (cmSuffix != null)
-            {
                 httpRequestMessage.Headers.Add("X-CM-ID", cmSuffix);
-            }
             return httpRequestMessage;
         }
 

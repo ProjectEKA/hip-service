@@ -4,15 +4,15 @@ namespace In.ProjectEKA.HipService.DataFlow
 
     public class StatusNotification
     {
-        public SessionStatus SessionStatus { get; }
-        public string HipId { get; }
-        public IEnumerable<StatusResponse> StatusResponses { get; }
-        
         public StatusNotification(SessionStatus sessionStatus, string hipId, IEnumerable<StatusResponse> statusResponses)
         {
             SessionStatus = sessionStatus;
             HipId = hipId;
             StatusResponses = statusResponses;
         }
+
+        public SessionStatus SessionStatus { get; }
+        public string HipId { get; }
+        public IEnumerable<StatusResponse> StatusResponses { get; }
     }
 }

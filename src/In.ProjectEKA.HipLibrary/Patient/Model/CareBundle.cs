@@ -1,7 +1,7 @@
-using Hl7.Fhir.Model;
-
 namespace In.ProjectEKA.HipLibrary.Patient.Model
 {
+    using Hl7.Fhir.Model;
+
     public class CareBundle
     {
         public CareBundle(string careContextReference, Bundle bundleForThisCcr)

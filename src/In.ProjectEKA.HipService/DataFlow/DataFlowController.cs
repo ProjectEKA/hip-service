@@ -63,8 +63,8 @@ namespace In.ProjectEKA.HipService.DataFlow
     [ApiController]
     public class PatientDataFlowController : ControllerBase
     {
-        private readonly IDataFlow dataFlow;
         private readonly IBackgroundJobClient backgroundJob;
+        private readonly IDataFlow dataFlow;
         private readonly GatewayClient gatewayClient;
         private readonly GatewayConfiguration gatewayConfiguration;
         private readonly ILogger<PatientDataFlowController> logger;

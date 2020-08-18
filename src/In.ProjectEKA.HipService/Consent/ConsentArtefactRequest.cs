@@ -1,14 +1,9 @@
-using In.ProjectEKA.HipService.Common.Model;
-
 namespace In.ProjectEKA.HipService.Consent
 {
+    using Common.Model;
+
     public class ConsentArtefactRequest
     {
-        public string Signature { get; set; }
-        public ConsentArtefact ConsentDetail { get; set; }
-        public ConsentStatus Status { get; set; }
-        public string ConsentId { get; set; }
-
         public ConsentArtefactRequest(string signature, ConsentArtefact consentDetail, ConsentStatus status,
             string consentId)
         {
@@ -17,5 +12,10 @@ namespace In.ProjectEKA.HipService.Consent
             Status = status;
             ConsentId = consentId;
         }
+
+        public string Signature { get; set; }
+        public ConsentArtefact ConsentDetail { get; set; }
+        public ConsentStatus Status { get; set; }
+        public string ConsentId { get; set; }
     }
 }

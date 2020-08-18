@@ -1,6 +1,5 @@
 namespace In.ProjectEKA.HipService.User
 {
-    using System;
     using System.Threading.Tasks;
     using Common;
     using Gateway;
@@ -16,7 +15,8 @@ namespace In.ProjectEKA.HipService.User
         private readonly GatewayClient gatewayClient;
         private readonly ILogger<UserController> logger;
 
-        public UserController(IBackgroundJobClient backgroundJob, GatewayClient gatewayClient,  ILogger<UserController> logger)
+        public UserController(IBackgroundJobClient backgroundJob, GatewayClient gatewayClient,
+            ILogger<UserController> logger)
         {
             this.backgroundJob = backgroundJob;
             this.gatewayClient = gatewayClient;
@@ -36,7 +36,7 @@ namespace In.ProjectEKA.HipService.User
             backgroundJob.Enqueue(() => OnAuthConfirmFor(response));
             return Accepted();
         }
-        
+
         [NonAction]
         public async Task AuthFor(JObject request)
         {
@@ -49,15 +49,10 @@ namespace In.ProjectEKA.HipService.User
         {
             var authOnConfirmResponse = response.ToObject<AuthOnConfirmResponse>();
             if (authOnConfirmResponse.Error == null)
-            {
                 logger.LogInformation($"Access Token is: {authOnConfirmResponse.Auth.AccessToken}");
-            }
             else
-            {
                 logger.LogInformation($" Error Code:{authOnConfirmResponse.Error.Code}," +
                                       $" Error Message:{authOnConfirmResponse.Error.Message}");
-            }
         }
-        
     }
 }

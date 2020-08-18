@@ -1,4 +1,5 @@
 // ReSharper disable MemberCanBePrivate.Global
+
 namespace In.ProjectEKA.HipService.Link
 {
     using System;
@@ -8,20 +9,20 @@ namespace In.ProjectEKA.HipService.Link
     using Gateway.Model;
     using Hangfire;
     using HipLibrary.Patient.Model;
-    using In.ProjectEKA.HipService.Link.Model;
     using Logger;
-    using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+    using Model;
     using static Common.Constants;
 
     [Authorize]
     [ApiController]
     public class LinkController : ControllerBase
     {
-        private readonly IDiscoveryRequestRepository discoveryRequestRepository;
         private readonly IBackgroundJobClient backgroundJob;
-        private readonly LinkPatient linkPatient;
+        private readonly IDiscoveryRequestRepository discoveryRequestRepository;
         private readonly GatewayClient gatewayClient;
+        private readonly LinkPatient linkPatient;
 
         public LinkController(
             IDiscoveryRequestRepository discoveryRequestRepository,
@@ -68,10 +69,8 @@ namespace In.ProjectEKA.HipService.Link
 
                 ErrorRepresentation errorRepresentation = null;
                 if (!doesRequestExists)
-                {
                     errorRepresentation = new ErrorRepresentation(
                         new Error(ErrorCode.DiscoveryRequestNotFound, ErrorMessage.DiscoveryRequestNotFound));
-                }
 
                 var patientReferenceRequest =
                     new PatientLinkEnquiry(request.TransactionId, request.RequestId, patient);
@@ -82,9 +81,7 @@ namespace In.ProjectEKA.HipService.Link
                     : await linkPatient.LinkPatients(patientReferenceRequest);
                 var linkedPatientRepresentation = new LinkEnquiryRepresentation();
                 if (linkReferenceResponse != null)
-                {
                     linkedPatientRepresentation = linkReferenceResponse.Link;
-                }
                 var response = new GatewayLinkResponse(
                     linkedPatientRepresentation,
                     error?.Error,
@@ -111,9 +108,7 @@ namespace In.ProjectEKA.HipService.Link
                         request.Confirmation.LinkRefNumber));
                 LinkConfirmationRepresentation linkedPatientRepresentation = null;
                 if (patientLinkResponse != null)
-                {
                     linkedPatientRepresentation = patientLinkResponse.Patient;
-                }
 
                 var response = new GatewayLinkConfirmResponse(
                     Guid.NewGuid(),
@@ -153,19 +148,16 @@ namespace In.ProjectEKA.HipService.Link
         }
 
         [HttpPost(PATH_ON_ADD_CONTEXTS)]
-        public AcceptedResult HipLinkOnAddContexts(HipLinkContextConfirmation confirmation) {
+        public AcceptedResult HipLinkOnAddContexts(HipLinkContextConfirmation confirmation)
+        {
             Log.Information("Link on-add-context received." +
                             $" RequestId:{confirmation.RequestId}, " +
                             $" Timestamp:{confirmation.Timestamp}");
             if (confirmation.Error != null)
-            {
                 Log.Information($" Error Code:{confirmation.Error.Code}," +
                                 $" Error Message:{confirmation.Error.Message}");
-            }
             else if (confirmation.Acknowledgement != null)
-            {
                 Log.Information($" Acknowledgment Status:{confirmation.Acknowledgement.Status}");
-            }
             Log.Information($" Resp RequestId:{confirmation.Resp.RequestId}");
             return Accepted();
         }

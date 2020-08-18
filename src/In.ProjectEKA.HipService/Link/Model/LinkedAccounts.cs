@@ -25,10 +25,11 @@ namespace In.ProjectEKA.HipService.Link.Model
 
         public string ConsentManagerUserId { get; set; }
 
-        [Key] public string LinkReferenceNumber { get; set; }
+        [Key]
+        public string LinkReferenceNumber { get; set; }
 
         public string PatientReferenceNumber { get; set; }
-        
+
         public string DateTimeStamp { get; set; }
 
         public List<string> CareContexts { get; set; }

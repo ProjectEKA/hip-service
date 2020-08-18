@@ -13,9 +13,9 @@ namespace In.ProjectEKA.HipService.DataFlow
 
     public class DataFlowClient
     {
-        private readonly HttpClient httpClient;
         private readonly DataFlowNotificationClient dataFlowNotificationClient;
         private readonly GatewayConfiguration gatewayConfiguration;
+        private readonly HttpClient httpClient;
 
         public DataFlowClient(HttpClient httpClient,
             DataFlowNotificationClient dataFlowNotificationClient,

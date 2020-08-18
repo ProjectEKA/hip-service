@@ -9,16 +9,16 @@
 
     public class StrongMatcherFactory
     {
-        private StrongMatcherFactory()
-        {
-        }
-
         private static readonly Dictionary<IdentifierType, IIdentifierMatcher> Matchers =
             new Dictionary<IdentifierType, IIdentifierMatcher>
             {
                 {IdentifierType.MOBILE, new PhoneNumberMatcher()},
                 {IdentifierType.MR, new MedicalRecordMatcher()}
             };
+
+        private StrongMatcherFactory()
+        {
+        }
 
         private static Expression<Func<Patient, bool>> ToExpression(Identifier identifier)
         {

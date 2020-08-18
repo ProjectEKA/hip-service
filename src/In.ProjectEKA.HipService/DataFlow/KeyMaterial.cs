@@ -2,11 +2,6 @@ namespace In.ProjectEKA.HipService.DataFlow
 {
     public class KeyMaterial
     {
-        public string CryptoAlg { get; }
-        public string Curve { get; }
-        public KeyStructure DhPublicKey { get; }
-        public string Nonce { get; }
-
         public KeyMaterial(string cryptoAlg, string curve, KeyStructure dhPublicKey, string nonce)
         {
             CryptoAlg = cryptoAlg;
@@ -14,5 +9,10 @@ namespace In.ProjectEKA.HipService.DataFlow
             DhPublicKey = dhPublicKey;
             Nonce = nonce;
         }
+
+        public string CryptoAlg { get; }
+        public string Curve { get; }
+        public KeyStructure DhPublicKey { get; }
+        public string Nonce { get; }
     }
 }

@@ -7,22 +7,19 @@
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "DataFlowRequest",
-                columns: table => new
+                "DataFlowRequest",
+                table => new
                 {
                     TransactionId = table.Column<string>(),
                     HealthInformationRequest = table.Column<string>(nullable: true)
                 },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DataFlowRequest", x => x.TransactionId);
-                });
+                constraints: table => { table.PrimaryKey("PK_DataFlowRequest", x => x.TransactionId); });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "DataFlowRequest");
+                "DataFlowRequest");
         }
     }
 }

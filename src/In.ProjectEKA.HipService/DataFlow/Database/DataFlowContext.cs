@@ -6,12 +6,12 @@ namespace In.ProjectEKA.HipService.DataFlow.Database
 
     public class DataFlowContext : DbContext
     {
-        public DbSet<DataFlowRequest> DataFlowRequest { get; set; }
-        public DbSet<HealthInformation> HealthInformation { get; set; }
-
         public DataFlowContext(DbContextOptions<DataFlowContext> options) : base(options)
         {
         }
+
+        public DbSet<DataFlowRequest> DataFlowRequest { get; set; }
+        public DbSet<HealthInformation> HealthInformation { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

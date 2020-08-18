@@ -7,24 +7,19 @@
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(name:
-                "HealthInformation", columns: 
-                table => new
-                {
-                    InformationId = table.Column<string>(nullable: false),
-                    Data = table.Column<string>(nullable: true),
-                    DateCreated = table.Column<DateTime>(nullable: false),
-                    Token = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_HealthInformation", x => x.InformationId);
-                });
+            migrationBuilder.CreateTable("HealthInformation", table => new
+            {
+                InformationId = table.Column<string>(nullable: false),
+                Data = table.Column<string>(nullable: true),
+                DateCreated = table.Column<DateTime>(nullable: false),
+                Token = table.Column<string>(nullable: true)
+            },
+                constraints: table => { table.PrimaryKey("PK_HealthInformation", x => x.InformationId); });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(name: "HealthInformation");
+            migrationBuilder.DropTable("HealthInformation");
         }
     }
 }
