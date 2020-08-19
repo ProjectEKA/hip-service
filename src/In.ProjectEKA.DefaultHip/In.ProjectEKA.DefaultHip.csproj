@@ -489,4 +489,11 @@
       <Link>MAXLIVNO09PrescriptionDoc20150801.json</Link>
     </Content>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\MAXLIVNO14PrescriptionDoc20110801.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>MAXLIVNO14PrescriptionDoc20110801.json</Link>
+    </Content>
+  </ItemGroup>
 </Project>
