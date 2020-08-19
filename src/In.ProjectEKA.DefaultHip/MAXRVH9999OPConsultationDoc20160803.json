@@ -36,7 +36,7 @@
         "encounter": {
           "reference": "Encounter/84426b70-5d53-4096-8eb3-a20ca657d2cd"
         },
-        "date": "2016-08-03T00:00:00+05:30",
+        "date": "2016-08-03T00:00:00.605+05:30",
         "author": [
           {
             "reference": "Practitioner/MAX5001"

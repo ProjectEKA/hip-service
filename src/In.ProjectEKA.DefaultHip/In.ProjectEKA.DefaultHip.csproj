@@ -474,8 +474,100 @@
       <CopyToPublishDirectory>Always</CopyToPublishDirectory>
       <Link>MAXLIVNO11OPConsultationDoc20180801.json</Link>
     </Content>
-  </ItemGroup><ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="Resources\MAXLIVNO11PrescriptionDoc20190801.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>MAXLIVNO11PrescriptionDoc20190801.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\MAXLIVNO11PrescriptionDoc20190801.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>MAXLIVNO11PrescriptionDoc20190801.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\MAXRVH9999DiagnosticReportDoc20160801.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>MAXLIVNO11PrescriptionDoc20190801.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\MAXRVH9999DischargeSummaryDoc20160801.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>MAXLIVNO11PrescriptionDoc20190801.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\MAXRVH9999OPConsultationDoc20160801.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>MAXLIVNO11PrescriptionDoc20190801.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\MAXRVH9999PrescriptionDoc20160801.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>MAXLIVNO11PrescriptionDoc20190801.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\MAXRVH9999DiagnosticReportDoc20160803.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>MAXLIVNO11PrescriptionDoc20190801.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\MAXRVH9999OPConsultationDoc20160803.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>MAXLIVNO11PrescriptionDoc20190801.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\MAXRVH9999PrescriptionDoc20160803.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>MAXLIVNO11PrescriptionDoc20190801.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\MAXRVH9999DischargeSummaryDoc20160811.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>MAXLIVNO11PrescriptionDoc20190801.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\MAXRVH9999PrescriptionDoc20160805.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>MAXLIVNO11PrescriptionDoc20190801.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\MAXRVH9999PrescriptionDoc20160807.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>MAXLIVNO11PrescriptionDoc20190801.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\MAXNCC1543DischargeSummaryDoc20190409.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>MAXLIVNO11PrescriptionDoc20190801.json</Link>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\MAXNCC1543DischargeSummaryDoc20190419.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <CopyToPublishDirectory>Always</CopyToPublishDirectory>
       <Link>MAXLIVNO11PrescriptionDoc20190801.json</Link>
