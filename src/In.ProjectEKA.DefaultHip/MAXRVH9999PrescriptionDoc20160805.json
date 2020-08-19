@@ -1,0 +1,144 @@
+{
+  "resourceType": "Bundle",
+  "id": "7e5ef70e-6e07-4239-a434-3f2292cfb4a5",
+  "meta": {
+    "lastUpdated": "2016-08-05T00:00:00.000+05:30"
+  },
+  "identifier": {
+    "system": "https://www.max.in/bundle",
+    "value": "7e5ef70e-6e07-4239-a434-3f2292cfb4a5"
+  },
+  "type": "document",
+  "timestamp": "2016-08-05T00:00:00.000+05:30",
+  "entry": [
+    {
+      "fullUrl": "Composition/02946161-a563-434e-93ff-b16988c6f97d",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "02946161-a563-434e-93ff-b16988c6f97d",
+        "identifier": {
+          "system": "https://www.max.in/document",
+          "value": "02946161-a563-434e-93ff-b16988c6f97d"
+        },
+        "status": "final",
+        "type": {
+          "coding": [
+            {
+              "system": "https://projecteka.in/sct",
+              "code": "440545006",
+              "display": "Prescription record"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/RVH9999"
+        },
+        "date": "2016-08-05T00:00:00.605+05:30",
+        "author": [
+          {
+            "reference": "Practitioner/MAX1234"
+          }
+        ],
+        "title": "Prescription",
+        "section": [
+          {
+            "title": "OPD Prescription",
+            "code": {
+              "coding": [
+                {
+                  "system": "https://projecteka.in/sct",
+                  "code": "440545006",
+                  "display": "Prescription record"
+                }
+              ]
+            },
+            "entry": [
+              {
+                "reference": "MedicationRequest/3b0af5e1-edc1-45f4-af6d-f6510865d18b"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Practitioner/MAX1234",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "MAX1234",
+        "identifier": [
+          {
+            "system": "https://www.mciindia.in/doctor",
+            "value": "MAX1234"
+          }
+        ],
+        "name": [
+          {
+            "text": "Manju Sengar",
+            "prefix": [
+              "Dr"
+            ],
+            "suffix": [
+              "MD"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Patient/RVH9999",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "RVH9999",
+        "name": [
+          {
+            "text": "Keith David"
+          }
+        ],
+        "gender": "male"
+      }
+    },
+    {
+      "fullUrl": "Condition/496e5925-80e7-4ad5-ae18-282ebc8e9046",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "496e5925-80e7-4ad5-ae18-282ebc8e9046",
+        "code": {
+          "text": "cough"
+        },
+        "subject": {
+          "reference": "Patient/RVH9999"
+        }
+      }
+    },
+    {
+      "fullUrl": "MedicationRequest/3b0af5e1-edc1-45f4-af6d-f6510865d18b",
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "3b0af5e1-edc1-45f4-af6d-f6510865d18b",
+        "status": "active",
+        "intent": "order",
+        "medicationCodeableConcept": {
+          "text": "dextromethorphan 90 mg"
+        },
+        "subject": {
+          "reference": "Patient/RVH9999"
+        },
+        "authoredOn": "2016-08-05T00:00:00+05:30",
+        "requester": {
+          "reference": "Practitioner/MAX1234"
+        },
+        "reasonReference": [
+          {
+            "reference": "Condition/496e5925-80e7-4ad5-ae18-282ebc8e9046"
+          }
+        ],
+        "dosageInstruction": [
+          {
+            "text": "1 capsule 2 times a day with food"
+          }
+        ]
+      }
+    }
+  ]
+}

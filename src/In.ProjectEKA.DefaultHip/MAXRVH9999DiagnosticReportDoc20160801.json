@@ -1,0 +1,237 @@
+{
+  "resourceType": "Bundle",
+  "id": "ea24b80a-a203-46a7-acca-201ea6f670e1",
+  "meta": {
+    "lastUpdated": "2016-08-01T00:00:00.000+05:30"
+  },
+  "identifier": {
+    "system": "https://www.max.in/bundle",
+    "value": "ea24b80a-a203-46a7-acca-201ea6f670e1"
+  },
+  "type": "document",
+  "timestamp": "2016-08-01T00:00:00.000+05:30",
+  "entry": [
+    {
+      "fullUrl": "Composition/f05c99ab-b085-4bc3-9d0e-d99e4eb815c2",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "f05c99ab-b085-4bc3-9d0e-d99e4eb815c2",
+        "identifier": {
+          "system": "https://www.max.in/document",
+          "value": "f05c99ab-b085-4bc3-9d0e-d99e4eb815c2"
+        },
+        "status": "final",
+        "type": {
+          "coding": [
+            {
+              "system": "https://projecteka.in/sct",
+              "code": "721981007",
+              "display": "Diagnostic Report"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/RVH9999"
+        },
+        "encounter": {
+          "reference": "Encounter/ad39b2e9-1c8c-4095-89c5-1257dcca3f21"
+        },
+        "date": "2016-08-01T00:00:00.605+05:30",
+        "author": [
+          {
+            "reference": "Practitioner/MAX5001"
+          }
+        ],
+        "title": "Diagnostic Report Document",
+        "section": [
+          {
+            "title": "# Diagnostic Report",
+            "code": {
+              "coding": [
+                {
+                  "system": "https://projecteka.in/sct",
+                  "code": "721981007",
+                  "display": "Diagnostic Report"
+                }
+              ]
+            },
+            "entry": [
+              {
+                "reference": "DiagnosticReport/a8d1780f-9ad3-4fd1-ad17-10adf7dcb365"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Practitioner/MAX5001",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "MAX5001",
+        "identifier": [
+          {
+            "system": "https://www.mciindia.in/doctor",
+            "value": "MAX5001"
+          }
+        ],
+        "name": [
+          {
+            "text": "Laxmikanth J",
+            "prefix": [
+              "Dr"
+            ],
+            "suffix": [
+              "MD"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Patient/RVH9999",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "RVH9999",
+        "name": [
+          {
+            "text": "Keith David"
+          }
+        ],
+        "gender": "male"
+      }
+    },
+    {
+      "fullUrl": "Encounter/ad39b2e9-1c8c-4095-89c5-1257dcca3f21",
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "ad39b2e9-1c8c-4095-89c5-1257dcca3f21",
+        "status": "finished",
+        "class": {
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+          "code": "AMB",
+          "display": "Outpatient visit"
+        },
+        "subject": {
+          "reference": "Patient/RVH9999"
+        },
+        "period": {
+          "start": "2016-08-01T00:00:00+05:30"
+        }
+      }
+    },
+    {
+      "fullUrl": "DiagnosticReport/a8d1780f-9ad3-4fd1-ad17-10adf7dcb365",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "a8d1780f-9ad3-4fd1-ad17-10adf7dcb365",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "https://projecteka.in/loinc",
+              "code": "718-7",
+              "display": "Hemoglobin [Mass/volume] in Blood"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/RVH9999"
+        },
+        "issued": "2016-08-01T00:00:00.000+05:30",
+        "performer": [
+          {
+            "reference": "Organization/MaxSaket01"
+          }
+        ],
+        "resultsInterpreter": [
+          {
+            "reference": "Practitioner/MAX191101"
+          }
+        ],
+        "result": [
+          {
+            "reference": "Observation/bbffaf82-5a08-4243-b3a4-e1d2d99a15ec"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Organization/MaxSaket01",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "MaxSaket01",
+        "name": "Max Super Speciality Hospital, Saket",
+        "alias": [
+          "Max"
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "(+91) 011-2651-5050"
+          },
+          {
+            "system": "fax",
+            "value": "(+91) 011-2651-5051"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "1, 2, Press Enclave Marg, Saket Institutional Area, Saket"
+            ],
+            "city": "New Delhi",
+            "state": "New Delhi",
+            "postalCode": "110017",
+            "country": "INDIA"
+          }
+        ],
+        "endpoint": [
+          {
+            "reference": "https://www.max.in/hospital-network/max-super-speciality-hospital-saket",
+            "display": "Website"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Practitioner/MAX191101",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "MAX191101",
+        "identifier": [
+          {
+            "system": "https://www.mciindia.in/doctor",
+            "value": "MAX191101"
+          }
+        ],
+        "name": [
+          {
+            "text": "Akshatha M K",
+            "prefix": [
+              "Dr"
+            ],
+            "suffix": [
+              "MD"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Observation/bbffaf82-5a08-4243-b3a4-e1d2d99a15ec",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "bbffaf82-5a08-4243-b3a4-e1d2d99a15ec",
+        "status": "final",
+        "code": {
+          "text": "Temperature"
+        },
+        "valueQuantity": {
+          "value": 99.5,
+          "unit": "C"
+        }
+      }
+    }
+  ]
+}
