@@ -1,0 +1,163 @@
+{
+  "resourceType": "Bundle",
+  "id": "b0a165f5-ecbf-48fc-807b-bc7a181835f7",
+  "meta": {
+    "lastUpdated": "2011-08-01T00:00:00.000+05:30"
+  },
+  "identifier": {
+    "system": "https://www.max.in/bundle",
+    "value": "b0a165f5-ecbf-48fc-807b-bc7a181835f7"
+  },
+  "type": "document",
+  "timestamp": "2011-08-01T00:00:00.000+05:30",
+  "entry": [
+    {
+      "fullUrl": "Composition/6e94f29d-47ae-4630-abb3-76ce16bf4ed4",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "6e94f29d-47ae-4630-abb3-76ce16bf4ed4",
+        "identifier": {
+          "system": "https://www.max.in/document",
+          "value": "6e94f29d-47ae-4630-abb3-76ce16bf4ed4"
+        },
+        "status": "final",
+        "type": {
+          "coding": [
+            {
+              "system": "https://projecteka.in/sct",
+              "code": "440545006",
+              "display": "Prescription record"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/LIVNO14"
+        },
+        "date": "2011-08-01T00:00:00.605+05:30",
+        "author": [
+          {
+            "reference": "Practitioner/MAX191101"
+          }
+        ],
+        "title": "Prescription",
+        "section": [
+          {
+            "title": "OPD Prescription",
+            "code": {
+              "coding": [
+                {
+                  "system": "https://projecteka.in/sct",
+                  "code": "440545006",
+                  "display": "Prescription record"
+                }
+              ]
+            },
+            "entry": [
+              {
+                "reference": "MedicationRequest/5c3b2b6d-883b-4455-bbc6-7e7101802f61"
+              },
+              {
+                "reference": "MedicationRequest/1ebe1f6c-5ccb-4790-8aea-f47dc913d1da"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Practitioner/MAX191101",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "MAX191101",
+        "identifier": [
+          {
+            "system": "https://www.mciindia.in/doctor",
+            "value": "MAX191101"
+          }
+        ],
+        "name": [
+          {
+            "text": "Akshatha M K",
+            "prefix": [
+              "Dr"
+            ],
+            "suffix": [
+              "MD"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Patient/LIVNO14",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "LIVNO14",
+        "name": [
+          {
+            "text": "David James"
+          }
+        ],
+        "gender": "male"
+      }
+    },
+    {
+      "fullUrl": "Medication/3113b0ee-7b5b-45ef-a44f-22e87559ba24",
+      "resource": {
+        "resourceType": "Medication",
+        "id": "3113b0ee-7b5b-45ef-a44f-22e87559ba24",
+        "code": {
+          "text": "Paracetamol 650 mg"
+        }
+      }
+    },
+    {
+      "fullUrl": "MedicationRequest/5c3b2b6d-883b-4455-bbc6-7e7101802f61",
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "5c3b2b6d-883b-4455-bbc6-7e7101802f61",
+        "status": "active",
+        "intent": "order",
+        "medicationReference": {
+          "reference": "Medication/3113b0ee-7b5b-45ef-a44f-22e87559ba24"
+        },
+        "subject": {
+          "reference": "Patient/LIVNO14"
+        },
+        "authoredOn": "2011-08-01T00:00:00+05:30",
+        "requester": {
+          "reference": "Practitioner/MAX191101"
+        },
+        "dosageInstruction": [
+          {
+            "text": "1 tablet 3 times a day SOS"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "MedicationRequest/1ebe1f6c-5ccb-4790-8aea-f47dc913d1da",
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "1ebe1f6c-5ccb-4790-8aea-f47dc913d1da",
+        "status": "active",
+        "intent": "order",
+        "medicationCodeableConcept": {
+          "text": "bromhexine 24 mg"
+        },
+        "subject": {
+          "reference": "Patient/LIVNO14"
+        },
+        "authoredOn": "2011-08-01T00:00:00+05:30",
+        "requester": {
+          "reference": "Practitioner/MAX191101"
+        },
+        "dosageInstruction": [
+          {
+            "text": "1 capsule 2 times a day"
+          }
+        ]
+      }
+    }
+  ]
+}
