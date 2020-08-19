@@ -4,14 +4,6 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
 
     public class PatientEnquiryRepresentation
     {
-        public string ReferenceNumber { get; }
-
-        public string Display { get; }
-
-        public IEnumerable<CareContextRepresentation> CareContexts { get; }
-
-        public IEnumerable<string> MatchedBy { get; }
-
         public PatientEnquiryRepresentation(
             string referenceNumber,
             string display,
@@ -23,5 +15,13 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
             CareContexts = careContexts;
             MatchedBy = matchedBy;
         }
+
+        public string ReferenceNumber { get; }
+
+        public string Display { get; }
+
+        public IEnumerable<CareContextRepresentation> CareContexts { get; }
+
+        public IEnumerable<string> MatchedBy { get; }
     }
 }

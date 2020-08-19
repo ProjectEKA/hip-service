@@ -14,7 +14,7 @@ namespace In.ProjectEKA.HipService.DataFlow
         public string TransactionId { get; }
 
         public IEnumerable<Entry> Entries { get; }
-        
+
         public KeyMaterial KeyMaterial { get; }
     }
 }

@@ -9,11 +9,11 @@ namespace In.ProjectEKA.HipService.Consent.Database
 
     public class ConsentContext : DbContext
     {
-        public DbSet<Consent> ConsentArtefact { get; set; }
-
         public ConsentContext(DbContextOptions<ConsentContext> options) : base(options)
         {
         }
+
+        public DbSet<Consent> ConsentArtefact { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -4,10 +4,6 @@ namespace In.ProjectEKA.HipService.Link.Model
 
     public class Meta
     {
-        public Mode Mode { get; }
-        public string Hint { get; }
-        public DateTime Expiry { get; }
-        
         public Meta(Mode mode, string hint, DateTime expiry)
         {
             Mode = mode;
@@ -15,5 +11,8 @@ namespace In.ProjectEKA.HipService.Link.Model
             Expiry = expiry;
         }
 
+        public Mode Mode { get; }
+        public string Hint { get; }
+        public DateTime Expiry { get; }
     }
 }

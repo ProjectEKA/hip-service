@@ -6,7 +6,7 @@ namespace In.ProjectEKA.DefaultHip.Patient
     using Hl7.Fhir.Model;
     using Hl7.Fhir.Serialization;
     using Newtonsoft.Json;
-    using Patient = In.ProjectEKA.HipLibrary.Patient.Model.Patient;
+    using Patient = HipLibrary.Patient.Model.Patient;
 
     public static class FileReader
     {

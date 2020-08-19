@@ -3,7 +3,6 @@ namespace In.ProjectEKA.HipService.Link
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
-    using Database.Migrations;
     using Model;
     using Optional;
 

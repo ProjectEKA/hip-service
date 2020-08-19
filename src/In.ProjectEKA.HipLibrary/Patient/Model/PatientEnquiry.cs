@@ -4,20 +4,6 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
 
     public class PatientEnquiry
     {
-        public string Id { get; }
-
-        public IEnumerable<Identifier> VerifiedIdentifiers { get; }
-
-        public IEnumerable<Identifier> UnverifiedIdentifiers { get; }
-
-        public string Name { get; }
-
-        public Gender Gender { get; }
-
-        // ReSharper disable once MemberCanBePrivate.Global
-        // TODO: Need to be used while doing discovery
-        public ushort? YearOfBirth { get; }
-
         public PatientEnquiry(
             string id,
             IEnumerable<Identifier> verifiedIdentifiers,
@@ -33,5 +19,19 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
             Gender = gender;
             YearOfBirth = yearOfBirth;
         }
+
+        public string Id { get; }
+
+        public IEnumerable<Identifier> VerifiedIdentifiers { get; }
+
+        public IEnumerable<Identifier> UnverifiedIdentifiers { get; }
+
+        public string Name { get; }
+
+        public Gender Gender { get; }
+
+        // ReSharper disable once MemberCanBePrivate.Global
+        // TODO: Need to be used while doing discovery
+        public ushort? YearOfBirth { get; }
     }
 }

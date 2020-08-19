@@ -9,23 +9,26 @@ namespace In.ProjectEKA.HipService.Discovery.Model
 
     public class DiscoveryRequest
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        [Key]
-        public int Id { get; set; }
-
-        [Required, MaxLength(50)] public string TransactionId { get; set; }
-
-        [Required, MaxLength(50)] public string ConsentManagerUserId { get; set; }
-
-        public DateTime Timestamp { get; set; }
-
-        [Required, MaxLength(50)] public string PatientReferenceNumber { get; set; }
-
         public DiscoveryRequest(string transactionId, string consentManagerUserId, string patientReferenceNumber)
         {
             TransactionId = transactionId;
             ConsentManagerUserId = consentManagerUserId;
             PatientReferenceNumber = patientReferenceNumber;
         }
+
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Key]
+        public int Id { get; set; }
+
+        [Required, MaxLength(50)]
+        public string TransactionId { get; set; }
+
+        [Required, MaxLength(50)]
+        public string ConsentManagerUserId { get; set; }
+
+        public DateTime Timestamp { get; set; }
+
+        [Required, MaxLength(50)]
+        public string PatientReferenceNumber { get; set; }
     }
 }

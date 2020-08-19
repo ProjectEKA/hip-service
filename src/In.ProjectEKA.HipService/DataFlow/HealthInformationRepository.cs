@@ -6,7 +6,7 @@ namespace In.ProjectEKA.HipService.DataFlow
     using Model;
     using Optional;
 
-    public class HealthInformationRepository: IHealthInformationRepository
+    public class HealthInformationRepository : IHealthInformationRepository
     {
         private readonly DataFlowContext dataFlowContext;
 

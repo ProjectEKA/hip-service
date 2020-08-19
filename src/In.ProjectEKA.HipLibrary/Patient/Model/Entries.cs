@@ -1,7 +1,6 @@
 namespace In.ProjectEKA.HipLibrary.Patient.Model
 {
     using System.Collections.Generic;
-    using Hl7.Fhir.Model;
 
     public class Entries
     {
@@ -9,7 +8,7 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
         {
             CareBundles = careBundles;
         }
-        
+
         public IEnumerable<CareBundle> CareBundles { get; }
     }
 }

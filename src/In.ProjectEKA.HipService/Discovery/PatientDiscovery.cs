@@ -4,30 +4,34 @@ namespace In.ProjectEKA.HipService.Discovery
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Common;
     using HipLibrary.Matcher;
     using HipLibrary.Patient;
     using HipLibrary.Patient.Model;
     using Link;
-    using In.ProjectEKA.HipService.Link.Model;
-    using Logger;
+    using Link.Model;
+    using Microsoft.Extensions.Logging;
 
     public class PatientDiscovery
     {
-        private readonly IMatchingRepository matchingRepository;
         private readonly IDiscoveryRequestRepository discoveryRequestRepository;
         private readonly ILinkPatientRepository linkPatientRepository;
+        private readonly ILogger<PatientDiscovery> logger;
+        private readonly IMatchingRepository matchingRepository;
         private readonly IPatientRepository patientRepository;
 
         public PatientDiscovery(
             IMatchingRepository matchingRepository,
             IDiscoveryRequestRepository discoveryRequestRepository,
             ILinkPatientRepository linkPatientRepository,
-            IPatientRepository patientRepository)
+            IPatientRepository patientRepository,
+            ILogger<PatientDiscovery> logger)
         {
             this.matchingRepository = matchingRepository;
             this.discoveryRequestRepository = discoveryRequestRepository;
             this.linkPatientRepository = linkPatientRepository;
             this.patientRepository = patientRepository;
+            this.logger = logger;
         }
 
         public virtual async Task<ValueTuple<DiscoveryRepresentation, ErrorRepresentation>> PatientFor(
@@ -35,15 +39,17 @@ namespace In.ProjectEKA.HipService.Discovery
         {
             if (await AlreadyExists(request.TransactionId))
             {
+                logger.Log(LogLevel.Error, LogEvents.Discovery, "Discovery Request already exists");
                 return (null,
-                    new ErrorRepresentation(new Error(ErrorCode.DuplicateDiscoveryRequest, "Discovery Request already exists")));
+                    new ErrorRepresentation(new Error(ErrorCode.DuplicateDiscoveryRequest,
+                        "Discovery Request already exists")));
             }
 
             var (linkedAccounts, exception) = await linkPatientRepository.GetLinkedCareContexts(request.Patient.Id);
 
             if (exception != null)
             {
-                Log.Error(exception);
+                logger.Log(LogLevel.Critical, LogEvents.Discovery, exception, "Failed to get care contexts");
                 return (null,
                     new ErrorRepresentation(new Error(ErrorCode.FailedToGetLinkedCareContexts,
                         "Failed to get Linked Care Contexts")));
@@ -52,13 +58,18 @@ namespace In.ProjectEKA.HipService.Discovery
             var linkedCareContexts = linkedAccounts.ToList();
             if (HasAny(linkedCareContexts))
             {
+                logger.Log(LogLevel.Information,
+                    LogEvents.Discovery,
+                    "User has already linked care contexts: {TransactionID}",
+                    request.TransactionId);
                 return await patientRepository.PatientWith(linkedCareContexts.First().PatientReferenceNumber)
                     .Map(async patient =>
                     {
                         await discoveryRequestRepository.Add(new Model.DiscoveryRequest(request.TransactionId,
-                            request.Patient.Id, patient.Identifier));
+                            request.Patient.Id,
+                            patient.Identifier));
                         return (new DiscoveryRepresentation(patient.ToPatientEnquiryRepresentation(
-                                GetUnlinkedCareContexts(linkedCareContexts, patient))),
+                            GetUnlinkedCareContexts(linkedCareContexts, patient))),
                             (ErrorRepresentation) null);
                     })
                     .ValueOr(Task.FromResult(((DiscoveryRepresentation) null,
@@ -71,6 +82,11 @@ namespace In.ProjectEKA.HipService.Discovery
                 DiscoveryUseCase.DiscoverPatient(Filter.Do(patients, request).AsQueryable());
             if (patientEnquiryRepresentation == null)
             {
+                logger.Log(LogLevel.Error,
+                    LogEvents.Discovery,
+                    "Error {@Error} for: {TransactionID}",
+                    error,
+                    request.TransactionId);
                 return (null, error);
             }
 
