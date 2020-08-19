@@ -5,12 +5,6 @@ namespace In.ProjectEKA.HipService.User
 
     public class AuthOnConfirmResponse
     {
-        public Guid RequestId { get; }
-        public DateTime Timestamp { get; }
-        public AuthOnConfirm Auth   { get; }
-        public Error Error { get; }
-        public Resp Resp { get; }
-
         public AuthOnConfirmResponse(Guid requestId, DateTime timestamp, AuthOnConfirm auth, Error error, Resp resp)
         {
             RequestId = requestId;
@@ -19,5 +13,11 @@ namespace In.ProjectEKA.HipService.User
             Error = error;
             Resp = resp;
         }
+
+        public Guid RequestId { get; }
+        public DateTime Timestamp { get; }
+        public AuthOnConfirm Auth { get; }
+        public Error Error { get; }
+        public Resp Resp { get; }
     }
 }

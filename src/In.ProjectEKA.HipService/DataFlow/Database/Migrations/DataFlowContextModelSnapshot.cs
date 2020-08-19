@@ -3,13 +3,12 @@
 namespace In.ProjectEKA.HipService.DataFlow.Database.Migrations
 {
     using System;
-    using Database;
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Infrastructure;
     using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
     [DbContext(typeof(DataFlowContext))]
-    class DataFlowContextModelSnapshot : ModelSnapshot
+    internal class DataFlowContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {

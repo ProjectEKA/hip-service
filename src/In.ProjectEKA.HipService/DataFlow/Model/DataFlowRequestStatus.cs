@@ -1,10 +1,8 @@
 namespace In.ProjectEKA.HipService.DataFlow.Model
 {
-   public enum DataFlowRequestStatus
-    { 
+    public enum DataFlowRequestStatus
+    {
         ACKNOWLEDGED,
         ERRORED
     }
-
 }
-

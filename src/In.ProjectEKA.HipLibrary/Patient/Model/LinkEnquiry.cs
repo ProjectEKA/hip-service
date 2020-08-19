@@ -4,14 +4,6 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
 
     public class LinkEnquiry
     {
-        public string ConsentManagerId { get; }
-
-        public string ConsentManagerUserId { get; }
-
-        public string ReferenceNumber { get; }
-
-        public IEnumerable<CareContextEnquiry> CareContexts { get; }
-
         public LinkEnquiry(
             string consentManagerId,
             string consentManagerUserId,
@@ -23,5 +15,13 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
             ReferenceNumber = referenceNumber;
             CareContexts = careContexts;
         }
+
+        public string ConsentManagerId { get; }
+
+        public string ConsentManagerUserId { get; }
+
+        public string ReferenceNumber { get; }
+
+        public IEnumerable<CareContextEnquiry> CareContexts { get; }
     }
 }

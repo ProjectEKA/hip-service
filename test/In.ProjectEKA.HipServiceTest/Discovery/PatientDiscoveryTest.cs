@@ -11,6 +11,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
     using HipService.Discovery;
     using HipService.Link;
     using HipService.Link.Model;
+    using Microsoft.Extensions.Logging;
     using Moq;
     using Optional;
     using Xunit;
@@ -28,6 +29,8 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
 
         private readonly Mock<IPatientRepository> patientRepository = new Mock<IPatientRepository>();
 
+        private readonly Mock<ILogger<PatientDiscovery>> logger = new Mock<ILogger<PatientDiscovery>>();
+
         [Fact]
         private async void ShouldReturnPatientForAlreadyLinkedPatient()
         {
@@ -35,7 +38,8 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 matchingRepository.Object,
                 discoveryRequestRepository.Object,
                 linkPatientRepository.Object,
-                patientRepository.Object);
+                patientRepository.Object,
+                logger.Object);
             var phoneNumber = Faker().Phone.PhoneNumber();
             var verifiedIdentifiers = new[] {new Identifier(IdentifierType.MOBILE, phoneNumber)};
             var unverifiedIdentifiers = new[] {new Identifier(IdentifierType.MR, Faker().Random.String())};
@@ -102,7 +106,8 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 matchingRepository.Object,
                 discoveryRequestRepository.Object,
                 linkPatientRepository.Object,
-                patientRepository.Object);
+                patientRepository.Object,
+                logger.Object);
             var referenceNumber = Faker().Random.String();
             var name = Faker().Random.String();
             var phoneNumber = Faker().Phone.PhoneNumber();
@@ -138,7 +143,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 name,
                 Gender.M,
                 yearOfBirth);
-            var discoveryRequest = new DiscoveryRequest(patientRequest, RandomString(),transactionId, DateTime.Now);
+            var discoveryRequest = new DiscoveryRequest(patientRequest, RandomString(), transactionId, DateTime.Now);
             linkPatientRepository.Setup(e => e.GetLinkedCareContexts(consentManagerUserId))
                 .ReturnsAsync(new Tuple<IEnumerable<LinkedAccounts>, Exception>(new List<LinkedAccounts>(), null));
             matchingRepository
@@ -173,7 +178,8 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 matchingRepository.Object,
                 discoveryRequestRepository.Object,
                 linkPatientRepository.Object,
-                patientRepository.Object);
+                patientRepository.Object,
+                logger.Object);
             var referenceNumber = Faker().Random.String();
             var consentManagerUserId = Faker().Random.String();
             var transactionId = Faker().Random.String();
@@ -202,7 +208,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 name,
                 Gender.M,
                 yearOfBirth);
-            var discoveryRequest = new DiscoveryRequest(patientRequest, RandomString(),transactionId, DateTime.Now);
+            var discoveryRequest = new DiscoveryRequest(patientRequest, RandomString(), transactionId, DateTime.Now);
             linkPatientRepository.Setup(e => e.GetLinkedCareContexts(consentManagerUserId))
                 .ReturnsAsync(new Tuple<IEnumerable<LinkedAccounts>, Exception>(new List<LinkedAccounts>(), null));
             matchingRepository
@@ -238,7 +244,8 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 matchingRepository.Object,
                 discoveryRequestRepository.Object,
                 linkPatientRepository.Object,
-                patientRepository.Object);
+                patientRepository.Object,
+                logger.Object);
             var expectedError =
                 new ErrorRepresentation(new Error(ErrorCode.MultiplePatientsFound, "Multiple patients found"));
             var verifiedIdentifiers = new[] {new Identifier(IdentifierType.MOBILE, Faker().Phone.PhoneNumber())};
@@ -252,7 +259,8 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 name,
                 gender,
                 yearOfBirth);
-            var discoveryRequest = new DiscoveryRequest(patientRequest, Faker().Random.String(), RandomString(), DateTime.Now);
+            var discoveryRequest = new DiscoveryRequest(patientRequest, Faker().Random.String(), RandomString(),
+                DateTime.Now);
             linkPatientRepository.Setup(e => e.GetLinkedCareContexts(consentManagerUserId))
                 .ReturnsAsync(new Tuple<IEnumerable<LinkedAccounts>, Exception>(new List<LinkedAccounts>(), null));
 
@@ -287,7 +295,8 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 matchingRepository.Object,
                 discoveryRequestRepository.Object,
                 linkPatientRepository.Object,
-                patientRepository.Object);
+                patientRepository.Object,
+                logger.Object);
             var expectedError =
                 new ErrorRepresentation(new Error(ErrorCode.MultiplePatientsFound, "Multiple patients found"));
             var patientReferenceNumber = Faker().Random.String();
@@ -303,7 +312,8 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 name,
                 gender,
                 yearOfBirth);
-            var discoveryRequest = new DiscoveryRequest(patientRequest, Faker().Random.String(), RandomString(), DateTime.Now);
+            var discoveryRequest = new DiscoveryRequest(patientRequest, Faker().Random.String(), RandomString(),
+                DateTime.Now);
             linkPatientRepository.Setup(e => e.GetLinkedCareContexts(consentManagerUserId))
                 .ReturnsAsync(new Tuple<IEnumerable<LinkedAccounts>, Exception>(new List<LinkedAccounts>(), null));
 
@@ -340,7 +350,8 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 matchingRepository.Object,
                 discoveryRequestRepository.Object,
                 linkPatientRepository.Object,
-                patientRepository.Object);
+                patientRepository.Object,
+                logger.Object);
             var consentManagerUserId = Faker().Random.String();
             var expectedError = new ErrorRepresentation(new Error(ErrorCode.NoPatientFound, "No patient found"));
             var verifiedIdentifiers = new List<Identifier>
@@ -353,7 +364,8 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 null,
                 Gender.M,
                 2019);
-            var discoveryRequest = new DiscoveryRequest(patientRequest, Faker().Random.String(), RandomString(), DateTime.Now);
+            var discoveryRequest = new DiscoveryRequest(patientRequest, Faker().Random.String(), RandomString(),
+                DateTime.Now);
             linkPatientRepository.Setup(e => e.GetLinkedCareContexts(consentManagerUserId))
                 .ReturnsAsync(new Tuple<IEnumerable<LinkedAccounts>, Exception>(new List<LinkedAccounts>(), null));
 
@@ -371,7 +383,8 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 matchingRepository.Object,
                 discoveryRequestRepository.Object,
                 linkPatientRepository.Object,
-                patientRepository.Object);
+                patientRepository.Object,
+                logger.Object);
             var consentManagerUserId = Faker().Random.String();
             var expectedError = new ErrorRepresentation(new Error(ErrorCode.NoPatientFound, "No patient found"));
             var patientRequest = new PatientEnquiry(consentManagerUserId,
@@ -380,7 +393,8 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 null,
                 Gender.M,
                 2019);
-            var discoveryRequest = new DiscoveryRequest(patientRequest, Faker().Random.String(), RandomString(), DateTime.Now);
+            var discoveryRequest = new DiscoveryRequest(patientRequest, Faker().Random.String(), RandomString(),
+                DateTime.Now);
             linkPatientRepository.Setup(e => e.GetLinkedCareContexts(consentManagerUserId))
                 .ReturnsAsync(new Tuple<IEnumerable<LinkedAccounts>, Exception>(new List<LinkedAccounts>(), null));
 
@@ -397,11 +411,13 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 matchingRepository.Object,
                 discoveryRequestRepository.Object,
                 linkPatientRepository.Object,
-                patientRepository.Object);
+                patientRepository.Object,
+                logger.Object);
             var expectedError =
-                new ErrorRepresentation(new Error(ErrorCode.DuplicateDiscoveryRequest, "Discovery Request already exists"));
+                new ErrorRepresentation(new Error(ErrorCode.DuplicateDiscoveryRequest,
+                    "Discovery Request already exists"));
             var transactionId = RandomString();
-            var discoveryRequest = new DiscoveryRequest(null, RandomString(),transactionId, DateTime.Now);
+            var discoveryRequest = new DiscoveryRequest(null, RandomString(), transactionId, DateTime.Now);
             discoveryRequestRepository.Setup(repository => repository.RequestExistsFor(transactionId))
                 .ReturnsAsync(true);
 
@@ -417,7 +433,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
         public EmptyIdentifierTestData()
         {
             Add(null);
-            Add(new Identifier[] { });
+            Add(new Identifier[] {});
         }
     }
 }

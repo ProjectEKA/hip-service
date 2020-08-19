@@ -4,11 +4,6 @@ namespace In.ProjectEKA.HipService.Common.Model
 
     public class ConsentPermission
     {
-        public AccessMode AccessMode { get; }
-        public AccessPeriod DateRange { get; }
-        public DataFrequency Frequency { get; }
-        public DateTime DataEraseAt { get; }
-
         public ConsentPermission(AccessMode accessMode,
             AccessPeriod dateRange,
             DataFrequency frequency,
@@ -19,5 +14,10 @@ namespace In.ProjectEKA.HipService.Common.Model
             Frequency = frequency;
             DataEraseAt = dataEraseAt;
         }
+
+        public AccessMode AccessMode { get; }
+        public AccessPeriod DateRange { get; }
+        public DataFrequency Frequency { get; }
+        public DateTime DataEraseAt { get; }
     }
 }

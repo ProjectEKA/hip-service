@@ -1,14 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-
-namespace In.ProjectEKA.HipService.Discovery.Database.Migrations
+﻿namespace In.ProjectEKA.HipService.Discovery.Database.Migrations
 {
+    using Microsoft.EntityFrameworkCore.Migrations;
+
     public partial class PatientReferenceNumber : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "PatientReferenceNumber",
-                table: "DiscoveryRequest",
+                "PatientReferenceNumber",
+                "DiscoveryRequest",
                 maxLength: 50,
                 nullable: false,
                 defaultValue: "");
@@ -17,8 +17,8 @@ namespace In.ProjectEKA.HipService.Discovery.Database.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "PatientReferenceNumber",
-                table: "DiscoveryRequest");
+                "PatientReferenceNumber",
+                "DiscoveryRequest");
         }
     }
 }

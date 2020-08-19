@@ -10,6 +10,7 @@ namespace In.ProjectEKA.HipService.DataFlow.Encryptor
     using Org.BouncyCastle.Crypto.Generators;
     using Org.BouncyCastle.Crypto.Parameters;
     using Org.BouncyCastle.Security;
+    using Org.BouncyCastle.X509;
     using Encoder = Org.BouncyCastle.Utilities.Encoders;
 
     public static class EncryptorHelper
@@ -24,7 +25,7 @@ namespace In.ProjectEKA.HipService.DataFlow.Encryptor
 
         public static string GetPublicKey(AsymmetricCipherKeyPair senderKeyPair)
         {
-            return Convert.ToBase64String(Org.BouncyCastle.X509.SubjectPublicKeyInfoFactory
+            return Convert.ToBase64String(SubjectPublicKeyInfoFactory
                 .CreateSubjectPublicKeyInfo(senderKeyPair.Public).GetEncoded());
         }
 
@@ -53,9 +54,7 @@ namespace In.ProjectEKA.HipService.DataFlow.Encryptor
             var randomKeyReceiverBytes = GetByteFromBase64(randomKeyReceiver).ToArray();
             var sb = new byte[randomKeyReceiverBytes.Length];
             for (var i = 0; i < randomKeySenderBytes.Length; i++)
-            {
                 sb[i] = (byte) (randomKeySenderBytes[i] ^ randomKeyReceiverBytes[i % randomKeyReceiverBytes.Length]);
-            }
 
             return sb;
         }
@@ -75,7 +74,7 @@ namespace In.ProjectEKA.HipService.DataFlow.Encryptor
         public static IEnumerable<byte> GenerateAesKey(string sharedKey, IEnumerable<byte> salt)
         {
             var hkdfBytesGenerator = new HkdfBytesGenerator(new Sha256Digest());
-            var hkdfParameters = new HkdfParameters(EncryptorHelper.GetByteFromBase64(sharedKey).ToArray(),
+            var hkdfParameters = new HkdfParameters(GetByteFromBase64(sharedKey).ToArray(),
                 salt.ToArray(),
                 null);
             hkdfBytesGenerator.Init(hkdfParameters);

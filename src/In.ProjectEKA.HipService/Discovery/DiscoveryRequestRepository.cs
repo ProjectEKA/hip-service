@@ -16,7 +16,7 @@ namespace In.ProjectEKA.HipService.Discovery
 
         public async Task Add(DiscoveryRequest discoveryRequest)
         {
-            discoveryContext.DiscoveryRequest.Add(discoveryRequest);
+            await discoveryContext.DiscoveryRequest.AddAsync(discoveryRequest);
             await discoveryContext.SaveChangesAsync();
         }
 
