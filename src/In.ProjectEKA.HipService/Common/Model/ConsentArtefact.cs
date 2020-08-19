@@ -5,21 +5,10 @@ namespace In.ProjectEKA.HipService.Common.Model
 
     public class ConsentArtefact
     {
-        public string SchemaVersion { get; }
-        public string ConsentId { get; }
-        public DateTime CreatedAt { get; }
-        public ConsentPurpose Purpose { get; }
-        public PatientReference Patient { get; }
-        public HIPReference Hip { get; }
-        public OrganizationReference ConsentManager { get; }
-        public IEnumerable<HiType> HiTypes { get; }
-        public ConsentPermission Permission { get; }
-        public IEnumerable<GrantedContext> CareContexts { get; }
-
         public ConsentArtefact(string schemaVersion,
-        string consentId,
-        DateTime createdAt,
-        ConsentPurpose purpose,
+            string consentId,
+            DateTime createdAt,
+            ConsentPurpose purpose,
             PatientReference patient,
             HIPReference hip, IEnumerable<HiType> hiTypes, ConsentPermission permission,
             IEnumerable<GrantedContext> careContexts,
@@ -35,5 +24,16 @@ namespace In.ProjectEKA.HipService.Common.Model
             CareContexts = careContexts;
             ConsentManager = consentManager;
         }
+
+        public string SchemaVersion { get; }
+        public string ConsentId { get; }
+        public DateTime CreatedAt { get; }
+        public ConsentPurpose Purpose { get; }
+        public PatientReference Patient { get; }
+        public HIPReference Hip { get; }
+        public OrganizationReference ConsentManager { get; }
+        public IEnumerable<HiType> HiTypes { get; }
+        public ConsentPermission Permission { get; }
+        public IEnumerable<GrantedContext> CareContexts { get; }
     }
 }

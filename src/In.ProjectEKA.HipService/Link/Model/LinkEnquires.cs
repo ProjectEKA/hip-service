@@ -27,12 +27,13 @@ namespace In.ProjectEKA.HipService.Link.Model
 
         public string PatientReferenceNumber { get; set; }
 
-        [Key] public string LinkReferenceNumber { get; set; }
+        [Key]
+        public string LinkReferenceNumber { get; set; }
 
         public string ConsentManagerId { get; set; }
 
         public string ConsentManagerUserId { get; set; }
-        
+
         public string DateTimeStamp { get; set; }
 
         public virtual ICollection<CareContext> CareContexts { get; set; }

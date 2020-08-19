@@ -1,4 +1,3 @@
-
 namespace In.ProjectEKA.HipService.DataFlow
 {
     using System;
@@ -16,13 +15,13 @@ namespace In.ProjectEKA.HipService.DataFlow
 
     public class DataEntryFactory
     {
+        private const int MbInBytes = 1000000;
         private static readonly FhirJsonSerializer Serializer = new FhirJsonSerializer(new SerializerSettings());
         private static readonly string FhirMediaType = "application/fhir+json";
-        private readonly IServiceScopeFactory serviceScopeFactory;
         private readonly IOptions<DataFlowConfiguration> dataFlowConfiguration;
-        private readonly IOptions<HipConfiguration> hipConfiguration;
         private readonly IEncryptor encryptor;
-        private const int MbInBytes = 1000000;
+        private readonly IOptions<HipConfiguration> hipConfiguration;
+        private readonly IServiceScopeFactory serviceScopeFactory;
 
         public DataEntryFactory()
         {
@@ -56,9 +55,7 @@ namespace In.ProjectEKA.HipService.DataFlow
                         keyPair,
                         Serializer.SerializeToString(careBundle.BundleForThisCcr), randomKey);
                 if (!encryptData.HasValue)
-                {
                     return Option.None<EncryptedEntries>();
-                }
 
                 encryptData.MatchSome(content =>
                 {

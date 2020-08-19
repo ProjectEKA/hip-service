@@ -5,6 +5,16 @@
 
     public class RankBuilder
     {
+        internal static readonly Dictionary<Filter.IdentifierTypeExt, IRanker<Patient>> Ranks =
+            new Dictionary<Filter.IdentifierTypeExt, IRanker<Patient>>
+            {
+                {Filter.IdentifierTypeExt.Mobile, new MobileRanker()},
+                {Filter.IdentifierTypeExt.Name, new NameRanker()},
+                {Filter.IdentifierTypeExt.Gender, new GenderRanker()},
+                {Filter.IdentifierTypeExt.Mr, new MedicalRecordRanker()},
+                {Filter.IdentifierTypeExt.Empty, new EmptyRanker()}
+            };
+
         private RankBuilder()
         {
         }
@@ -19,15 +29,5 @@
         {
             return new Rank(score);
         }
-
-        internal static readonly Dictionary<Filter.IdentifierTypeExt, IRanker<Patient>> Ranks =
-            new Dictionary<Filter.IdentifierTypeExt, IRanker<Patient>>
-            {
-                {Filter.IdentifierTypeExt.Mobile, new MobileRanker()},
-                {Filter.IdentifierTypeExt.Name, new NameRanker()},
-                {Filter.IdentifierTypeExt.Gender, new GenderRanker()},
-                {Filter.IdentifierTypeExt.Mr, new MedicalRecordRanker()},
-                {Filter.IdentifierTypeExt.Empty, new EmptyRanker()}
-            };
     }
 }

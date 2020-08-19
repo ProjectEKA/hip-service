@@ -4,20 +4,20 @@ namespace In.ProjectEKA.HipService.DataFlow
 
     public class PatientHealthInformationRequest
     {
-        public string TransactionId { get; }
-        public string RequestId { get; }
-        public DateTime Timestamp { get; }
-        public HIRequest HiRequest { get; }
-
         public PatientHealthInformationRequest(string transactionId,
-                                               string requestId,
-                                               DateTime timestamp,
-                                               HIRequest hiRequest)
+            string requestId,
+            DateTime timestamp,
+            HIRequest hiRequest)
         {
             TransactionId = transactionId;
             RequestId = requestId;
             Timestamp = timestamp;
             HiRequest = hiRequest;
         }
+
+        public string TransactionId { get; }
+        public string RequestId { get; }
+        public DateTime Timestamp { get; }
+        public HIRequest HiRequest { get; }
     }
 }

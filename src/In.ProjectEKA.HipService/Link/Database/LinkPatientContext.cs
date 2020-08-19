@@ -1,7 +1,6 @@
 namespace In.ProjectEKA.HipService.Link.Database
 {
     using System.Collections.Generic;
-    using DataFlow;
     using Microsoft.EntityFrameworkCore;
     using Model;
     using Newtonsoft.Json;
@@ -13,7 +12,7 @@ namespace In.ProjectEKA.HipService.Link.Database
         }
 
         public DbSet<LinkEnquires> LinkEnquires { get; set; }
-        
+
         public DbSet<LinkedAccounts> LinkedAccounts { get; set; }
 
         public DbSet<InitiatedLinkRequest> InitiatedLinkRequest { get; set; }
@@ -29,7 +28,7 @@ namespace In.ProjectEKA.HipService.Link.Database
                 .WithOne(c => c.LinkEnquires)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
-            
+
             modelBuilder.Entity<LinkedAccounts>(builder =>
             {
                 builder.Property(p => p.DateTimeStamp)
@@ -43,7 +42,7 @@ namespace In.ProjectEKA.HipService.Link.Database
                 builder.Property(p => p.Status)
                     .HasDefaultValueSql("false");
             });
-            
+
             modelBuilder.Entity<LinkedAccounts>()
                 .Property(e => e.CareContexts)
                 .HasConversion(

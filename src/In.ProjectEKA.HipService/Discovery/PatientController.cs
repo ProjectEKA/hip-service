@@ -1,6 +1,7 @@
 ﻿namespace In.ProjectEKA.HipService.Discovery
 {
     using System;
+    using System.Threading.Tasks;
     using Common;
     using Gateway;
     using Gateway.Model;
@@ -9,17 +10,16 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
-    using Task = System.Threading.Tasks.Task;
     using static Common.Constants;
 
     [Authorize]
     [ApiController]
     public class CareContextDiscoveryController : Controller
     {
-        private readonly PatientDiscovery patientDiscovery;
-        private readonly GatewayClient gatewayClient;
         private readonly IBackgroundJobClient backgroundJob;
+        private readonly GatewayClient gatewayClient;
         private readonly ILogger<CareContextDiscoveryController> logger;
+        private readonly PatientDiscovery patientDiscovery;
 
         public CareContextDiscoveryController(PatientDiscovery patientDiscovery,
             GatewayClient gatewayClient,

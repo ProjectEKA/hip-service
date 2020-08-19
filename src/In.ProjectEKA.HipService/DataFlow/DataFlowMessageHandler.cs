@@ -1,13 +1,13 @@
 namespace In.ProjectEKA.HipService.DataFlow
 {
+    using System.Threading.Tasks;
     using HipLibrary.Patient;
-    using Task = System.Threading.Tasks.Task;
 
     public class DataFlowMessageHandler
     {
         private readonly ICollect collect;
-        private readonly DataFlowClient dataFlowClient;
         private readonly DataEntryFactory dataEntryFactory;
+        private readonly DataFlowClient dataFlowClient;
 
         public DataFlowMessageHandler(
             ICollect collect,
