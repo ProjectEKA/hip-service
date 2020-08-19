@@ -1,55 +1,54 @@
 {
   "resourceType": "Bundle",
-  "id": "e24d0d35-a976-4eec-9598-c0f061a56b8b",
+  "id": "7974792b-3345-4d04-85fc-46d1f0d65147",
   "meta": {
-    "lastUpdated": "2019-04-19T00:00:00.000+05:30"
+    "lastUpdated": "2016-08-01T00:00:00.000+05:30"
   },
   "identifier": {
     "system": "https://www.max.in/bundle",
-    "value": "e24d0d35-a976-4eec-9598-c0f061a56b8b"
+    "value": "7974792b-3345-4d04-85fc-46d1f0d65147"
   },
   "type": "document",
-  "timestamp": "2019-04-19T00:00:00.000+05:30",
+  "timestamp": "2016-08-01T00:00:00.000+05:30",
   "entry": [
     {
-      "fullUrl": "Composition/fb8c668f-8e53-47dd-802b-aa2ff4763e8c",
+      "fullUrl": "Composition/59f78674-026b-487f-97c4-f9c5106194a3",
       "resource": {
         "resourceType": "Composition",
-        "id": "fb8c668f-8e53-47dd-802b-aa2ff4763e8c",
+        "id": "59f78674-026b-487f-97c4-f9c5106194a3",
         "identifier": {
           "system": "https://www.max.in/document",
-          "value": "fb8c668f-8e53-47dd-802b-aa2ff4763e8c"
+          "value": "59f78674-026b-487f-97c4-f9c5106194a3"
         },
         "status": "final",
         "type": {
           "coding": [
             {
               "system": "https://projecteka.in/sct",
-              "code": "373942005",
-              "display": "Discharge Summary Record"
+              "code": "371530004",
+              "display": "Clinical consultation report"
             }
           ]
         },
         "subject": {
-          "reference": "Patient/NCC1543"
+          "reference": "Patient/RVH9999"
         },
         "encounter": {
-          "reference": "Encounter/ece47f53-28dc-48bf-9232-79efa964defd"
+          "reference": "Encounter/3e5994ad-063d-45d6-891a-439152cfc4ee"
         },
-        "date": "2019-04-19T00:00:00+05:30",
+        "date": "2016-08-01T00:00:00.605+05:30",
         "author": [
           {
-            "reference": "Practitioner/MAX191101",
-            "display": "Dr Akshatha M K"
+            "reference": "Practitioner/MAX5001"
           }
         ],
-        "title": "Discharge Summary Document",
+        "title": "OP Consultation Document",
         "custodian": {
           "reference": "Organization/MaxSaket01"
         },
         "section": [
           {
-            "title": "Presenting Problems",
+            "title": "Chief Complaints",
             "code": {
               "coding": [
                 {
@@ -61,7 +60,7 @@
             },
             "entry": [
               {
-                "reference": "Condition/194208f1-a058-4b21-88bd-7ca38bbfe68f"
+                "reference": "Condition/7c3c25f5-4fbe-46c4-bc56-c0daaaa44941"
               }
             ]
           },
@@ -98,15 +97,15 @@
             },
             "entry": [
               {
-                "reference": "Observation/5d4cf222-76d0-4da1-9beb-c44d676db85c"
+                "reference": "Observation/a0452ca0-c206-4daf-bbd7-3f5bb849a19f"
               },
               {
-                "reference": "Observation/3e1db0b3-46bb-4f23-a5ea-6ed3b3a34cf2"
+                "reference": "Observation/097af0a9-0033-41c0-95c7-394eba501552"
               }
             ]
           },
           {
-            "title": "Prescribed medications during Admission",
+            "title": "Prescription",
             "code": {
               "coding": [
                 {
@@ -118,10 +117,7 @@
             },
             "entry": [
               {
-                "reference": "MedicationRequest/b07e48bc-1554-4eaa-bee3-0370982eb8f0"
-              },
-              {
-                "reference": "MedicationRequest/27e444a7-379d-44b8-9e4b-24a52a29ff8e"
+                "reference": "MedicationRequest/518815dc-29c8-48a6-b77d-3521752b8815"
               }
             ]
           },
@@ -138,7 +134,7 @@
             },
             "entry": [
               {
-                "reference": "DocumentReference/4c641e52-0d59-4835-8752-e380e89c694c"
+                "reference": "DocumentReference/e4bef38e-c442-4580-85dc-e524826cfd5d"
               }
             ]
           },
@@ -155,7 +151,7 @@
             },
             "entry": [
               {
-                "reference": "Procedure/e6c5e7fd-c22a-4d5a-a568-270753e51249"
+                "reference": "Procedure/1c32289e-3c26-4611-8778-030d55c63bd5"
               }
             ]
           },
@@ -172,7 +168,7 @@
             },
             "entry": [
               {
-                "reference": "CarePlan/00bc7230-101b-4339-bbed-89be3918663c"
+                "reference": "CarePlan/542c0b8b-1664-4528-b047-9e4e70f5a0e0"
               }
             ]
           },
@@ -189,7 +185,7 @@
             },
             "entry": [
               {
-                "reference": "Appointment/4976fe22-7475-4545-a11b-5160b4950878"
+                "reference": "Appointment/73589623-7f0e-4219-834a-024d96669931"
               }
             ]
           }
@@ -197,19 +193,19 @@
       }
     },
     {
-      "fullUrl": "Practitioner/MAX191101",
+      "fullUrl": "Practitioner/MAX5001",
       "resource": {
         "resourceType": "Practitioner",
-        "id": "MAX191101",
+        "id": "MAX5001",
         "identifier": [
           {
             "system": "https://www.mciindia.in/doctor",
-            "value": "MAX191101"
+            "value": "MAX5001"
           }
         ],
         "name": [
           {
-            "text": "Akshatha M K",
+            "text": "Laxmikanth J",
             "prefix": [
               "Dr"
             ],
@@ -259,10 +255,10 @@
       }
     },
     {
-      "fullUrl": "Patient/NCC1543",
+      "fullUrl": "Patient/RVH9999",
       "resource": {
         "resourceType": "Patient",
-        "id": "NCC1543",
+        "id": "RVH9999",
         "name": [
           {
             "text": "Keith David"
@@ -272,82 +268,39 @@
       }
     },
     {
-      "fullUrl": "Condition/3a55eee8-8ed2-496b-8492-a2ee82fae9ab",
+      "fullUrl": "Encounter/3e5994ad-063d-45d6-891a-439152cfc4ee",
       "resource": {
-        "resourceType": "Condition",
-        "id": "3a55eee8-8ed2-496b-8492-a2ee82fae9ab",
-        "clinicalStatus": {
-          "coding": [
-            {
-              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
-              "code": "recurrence",
-              "display": "recurrence"
-            }
-          ],
-          "text": "recurrence"
-        },
-        "category": [
-          {
-            "coding": [
-              {
-                "system": "http://terminology.hl7.org/CodeSystem/condition-category",
-                "code": "encounter-diagnosis",
-                "display": "Encounter Diagnosis"
-              }
-            ],
-            "text": "Encounter Diagnosis"
-          }
-        ],
-        "severity": {
-          "text": "Mild"
-        },
-        "code": {
-          "coding": [
-            {
-              "system": "https://projecteka.in/sct",
-              "code": "128944008",
-              "display": "Bacterial infection due to Bacillus"
-            }
-          ],
-          "text": "Bacterial infection due to Bacillus"
+        "resourceType": "Encounter",
+        "id": "3e5994ad-063d-45d6-891a-439152cfc4ee",
+        "status": "finished",
+        "class": {
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+          "code": "AMB",
+          "display": "Outpatient visit"
         },
         "subject": {
-          "reference": "Patient/NCC1543"
+          "reference": "Patient/RVH9999"
+        },
+        "period": {
+          "start": "2016-08-01T00:00:00+05:30"
         }
       }
     },
     {
-      "fullUrl": "Encounter/ece47f53-28dc-48bf-9232-79efa964defd",
-      "resource": {
-        "resourceType": "Encounter",
-        "id": "ece47f53-28dc-48bf-9232-79efa964defd",
-        "status": "finished",
-        "class": {
-          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
-          "code": "IMP",
-          "display": "Inpatient visit"
-        },
-        "subject": {
-          "reference": "Patient/NCC1543"
-        },
-        "period": {
-          "start": "2019-04-15T00:00:00+05:30",
-          "end": "2019-04-19T00:00:00+05:30"
-        },
-        "diagnosis": [
-          {
-            "condition": {
-              "reference": "Condition/3a55eee8-8ed2-496b-8492-a2ee82fae9ab"
-            }
-          }
-        ]
-      }
-    },
-    {
-      "fullUrl": "Condition/194208f1-a058-4b21-88bd-7ca38bbfe68f",
+      "fullUrl": "Condition/7c3c25f5-4fbe-46c4-bc56-c0daaaa44941",
       "resource": {
         "resourceType": "Condition",
-        "id": "194208f1-a058-4b21-88bd-7ca38bbfe68f",
+        "id": "7c3c25f5-4fbe-46c4-bc56-c0daaaa44941",
+        "clinicalStatus": {
+          "coding": [
+            {
+              "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+              "code": "active",
+              "display": "active"
+            }
+          ],
+          "text": "active"
+        },
         "category": [
           {
             "coding": [
@@ -361,21 +314,22 @@
           }
         ],
         "severity": {
+          "text": "Mild"
+        },
+        "code": {
           "coding": [
             {
               "system": "https://projecteka.in/sct",
-              "code": "24484000",
-              "display": "Severe"
+              "code": "386661006",
+              "display": "Fever"
             }
           ],
-          "text": "Severe"
-        },
-        "code": {
-          "text": "Toothache"
+          "text": "Fever"
         },
         "subject": {
-          "reference": "Patient/NCC1543"
-        }
+          "reference": "Patient/RVH9999"
+        },
+        "recordedDate": "2016-08-01T00:00:00+05:30"
       }
     },
     {
@@ -416,12 +370,11 @@
           ]
         },
         "patient": {
-          "reference": "Patient/NCC1543"
+          "reference": "Patient/RVH9999"
         },
         "onsetString": "Past 1 year",
         "asserter": {
-          "reference": "Practitioner/MAX191101",
-          "display": "Dr Akshatha M K"
+          "reference": "Practitioner/MAX5001"
         },
         "note": [
           {
@@ -458,149 +411,69 @@
           ]
         },
         "patient": {
-          "reference": "Patient/NCC1543"
+          "reference": "Patient/RVH9999"
         },
         "onsetString": "Past 2 year",
         "asserter": {
-          "reference": "Practitioner/MAX191101",
-          "display": "Dr Akshatha M K"
+          "reference": "Practitioner/MAX5001"
         }
       }
     },
     {
-      "fullUrl": "Observation/5d4cf222-76d0-4da1-9beb-c44d676db85c",
+      "fullUrl": "Observation/a0452ca0-c206-4daf-bbd7-3f5bb849a19f",
       "resource": {
         "resourceType": "Observation",
-        "id": "5d4cf222-76d0-4da1-9beb-c44d676db85c",
-        "status": "final",
-        "code": {
-          "text": "Temperature"
-        },
-        "effectiveDateTime": "2019-04-15T00:00:00+05:30",
-        "valueQuantity": {
-          "value": 99.5,
-          "unit": "C"
-        }
-      }
-    },
-    {
-      "fullUrl": "Observation/3e1db0b3-46bb-4f23-a5ea-6ed3b3a34cf2",
-      "resource": {
-        "resourceType": "Observation",
-        "id": "3e1db0b3-46bb-4f23-a5ea-6ed3b3a34cf2",
+        "id": "a0452ca0-c206-4daf-bbd7-3f5bb849a19f",
         "status": "final",
         "code": {
           "text": "pulse"
         },
-        "effectiveDateTime": "2019-04-16T00:00:00+05:30",
+        "effectiveDateTime": "2016-08-01T00:00:00+05:30",
         "valueString": "72 bpm"
       }
     },
     {
-      "fullUrl": "Condition/c34917cd-616b-43de-8f2b-5a755bef6bca",
+      "fullUrl": "Observation/097af0a9-0033-41c0-95c7-394eba501552",
       "resource": {
-        "resourceType": "Condition",
-        "id": "c34917cd-616b-43de-8f2b-5a755bef6bca",
+        "resourceType": "Observation",
+        "id": "097af0a9-0033-41c0-95c7-394eba501552",
+        "status": "final",
         "code": {
-          "text": "inflammation"
+          "text": "pulse"
         },
-        "subject": {
-          "reference": "Patient/NCC1543"
-        }
+        "effectiveDateTime": "2016-08-01T00:00:00+05:30",
+        "valueString": "72 bpm"
       }
     },
     {
-      "fullUrl": "MedicationRequest/b07e48bc-1554-4eaa-bee3-0370982eb8f0",
+      "fullUrl": "MedicationRequest/518815dc-29c8-48a6-b77d-3521752b8815",
       "resource": {
         "resourceType": "MedicationRequest",
-        "id": "b07e48bc-1554-4eaa-bee3-0370982eb8f0",
+        "id": "518815dc-29c8-48a6-b77d-3521752b8815",
         "status": "active",
         "intent": "order",
         "medicationCodeableConcept": {
-          "text": "ibuprofen 500 mg"
+          "text": "Paracetamol 650 mg"
         },
         "subject": {
-          "reference": "Patient/NCC1543"
+          "reference": "Patient/RVH9999"
         },
-        "authoredOn": "2019-04-18T00:00:00+05:30",
+        "authoredOn": "2016-08-01T00:00:00+05:30",
         "requester": {
-          "reference": "Practitioner/MAX191101"
-        },
-        "reasonReference": [
-          {
-            "reference": "Condition/c34917cd-616b-43de-8f2b-5a755bef6bca"
-          }
-        ],
-        "dosageInstruction": [
-          {
-            "text": "1 tablet 3 times a day"
-          }
-        ]
-      }
-    },
-    {
-      "fullUrl": "Medication/bacc4303-b5d7-4c2d-b6d6-84d4c8559b22",
-      "resource": {
-        "resourceType": "Medication",
-        "id": "bacc4303-b5d7-4c2d-b6d6-84d4c8559b22",
-        "code": {
-          "text": "albendazole 400 mg"
-        }
-      }
-    },
-    {
-      "fullUrl": "MedicationRequest/27e444a7-379d-44b8-9e4b-24a52a29ff8e",
-      "resource": {
-        "resourceType": "MedicationRequest",
-        "id": "27e444a7-379d-44b8-9e4b-24a52a29ff8e",
-        "status": "active",
-        "intent": "order",
-        "medicationReference": {
-          "reference": "Medication/bacc4303-b5d7-4c2d-b6d6-84d4c8559b22"
-        },
-        "subject": {
-          "reference": "Patient/NCC1543"
-        },
-        "authoredOn": "2019-04-18T00:00:00+05:30",
-        "requester": {
-          "reference": "Practitioner/MAX191101"
+          "reference": "Practitioner/MAX5001"
         },
         "dosageInstruction": [
           {
-            "text": "1 time only"
+            "text": "1 tablet 3 times a day SOS"
           }
         ]
       }
     },
     {
-      "fullUrl": "Practitioner/MAX1234",
-      "resource": {
-        "resourceType": "Practitioner",
-        "id": "MAX1234",
-        "identifier": [
-          {
-            "system": "https://www.mciindia.in/doctor",
-            "value": "MAX1234"
-          }
-        ],
-        "name": [
-          {
-            "text": "Manju Sengar",
-            "prefix": [
-              "Dr"
-            ],
-            "suffix": [
-              "MD"
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "fullUrl": "DocumentReference/4c641e52-0d59-4835-8752-e380e89c694c",
+      "fullUrl": "DocumentReference/e4bef38e-c442-4580-85dc-e524826cfd5d",
       "resource": {
         "resourceType": "DocumentReference",
-        "id": "4c641e52-0d59-4835-8752-e380e89c694c",
+        "id": "e4bef38e-c442-4580-85dc-e524826cfd5d",
         "status": "current",
         "type": {
           "coding": [
@@ -613,7 +486,7 @@
         },
         "author": [
           {
-            "reference": "Practitioner/MAX1234"
+            "reference": "Practitioner/MAX5001"
           }
         ],
         "content": [
@@ -628,19 +501,19 @@
       }
     },
     {
-      "fullUrl": "Practitioner/MAX5001",
+      "fullUrl": "Practitioner/MAX191101",
       "resource": {
         "resourceType": "Practitioner",
-        "id": "MAX5001",
+        "id": "MAX191101",
         "identifier": [
           {
             "system": "https://www.mciindia.in/doctor",
-            "value": "MAX5001"
+            "value": "MAX191101"
           }
         ],
         "name": [
           {
-            "text": "Laxmikanth J",
+            "text": "Akshatha M K",
             "prefix": [
               "Dr"
             ],
@@ -652,33 +525,31 @@
       }
     },
     {
-      "fullUrl": "Procedure/e6c5e7fd-c22a-4d5a-a568-270753e51249",
+      "fullUrl": "Procedure/1c32289e-3c26-4611-8778-030d55c63bd5",
       "resource": {
         "resourceType": "Procedure",
-        "id": "e6c5e7fd-c22a-4d5a-a568-270753e51249",
+        "id": "1c32289e-3c26-4611-8778-030d55c63bd5",
         "status": "completed",
         "code": {
           "coding": [
             {
               "system": "https://projecteka.in/sct",
-              "code": "90105005",
-              "display": "Biopsy of soft tissue of forearm (Procedure)"
+              "code": "232717009",
+              "display": "Coronary artery bypass grafting"
             }
-          ],
-          "text": "Biopsy of suspected melanoma L) arm"
+          ]
         },
         "subject": {
-          "reference": "Patient/NCC1543"
+          "reference": "Patient/RVH9999"
         },
-        "performedDateTime": "2019-04-17T00:00:00+05:30",
+        "performedDateTime": "2016-08-01T01:00:00+05:30",
         "asserter": {
-          "reference": "Practitioner/MAX191101",
-          "display": "Dr Akshatha M K"
+          "reference": "Practitioner/MAX5001"
         },
         "performer": [
           {
             "actor": {
-              "reference": "Practitioner/MAX5001"
+              "reference": "Practitioner/MAX191101"
             }
           }
         ],
@@ -696,24 +567,23 @@
       }
     },
     {
-      "fullUrl": "CarePlan/00bc7230-101b-4339-bbed-89be3918663c",
+      "fullUrl": "CarePlan/542c0b8b-1664-4528-b047-9e4e70f5a0e0",
       "resource": {
         "resourceType": "CarePlan",
-        "id": "00bc7230-101b-4339-bbed-89be3918663c",
+        "id": "542c0b8b-1664-4528-b047-9e4e70f5a0e0",
         "status": "draft",
         "intent": "proposal",
         "title": "Tentative Plan for next 2 months",
         "description": "Actively monitor progress. Review every week to start with. Medications to be revised after 2 weeks.",
         "subject": {
-          "reference": "Patient/NCC1543"
+          "reference": "Patient/RVH9999"
         },
         "period": {
-          "start": "2019-04-19T00:00:00+05:30",
-          "end": "2019-06-18T00:00:00+05:30"
+          "start": "2016-08-01T00:00:00+05:30",
+          "end": "2016-09-30T00:00:00+05:30"
         },
         "author": {
-          "reference": "Practitioner/MAX191101",
-          "display": "Dr Akshatha M K"
+          "reference": "Practitioner/MAX5001"
         },
         "note": [
           {
@@ -726,19 +596,18 @@
       }
     },
     {
-      "fullUrl": "Appointment/4976fe22-7475-4545-a11b-5160b4950878",
+      "fullUrl": "Appointment/73589623-7f0e-4219-834a-024d96669931",
       "resource": {
         "resourceType": "Appointment",
-        "id": "4976fe22-7475-4545-a11b-5160b4950878",
+        "id": "73589623-7f0e-4219-834a-024d96669931",
         "status": "booked",
         "description": "Review progress in 7 days",
-        "start": "2019-04-22T00:00:00.000+05:30",
-        "end": "2019-04-22T00:30:00.000+05:30",
+        "start": "2016-08-08T00:00:00.000+05:30",
+        "end": "2016-08-08T00:30:00.000+05:30",
         "participant": [
           {
             "actor": {
-              "reference": "Practitioner/MAX191101",
-              "display": "Dr Akshatha M K"
+              "reference": "Practitioner/MAX5001"
             },
             "status": "accepted"
           }
