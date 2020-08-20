@@ -39,6 +39,7 @@ namespace In.ProjectEKA.HipService
     using Newtonsoft.Json.Linq;
     using Serilog;
     using Common.Heartbeat;
+    using EncryptionBit;
 
     public class Startup
     {
@@ -106,6 +107,7 @@ namespace In.ProjectEKA.HipService
                 .AddSingleton(new GatewayClient(HttpClient,
                     Configuration.GetSection("Gateway").Get<GatewayConfiguration>()))
                 .AddTransient<IDataFlow, DataFlow.DataFlow>()
+                .AddScoped<EncrytorDemo>()
                 .AddRouting(options => options.LowercaseUrls = true)
                 .AddControllers()
                 .AddNewtonsoftJson(
