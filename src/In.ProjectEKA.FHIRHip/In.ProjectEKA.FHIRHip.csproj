@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <RootNamespace>In.ProjectEKA.DefaultHip</RootNamespace>
+    <RootNamespace>In.ProjectEKA.FHIRHip</RootNamespace>
   </PropertyGroup>
   
   <ItemGroup>
