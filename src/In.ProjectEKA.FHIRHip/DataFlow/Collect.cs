@@ -33,30 +33,31 @@ namespace In.ProjectEKA.FHIRHip.DataFlow
         public async Task<Option<Entries>> CollectData(DataRequest dataRequest)
         {
             var bundles = new List<CareBundle>();
-            var patientData = await FindPatientsData(dataRequest);
+            var patientData = await FindPatientsData(dataRequest).ConfigureAwait(false);
             var careContextReferences = patientData.Keys.ToList();
             foreach (var careContextReference in careContextReferences)
+            {
                 foreach (var result in patientData.GetOrDefault(careContextReference))
                 {
                     Log.Information($"Returning file: {result}");
                     var fjp = new FhirJsonParser();
                     bundles.Add(new CareBundle(careContextReference, fjp.Parse<Bundle>(result)));
                 }
-
+            }
             var entries = new Entries(bundles);
             return Option.Some(entries);
         }
 
         private async Task<Dictionary<string, List<string>>> FindPatientsData(DataRequest request)
         {
-            // LogDataRequest(request);
+            LogDataRequest(request);
             
             var patientReferenceNumber = request.CareContexts.First().PatientReference;
             var careContexts = request.CareContexts.Select(careContext => careContext.CareContextReference).ToList();
             var dataResponse = await GetPatientsData(new NetworkDataRequest(patientReferenceNumber,
                                                              careContexts,
                                                              request.DateRange,
-                                                             request.HiType));
+                                                             request.HiType)).ConfigureAwait(false);
             var structuredData = new Dictionary<string, List<string>>();
             return dataResponse.Map(content =>
             {
@@ -93,8 +94,9 @@ namespace In.ProjectEKA.FHIRHip.DataFlow
                 };
                 var response = await HttpClient.SendAsync(httpRequestMessage).ConfigureAwait(false);
                 if (!response.IsSuccessStatusCode)
+                {
                     return Option.None<NetworkDataResponse>();
-                
+                }
                 var responseContent = response.Content;
                 using var reader = new StreamReader(await responseContent.ReadAsStreamAsync());
                 var result = await reader.ReadToEndAsync().ConfigureAwait(false);
