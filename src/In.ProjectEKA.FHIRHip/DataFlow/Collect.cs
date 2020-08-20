@@ -65,11 +65,11 @@ namespace In.ProjectEKA.FHIRHip.DataFlow
                 {
                     if (structuredData.ContainsKey(result.CareContext))
                     {
-                        structuredData[result.CareContext].Add(result.Data);
+                        structuredData[result.CareContext].Add(result.FHIRData);
                     }
                     else
                     {
-                        structuredData.Add(result.CareContext, new List<string> {result.Data});
+                        structuredData.Add(result.CareContext, new List<string> {result.FHIRData});
                     }
                 }
                 return structuredData;

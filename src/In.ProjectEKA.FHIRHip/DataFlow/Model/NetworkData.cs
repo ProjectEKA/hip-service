@@ -6,13 +6,13 @@ namespace In.ProjectEKA.FHIRHip.DataFlow.Model
     {
         public string CareContext { get; set; }
         public HiType HiType { get; set; } 
-        public string Data { get; set; }
+        public string FHIRData { get; set; }
 
-        public NetworkData(string careContext, HiType hiType, string data)
+        public NetworkData(string careContext, HiType hiType, string fhirData)
         {
             CareContext = careContext;
             HiType = hiType;
-            Data = data;
+            FHIRData = fhirData;
         }
     }
 }
