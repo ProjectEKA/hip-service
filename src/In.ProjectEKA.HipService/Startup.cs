@@ -81,7 +81,7 @@ namespace In.ProjectEKA.HipService
                 .AddHangfire(config => { config.UseMemoryStorage(); })
                 .AddSingleton<IEncryptor, Encryptor>()
                 .AddSingleton<IPatientRepository>(new PatientRepository("demoPatients.json"))
-                .AddSingleton<ICollect>(new Collect("demoPatientCareContextDataMap.json"))
+                .AddSingleton<ICollect>(new Collect("http://localhost:8003/getData", HttpClient))
                 .AddSingleton<IPatientRepository>(new PatientRepository("demoPatients.json"))
                 .AddRabbit(Configuration)
                 .Configure<OtpServiceConfiguration>(Configuration.GetSection("OtpService"))

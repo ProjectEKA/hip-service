@@ -40,8 +40,8 @@
     <PackageReference Include="Hangfire.MemoryStorage" Version="1.7.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\In.ProjectEKA.DefaultHip\In.ProjectEKA.DefaultHip.csproj" />
     <ProjectReference Include="..\In.ProjectEKA.HipLibrary\In.ProjectEKA.HipLibrary.csproj" />
+    <ProjectReference Include="..\In.ProjectEKA.NetworkHip\In.ProjectEKA.NetworkHip.csproj" />
   </ItemGroup>
 
 </Project>

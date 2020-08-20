@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{C6699092-7
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "In.ProjectEKA.HipServiceTest", "test\In.ProjectEKA.HipServiceTest\In.ProjectEKA.HipServiceTest.csproj", "{B5A9C0B9-25EC-472E-B2CD-3EC5A69584F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "In.ProjectEKA.DefaultHip", "src\In.ProjectEKA.DefaultHip\In.ProjectEKA.DefaultHip.csproj", "{23976B61-FBF9-41B8-AEA2-B70AD47F00A8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "In.ProjectEKA.NetworkHip", "src\In.ProjectEKA.NetworkHip\In.ProjectEKA.NetworkHip.csproj", "{23976B61-FBF9-41B8-AEA2-B70AD47F00A8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "In.ProjectEKA.DefaultHipTest", "test\In.ProjectEKA.DefaultHipTest\In.ProjectEKA.DefaultHipTest.csproj", "{4412373D-2E69-412A-8264-FA2806902173}"
 EndProject

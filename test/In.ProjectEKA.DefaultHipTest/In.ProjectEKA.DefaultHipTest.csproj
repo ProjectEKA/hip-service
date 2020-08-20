@@ -21,7 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\src\In.ProjectEKA.DefaultHip\In.ProjectEKA.DefaultHip.csproj" />
         <ProjectReference Include="..\..\src\In.ProjectEKA.HipLibrary\In.ProjectEKA.HipLibrary.csproj" />
+        <ProjectReference Include="..\..\src\In.ProjectEKA.NetworkHip\In.ProjectEKA.NetworkHip.csproj" />
     </ItemGroup>
 </Project>
