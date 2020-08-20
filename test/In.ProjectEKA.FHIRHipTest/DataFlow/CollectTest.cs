@@ -1,17 +1,16 @@
-using Hl7.Fhir.Utility;
-
-namespace In.ProjectEKA.DefaultHipTest.DataFlow
+namespace In.ProjectEKA.FHIRHipTest.DataFlow
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Net;
     using System.Net.Http;
     using System.Threading;
     using System.Threading.Tasks;
     using FHIRHip.DataFlow;
+    using FHIRHip.DataFlow.Model;
     using FluentAssertions;
     using HipLibrary.Patient.Model;
+    using Microsoft.Extensions.Options;
     using Moq;
     using Moq.Protected;
     using Optional.Unsafe;
@@ -20,6 +19,18 @@ namespace In.ProjectEKA.DefaultHipTest.DataFlow
     [Collection("Collect Tests")]
     public class CollectTest
     {
+        private readonly IOptions<DataFlowConfiguration> dataFlowConfiguration;
+
+        public CollectTest()
+        {
+            var dataFlow = new DataFlowConfiguration {Url = "http://localhost:8003/getData",
+                                                        AuthUrl = "",
+                                                        DataLinkTtlInMinutes = 0,
+                                                        DataSizeLimitInMbs = 0,
+                                                        IsAuthEnabled = false};
+            dataFlowConfiguration = Options.Create(dataFlow);
+        }
+        
         [Fact]
         private async void ReturnCallDataFlowService()
         {
@@ -68,7 +79,7 @@ namespace In.ProjectEKA.DefaultHipTest.DataFlow
                 consentManagerId,
                 consentId,
                 "sometext");
-            var collect = new Collect("http://localhost:8003/getData", httpClient);
+            var collect = new Collect(dataFlowConfiguration.Value, httpClient);
             var entries = await collect.CollectData(dataRequest);
             entries.ValueOrDefault().CareBundles.Should().NotBeNull();
             handlerMock.Protected().Verify(

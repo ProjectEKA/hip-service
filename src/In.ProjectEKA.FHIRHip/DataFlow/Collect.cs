@@ -21,12 +21,12 @@ namespace In.ProjectEKA.FHIRHip.DataFlow
 
     public class Collect : ICollect
     {
-        private readonly string HipSystemDataUrl;
+        private readonly DataFlowConfiguration DataFlowConfiguration;
         private readonly HttpClient HttpClient;
 
-        public Collect(string hipSystemDataUrl, HttpClient httpClient)
+        public Collect(DataFlowConfiguration dataFlowConfiguration, HttpClient httpClient)
         {
-            HipSystemDataUrl = hipSystemDataUrl;
+            DataFlowConfiguration = dataFlowConfiguration;
             HttpClient = httpClient;
         }
 
@@ -88,7 +88,7 @@ namespace In.ProjectEKA.FHIRHip.DataFlow
                         NamingStrategy = new CamelCaseNamingStrategy()
                     }
                 });
-                var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, new Uri($"{HipSystemDataUrl}"))
+                var httpRequestMessage = new HttpRequestMessage(HttpMethod.Post, new Uri($"{DataFlowConfiguration.Url}"))
                 {
                     Content = new StringContent(json, Encoding.UTF8, MediaTypeNames.Application.Json)
                 };

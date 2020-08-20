@@ -1,4 +1,4 @@
-namespace In.ProjectEKA.DefaultHipTest.Discovery
+namespace In.ProjectEKA.FHIRHipTest.Discovery
 {
     using System;
     using System.Collections.Generic;

@@ -1,4 +1,4 @@
-namespace In.ProjectEKA.DefaultHipTest.Link
+namespace In.ProjectEKA.FHIRHipTest.Link
 {
     using FHIRHip.Link;
     using FluentAssertions;

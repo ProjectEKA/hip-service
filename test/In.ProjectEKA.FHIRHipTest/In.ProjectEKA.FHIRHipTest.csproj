@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <TargetFramework>netcoreapp3.1</TargetFramework>
-        <RootNamespace>In.ProjectEKA.DefaultHipTest</RootNamespace>
+        <RootNamespace>In.ProjectEKA.FHIRHipTest</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -10,6 +10,7 @@
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
             <PrivateAssets>all</PrivateAssets>
         </PackageReference>
+        <PackageReference Include="Microsoft.Extensions.Options" Version="3.1.6" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
         <PackageReference Include="FluentAssertions" Version="5.10.3" />
         <PackageReference Include="xunit" Version="2.4.1" />
