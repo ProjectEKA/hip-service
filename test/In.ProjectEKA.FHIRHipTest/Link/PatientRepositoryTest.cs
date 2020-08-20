@@ -1,6 +1,6 @@
 namespace In.ProjectEKA.DefaultHipTest.Link
 {
-    using DefaultHip.Link;
+    using FHIRHip.Link;
     using FluentAssertions;
     using HipLibrary.Patient.Model;
     using Xunit;

@@ -13,11 +13,11 @@ namespace In.ProjectEKA.HipService
     using DataFlow;
     using DataFlow.Database;
     using DataFlow.Encryptor;
-    using DefaultHip.DataFlow;
-    using DefaultHip.Discovery;
-    using DefaultHip.Link;
     using Discovery;
     using Discovery.Database;
+    using FHIRHip.DataFlow;
+    using FHIRHip.Discovery;
+    using FHIRHip.Link;
     using Gateway;
     using Hangfire;
     using Hangfire.MemoryStorage;

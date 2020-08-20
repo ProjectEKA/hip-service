@@ -1,4 +1,4 @@
-namespace In.ProjectEKA.DefaultHip.Link
+namespace In.ProjectEKA.FHIRHip.Link
 {
     using System;
     using System.Collections.Generic;

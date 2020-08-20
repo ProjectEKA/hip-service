@@ -1,4 +1,4 @@
-namespace In.ProjectEKA.DefaultHip.DataFlow.Model
+namespace In.ProjectEKA.FHIRHip.DataFlow.Model
 {
     using System.Collections.Generic;
 

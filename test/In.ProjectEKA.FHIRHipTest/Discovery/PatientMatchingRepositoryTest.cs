@@ -3,7 +3,7 @@ namespace In.ProjectEKA.DefaultHipTest.Discovery
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using DefaultHip.Discovery;
+    using FHIRHip.Discovery;
     using FluentAssertions;
     using HipLibrary.Patient.Model;
     using Xunit;

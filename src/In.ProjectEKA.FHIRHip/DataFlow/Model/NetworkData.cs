@@ -1,6 +1,7 @@
-namespace In.ProjectEKA.DefaultHip.DataFlow.Model
+namespace In.ProjectEKA.FHIRHip.DataFlow.Model
 {
     using HipLibrary.Patient.Model;
+
     public class NetworkData
     {
         public string CareContext { get; set; }

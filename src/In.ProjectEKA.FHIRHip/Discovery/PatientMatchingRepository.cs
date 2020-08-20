@@ -1,4 +1,4 @@
-namespace In.ProjectEKA.DefaultHip.Discovery
+namespace In.ProjectEKA.FHIRHip.Discovery
 {
     using System.Linq;
     using System.Threading.Tasks;

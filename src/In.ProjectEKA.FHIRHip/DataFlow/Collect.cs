@@ -1,4 +1,4 @@
-namespace In.ProjectEKA.DefaultHip.DataFlow
+namespace In.ProjectEKA.FHIRHip.DataFlow
 {
     using System;
     using System.Collections.Generic;
@@ -17,7 +17,6 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
     using Newtonsoft.Json;
     using Newtonsoft.Json.Serialization;
     using Optional;
-    using Patient;
     using Serilog;
 
     public class Collect : ICollect
