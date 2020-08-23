@@ -146,7 +146,7 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
                 Username = "someusername",
                 Password = "somepassword"
             };
-            var openmrsClient = new FhirClient(httpClient, openmrsConfiguration);
+            var openmrsClient = new OpenMrsClient(httpClient, openmrsConfiguration);
             var discoveryDataSource = new FhirDiscoveryDataSource(openmrsClient);
             //When
             var patients = await discoveryDataSource.LoadPatientsAsync(null, null, null);

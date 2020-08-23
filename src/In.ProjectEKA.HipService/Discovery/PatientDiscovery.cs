@@ -40,8 +40,7 @@ namespace In.ProjectEKA.HipService.Discovery
             if (await AlreadyExists(request.TransactionId))
             {
                 Log.Information($"Discovery Request already exists for {request.TransactionId}.");
-                return (null,
-                    new ErrorRepresentation(new Error(ErrorCode.DuplicateDiscoveryRequest, "Discovery Request already exists")));
+                return GetError(ErrorCode.DuplicateDiscoveryRequest, ErrorMessage.RequestIdExists);
             }
 
             var (linkedAccounts, exception) = await linkPatientRepository.GetLinkedCareContexts(request.Patient.Id);
@@ -49,9 +48,7 @@ namespace In.ProjectEKA.HipService.Discovery
             if (exception != null)
             {
                 Log.Error(exception);
-                return (null,
-                    new ErrorRepresentation(new Error(ErrorCode.FailedToGetLinkedCareContexts,
-                        "Failed to get Linked Care Contexts")));
+                return GetError(ErrorCode.FailedToGetLinkedCareContexts, ErrorMessage.FailedToGetLinkedCareContexts);
             }
 
             var linkedCareContexts = linkedAccounts.ToList();
@@ -69,12 +66,18 @@ namespace In.ProjectEKA.HipService.Discovery
                                 GetUnlinkedCareContexts(linkedCareContexts, patient))),
                             (ErrorRepresentation) null);
                     })
-                    .ValueOr(Task.FromResult(((DiscoveryRepresentation) null,
-                        new ErrorRepresentation(new Error(ErrorCode.NoPatientFound,
-                            ErrorMessage.NoPatientFound)))));
+                    .ValueOr(Task.FromResult(GetError(ErrorCode.NoPatientFound, ErrorMessage.NoPatientFound)));
+            }
+            IQueryable<Patient> patients;
+
+            try {
+                patients = await matchingRepository.Where(request);
+            }
+            catch (OpenMrsConnectionException)
+            {
+                return GetError(ErrorCode.OpenMrsConnection, ErrorMessage.HipConnection);
             }
 
-            var patients = await matchingRepository.Where(request);
             try
             {
                 foreach (var patient in patients)
@@ -86,12 +89,7 @@ namespace In.ProjectEKA.HipService.Discovery
             catch (OpenMrsFormatException e)
             {
                 Log.Error($"Could not get care contexts for transaction {request.TransactionId}.", e);
-                return (
-                    null,
-                    new ErrorRepresentation(
-                        new Error(
-                            ErrorCode.CareContextConfiguration,
-                            "HIP configuration error. If you encounter this issue repeatedly, please report it.")));
+                return GetError(ErrorCode.CareContextConfiguration, ErrorMessage.HipConfiguration);
             }
 
             var (patientEnquiryRepresentation, error) =
@@ -105,6 +103,10 @@ namespace In.ProjectEKA.HipService.Discovery
             await discoveryRequestRepository.Add(new Model.DiscoveryRequest(request.TransactionId,
                 request.Patient.Id, patientEnquiryRepresentation.ReferenceNumber));
             return (new DiscoveryRepresentation(patientEnquiryRepresentation), null);
+        }
+
+        private ValueTuple<DiscoveryRepresentation, ErrorRepresentation> GetError(ErrorCode errorCode, string errorMessage) {
+            return (null, new ErrorRepresentation(new Error(errorCode, errorMessage)));
         }
 
         private async Task<bool> AlreadyExists(string transactionId)

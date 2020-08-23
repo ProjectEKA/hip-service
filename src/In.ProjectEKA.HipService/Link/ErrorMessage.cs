@@ -9,5 +9,9 @@ namespace In.ProjectEKA.HipService.Link
         public static readonly string DiscoveryRequestNotFound = "Discovery request does not exist.";
         public static readonly string OtpServiceError = "Otp service not working";
         public static readonly string DuplicateRequestId = "Request id is not unique";
+        public static readonly string RequestIdExists = "Discovery Request already exists";
+        public static readonly string FailedToGetLinkedCareContexts = "Failed to get Linked Care Contexts";
+        public static readonly string HipConnection = "HIP connection error";
+        public static readonly string HipConfiguration = "HIP configuration error. If you encounter this issue repeatedly, please report it";
     }
 }

@@ -11,10 +11,10 @@ using Xunit;
 namespace In.ProjectEKA.HipServiceTest.OpenMrs
 {
     [Collection("OpenMrs Gateway Client Tests")]
-    public class OpenMrsclientTest
+    public class OpenMrsClientTest
     {
         [Fact]
-        public async Task ShouldPropagateStatusWhenCredentialsFailed()
+        public async Task ShouldThrowErrorIfGetAsyncReturnsNonSuccessStatusCode()
         {
             //Given
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
@@ -35,16 +35,16 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
                 )
                 .ReturnsAsync( new HttpResponseMessage
                 {
-                    StatusCode = HttpStatusCode.BadRequest
-                } )
+                    StatusCode = HttpStatusCode.BadRequest,
+                    Content = new StringContent("some error message")
+                })
                 .Verifiable();
 
             //When
-            var response = await openmrsClient.GetAsync("path/to/resource");
+            Func<Task> getAsyncMethod = async () => { await openmrsClient.GetAsync("path/to/resource"); };
 
-            //then
-            response.Should().NotBeNull();
-            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+            //Then
+            getAsyncMethod.Should().Throw<OpenMrsConnectionException>();
         }
 
         [Fact]

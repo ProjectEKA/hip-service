@@ -252,7 +252,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
         private async void ShouldReturnErrorIfFailedToFetchCareContexts()
         {
             var expectedError =
-                new ErrorRepresentation(new Error(ErrorCode.CareContextConfiguration, "HIP configuration error. If you encounter this issue repeatedly, please report it."));
+                new ErrorRepresentation(new Error(ErrorCode.CareContextConfiguration, "HIP configuration error. If you encounter this issue repeatedly, please report it"));
             var discoveryRequest = discoveryRequestBuilder.WithUnverifiedIdentifiers(null).Build();
             SetupLinkRepositoryWithLinkedPatient();
             SetupMatchingRepositoryForDiscoveryRequest(discoveryRequest);
@@ -260,6 +260,25 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             careContextRepository
                 .Setup(e => e.GetCareContexts(openMrsPatientReferenceNumber))
                 .Throws<OpenMrsFormatException>();
+
+            var (discoveryResponse, error) = await patientDiscovery.PatientFor(discoveryRequest);
+
+            discoveryResponse.Should().BeNull();
+            error.Should().BeEquivalentTo(expectedError);
+        }
+
+        [Fact]
+        private async void ShouldReturnErrorIfFailedToConnectToOpenMrsServer()
+        {
+            var expectedError =
+                new ErrorRepresentation(new Error(ErrorCode.OpenMrsConnection, "HIP connection error"));
+            var discoveryRequest = discoveryRequestBuilder.WithUnverifiedIdentifiers(null).Build();
+            SetupLinkRepositoryWithLinkedPatient();
+            SetupMatchingRepositoryForDiscoveryRequest(discoveryRequest);
+
+            matchingRepository
+                .Setup(e => e.Where(discoveryRequest))
+                .Throws<OpenMrsConnectionException>();
 
             var (discoveryResponse, error) = await patientDiscovery.PatientFor(discoveryRequest);
 

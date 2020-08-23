@@ -19,6 +19,7 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
         FailedToGetLinkedCareContexts = 1014,
         DuplicateDiscoveryRequest = 1015,
         DuplicateRequestId = 1016,
-        CareContextConfiguration = 1017
+        CareContextConfiguration = 1017,
+        OpenMrsConnection = 1018
     }
 }
