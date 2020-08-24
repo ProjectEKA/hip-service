@@ -20,15 +20,15 @@ namespace In.ProjectEKA.HipService.Discovery.Matcher
             for (var j = 0; j <= l2; j++) d[0, j] = j;
 
             for (var j = 1; j <= l2; j++)
-            for (var i = 1; i <= l1; i++)
-                if (string1[i - 1] == string2[j - 1])
-                    d[i, j] = d[i - 1, j - 1]; //no operation
-                else
-                    d[i, j] = Math.Min(Math.Min(
+                for (var i = 1; i <= l1; i++)
+                    if (string1[i - 1] == string2[j - 1])
+                        d[i, j] = d[i - 1, j - 1]; //no operation
+                    else
+                        d[i, j] = Math.Min(Math.Min(
                             d[i - 1, j] + 1, //a deletion
                             d[i, j - 1] + 1), //an insertion
-                        d[i - 1, j - 1] + 1 //a substitution
-                    );
+                            d[i - 1, j - 1] + 1 //a substitution
+                            );
             return d[l1, l2];
         }
     }

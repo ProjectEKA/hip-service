@@ -2,16 +2,6 @@ namespace In.ProjectEKA.HipService.DataFlow
 {
     public class HealthInformationRequest
     {
-        public string TransactionId { get; }
-
-        public Consent Consent { get; }
-
-        public DateRange DateRange { get; }
-
-        public string DataPushUrl { get; }
-
-        public KeyMaterial KeyMaterial { get; }
-
         public HealthInformationRequest(string transactionId,
             Consent consent,
             DateRange dateRange,
@@ -24,5 +14,15 @@ namespace In.ProjectEKA.HipService.DataFlow
             DataPushUrl = dataPushUrl;
             KeyMaterial = keyMaterial;
         }
+
+        public string TransactionId { get; }
+
+        public Consent Consent { get; }
+
+        public DateRange DateRange { get; }
+
+        public string DataPushUrl { get; }
+
+        public KeyMaterial KeyMaterial { get; }
     }
 }

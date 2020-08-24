@@ -4,10 +4,6 @@ namespace In.ProjectEKA.HipService.DataFlow.Model
 
     public class DataFlowRequest
     {
-        [Key] public string TransactionId { get; }
-
-        public HealthInformationRequest HealthInformationRequest { get; }
-
         public DataFlowRequest()
         {
         }
@@ -17,5 +13,10 @@ namespace In.ProjectEKA.HipService.DataFlow.Model
             TransactionId = transactionId;
             HealthInformationRequest = healthInformationRequest;
         }
+
+        [Key]
+        public string TransactionId { get; }
+
+        public HealthInformationRequest HealthInformationRequest { get; }
     }
 }

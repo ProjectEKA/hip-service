@@ -7,17 +7,18 @@ namespace In.ProjectEKA.HipService.Link
     [Obsolete]
     public class LinkReference
     {
-        public string Id { get; }
-        
-        public string ReferenceNumber { get; }
-        
-        public IEnumerable<CareContextEnquiry> CareContexts { get; }
-
-        public LinkReference(string id, string referenceNumber, IEnumerable<CareContextEnquiry> careContexts)
+        public LinkReference(string consentManagerUserId, string referenceNumber,
+            IEnumerable<CareContextEnquiry> careContexts)
         {
-            Id = id;
+            ConsentManagerUserId = consentManagerUserId;
             ReferenceNumber = referenceNumber;
             CareContexts = careContexts;
         }
+
+        public string ConsentManagerUserId { get; }
+
+        public string ReferenceNumber { get; }
+
+        public IEnumerable<CareContextEnquiry> CareContexts { get; }
     }
 }

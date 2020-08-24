@@ -13,12 +13,12 @@ namespace In.ProjectEKA.HipService.DataFlow
 
     public class DataFlow : IDataFlow
     {
-        private readonly IMessagingQueueManager messagingQueueManager;
-        private readonly IDataFlowRepository dataFlowRepository;
         private readonly IConsentRepository consentRepository;
-        private readonly IHealthInformationRepository healthInformationRepository;
         private readonly IOptions<DataFlowConfiguration> dataFlowConfiguration;
+        private readonly IDataFlowRepository dataFlowRepository;
+        private readonly IHealthInformationRepository healthInformationRepository;
         private readonly ILogger<DataFlow> logger;
+        private readonly IMessagingQueueManager messagingQueueManager;
 
         public DataFlow(IDataFlowRepository dataFlowRepository,
             IMessagingQueueManager messagingQueueManager,
@@ -88,19 +88,10 @@ namespace In.ProjectEKA.HipService.DataFlow
         {
             var consent = await consentRepository.GetFor(consentId);
             if (consent != null)
-            {
                 return consent.ConsentArtefact.Patient.Id;
-            }
             logger.Log(LogLevel.Error, LogEvents.DataFlow, "Consent does not exist: {Consent}", consentId);
             // need to handle it better by returning optional
             return null;
-        }
-
-        private static Tuple<HealthInformationTransactionResponse, ErrorRepresentation> ConsentArtefactNotFound()
-        {
-            return new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(null,
-                new ErrorRepresentation(new Error(ErrorCode.ContextArtefactIdNotFound,
-                    ErrorMessage.ContextArtefactIdNotFound)));
         }
 
         public async Task<Tuple<HealthInformationResponse, ErrorRepresentation>> HealthInformationFor(
@@ -111,6 +102,13 @@ namespace In.ProjectEKA.HipService.DataFlow
             return healthInformation
                 .Map(information => HealthInformation(token, information))
                 .ValueOr(ErrorOf(ErrorResponse.HealthInformationNotFound));
+        }
+
+        private static Tuple<HealthInformationTransactionResponse, ErrorRepresentation> ConsentArtefactNotFound()
+        {
+            return new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(null,
+                new ErrorRepresentation(new Error(ErrorCode.ContextArtefactIdNotFound,
+                    ErrorMessage.ContextArtefactIdNotFound)));
         }
 
         private Tuple<HealthInformationResponse, ErrorRepresentation> HealthInformation(
@@ -153,9 +151,7 @@ namespace In.ProjectEKA.HipService.DataFlow
                 DateTimeStyles.None,
                 out var expiryDateTime);
             if (!tryParseExact)
-            {
                 logger.Log(LogLevel.Error, LogEvents.DataFlow, "Error parsing date: {ExpiryDate}", expiryDate);
-            }
 
             var currentDate = DateTime.Today;
             return expiryDateTime < currentDate;

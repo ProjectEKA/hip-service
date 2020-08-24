@@ -4,13 +4,13 @@ namespace In.ProjectEKA.HipService.DataFlow
 
     public class EncryptedEntries
     {
-        public IEnumerable<Entry> Entries { get; }
-        public KeyMaterial KeyMaterial { get; }
-
         public EncryptedEntries(IEnumerable<Entry> entries, KeyMaterial keyMaterial)
         {
             Entries = entries;
             KeyMaterial = keyMaterial;
         }
+
+        public IEnumerable<Entry> Entries { get; }
+        public KeyMaterial KeyMaterial { get; }
     }
 }

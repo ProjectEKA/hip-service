@@ -5,22 +5,11 @@ namespace In.ProjectEKA.HipService.Gateway.Model
 
     public class GatewayLinkConfirmResponse
     {
-        
-        public Guid RequestId { get; }
-
-        public DateTime Timestamp { get; }
-        
-        public LinkConfirmationRepresentation Patient { get; }
-        
-        public Error Error { get; }
-
-        public Resp Resp { get; }
-
         public GatewayLinkConfirmResponse(Guid requestId,
-                                          DateTime timestamp,
-                                          LinkConfirmationRepresentation patient,
-                                          Error error,
-                                          Resp resp)
+            DateTime timestamp,
+            LinkConfirmationRepresentation patient,
+            Error error,
+            Resp resp)
         {
             RequestId = requestId;
             Timestamp = timestamp;
@@ -28,5 +17,15 @@ namespace In.ProjectEKA.HipService.Gateway.Model
             Error = error;
             Resp = resp;
         }
+
+        public Guid RequestId { get; }
+
+        public DateTime Timestamp { get; }
+
+        public LinkConfirmationRepresentation Patient { get; }
+
+        public Error Error { get; }
+
+        public Resp Resp { get; }
     }
 }

@@ -1,4 +1,5 @@
 // ReSharper disable MemberCanBePrivate.Global
+
 namespace In.ProjectEKA.HipService.Consent
 {
     using System;
@@ -15,9 +16,8 @@ namespace In.ProjectEKA.HipService.Consent
     [ApiController]
     public class ConsentNotificationController : ControllerBase
     {
-        private readonly IConsentRepository consentRepository;
-
         private readonly IBackgroundJobClient backgroundJob;
+        private readonly IConsentRepository consentRepository;
 
         private readonly GatewayClient gatewayClient;
 

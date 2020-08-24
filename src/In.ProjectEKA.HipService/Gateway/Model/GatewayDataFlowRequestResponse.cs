@@ -1,17 +1,11 @@
 namespace In.ProjectEKA.HipService.Gateway.Model
 {
     using System;
+    using DataFlow.Model;
     using HipLibrary.Patient.Model;
-    using HipService.DataFlow.Model;
 
     public class GatewayDataFlowRequestResponse
     {
-        public Guid RequestId { get; }
-        public DateTime Timestamp { get; }
-        public DataFlowRequestResponse HiRequest   { get; }
-        public Error Error { get; }
-        public Resp Resp { get; }
-
         public GatewayDataFlowRequestResponse(
             Guid requestId,
             DateTime timestamp,
@@ -25,5 +19,11 @@ namespace In.ProjectEKA.HipService.Gateway.Model
             Error = error;
             Resp = resp;
         }
+
+        public Guid RequestId { get; }
+        public DateTime Timestamp { get; }
+        public DataFlowRequestResponse HiRequest { get; }
+        public Error Error { get; }
+        public Resp Resp { get; }
     }
 }

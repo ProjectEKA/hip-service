@@ -1,7 +1,3 @@
-using In.ProjectEKA.TMHHip.DataFlow;
-using In.ProjectEKA.TMHHip.Discovery;
-using In.ProjectEKA.TMHHip.Link;
-
 namespace In.ProjectEKA.HipService
 {
     using System;
@@ -18,28 +14,30 @@ namespace In.ProjectEKA.HipService
     using DataFlow.Database;
     using DataFlow.Encryptor;
     using Discovery;
-	using Discovery.Database;
-	using Gateway;
-	using Hangfire;
-	using Hangfire.MemoryStorage;
-	using HipLibrary.Matcher;
-	using HipLibrary.Patient;
-	using Link;
-	using Link.Database;
-	using MessagingQueue;
-	using Microsoft.AspNetCore.Authentication.JwtBearer;
-	using Microsoft.AspNetCore.Builder;
-	using Microsoft.AspNetCore.Hosting;
-	using Microsoft.EntityFrameworkCore;
-	using Microsoft.Extensions.Configuration;
-	using Microsoft.Extensions.DependencyInjection;
-	using Microsoft.Extensions.Hosting;
-	using Microsoft.IdentityModel.Logging;
-	using Microsoft.IdentityModel.Tokens;
-	using Newtonsoft.Json;
-	using Newtonsoft.Json.Linq;
-	using Serilog;
-    using Common.Heartbeat;
+    using Discovery.Database;
+    using Gateway;
+    using Hangfire;
+    using Hangfire.MemoryStorage;
+    using HipLibrary.Matcher;
+    using HipLibrary.Patient;
+    using Link;
+    using Link.Database;
+    using MessagingQueue;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Hosting;
+    using Microsoft.IdentityModel.Logging;
+    using Microsoft.IdentityModel.Tokens;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+    using Serilog;
+    using TMHHip.DataFlow;
+    using TMHHip.Discovery;
+    using TMHHip.Link;
 
     public class Startup
     {
@@ -63,7 +61,10 @@ namespace In.ProjectEKA.HipService
 
         private IConfiguration Configuration { get; }
 
-        public void ConfigureServices(IServiceCollection services) =>
+        private HttpClient HttpClient { get; }
+
+        public void ConfigureServices(IServiceCollection services)
+        {
             services
                 .AddDbContext<LinkPatientContext>(options =>
                     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
@@ -141,12 +142,12 @@ namespace In.ProjectEKA.HipService
                             {
                                 context.Fail("Unable to validate token.");
                             }
+
                             return Task.CompletedTask;
                         }
                     };
                 });
-
-        private HttpClient HttpClient { get; }
+        }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -182,6 +183,7 @@ namespace In.ProjectEKA.HipService
             {
                 return false;
             }
+
             var token = new Token(resourceAccess["roles"]?.ToObject<List<string>>() ?? new List<string>());
             return token.Roles.Contains("gateway", StringComparer.OrdinalIgnoreCase);
         }
@@ -194,10 +196,12 @@ namespace In.ProjectEKA.HipService
             {
                 return false;
             }
+
             if (!context.Principal.HasClaim(claim => claim.Type == claimTypeClientId))
             {
                 return false;
             }
+
             var clientId = context.Principal.Claims.First(claim => claim.Type == claimTypeClientId).Value;
             context.Request.Headers["X-GatewayID"] = clientId;
             return true;

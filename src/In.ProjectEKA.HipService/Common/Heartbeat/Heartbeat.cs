@@ -1,8 +1,8 @@
-using System;
-using In.ProjectEKA.HipService.Common.Heartbeat.Model;
-
 namespace In.ProjectEKA.HipService.Common.Heartbeat
 {
+    using System;
+    using Model;
+
     public class Heartbeat
     {
         public static HeartbeatResponse GetHealthStatus()

@@ -5,11 +5,11 @@ namespace In.ProjectEKA.HipService.Discovery.Database
 
     public class DiscoveryContext : DbContext
     {
-        public DbSet<DiscoveryRequest> DiscoveryRequest { get; set; }
-
         public DiscoveryContext(DbContextOptions<DiscoveryContext> options) : base(options)
         {
         }
+
+        public DbSet<DiscoveryRequest> DiscoveryRequest { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

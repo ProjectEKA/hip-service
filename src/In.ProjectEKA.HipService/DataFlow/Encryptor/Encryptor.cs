@@ -3,6 +3,7 @@ namespace In.ProjectEKA.HipService.DataFlow.Encryptor
     using System;
     using System.Linq;
     using System.Text;
+    using HipLibrary.Patient.Model;
     using Logger;
     using Optional;
     using Org.BouncyCastle.Crypto;
@@ -13,7 +14,7 @@ namespace In.ProjectEKA.HipService.DataFlow.Encryptor
 
     public class Encryptor : IEncryptor
     {
-        public virtual Option<string> EncryptData(HipLibrary.Patient.Model.KeyMaterial receivedKeyMaterial,
+        public virtual Option<string> EncryptData(KeyMaterial receivedKeyMaterial,
             AsymmetricCipherKeyPair senderKeyPair,
             string content, string randomKeySender)
         {

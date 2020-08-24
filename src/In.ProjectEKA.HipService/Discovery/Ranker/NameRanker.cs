@@ -11,9 +11,7 @@ namespace In.ProjectEKA.HipService.Discovery.Ranker
         {
             var diff = FuzzyNameMatcher.LevenshteinDistance(patient.Name, name);
             if (diff == 0)
-            {
                 return new PatientWithRank<Patient>(patient, StrongMatchRank, FullMatchMeta(Match.Name));
-            }
 
             return diff <= 2
                 ? new PatientWithRank<Patient>(patient, new Rank(8), FullMatchMeta(Match.Name))

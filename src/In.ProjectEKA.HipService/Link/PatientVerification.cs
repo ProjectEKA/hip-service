@@ -7,7 +7,6 @@ namespace In.ProjectEKA.HipService.Link
     using System.Net.Mime;
     using System.Text;
     using System.Threading.Tasks;
-    using HipLibrary.Patient.Model;
     using Logger;
     using Microsoft.Extensions.Options;
     using Newtonsoft.Json;
@@ -57,9 +56,7 @@ namespace In.ProjectEKA.HipService.Link
             {
                 var response = await httpClient.PostAsync(serverUrl.ToString(), content);
                 if (response.IsSuccessStatusCode)
-                {
                     return Option.None<OtpMessage>();
-                }
 
                 var responseContent = response.Content;
                 using var reader = new StreamReader(await responseContent.ReadAsStreamAsync());

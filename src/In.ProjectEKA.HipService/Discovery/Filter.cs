@@ -10,7 +10,7 @@ namespace In.ProjectEKA.HipService.Discovery
 
     public static class Filter
     {
-        private static readonly Dictionary<IdentifierType, IdentifierTypeExt> IdentifierTypeExts =
+        private static readonly Dictionary<IdentifierType, IdentifierTypeExt> IdentifierTypeExtensions =
             new Dictionary<IdentifierType, IdentifierTypeExt>
             {
                 {IdentifierType.MOBILE, IdentifierTypeExt.Mobile},
@@ -19,16 +19,18 @@ namespace In.ProjectEKA.HipService.Discovery
 
         private static PatientWithRank<Patient> RankPatient(Patient patient, DiscoveryRequest request)
         {
-            return RanksFor(request, patient)
-                .Aggregate((rank, withRank) => rank + withRank);
+            return RanksFor(request, patient).Aggregate((rank, withRank) => rank + withRank);
         }
 
         private static IEnumerable<PatientWithRank<Patient>> RanksFor(DiscoveryRequest request, Patient patient)
         {
+            static IRanker<Patient> GetValueOrDefault(IdentifierTypeExt type)
+            {
+                return Ranks?.GetValueOrDefault(type, new EmptyRanker()) ?? new EmptyRanker();
+            }
+
             return From(request)
-                .Select(identifier => Ranks
-                    .GetValueOrDefault(identifier.Type, new EmptyRanker())
-                    .Rank(patient, identifier.Value));
+                .Select(identifier => GetValueOrDefault(identifier.Type).Rank(patient, identifier.Value));
         }
 
         private static IEnumerable<IdentifierExt> From(DiscoveryRequest request)
@@ -36,7 +38,7 @@ namespace In.ProjectEKA.HipService.Discovery
             static IdentifierExt ToExtension(Identifier identifier)
             {
                 return new IdentifierExt(
-                    IdentifierTypeExts.GetValueOrDefault(identifier.Type, IdentifierTypeExt.Empty),
+                    IdentifierTypeExtensions.GetValueOrDefault(identifier.Type, IdentifierTypeExt.Empty),
                     identifier.Value);
             }
 

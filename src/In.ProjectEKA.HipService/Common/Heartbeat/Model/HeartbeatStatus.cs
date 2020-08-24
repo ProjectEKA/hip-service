@@ -1,6 +1,6 @@
 namespace In.ProjectEKA.HipService.Common.Heartbeat.Model
 {
-    public enum HeartbeatStatus 
+    public enum HeartbeatStatus
     {
         UP,
         DOWN
