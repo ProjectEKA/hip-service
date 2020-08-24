@@ -40,7 +40,7 @@ namespace In.ProjectEKA.HipService.Link
         public virtual async Task<ValueTuple<PatientLinkEnquiryRepresentation, ErrorRepresentation>> LinkPatients(
             PatientLinkEnquiry request)
         {
-            var (patient, error) = PatientAndCareContextValidation(request);
+            var (patient, error) = await PatientAndCareContextValidation(request);
             if (error != null)
             {
                 Log.Error(error.Error.Message);
@@ -95,11 +95,12 @@ namespace In.ProjectEKA.HipService.Link
             return (patientLinkReferenceResponse, null);
         }
 
-        private ValueTuple<Patient, ErrorRepresentation> PatientAndCareContextValidation(
+        private async Task<ValueTuple<Patient, ErrorRepresentation>> PatientAndCareContextValidation(
             PatientLinkEnquiry request)
         {
-            return patientRepository.PatientWith(request.Patient.ReferenceNumber)
-                .Map(
+            var patientInfo =
+                await patientRepository.PatientWith(request.Patient.ReferenceNumber);
+            return patientInfo.Map(
                     patient =>
                     {
                         var programs = request.Patient.CareContexts
@@ -133,9 +134,9 @@ namespace In.ProjectEKA.HipService.Link
             var errorResponse = await patientVerification.Verify(request.LinkReferenceNumber, request.Token);
             if (errorResponse != null)
                 return (null,cmId, new ErrorRepresentation(errorResponse.toError()));
-
-            return await patientRepository.PatientWith(linkEnquires.PatientReferenceNumber)
-                .Map(async patient =>
+            var patientInfo =
+                await patientRepository.PatientWith(linkEnquires.PatientReferenceNumber);
+            return await patientInfo.Map(async patient =>
                 {
                     var savedLinkRequests = await linkPatientRepository.Get(request.LinkReferenceNumber);
                     savedLinkRequests.MatchSome(linkRequests =>

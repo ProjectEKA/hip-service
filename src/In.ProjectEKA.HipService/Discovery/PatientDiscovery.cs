@@ -62,8 +62,9 @@ namespace In.ProjectEKA.HipService.Discovery
                     LogEvents.Discovery,
                     "User has already linked care contexts: {TransactionID}",
                     request.TransactionId);
-                return await patientRepository.PatientWith(linkedCareContexts.First().PatientReferenceNumber)
-                    .Map(async patient =>
+                var patientInfo =
+                    await patientRepository.PatientWith(linkedCareContexts.First().PatientReferenceNumber);
+                return await patientInfo.Map(async patient =>
                     {
                         await discoveryRequestRepository.Add(new Model.DiscoveryRequest(request.TransactionId,
                             request.Patient.Id,

@@ -1,46 +1,63 @@
 namespace In.ProjectEKA.FHIRHipTest.Link
 {
+    using System;
+    using System.Net;
+    using System.Net.Http;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using FHIRHip.Discovery.Model;
     using FHIRHip.Link;
     using FluentAssertions;
     using HipLibrary.Patient.Model;
+    using Microsoft.Extensions.Options;
+    using Moq;
+    using Moq.Protected;
     using Xunit;
 
     [Collection("Patient Repository Tests")]
     public class PatientRepositoryTest
     {
-        private readonly PatientRepository patientRepository = new PatientRepository("demoPatients.json");
+        private readonly IOptions<PatientConfiguration> patientConfiguration;
+
+        public PatientRepositoryTest()
+        {
+            var dataFlow = new PatientConfiguration
+            {
+                BaseUrl = "http://localhost:8003",
+                PathDiscovery = "/discovery/patients",
+                PathLink = "/discovery/search/patient"
+            };
+            patientConfiguration = Options.Create(dataFlow);
+        }
 
         [Fact]
         private void ReturnPatient()
         {
+            var expectedUri = new Uri("http://localhost:8003/discovery/search/patient");
             const string patientReferenceNumber = "RVH1002";
-            var testPatient = new Patient
-            {
-                PhoneNumber = "+91-7777777777",
-                Identifier = patientReferenceNumber,
-                Gender = Gender.F,
-                Name = "Navjot Singh",
-                CareContexts = new []
+            var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
+            var httpClient = new HttpClient(handlerMock.Object);
+            handlerMock
+                .Protected()
+                .Setup<Task<HttpResponseMessage>>(
+                    "SendAsync",
+                    ItExpr.IsAny<HttpRequestMessage>(),
+                    ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync(new HttpResponseMessage
                 {
-                    new CareContextRepresentation("NCP1007", "National Cancer program"),
-                    new CareContextRepresentation("RV-MHD-01.17.0024", "Dept of Psychiatry - Episode 1"),
-                },
-                YearOfBirth = 2001
-            };
+                    StatusCode = HttpStatusCode.OK
+                })
+                .Verifiable();
+            var patientRepository = new PatientRepository(httpClient, patientConfiguration.Value);
 
-            var patient = patientRepository.PatientWith(patientReferenceNumber);
+            var patient =  patientRepository.PatientWith(patientReferenceNumber);
 
-            patient.ValueOr(new Patient()).Should().BeEquivalentTo(testPatient);
-        }
-
-        [Fact]
-        private void ReturnNullForUnknownPatient()
-        {
-            const string patientReferenceNumber = "1234";
-
-            var patient = patientRepository.PatientWith(patientReferenceNumber);
-
-            patient.ValueOr((Patient) null).Should().BeNull();
+            handlerMock.Protected().Verify(
+                "SendAsync",
+                Times.Exactly(1),
+                ItExpr.Is<HttpRequestMessage>(message => message.Method == HttpMethod.Post
+                                                         && message.RequestUri == expectedUri),
+                ItExpr.IsAny<CancellationToken>());
         }
     }
 }

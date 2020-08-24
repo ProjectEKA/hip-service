@@ -87,7 +87,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                     new List<LinkedAccounts> {testLinkAccounts},
                     null));
             patientRepository.Setup(x => x.PatientWith(testPatient.Identifier))
-                .Returns(Option.Some(testPatient));
+                .ReturnsAsync(Option.Some(testPatient));
 
             var (discoveryResponse, error) = await patientDiscovery.PatientFor(discoveryRequest);
 
