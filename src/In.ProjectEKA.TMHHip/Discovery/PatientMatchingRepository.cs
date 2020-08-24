@@ -1,16 +1,15 @@
-using System;
-using Serilog;
-
 namespace In.ProjectEKA.TMHHip.Discovery
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Net.Http;
     using System.Text;
     using System.Threading.Tasks;
+    using HipLibrary.Matcher;
     using HipLibrary.Patient.Model;
     using Newtonsoft.Json;
-    using HipLibrary.Matcher;
+    using Serilog;
     using JsonSerializer = System.Text.Json.JsonSerializer;
 
     public class PatientMatchingRepository : IMatchingRepository
@@ -46,20 +45,38 @@ namespace In.ProjectEKA.TMHHip.Discovery
                 var response = await client.SendAsync(request);
                 await using var responseStream = await response.Content.ReadAsStreamAsync();
                 var result = await JsonSerializer.DeserializeAsync<IEnumerable<Patient>>(responseStream);
-                return result.Select(patient => new HipLibrary.Patient.Model.Patient
+                Log.Information($"result from TMH backend: {result}");
+
+                var patients = new List<HipLibrary.Patient.Model.Patient>();
+                foreach (var patientFromTmh in result)
                 {
-                    Name = $"{patient.FirstName} {patient.LastName}",
-                    Gender = Enum.Parse<Gender>(patient.Gender),
-                    Identifier = patient.Identifier,
-                    CareContexts = new List<CareContextRepresentation>
+                    var patient = new HipLibrary.Patient.Model.Patient
                     {
-                        new CareContextRepresentation(
-                            $"{patient.Identifier}",
-                            $"{patient.FirstName}  {patient.LastName}")
-                    },
-                    PhoneNumber = patient.PhoneNumber,
-                    YearOfBirth = (ushort) patient.DateOfBirth.Year
-                }).AsQueryable();
+                        Identifier = patientFromTmh.Identifier,
+                        Name = $"{patientFromTmh.FirstName} {patientFromTmh.LastName}",
+                        CareContexts = new List<CareContextRepresentation>
+                        {
+                            new CareContextRepresentation(
+                                $"{patientFromTmh.Identifier}",
+                                $"{patientFromTmh.FirstName}  {patientFromTmh.LastName}")
+                        },
+                        PhoneNumber = patientFromTmh.PhoneNumber,
+                        YearOfBirth = (ushort) patientFromTmh.DateOfBirth.Year
+                    };
+                    try
+                    {
+                        patient.Gender = Enum.Parse<Gender>(patientFromTmh.Gender);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Error(e.Message);
+                        patient.Gender = Gender.M;
+                    }
+
+                    patients.Add(patient);
+                }
+
+                return patients.AsQueryable();
             }
             catch (Exception e)
             {
