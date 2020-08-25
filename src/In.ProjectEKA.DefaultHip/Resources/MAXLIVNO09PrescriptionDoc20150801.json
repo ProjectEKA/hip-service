@@ -1,0 +1,197 @@
+{
+  "resourceType": "Bundle",
+  "id": "28c46f3e-c9f0-4826-a30f-6197f4a774f4",
+  "meta": {
+    "lastUpdated": "2015-08-01T00:00:00.000+05:30"
+  },
+  "identifier": {
+    "system": "https://www.max.in/bundle",
+    "value": "28c46f3e-c9f0-4826-a30f-6197f4a774f4"
+  },
+  "type": "document",
+  "timestamp": "2015-08-01T00:00:00.000+05:30",
+  "entry": [
+    {
+      "fullUrl": "Composition/66c94bbf-2605-44c3-bde8-2f8bce64c9ab",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "66c94bbf-2605-44c3-bde8-2f8bce64c9ab",
+        "identifier": {
+          "system": "https://www.max.in/document",
+          "value": "66c94bbf-2605-44c3-bde8-2f8bce64c9ab"
+        },
+        "status": "final",
+        "type": {
+          "coding": [
+            {
+              "system": "https://projecteka.in/sct",
+              "code": "440545006",
+              "display": "Prescription record"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/LIVNO09"
+        },
+        "date": "2015-08-01T00:00:00.605+05:30",
+        "author": [
+          {
+            "reference": "Practitioner/MAX5001"
+          }
+        ],
+        "title": "Prescription",
+        "section": [
+          {
+            "title": "OPD Prescription",
+            "code": {
+              "coding": [
+                {
+                  "system": "https://projecteka.in/sct",
+                  "code": "440545006",
+                  "display": "Prescription record"
+                }
+              ]
+            },
+            "entry": [
+              {
+                "reference": "MedicationRequest/66a2dd8f-e0f3-499a-b93b-3a49a3cc9577"
+              },
+              {
+                "reference": "MedicationRequest/61418a86-fd3a-4ab5-a359-cf9a2150d03c"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Practitioner/MAX5001",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "MAX5001",
+        "identifier": [
+          {
+            "system": "https://www.mciindia.in/doctor",
+            "value": "MAX5001"
+          }
+        ],
+        "name": [
+          {
+            "text": "Laxmikanth J",
+            "prefix": [
+              "Dr"
+            ],
+            "suffix": [
+              "MD"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Patient/LIVNO09",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "LIVNO09",
+        "name": [
+          {
+            "text": "Roberto Firmino"
+          }
+        ],
+        "gender": "male"
+      }
+    },
+    {
+      "fullUrl": "Condition/b0cb539b-0668-45d2-8532-2e740ca664ea",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "b0cb539b-0668-45d2-8532-2e740ca664ea",
+        "code": {
+          "text": "cough"
+        },
+        "subject": {
+          "reference": "Patient/LIVNO09"
+        }
+      }
+    },
+    {
+      "fullUrl": "Medication/718eca44-3a52-4d3a-8c87-2af5f3da5535",
+      "resource": {
+        "resourceType": "Medication",
+        "id": "718eca44-3a52-4d3a-8c87-2af5f3da5535",
+        "code": {
+          "coding": [
+            {
+              "system": "https://projecteka.in/act",
+              "code": "R05DA09",
+              "display": "dextromethorphan 90 mg"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "MedicationRequest/66a2dd8f-e0f3-499a-b93b-3a49a3cc9577",
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "66a2dd8f-e0f3-499a-b93b-3a49a3cc9577",
+        "status": "active",
+        "intent": "order",
+        "medicationReference": {
+          "reference": "Medication/718eca44-3a52-4d3a-8c87-2af5f3da5535"
+        },
+        "subject": {
+          "reference": "Patient/LIVNO09"
+        },
+        "authoredOn": "2015-08-01T00:00:00+05:30",
+        "requester": {
+          "reference": "Practitioner/MAX5001"
+        },
+        "reasonReference": [
+          {
+            "reference": "Condition/b0cb539b-0668-45d2-8532-2e740ca664ea"
+          }
+        ],
+        "dosageInstruction": [
+          {
+            "text": "1 capsule 2 times a day with food"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Medication/8e43a797-3b1e-458d-8809-6e855e980088",
+      "resource": {
+        "resourceType": "Medication",
+        "id": "8e43a797-3b1e-458d-8809-6e855e980088",
+        "code": {
+          "text": "ibuprofen 500 mg"
+        }
+      }
+    },
+    {
+      "fullUrl": "MedicationRequest/61418a86-fd3a-4ab5-a359-cf9a2150d03c",
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "61418a86-fd3a-4ab5-a359-cf9a2150d03c",
+        "status": "active",
+        "intent": "order",
+        "medicationReference": {
+          "reference": "Medication/8e43a797-3b1e-458d-8809-6e855e980088"
+        },
+        "subject": {
+          "reference": "Patient/LIVNO09"
+        },
+        "authoredOn": "2015-08-01T00:00:00+05:30",
+        "requester": {
+          "reference": "Practitioner/MAX5001"
+        },
+        "dosageInstruction": [
+          {
+            "text": "1 tablet 3 times a day"
+          }
+        ]
+      }
+    }
+  ]
+}

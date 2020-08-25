@@ -13,10 +13,11 @@ namespace In.ProjectEKA.HipService.Link
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.ModelBinding;
+    using static Common.Constants;
+    using In.ProjectEKA.HipService.Link.Model;
 
     [Authorize]
     [ApiController]
-    [Route("/v1/links/link")]
     [Consumes("application/json")]
     [Produces("application/json")]
     public class LinkController : ControllerBase
@@ -49,8 +50,7 @@ namespace In.ProjectEKA.HipService.Link
         /// 4. Communicate the mode of authentication of a successful request with Consent Manager
         /// </remarks>
         /// <response code="202">Request accepted</response>
-        [Route("init")]
-        [HttpPost]
+        [HttpPost(PATH_LINKS_LINK_INIT)]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         public AcceptedResult LinkFor([FromBody, BindRequired] LinkReferenceRequest request)
         {
@@ -70,8 +70,7 @@ namespace In.ProjectEKA.HipService.Link
         /// 4. Returns a list of unmasked linked care contexts with patient reference number
         /// </remarks>
         /// <response code="202">Request accepted</response>
-        [Route("confirm")]
-        [HttpPost]
+        [HttpPost(PATH_LINKS_LINK_CONFIRM)]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         public AcceptedResult LinkPatientFor([FromBody, BindRequired] LinkPatientRequest request)
         {
@@ -79,7 +78,7 @@ namespace In.ProjectEKA.HipService.Link
             return Accepted();
         }
 
-        [ApiExplorerSettings(IgnoreApi = true)]
+        [NonAction]
         public async Task LinkPatient(LinkReferenceRequest request)
         {
             var cmUserId = request.Patient.Id;
@@ -124,7 +123,7 @@ namespace In.ProjectEKA.HipService.Link
                     DateTime.Now.ToUniversalTime(),
                     Guid.NewGuid());
 
-                await gatewayClient.SendDataToGateway(GatewayPathConstants.OnLinkInitPath, response, cmSuffix);
+                await gatewayClient.SendDataToGateway(PATH_ON_LINK_INIT, response, cmSuffix);
             }
             catch (Exception exception)
             {
@@ -132,16 +131,15 @@ namespace In.ProjectEKA.HipService.Link
             }
         }
 
-        [ApiExplorerSettings(IgnoreApi = true)]
+        [NonAction]
         public async Task LinkPatientCareContextFor(LinkPatientRequest request)
         {
             try
             {
-                var (patientLinkResponse, error) = await linkPatient
+                var (patientLinkResponse, cmId, error) = await linkPatient
                     .VerifyAndLinkCareContext(new LinkConfirmationRequest(request.Confirmation.Token,
                         request.Confirmation.LinkRefNumber));
                 var linkedPatientRepresentation = new LinkConfirmationRepresentation();
-                var cmId = await linkPatient.GetCmId(request.Confirmation.LinkRefNumber);
                 if (patientLinkResponse != null || cmId != "")
                 {
                     linkedPatientRepresentation = patientLinkResponse.Patient;
@@ -154,12 +152,48 @@ namespace In.ProjectEKA.HipService.Link
                     error?.Error,
                     new Resp(request.RequestId)
                 );
-                await gatewayClient.SendDataToGateway(GatewayPathConstants.OnLinkConfirmPath, response, cmId);
+                await gatewayClient.SendDataToGateway(PATH_ON_LINK_CONFIRM, response, cmId);
             }
             catch(Exception exception)
             {
                 Log.Error(exception, exception.StackTrace);
             }
+        }
+        [HttpPost(PATH_ON_AUTH_INIT)]
+        public AcceptedResult OnAuthInit(AuthOnInitRequest request)
+        {
+            Log.Information("Auth on init request received." +
+                            $" RequestId:{request.RequestId}, " +
+                            $" Timestamp:{request.Timestamp},");
+            if (request.Error != null)
+            {
+                Log.Information($" Error Code:{request.Error.Code}," +
+                                $" Error Message:{request.Error.Message},");
+            }
+            else if (request.AuthInit != null)
+            {
+                Log.Information($" Transaction Id:{request.AuthInit.TransactionId},");
+                Log.Information($" Auth Type:{request.AuthInit.AuthType},");
+                Log.Information($" Auth Meta Mode:{request.AuthInit.Meta.Mode},");
+                Log.Information($" Auth Meta Hint:{request.AuthInit.Meta.Hint},");
+                Log.Information($" Auth Meta Expiry:{request.AuthInit.Meta.Expiry},");
+            }
+            Log.Information($" Resp RequestId:{request.Resp.RequestId}");
+            return Accepted();
+        }
+        [HttpPost(PATH_ON_ADD_CONTEXTS)]
+        public AcceptedResult HipLinkOnAddContexts(HipLinkContextConfirmation confirmation)
+        {
+            Log.Information("Link on-add-context received." +
+                            $" RequestId:{confirmation.RequestId}, " +
+                            $" Timestamp:{confirmation.Timestamp}");
+            if (confirmation.Error != null)
+                Log.Information($" Error Code:{confirmation.Error.Code}," +
+                                $" Error Message:{confirmation.Error.Message}");
+            else if (confirmation.Acknowledgement != null)
+                Log.Information($" Acknowledgment Status:{confirmation.Acknowledgement.Status}");
+            Log.Information($" Resp RequestId:{confirmation.Resp.RequestId}");
+            return Accepted();
         }
     }
 }

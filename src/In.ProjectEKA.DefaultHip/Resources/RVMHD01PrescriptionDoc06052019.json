@@ -1,0 +1,145 @@
+{
+    "resourceType": "Bundle",
+    "id": "c4ed489c-a389-425d-8bb0-8cec82b5092e",
+    "meta": {
+      "lastUpdated": "2019-06-05T00:00:00.000+05:30"
+    },
+    "identifier": {
+      "system": "https://www.max.in/bundle",
+      "value": "c4ed489c-a389-425d-8bb0-8cec82b5092e"
+    },
+    "type": "document",
+    "timestamp": "2019-06-05T00:00:00.000+05:30",
+    "entry": [
+      {
+        "fullUrl": "Composition/ce2e3fcb-4e87-472b-abc9-d146ef0f4fbb",
+        "resource": {
+          "resourceType": "Composition",
+          "id": "ce2e3fcb-4e87-472b-abc9-d146ef0f4fbb",
+          "identifier": {
+            "system": "https://www.max.in/document",
+            "value": "ce2e3fcb-4e87-472b-abc9-d146ef0f4fbb"
+          },
+          "status": "final",
+          "type": {
+            "coding": [
+              {
+                "system": "https://projecteka.in/sct",
+                "code": "440545006",
+                "display": "Prescription record"
+              }
+            ]
+          },
+          "subject": {
+            "reference": "Patient/RVH1002"
+          },
+          "date": "2019-06-05T10:00:00+05:30",
+          "author": [
+            {
+                "reference": "Practitioner/MAX5001",
+                "display": "Dr Laxmikanth J"
+            }
+          ],
+          "title": "Prescription",
+          "section": [
+            {
+              "title": "OPD Prescription",
+              "code": {
+                "coding": [
+                  {
+                    "system": "https://projecteka.in/sct",
+                    "code": "440545006",
+                    "display": "Prescription record"
+                  }
+                ]
+              },
+              "entry": [
+                {
+                  "reference": "MedicationRequest/0325fa7b-6285-47aa-9f8d-24f12f2f6dd3"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "fullUrl": "Practitioner/MAX5001",
+        "resource": {
+          "resourceType": "Practitioner",
+          "id": "MAX5001",
+          "identifier": [
+            {
+              "system": "https://www.mciindia.in/doctor",
+              "value": "MAX5001"
+            }
+          ],
+          "name": [
+            {
+              "text": "Laxmikanth J",
+              "prefix": [
+                "Dr"
+              ],
+              "suffix": [
+                "MD"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "fullUrl": "Patient/RVH1002",
+        "resource": {
+          "resourceType": "Patient",
+          "id": "RVH1002",
+          "name": [
+            {
+              "text": "Navjot Singh"
+            }
+          ],
+          "gender": "female"
+        }
+      },
+      {
+        "fullUrl": "Condition/e4a346ed-47ef-4312-b7e4-4608f6c1c806",
+        "resource": {
+          "resourceType": "Condition",
+          "id": "e4a346ed-47ef-4312-b7e4-4608f6c1c806",
+          "code": {
+            "text": "Fever with bodyache"
+          },
+          "subject": {
+            "reference": "Patient/RVH1002"
+          }
+        }
+      },
+      {
+        "fullUrl": "MedicationRequest/0325fa7b-6285-47aa-9f8d-24f12f2f6dd3",
+        "resource": {
+          "resourceType": "MedicationRequest",
+          "id": "0325fa7b-6285-47aa-9f8d-24f12f2f6dd3",
+          "status": "active",
+          "intent": "order",
+          "medicationCodeableConcept": {
+            "text": "tramadol and paracetamol 500 mg"
+          },
+          "subject": {
+            "reference": "Patient/RVH1002"
+          },
+          "authoredOn": "2019-06-05T00:00:00+05:30",
+          "requester": {
+            "reference": "Practitioner/MAX5001"
+          },
+          "reasonReference": [
+            {
+              "reference": "Condition/e4a346ed-47ef-4312-b7e4-4608f6c1c806"
+            }
+          ],
+          "dosageInstruction": [
+            {
+              "text": "1 tablet once a day"
+            }
+          ]
+        }
+      }
+    ]
+  }

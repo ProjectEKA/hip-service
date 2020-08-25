@@ -87,8 +87,7 @@ namespace In.ProjectEKA.HipServiceTest.Consent
 
             backgroundJobClient.Verify(client => client.Create(
                 It.Is<Job>(job => job.Method.Name == "StoreConsent" && job.Args[0] == consentNotification),
-                It.IsAny<EnqueuedState>()
-                ));
+                It.IsAny<EnqueuedState>()));
             consentRepository.Verify();
             result.StatusCode.Should().Be(StatusCodes.Status202Accepted);
         }
@@ -131,7 +130,7 @@ namespace In.ProjectEKA.HipServiceTest.Consent
             await consentNotificationController.StoreConsent(consentNotification);
 
             gatewayClient.Verify(g => g.SendDataToGateway(
-                        GatewayPathConstants.ConsentOnNotifyPath,
+                        "/v0.5/consents/hip/on-notify",
                         It.Is<GatewayRevokedConsentRepresentation>(
                             c =>
                                 c.Acknowledgement.ConsentId == consentNotification.Notification.ConsentId

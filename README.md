@@ -107,3 +107,12 @@ Please follow the following steps with the Postman collection:
 5. run the Happy Case request from the imported collection -> you should get a 202 response
 6. if you go go to the logs for the gateway stub container, you will see the response posted to gateway
 
+
+## To view structured (json) logs
+
+```sh
+docker run --name seq -d --restart unless-stopped -e ACCEPT_EULA=Y \
+  -p 7000:80 \
+  -p 5341:5341 \
+  datalust/seq:latest
+```

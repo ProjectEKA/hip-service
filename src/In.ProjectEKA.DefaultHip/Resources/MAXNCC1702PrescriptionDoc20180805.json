@@ -1,0 +1,197 @@
+{
+    "resourceType": "Bundle",
+    "id": "841b92b5-efa8-4668-999a-c08219d78f8e",
+    "meta": {
+      "lastUpdated": "2018-08-05T00:00:00.000+05:30"
+    },
+    "identifier": {
+      "system": "https://www.max.in/bundle",
+      "value": "841b92b5-efa8-4668-999a-c08219d78f8e"
+    },
+    "type": "document",
+    "timestamp": "2018-08-05T00:00:00.000+05:30",
+    "entry": [
+      {
+        "fullUrl": "Composition/5f70bccd-e13b-43c0-9671-8a596211dfd0",
+        "resource": {
+          "resourceType": "Composition",
+          "id": "5f70bccd-e13b-43c0-9671-8a596211dfd0",
+          "identifier": {
+            "system": "https://www.max.in/document",
+            "value": "5f70bccd-e13b-43c0-9671-8a596211dfd0"
+          },
+          "status": "final",
+          "type": {
+            "coding": [
+              {
+                "system": "https://projecteka.in/sct",
+                "code": "440545006",
+                "display": "Prescription record"
+              }
+            ]
+          },
+          "subject": {
+            "reference": "Patient/NCC1702"
+          },
+          "encounter": {
+            "reference": "Encounter/cd90b39a-144e-4f83-9d9a-2dd519808a05"
+          },
+          "date": "2018-08-05T15:32:26.605+05:30",
+          "author": [
+            {
+              "reference": "Practitioner/MAX1456",
+              "display": "Dr Harsh Dhave"
+            }
+          ],
+          "title": "Prescription",
+          "section": [
+            {
+              "title": "OPD Prescription",
+              "code": {
+                "coding": [
+                  {
+                    "system": "https://projecteka.in/sct",
+                    "code": "440545006",
+                    "display": "Prescription record"
+                  }
+                ]
+              },
+              "entry": [
+                {
+                  "reference": "MedicationRequest/93bbc20e-8bec-4df7-b779-420c011d6edf"
+                },
+                {
+                  "reference": "MedicationRequest/66f483fc-5536-4352-a8d2-b826cb15442c"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "fullUrl": "Practitioner/MAX1456",
+        "resource": {
+          "resourceType": "Practitioner",
+          "id": "MAX1456",
+          "identifier": [
+            {
+              "system": "https://www.mciindia.in/doctor",
+              "value": "MAX1456"
+            }
+          ],
+          "name": [
+            {
+              "text": "Harsh Dhave",
+              "prefix": [
+                "Dr"
+              ],
+              "suffix": [
+                "MBBS"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "fullUrl": "Patient/NCC1702",
+        "resource": {
+          "resourceType": "Patient",
+          "id": "NCC1702",
+          "name": [
+            {
+              "text": "Navjot Singhal"
+            }
+          ],
+          "gender": "female"
+        }
+      },
+      {
+        "fullUrl": "Encounter/cd90b39a-144e-4f83-9d9a-2dd519808a05",
+        "resource": {
+          "resourceType": "Encounter",
+          "id": "cd90b39a-144e-4f83-9d9a-2dd519808a05",
+          "status": "finished",
+          "class": {
+            "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+            "code": "AMB",
+            "display": "Outpatient visit"
+          },
+          "subject": {
+            "reference": "Patient/NCC1702"
+          },
+          "period": {
+            "start": "2018-08-05T00:00:00+05:30"
+          }
+        }
+      },
+      {
+        "fullUrl": "Medication/ad938b27-bd88-4b43-a79c-1d2abddee4cb",
+        "resource": {
+          "resourceType": "Medication",
+          "id": "ad938b27-bd88-4b43-a79c-1d2abddee4cb",
+          "code": {
+            "coding": [
+              {
+                "system": "https://projecteka.in/act",
+                "code": "R02AX02",
+                "display": "ibuprofen 500 mg"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "fullUrl": "MedicationRequest/93bbc20e-8bec-4df7-b779-420c011d6edf",
+        "resource": {
+          "resourceType": "MedicationRequest",
+          "id": "93bbc20e-8bec-4df7-b779-420c011d6edf",
+          "status": "active",
+          "intent": "order",
+          "medicationReference": {
+            "reference": "Medication/ad938b27-bd88-4b43-a79c-1d2abddee4cb"
+          },
+          "subject": {
+            "reference": "Patient/NCC1702"
+          },
+          "authoredOn": "2018-08-05T00:00:00+05:30",
+          "requester": {
+            "reference": "Practitioner/MAX1456"
+          },
+          "dosageInstruction": [
+            {
+              "text": "1 tablet 3 times a day"
+            }
+          ]
+        }
+      },
+      {
+        "fullUrl": "MedicationRequest/66f483fc-5536-4352-a8d2-b826cb15442c",
+        "resource": {
+          "resourceType": "MedicationRequest",
+          "id": "66f483fc-5536-4352-a8d2-b826cb15442c",
+          "status": "active",
+          "intent": "order",
+          "medicationCodeableConcept": {
+            "text": "azithromycin 500mg"
+          },
+          "subject": {
+            "reference": "Patient/NCC1702"
+          },
+          "authoredOn": "2018-08-05T00:00:00+05:30",
+          "requester": {
+            "reference": "Practitioner/MAX1456"
+          },
+          "note": [
+            {
+              "text": "Do not discontinue"
+            }
+          ],
+          "dosageInstruction": [
+            {
+              "text": "1 capsule 2 times a day"
+            }
+          ]
+        }
+      }
+    ]
+  }

@@ -1,5 +1,3 @@
-using Hl7.Fhir.Utility;
-
 namespace In.ProjectEKA.DefaultHip.DataFlow
 {
     using System;
@@ -11,6 +9,7 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
     using HipLibrary.Patient;
     using HipLibrary.Patient.Model;
     using Hl7.Fhir.Model;
+    using Hl7.Fhir.Utility;
     using Newtonsoft.Json;
     using Optional;
     using Patient;
@@ -31,13 +30,11 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
             var patientData = FindPatientData(dataRequest);
             var careContextReferences = patientData.Keys.ToList();
             foreach (var careContextReference in careContextReferences)
-            {
                 foreach (var result in patientData.GetOrDefault(careContextReference))
                 {
                     Log.Information($"Returning file: {result}");
                     bundles.Add(new CareBundle(careContextReference, await FileReader.ReadJsonAsync<Bundle>(result)));
                 }
-            }
 
             var entries = new Entries(bundles);
             return Option.Some(entries);
@@ -45,9 +42,9 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
 
         private static bool WithinRange(DateRange range, DateTime date)
         {
-            var fromDate = ParseDate(range.From);
+            var fromDate = ParseDate(range.From).AddHours(2);
             var toDate = ParseDate(range.To);
-            return date >= fromDate && date < toDate;
+            return date > fromDate && date < toDate;
         }
 
         private static DateTime ParseDate(string dateString)
@@ -56,7 +53,7 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
             {
                 "yyyy-MM-dd", "yyyy-MM-dd hh:mm:ss", "yyyy-MM-dd hh:mm:ss tt", "yyyy-MM-ddTHH:mm:ss.fffzzz",
                 "yyyy-MM-dd'T'HH:mm:ss.fff", "yyyy-MM-dd'T'HH:mm:ss.ffff", "yyyy-MM-dd'T'HH:mm:ss.fffff",
-                "yyyy-MM-dd'T'HH:mm:ss","yyyy-MM-dd'T'HH:mm:ss.ff","yyyy-MM-dd'T'HH:mm:ss.ff",
+                "yyyy-MM-dd'T'HH:mm:ss", "yyyy-MM-dd'T'HH:mm:ss.ff", "yyyy-MM-dd'T'HH:mm:ss.ff",
                 "dd/MM/yyyy", "dd/MM/yyyy hh:mm:ss", "dd/MM/yyyy hh:mm:ss tt", "dd/MM/yyyyTHH:mm:ss.fffzzz",
                 "yyyy-MM-dd'T'HH:mm:ss.ffffff"
             };
@@ -66,9 +63,7 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
                 DateTimeStyles.None,
                 out var aDateTime);
             if (!tryParseExact)
-            {
                 Log.Error($"Error parsing date: {dateString}");
-            }
 
             return aDateTime;
         }
@@ -100,9 +95,7 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
                             var hiTypeStr = hiType.ToString().ToLower();
                             var dataFiles = ccRecord.Data.GetValueOrDefault(hiTypeStr) ?? new List<string>();
                             if (dataFiles.Count > 0)
-                            {
                                 listOfDataFiles.AddRange(dataFiles);
-                            }
                         }
                     }
                     careContextsAndListOfDataFiles.Add(grantedContext.CareContextReference, listOfDataFiles);

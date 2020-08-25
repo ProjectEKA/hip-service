@@ -14,7 +14,7 @@ namespace In.ProjectEKA.HipService.Common
             string url,
             T content,
             string token,
-            string cmSuffix = null)
+            string cmSuffix)
         {
             var json = JsonConvert.SerializeObject(content, new JsonSerializerSettings
             {
@@ -29,12 +29,17 @@ namespace In.ProjectEKA.HipService.Common
             {
                 Content = new StringContent(json, Encoding.UTF8, MediaTypeNames.Application.Json)
             };
-            httpRequestMessage.Headers.Add(HeaderNames.Authorization, token);
+            if (token != null)
+                httpRequestMessage.Headers.Add(HeaderNames.Authorization, token);
             if (cmSuffix != null)
-            {
-                httpRequestMessage.Headers.Add( "X-CM-ID", cmSuffix);
-            }
+                httpRequestMessage.Headers.Add("X-CM-ID", cmSuffix);
             return httpRequestMessage;
+        }
+
+        public static HttpRequestMessage CreateHttpRequest<T>(string url, T content)
+        {
+            // ReSharper disable once IntroduceOptionalParameters.Global
+            return CreateHttpRequest(url, content, null, null);
         }
     }
 }

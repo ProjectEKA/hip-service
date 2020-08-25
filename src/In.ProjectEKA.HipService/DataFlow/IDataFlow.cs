@@ -7,12 +7,13 @@ namespace In.ProjectEKA.HipService.DataFlow
     public interface IDataFlow
     {
         Task<Tuple<HealthInformationTransactionResponse, ErrorRepresentation>> HealthInformationRequestFor(
-            HealthInformationRequest request, string gatewayId);
+            HealthInformationRequest request,
+            string gatewayId);
 
         Task<Tuple<HealthInformationResponse, ErrorRepresentation>> HealthInformationFor(
             string informationId,
             string token);
-        
-        Task<String> GetPatientId(String consentId);
+
+        Task<string> GetPatientId(string consentId);
     }
 }

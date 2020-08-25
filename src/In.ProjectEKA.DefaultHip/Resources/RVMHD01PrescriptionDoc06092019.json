@@ -1,0 +1,158 @@
+{
+    "resourceType": "Bundle",
+    "id": "9f29c77f-e3a7-4713-9bee-1511087296e4",
+    "meta": {
+      "lastUpdated": "2019-06-09T00:00:00.000+05:30"
+    },
+    "identifier": {
+      "system": "https://www.max.in/bundle",
+      "value": "9f29c77f-e3a7-4713-9bee-1511087296e4"
+    },
+    "type": "document",
+    "timestamp": "2019-06-09T00:00:00.000+05:30",
+    "entry": [
+      {
+        "fullUrl": "Composition/7987677f-2ae2-4ef5-8673-3aa299e13758",
+        "resource": {
+          "resourceType": "Composition",
+          "id": "7987677f-2ae2-4ef5-8673-3aa299e13758",
+          "identifier": {
+            "system": "https://www.max.in/document",
+            "value": "7987677f-2ae2-4ef5-8673-3aa299e13758"
+          },
+          "status": "final",
+          "type": {
+            "coding": [
+              {
+                "system": "https://projecteka.in/sct",
+                "code": "440545006",
+                "display": "Prescription record"
+              }
+            ]
+          },
+          "subject": {
+            "reference": "Patient/RVH1002"
+          },
+          "encounter": {
+            "reference": "Encounter/15de5254-12e9-4539-8c98-965737a465ad"
+          },
+          "date": "2019-06-09T10:00:00+05:30",
+          "author": [
+            {
+              "reference": "Practitioner/MAX1234"
+            }
+          ],
+          "title": "Prescription",
+          "section": [
+            {
+              "title": "OPD Prescription",
+              "code": {
+                "coding": [
+                  {
+                    "system": "https://projecteka.in/sct",
+                    "code": "440545006",
+                    "display": "Prescription record"
+                  }
+                ]
+              },
+              "entry": [
+                {
+                  "reference": "MedicationRequest/e3c797e8-cdf3-4dbd-9b7b-de16e82b27cb"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "fullUrl": "Practitioner/MAX1234",
+        "resource": {
+          "resourceType": "Practitioner",
+          "id": "MAX1234",
+          "identifier": [
+            {
+              "system": "https://www.mciindia.in/doctor",
+              "value": "MAX1234"
+            }
+          ],
+          "name": [
+            {
+              "text": "Manju Sengar",
+              "prefix": [
+                "Dr"
+              ],
+              "suffix": [
+                "MD"
+              ]
+            }
+          ]
+        }
+      },
+      {
+        "fullUrl": "Patient/RVH1002",
+        "resource": {
+          "resourceType": "Patient",
+          "id": "RVH1002",
+          "name": [
+            {
+              "text": "Navjot Singh"
+            }
+          ],
+          "gender": "female"
+        }
+      },
+      {
+        "fullUrl": "Encounter/15de5254-12e9-4539-8c98-965737a465ad",
+        "resource": {
+          "resourceType": "Encounter",
+          "id": "15de5254-12e9-4539-8c98-965737a465ad",
+          "status": "finished",
+          "class": {
+            "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+            "code": "AMB",
+            "display": "Outpatient visit"
+          },
+          "subject": {
+            "reference": "Patient/RVH1002"
+          },
+          "period": {
+            "start": "2019-06-09T00:00:00+05:30"
+          }
+        }
+      },
+      {
+        "fullUrl": "Medication/ad440a98-5b5c-478a-ab21-7a90efbf5c8e",
+        "resource": {
+          "resourceType": "Medication",
+          "id": "ad440a98-5b5c-478a-ab21-7a90efbf5c8e",
+          "code": {
+            "text": "ergotamine 4 mg"
+          }
+        }
+      },
+      {
+        "fullUrl": "MedicationRequest/e3c797e8-cdf3-4dbd-9b7b-de16e82b27cb",
+        "resource": {
+          "resourceType": "MedicationRequest",
+          "id": "e3c797e8-cdf3-4dbd-9b7b-de16e82b27cb",
+          "status": "active",
+          "intent": "order",
+          "medicationReference": {
+            "reference": "Medication/ad440a98-5b5c-478a-ab21-7a90efbf5c8e"
+          },
+          "subject": {
+            "reference": "Patient/RVH1002"
+          },
+          "authoredOn": "2019-06-09T00:00:00+05:30",
+          "requester": {
+            "reference": "Practitioner/MAX1234"
+          },
+          "dosageInstruction": [
+            {
+              "text": "1 tablet 2 times a day"
+            }
+          ]
+        }
+      }
+    ]
+  }

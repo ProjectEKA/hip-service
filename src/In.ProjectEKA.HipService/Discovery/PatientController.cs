@@ -5,7 +5,7 @@
     using System.Threading.Tasks;
     using Gateway;
     using Gateway.Model;
-    using static Gateway.GatewayPathConstants;
+    using static Common.Constants;
     using Hangfire;
     using HipLibrary.Patient.Model;
     using Logger;
@@ -13,9 +13,12 @@
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.ModelBinding;
+    using Microsoft.Extensions.Logging;
+    using Common;
+
 
     [Authorize]
-    [Route("v1/care-contexts/discover")]
+    [Route(PATH_CARE_CONTEXTS_DISCOVER)]
     [ApiController]
     public class CareContextDiscoveryController : Controller
     {
@@ -25,14 +28,16 @@
         private readonly IPatientDiscovery patientDiscovery;
         private readonly IGatewayClient gatewayClient;
         private readonly IBackgroundJobClient backgroundJob;
+        private readonly ILogger<CareContextDiscoveryController> logger;
 
         public CareContextDiscoveryController(IPatientDiscovery patientDiscovery,
             IGatewayClient gatewayClient,
-            IBackgroundJobClient backgroundJob)
+            IBackgroundJobClient backgroundJob, ILogger<CareContextDiscoveryController> logger)
         {
             this.patientDiscovery = patientDiscovery;
             this.gatewayClient = gatewayClient;
             this.backgroundJob = backgroundJob;
+            this.logger = logger;
         }
 
         /// <summary>
@@ -52,6 +57,8 @@
         [ProducesResponseType(StatusCodes.Status202Accepted)]
         public ActionResult DiscoverPatientCareContexts([FromBody, BindRequired] DiscoveryRequest request)
         {
+            logger.LogInformation(LogEvents.Discovery, "discovery request received for {Id} with {RequestId}",
+                request.Patient.Id, request.RequestId);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -61,7 +68,7 @@
             return Accepted();
         }
 
-        [ApiExplorerSettings(IgnoreApi = true)]
+        [NonAction]
         public async Task GetPatientCareContext(DiscoveryRequest request)
         {
             var patientId = request.Patient.Id;
@@ -75,7 +82,11 @@
                     request.TransactionId, //TODO: should be reading transactionId from contract
                     error?.Error,
                     new DiscoveryResponse(request.RequestId, error == null ? HttpStatusCode.OK : HttpStatusCode.NotFound, error == null ? SuccessMessage : ErrorMessage));
-                await gatewayClient.SendDataToGateway(OnDiscoverPath, gatewayDiscoveryRepresentation, cmSuffix);
+                logger.LogInformation(LogEvents.Discovery,
+                    "Response about to be send for {RequestId} with {@Patient}",
+                    request.RequestId,
+                    response?.Patient);
+                await gatewayClient.SendDataToGateway(PATH_ON_DISCOVER, gatewayDiscoveryRepresentation, cmSuffix);
             }
             catch (Exception exception)
             {
@@ -86,8 +97,8 @@
                     request.TransactionId, //TODO: should be reading transactionId from contract
                     new Error(ErrorCode.ServerInternalError, "Unreachable external service"),
                     new DiscoveryResponse(request.RequestId, HttpStatusCode.InternalServerError, "Unreachable external service"));
-                await gatewayClient.SendDataToGateway(OnDiscoverPath, gatewayDiscoveryRepresentation, cmSuffix);
-                Log.Error(exception, exception.StackTrace);
+                await gatewayClient.SendDataToGateway(PATH_ON_DISCOVER, gatewayDiscoveryRepresentation, cmSuffix);
+                logger.LogError(LogEvents.Discovery, exception, "Error happened for {RequestId}", request.RequestId);
             }
         }
     }

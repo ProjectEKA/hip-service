@@ -13,18 +13,15 @@ namespace In.ProjectEKA.HipService.DataFlow
 
     public class DataFlowClient
     {
-        private readonly HttpClient httpClient;
-        private readonly GatewayClient gatewayClient;
         private readonly DataFlowNotificationClient dataFlowNotificationClient;
         private readonly GatewayConfiguration gatewayConfiguration;
+        private readonly HttpClient httpClient;
 
         public DataFlowClient(HttpClient httpClient,
-            GatewayClient gatewayClient,
             DataFlowNotificationClient dataFlowNotificationClient,
             GatewayConfiguration gatewayConfiguration)
         {
             this.httpClient = httpClient;
-            this.gatewayClient = gatewayClient;
             this.dataFlowNotificationClient = dataFlowNotificationClient;
             this.gatewayConfiguration = gatewayConfiguration;
         }
@@ -47,63 +44,47 @@ namespace In.ProjectEKA.HipService.DataFlow
             string cmSuffix)
         {
             var grantedContexts = careContexts as GrantedContext[] ?? careContexts.ToArray();
+            var hiStatus = HiStatus.DELIVERED;
+            var sessionStatus = SessionStatus.TRANSFERRED;
+            var message = "Successfully delivered health information";
             try
             {
-                var token = await gatewayClient.Authenticate();
-                token.MatchSome(async accessToken =>
-                {
-                    try
-                    {
-                        await httpClient.SendAsync(CreateHttpRequest(dataPushUrl, dataResponse, accessToken))
-                            .ConfigureAwait(false);
-                    }
-                    catch (Exception exception)
-                    {
-                        Log.Error(exception, exception.StackTrace);
-                        await GetDataNotificationRequest(consentId,
-                            grantedContexts,
-                            dataResponse,
-                            HiStatus.ERRORED,
-                            SessionStatus.FAILED,
-                            "Failed to deliver health information",
-                            cmSuffix).ConfigureAwait(false);
-                    }
-                });
-                token.MatchNone(() => Log.Error("Did not post data to HIU"));
-                await GetDataNotificationRequest(consentId,
-                    grantedContexts,
-                    dataResponse,
-                    HiStatus.DELIVERED,
-                    SessionStatus.TRANSFERRED,
-                    "Successfully delivered health information",
-                    cmSuffix).ConfigureAwait(false);
+                // TODO: Need to handle non 2xx response also
+                await httpClient.SendAsync(CreateHttpRequest(dataPushUrl, dataResponse)).ConfigureAwait(false);
             }
             catch (Exception exception)
             {
+                hiStatus = HiStatus.ERRORED;
+                sessionStatus = SessionStatus.FAILED;
+                message = "Failed to deliver health information";
                 Log.Error(exception, exception.StackTrace);
             }
-        }
 
-        private async Task GetDataNotificationRequest(string consentId,
-            IEnumerable<GrantedContext> careContexts,
-            DataResponse dataResponse,
-            HiStatus hiStatus,
-            SessionStatus sessionStatus,
-            string description,
-            string cmSuffix)
-        {
-            var statusResponses = careContexts
-                .Select(grantedContext =>
-                    new StatusResponse(grantedContext.CareContextReference, hiStatus, description))
-                .ToList();
-
-            await dataFlowNotificationClient.NotifyGateway(cmSuffix,
-                new DataNotificationRequest(dataResponse.TransactionId,
+            try
+            {
+                var statusResponses = grantedContexts
+                    .Select(grantedContext =>
+                        new StatusResponse(grantedContext.CareContextReference, hiStatus,
+                            message))
+                    .ToList();
+                var dataNotificationRequest = new DataNotificationRequest(dataResponse.TransactionId,
                     DateTime.Now.ToUniversalTime(),
                     new Notifier(Type.HIP, gatewayConfiguration.ClientId),
                     new StatusNotification(sessionStatus, gatewayConfiguration.ClientId, statusResponses),
                     consentId,
-                    Guid.NewGuid()));
+                    Guid.NewGuid());
+                await GetDataNotificationRequest(dataNotificationRequest, cmSuffix).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, ex.Message);
+            }
+        }
+
+        private async Task GetDataNotificationRequest(DataNotificationRequest dataNotificationRequest,
+            string cmSuffix)
+        {
+            await dataFlowNotificationClient.NotifyGateway(cmSuffix, dataNotificationRequest);
         }
     }
 }

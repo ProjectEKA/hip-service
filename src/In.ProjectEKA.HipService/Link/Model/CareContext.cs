@@ -15,7 +15,8 @@ namespace In.ProjectEKA.HipService.Link.Model
 
         public string CareContextNumber { get; set; }
 
-        [ForeignKey("LinkReferenceNumber")] public string LinkReferenceNumber { get; set; }
+        [ForeignKey("LinkReferenceNumber")]
+        public string LinkReferenceNumber { get; set; }
 
         public LinkEnquires LinkEnquires { get; set; }
     }

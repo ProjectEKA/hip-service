@@ -5,11 +5,6 @@ namespace In.ProjectEKA.HipService.DataFlow.Model
 
     public class HealthInformation
     {
-        [Key] public string InformationId { get; set; }
-        public Entry Data { get; set; }
-        public DateTime DateCreated { get; set; }
-        public string Token { get; set; }
-
         public HealthInformation()
         {
         }
@@ -21,5 +16,12 @@ namespace In.ProjectEKA.HipService.DataFlow.Model
             DateCreated = dateCreated;
             Token = token;
         }
+
+        [Key]
+        public string InformationId { get; set; }
+
+        public Entry Data { get; set; }
+        public DateTime DateCreated { get; set; }
+        public string Token { get; set; }
     }
 }

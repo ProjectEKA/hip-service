@@ -1,28 +1,28 @@
 {
     "RVH/NCC-1701" : {
         "SC1701" : [
-            { 
-                "capturedOn": "2018-02-02",
+            {
+                "capturedOn": "2018-02-02T12:18:41.818234",
                 "data":  {
                     "diagnosticreport" : ["SC1701FirstVisitDiagnosticReport.json"]
                 }
             }
         ],
         "NCP1006" : [
-            { 
-                "capturedOn": "2019-06-01",
+            {
+                "capturedOn": "2019-06-01T10:18:31.818234",
                 "data":  {
                     "diagnosticreport" : ["NCP1006FirstVisitDiagnosticReports.json"]
                 }
             },
-            { 
-                "capturedOn": "2019-06-02",
+            {
+                "capturedOn": "2019-06-02T10:18:41.818234",
                 "data":  {
                     "diagnosticreport" : ["NCP1006SecondVisitDiagnosticRepots.json"]
                 }
             },
-            { 
-                "capturedOn": "2019-06-04",
+            {
+                "capturedOn": "2019-06-04T10:20:41.818234",
                 "data":  {
                     "diagnosticreport" : ["NCP1006DiagnosticReportWithRadiologyImageInline.json"]
                 }
@@ -31,44 +31,117 @@
     },
     "RVH1002" : {
         "RV-MHD-01.17.0024" : [
-            { 
-                "capturedOn": "2018-02-02",
+            {
+                "capturedOn": "2019-04-02T15:32:26.605+05:30",
                 "data":  {
-                    "observation" : [],
-                    "condition" : [],
-                    "diagnosticreport" : [],
-                    "medicationrequest" : [],
-                    "dischargesummary" : []
+                    "prescription" : ["RVMHD01PrescriptionDocument1.json"]
+                }
+            },
+            {
+                "capturedOn": "2019-04-15T15:32:26.605+05:30",
+                "data":  {
+                    "prescription" : ["RVMHD01PrescriptionDocument2.json"]
+                }
+            },
+            {
+                "capturedOn": "2019-04-27T15:32:26.605+05:30",
+                "data":  {
+                    "prescription" : ["RVMHD01PrescriptionDocument3.json"]
+                }
+            },
+            {
+                "capturedOn": "2019-05-21T15:32:26.605+05:30",
+                "data":  {
+                    "prescription" : ["RVMHD01PrescriptionDocument4.json"]
+                }
+            },
+            {
+                "capturedOn": "2019-06-01T10:00:00.605+05:30",
+                "data":  {
+                    "prescription" : ["RVMHD01PrescriptionDoc06012019.json"]
+                }
+            },
+            {
+                "capturedOn": "2019-06-03T10:00:00.605+05:30",
+                "data":  {
+                    "prescription" : ["RVMHD01PrescriptionDoc06032019.json"]
+                }
+            },
+            {
+                "capturedOn": "2019-06-05T10:00:00.605+05:30",
+                "data":  {
+                    "prescription" : ["RVMHD01PrescriptionDoc06052019.json"]
+                }
+            },
+            {
+                "capturedOn": "2019-06-07T10:00:00.605+05:30",
+                "data":  {
+                    "prescription" : ["RVMHD01PrescriptionDoc06072019.json"]
+                }
+            },
+            {
+                "capturedOn": "2019-06-09T10:00:00.605+05:30",
+                "data":  {
+                    "prescription" : ["RVMHD01PrescriptionDoc06092019.json"]
+                }
+            },
+            {
+                "capturedOn": "2019-08-01T10:00:00.818234",
+                "data":  {
+                    "prescription" : ["RVMHD01PrescriptionDoc08012019.json"]
                 }
             }
+
         ],
         "NCP1007" : [
-            { 
-                "capturedOn": "2019-06-01",
+            {
+                "capturedOn": "2019-01-01T15:32:26.605+05:30",
                 "data":  {
-                    "observation" : [],
-                    "condition" : [],
-                    "diagnosticreport" : [],
+                    "prescription" : ["NCP1007PrescriptionDocument1.json"]
+                }
+            },
+            {
+                "capturedOn": "2019-01-02T15:32:26.605+05:30",
+                "data":  {
+                    "prescription" : ["NCP1007PrescriptionDocument2.json"],
+                    "diagnosticreport" : ["NCP1007DiagnosticReportDocument.json"],
                     "medicationrequest" : [],
                     "dischargesummary" : []
                 }
             },
-            { 
-                "capturedOn": "2019-06-02",
+            {
+                "capturedOn": "2019-01-03T15:32:26.605+05:30",
+                "data":  {
+                    "prescription" : ["NCP1007PrescriptionDocument3.json"],
+                    "diagnosticreport" : ["NCP1007DiagnosticReportDocument1.json"]
+                }
+            },
+            {
+                "capturedOn": "2019-02-03T15:32:26.605+05:30",
                 "data":  {
                     "observation" : [],
                     "condition" : [],
                     "diagnosticreport" : [],
                     "medicationrequest" : [],
-                    "dischargesummary" : []
+                    "dischargesummary" : ["NCP1007DischargeSummary1.json"]
+                }
+            },
+            {
+                "capturedOn": "2019-10-03T15:32:26.605+05:30",
+                "data":  {
+                    "observation" : [],
+                    "condition" : [],
+                    "diagnosticreport" : [],
+                    "medicationrequest" : [],
+                    "dischargesummary" : ["NCP1007DischargeSummary2.json"]
                 }
             }
         ]
     },
     "RVH1003" : {
         "BI-KTH-12.05.0024" : [
-            { 
-                "capturedOn": "2018-02-02",
+            {
+                "capturedOn": "2018-02-02T12:04:50.818234",
                 "data":  {
                     "condition" : ["BI-KTH-12FirstVisitConditions.json"],
                     "diagnosticreport" : [],
@@ -78,39 +151,102 @@
             }
         ],
         "NCP1008" : [
-            { 
-                "capturedOn": "2019-06-01",
+            {
+                "capturedOn": "2019-06-01T12:04:50.818234",
                 "data":  {
                     "observation" : ["NCP1008FirstVisitObservations.json"],
                     "condition" : ["NCP1008FirstVisitCondition.json"]
                 }
             },
-            { 
-                "capturedOn": "2019-06-02",
+            {
+                "capturedOn": "2019-06-02T12:04:50.818234",
                 "data":  {
                     "diagnosticreport" : ["NCP1008FirstVisitDiagnosticReport.json"]
                 }
             },
-            { 
-                "capturedOn": "2019-06-04",
+            {
+                "capturedOn": "2019-06-04T12:04:50.818234",
                 "data":  {
                     "diagnosticreport" : ["NCP1008DiagnosticReportWithRadiologyImageInline.json"]
                 }
             },
-            { 
-                "capturedOn": "2020-02-15",
+            {
+                "capturedOn": "2019-08-01T12:04:50.818234",
+                "data":  {
+                    "prescription" : ["NCP1008PrescriptionDoc20190801.json"]
+
+                }
+            },
+            {
+                "capturedOn": "2019-08-03T12:04:50.818234",
+                "data":  {
+                    "prescription" : ["NCP1008PrescriptionDoc20190803.json"]
+
+                }
+            },
+            {
+                "capturedOn": "2019-08-05T12:04:50.818234",
+                "data":  {
+                    "prescription" : ["NCP1008PrescriptionDoc20190805.json"]
+
+                }
+            },
+            {
+                "capturedOn": "2019-10-01T12:04:50.818234",
+                "data":  {
+                    "diagnosticreport" : ["NCP1008DiagnosticReportDoc20191001.json"]
+                }
+            },
+            {
+                "capturedOn": "2019-10-03T12:04:50.818234",
+                "data":  {
+                    "diagnosticreport" : ["NCP1008DiagnosticReportDoc20191003.json"]
+                }
+            },
+            {
+                "capturedOn": "2019-10-05T12:04:50.818234",
+                "data":  {
+                    "diagnosticreport" : ["NCP1008DiagnosticReportDoc20191005.json"]
+                }
+            },
+            {
+                "capturedOn": "2019-12-24T12:04:50.818234",
+                "data":  {
+                    "documentreference" : ["NCP1008FourthVisitDocumentReference.json"]
+                }
+            },
+            {
+                "capturedOn": "2020-01-01T12:04:50.818234",
+                "data":  {
+                    "prescription" : ["NCP1008FifthVisitPrescription.json"]
+                }
+            },
+            {
+                "capturedOn": "2020-02-15T12:04:50.818234",
                 "data":  {
                     "observation" : ["NCP1008SecondVisitObsWithMembers.json"],
                     "medicationrequest" : ["NCP1008SecondVisitMedications.json"],
                     "diagnosticreport" : ["NCP1008SecondVisitDiagnosticReport.json"]
                 }
             },
+            {
+                "capturedOn": "2020-07-09T12:04:50.818234",
+                "data":  {
+                    "opconsultation" : ["NCP1008WEBEMROPConsultationNote.json"]
+                }
+            },
+            {
+                "capturedOn": "2020-07-10T12:04:50.818234",
+                "data":  {
+                    "opconsultation" : ["NCP1008NRCOPConsultationNote.json"]
+                }
+            }
         ]
     },
     "RVH1004" : {
         "NCP10091" : [
-            { 
-                "capturedOn": "2018-02-02",
+            {
+                "capturedOn": "2018-02-02T12:04:50.818234",
                 "data":  {
                     "observation" : [],
                     "condition" : [],
@@ -121,8 +257,8 @@
             }
         ],
         "NCP10092" : [
-            { 
-                "capturedOn": "2019-06-01",
+            {
+                "capturedOn": "2019-06-01T12:04:50.818234",
                 "data":  {
                     "observation" : [],
                     "condition" : [],
@@ -131,8 +267,8 @@
                     "dischargesummary" : []
                 }
             },
-            { 
-                "capturedOn": "2019-06-02",
+            {
+                "capturedOn": "2019-06-02T12:04:50.818234",
                 "data":  {
                     "observation" : [],
                     "condition" : [],
@@ -143,8 +279,8 @@
             }
         ],
         "NCP10093" : [
-            { 
-                "capturedOn": "2018-02-02",
+            {
+                "capturedOn": "2018-02-02T12:04:50.818234",
                 "data":  {
                     "observation" : [],
                     "condition" : [],
@@ -157,8 +293,8 @@
     },
     "RVH1005" : {
         "NCP1031" : [
-            { 
-                "capturedOn": "2019-06-01",
+            {
+                "capturedOn": "2019-06-01T12:04:50.818234",
                 "data":  {
                     "observation" : [],
                     "condition" : [],
@@ -167,14 +303,282 @@
                     "dischargesummary" : []
                 }
             },
-            { 
-                "capturedOn": "2019-06-02",
+            {
+                "capturedOn": "2019-06-02T12:04:50.818234",
                 "data":  {
                     "observation" : [],
                     "condition" : [],
                     "diagnosticreport" : [],
                     "medicationrequest" : [],
                     "dischargesummary" : []
+                }
+            }
+        ]
+    },
+    "RVH1012" : {
+        "RV-MHD-01.17.3112" : [
+            {
+                "capturedOn": "2019-04-02T15:32:26.605+05:30",
+                "data":  {
+                    "prescription" : ["RVMHD01PrescriptionDocument1.json"]
+                }
+            },
+            {
+                "capturedOn": "2019-04-15T15:32:26.605+05:30",
+                "data":  {
+                    "prescription" : ["RVMHD01PrescriptionDocument2.json"]
+                }
+            },
+            {
+                "capturedOn": "2019-04-27T15:32:26.605+05:30",
+                "data":  {
+                    "prescription" : ["RVMHD01PrescriptionDocument3.json"]
+                }
+            },
+            {
+                "capturedOn": "2019-01-01T15:32:26.605+05:30",
+                "data":  {
+                    "prescription" : ["RVMHD01PrescriptionDocument4.json"]
+                }
+            }
+        ],
+        "NCP9999" : [
+            {
+                "capturedOn": "2019-01-01T15:32:26.605+05:30",
+                "data":  {
+                    "prescription" : ["NCP1007PrescriptionDocument1.json"]
+                }
+            },
+            {
+                "capturedOn": "2019-01-02T15:32:26.605+05:30",
+                "data":  {
+                    "prescription" : ["NCP1007PrescriptionDocument2.json"],
+                    "diagnosticreport" : ["NCP1007DiagnosticReportDocument.json"],
+                    "medicationrequest" : [],
+                    "dischargesummary" : []
+                }
+            },
+            {
+                "capturedOn": "2019-01-03T15:32:26.605+05:30",
+                "data":  {
+                    "prescription" : ["NCP1007PrescriptionDocument3.json"],
+                    "diagnosticreport" : ["NCP1007DiagnosticReportDocument1.json"]
+                }
+            },
+            {
+                "capturedOn": "2019-02-03T15:32:26.605+05:30",
+                "data":  {
+                    "observation" : [],
+                    "condition" : [],
+                    "diagnosticreport" : [],
+                    "medicationrequest" : [],
+                    "dischargesummary" : ["NCP1007DischargeSummary1.json"]
+                }
+            },
+            {
+                "capturedOn": "2019-10-03T15:32:26.605+05:30",
+                "data":  {
+                    "observation" : [],
+                    "condition" : [],
+                    "diagnosticreport" : [],
+                    "medicationrequest" : [],
+                    "dischargesummary" : ["NCP1007DischargeSummary2.json"]
+                }
+            }
+        ]
+    },
+    "NCC1702" : {
+        "SC1702" : [
+            {
+                "capturedOn": "2018-08-01T15:32:26.605+05:30",
+                "data":  {
+                    "prescription" : ["MAXNCC1702PrescriptionDoc20180801.json"],
+                    "dischargesummary" : []
+                }
+            }
+        ],
+        "NCP1702" : [
+            {
+                "capturedOn": "2018-08-03T15:32:26.605+05:30",
+                "data":  {
+                    "prescription" : ["MAXNCC1702PrescriptionDoc20180803.json"],
+                    "dischargesummary" : []
+                }
+            },
+            {
+                "capturedOn": "2018-08-05T15:32:26.605+05:30",
+                "data":  {
+                    "prescription" : ["MAXNCC1702PrescriptionDoc20180805.json"],
+                    "dischargesummary" : []
+                }
+            },
+            {
+                "capturedOn": "2019-01-01T15:32:26.605+05:30",
+                "data":  {
+                    "diagnosticreport" : ["MAXNCP1702DiagnosticReportDoc20190101.json"]
+                }
+            },
+            {
+                "capturedOn": "2019-01-03T15:32:26.605+05:30",
+                "data":  {
+                    "diagnosticreport" : ["MAXNCP1702DiagnosticReportDoc20190103.json"]
+                }
+            },
+            {
+                "capturedOn": "2019-02-03T15:32:26.605+05:30",
+                "data":  {
+                    "dischargesummary" : ["NCP1702DischargeSummary20190203.json"]
+                }
+            },
+            {
+                "capturedOn": "2019-10-03T15:32:26.605+05:30",
+                "data":  {
+                    "dischargesummary" : ["NCP1702DischargeSummary20191003.json"]
+                }
+            },
+            {
+                "capturedOn": "2020-07-09T15:32:26.605+05:30",
+                "data":  {
+                    "opconsultation" : ["NCP1702OPConsultationNote20200709.json"]
+                }
+            },
+            {
+                "capturedOn": "2020-07-10T15:32:26.605+05:30",
+                "data":  {
+                    "opconsultation" : ["NCP1702OPConsultationNote20200710.json"]
+                }
+            }
+        ]
+    },
+    "LIVNO10" : {
+        "SC0010" : [
+            {
+                "capturedOn": "2018-08-01T00:00:00.605+05:30",
+                "data":  {
+                    "prescription" : ["MAXLIVNO10PrescriptionDoc20180801.json"]
+                }
+            }
+        ],
+        "NCP0010" : [
+            {
+                "capturedOn": "2019-08-01T00:00:00.605+05:30",
+                "data":  {
+                    "diagnosticreport" : ["MAXLIVNO10DiagnosticReportDoc20190801.json"]
+                }
+            }
+        ]
+    },
+  "LIVNO11" : {
+    "SC0011" : [
+      {
+        "capturedOn": "2018-08-01T00:00:00.605+05:30",
+        "data":  {
+          "opconsultation" : ["MAXLIVNO11OPConsultationDoc20180801.json"]
+        }
+      }
+    ],
+    "NCP0011" : [
+      {
+        "capturedOn": "2019-08-01T00:00:00.605+05:30",
+        "data":  {
+          "prescription" : ["MAXLIVNO11PrescriptionDoc20190801.json"]
+        }
+      }
+    ]
+  },
+  "KNM1432": {
+    "RVH9999": [
+      {
+        "capturedOn": "2016-08-01T00:00:00.605+05:30",
+        "data": {
+          "diagnosticreport": [
+            "MAXRVH9999DiagnosticReportDoc20160801.json"
+          ],
+          "dischargesummary": [
+            "MAXRVH9999DischargeSummaryDoc20160801.json"
+          ],
+          "opconsultation": [
+            "MAXRVH9999OPConsultationDoc20160801.json"
+          ],
+          "prescription": [
+            "MAXRVH9999PrescriptionDoc20160801.json"
+          ]
+        }
+      },
+      {
+        "capturedOn": "2016-08-03T00:00:00.605+05:30",
+        "data": {
+          "diagnosticreport": [
+            "MAXRVH9999DiagnosticReportDoc20160803.json"
+          ],
+          "opconsultation": [
+            "MAXRVH9999OPConsultationDoc20160803.json"
+          ],
+          "prescription": [
+            "MAXRVH9999PrescriptionDoc20160803.json"
+          ]
+        }
+      },
+      {
+        "capturedOn": "2016-08-11T00:00:00.605+05:30",
+        "data": {
+          "dischargesummary": [
+            "MAXRVH9999DischargeSummaryDoc20160811.json"
+          ]
+        }
+      },
+      {
+        "capturedOn": "2016-08-05T00:00:00.605+05:30",
+        "data": {
+          "prescription": [
+            "MAXRVH9999PrescriptionDoc20160805.json"
+          ]
+        }
+      },
+      {
+        "capturedOn": "2016-08-07T00:00:00.605+05:30",
+        "data": {
+          "prescription": [
+            "MAXRVH9999PrescriptionDoc20160807.json"
+          ]
+        }
+      }
+    ],
+    "NCC1543": [
+      {
+        "capturedOn": "2019-04-09T00:00:00.605+05:30",
+        "data": {
+          "dischargesummary": [
+            "MAXNCC1543DischargeSummaryDoc20190409.json"
+          ]
+        }
+      },
+      {
+        "capturedOn": "2019-04-19T00:00:00.605+05:30",
+        "data": {
+          "dischargesummary": [
+            "MAXNCC1543DischargeSummaryDoc20190419.json"
+          ]
+        }
+      }
+    ]
+  },
+    "LIVNO09" : {
+        "NCP009" : [
+            {
+                "capturedOn": "2015-08-01T00:00:00.605+05:30",
+                "data":  {
+                    "prescription" : ["MAXLIVNO09PrescriptionDoc20150801.json"]
+                }
+            }
+        ]
+    },
+    "LIVNO14" : {
+        "NCP014" : [
+            {
+                "capturedOn": "2011-08-01T00:00:00.605+05:30",
+                "data":  {
+                    "prescription" : ["MAXLIVNO14PrescriptionDoc20110801.json"]
                 }
             }
         ]

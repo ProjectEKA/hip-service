@@ -11,6 +11,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
     using HipService.Discovery;
     using HipService.Link;
     using HipService.Link.Model;
+    using Microsoft.Extensions.Logging;
     using Moq;
     using Optional;
     using Xunit;
@@ -40,6 +41,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
         ushort yearOfBirth;
         Gender gender;
 
+        private readonly Mock<ILogger<PatientDiscovery>> logger = new Mock<ILogger<PatientDiscovery>>();
         public PatientDiscoveryTest()
         {
             patientDiscovery = new PatientDiscovery(
@@ -47,7 +49,8 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 discoveryRequestRepository.Object,
                 linkPatientRepository.Object,
                 patientRepository.Object,
-                careContextRepository.Object);
+                careContextRepository.Object,
+                logger.Object);
 
             openMrsPatientReferenceNumber = Faker().Random.String();
             name = Faker().Random.String();
@@ -207,9 +210,10 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
         private async void ShouldReturnAnErrorWhenDiscoveryRequestAlreadyExists()
         {
             var expectedError =
-                new ErrorRepresentation(new Error(ErrorCode.DuplicateDiscoveryRequest, "Discovery Request already exists"));
+                new ErrorRepresentation(new Error(ErrorCode.DuplicateDiscoveryRequest,
+                    "Discovery Request already exists"));
             var transactionId = RandomString();
-            var discoveryRequest = new DiscoveryRequest(null, RandomString(),transactionId, DateTime.Now);
+            var discoveryRequest = new DiscoveryRequest(null, RandomString(), transactionId, DateTime.Now);
             discoveryRequestRepository.Setup(repository => repository.RequestExistsFor(transactionId))
                 .ReturnsAsync(true);
 
@@ -380,7 +384,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
         public EmptyIdentifierTestData()
         {
             Add(null);
-            Add(new Identifier[] { });
+            Add(new Identifier[] {});
         }
     }
 }

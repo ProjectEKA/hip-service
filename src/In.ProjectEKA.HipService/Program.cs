@@ -1,7 +1,6 @@
 ﻿namespace In.ProjectEKA.HipService
 {
     using System;
-    using Elastic.CommonSchema.Serilog;
     using Microsoft.AspNetCore;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.Configuration;
@@ -11,16 +10,16 @@
 
     public class Program
     {
-        public static void Main(string[] args) =>
+        public static void Main(string[] args)
+        {
             LogAndRunAsync(CreateWebHostBuilder(args).Build());
+        }
 
         public static void LogAndRunAsync(IWebHost host)
         {
             if (host is null)
-            {
                 throw new ArgumentNullException(nameof(host));
-            }
-            
+
             Log.Logger = CreateLogger(host);
             try
             {
@@ -38,16 +37,19 @@
                 Log.CloseAndFlush();
             }
         }
-        private static ILogger CreateLogger(IWebHost host) =>
-            new LoggerConfiguration()
+
+        private static ILogger CreateLogger(IWebHost host)
+        {
+            return new LoggerConfiguration()
                 .Enrich.FromLogContext()
                 .Enrich.WithExceptionDetails()
                 .Enrich.WithMachineName()
                 .Enrich.WithProperty("Environment", Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"))
                 .ReadFrom.Configuration(host.Services.GetRequiredService<IConfiguration>())
                 .CreateLogger();
-                
-        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
+        }
+
+        private static IWebHostBuilder CreateWebHostBuilder(string[] args)
         {
             return WebHost.CreateDefaultBuilder(args)
                 .UseSerilog()

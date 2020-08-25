@@ -15,7 +15,6 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
     using In.ProjectEKA.HipService.DataFlow.Model;
     using Moq;
     using Moq.Protected;
-    using Optional;
     using Xunit;
 
     [Collection("Data Flow Client Tests")]
@@ -25,10 +24,8 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
         private void ShouldReturnDataComponent()
         {
             const string gatewayUrl = "https://root/central-registry";
-            var gatewayClient = new Mock<GatewayClient>(MockBehavior.Strict, null, null);
             var dataFlowNotificationClient = new Mock<DataFlowNotificationClient>(MockBehavior.Strict, null);
-
-            var centralRegistryConfiguration = new GatewayConfiguration
+            var configuration = new GatewayConfiguration
             {
                 Url = gatewayUrl,
                 ClientId = "10000005",
@@ -41,18 +38,12 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var content = TestBuilder.Faker().Random.String();
             var checksum = TestBuilder.Faker().Random.Hash();
             var dataNotificationRequest = TestBuilder.DataNotificationRequest(transactionId);
-
             var entries = new List<Entry>
             {
                 new Entry(content, MediaTypeNames.Application.Json, checksum, null, "careContextReference")
-            }
-                .AsEnumerable();
+            }.AsEnumerable();
             var expectedUri = new Uri("http://callback/data/notification");
-            var dataFlowClient = new DataFlowClient(httpClient,
-                gatewayClient.Object,
-                dataFlowNotificationClient.Object,
-                centralRegistryConfiguration);
-
+            var dataFlowClient = new DataFlowClient(httpClient, dataFlowNotificationClient.Object, configuration);
             handlerMock
                 .Protected()
                 .Setup<Task<HttpResponseMessage>>(
@@ -64,8 +55,6 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                     StatusCode = HttpStatusCode.OK
                 })
                 .Verifiable();
-
-            gatewayClient.Setup(client => client.Authenticate()).ReturnsAsync(Option.Some("Something"));
             dataFlowNotificationClient.Setup(client =>
                 client.NotifyGateway(dataRequest.CmSuffix, It.IsAny<DataNotificationRequest>()))
                 .Returns(Task.CompletedTask)
@@ -91,42 +80,35 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
         }
 
         [Fact]
-        private void ShouldNotPostDataIfAuthenticationWithCentralRegistryFailed()
+        private void ShouldNotifyGatewayAboutFailureInDataTransfer()
         {
             const string id = "ConsentManagerId";
-            var gatewayClient = new Mock<GatewayClient>(MockBehavior.Strict, null, null);
             var dataFlowNotificationClient = new Mock<DataFlowNotificationClient>(MockBehavior.Strict, null);
-            var centralRegistryConfiguration = new GatewayConfiguration
+            var configuration = new GatewayConfiguration
             {
-                ClientId = id,
+                ClientId = id
             };
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
             var httpClient = new HttpClient(handlerMock.Object);
             var dataRequest = TestBuilder.DataRequest(TestBuilder.Faker().Random.Hash());
             var entries = new List<Entry>().AsEnumerable();
-            var dataFlowClient = new DataFlowClient(httpClient,
-                gatewayClient.Object,
-                dataFlowNotificationClient.Object,
-                centralRegistryConfiguration);
-
+            var dataFlowClient = new DataFlowClient(httpClient, dataFlowNotificationClient.Object, configuration);
             handlerMock
                 .Protected()
                 .Setup<Task<HttpResponseMessage>>(
                     "SendAsync",
                     ItExpr.IsAny<HttpRequestMessage>(),
                     ItExpr.IsAny<CancellationToken>())
-                .ReturnsAsync(new HttpResponseMessage
-                {
-                    StatusCode = HttpStatusCode.OK
-                })
+                .Throws(new Exception("Unknown exception"))
                 .Verifiable();
-            gatewayClient.Setup(client => client.Authenticate()).ReturnsAsync(Option.None<string>());
+            dataFlowNotificationClient.Setup(client => client.NotifyGateway(id, It.IsAny<DataNotificationRequest>()))
+                .Returns(Task.CompletedTask);
 
             dataFlowClient.SendDataToHiu(dataRequest, entries, null);
 
             handlerMock.Protected().Verify(
                 "SendAsync",
-                Times.Exactly(0),
+                Times.Exactly(1),
                 ItExpr.IsAny<HttpRequestMessage>(),
                 ItExpr.IsAny<CancellationToken>());
         }

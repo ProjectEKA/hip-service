@@ -24,7 +24,7 @@
             new Dictionary<Filter.IdentifierTypeExt, IRanker<Patient>>
             {
                 {Filter.IdentifierTypeExt.Mobile, new MobileRanker()},
-                {Filter.IdentifierTypeExt.Name, new ExactNameRanker()},
+                {Filter.IdentifierTypeExt.Name, new NameRanker()},
                 {Filter.IdentifierTypeExt.Gender, new GenderRanker()},
                 {Filter.IdentifierTypeExt.Mr, new MedicalRecordRanker()},
                 {Filter.IdentifierTypeExt.Empty, new EmptyRanker()}

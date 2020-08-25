@@ -10,7 +10,10 @@ namespace In.ProjectEKA.HipService.Discovery
     using In.ProjectEKA.HipService.Link.Model;
     using In.ProjectEKA.HipService.OpenMrs;
     using Link;
+    using Microsoft.Extensions.Logging;
     using Logger;
+    using Common;
+
 
     public class PatientDiscovery: IPatientDiscovery
     {
@@ -19,19 +22,22 @@ namespace In.ProjectEKA.HipService.Discovery
         private readonly ILinkPatientRepository linkPatientRepository;
         private readonly IPatientRepository patientRepository;
         private readonly ICareContextRepository careContextRepository;
+        private readonly ILogger<PatientDiscovery> logger;
 
         public PatientDiscovery(
             IMatchingRepository matchingRepository,
             IDiscoveryRequestRepository discoveryRequestRepository,
             ILinkPatientRepository linkPatientRepository,
             IPatientRepository patientRepository,
-            ICareContextRepository careContextRepository)
+            ICareContextRepository careContextRepository,
+            ILogger<PatientDiscovery> logger)
         {
             this.matchingRepository = matchingRepository;
             this.discoveryRequestRepository = discoveryRequestRepository;
             this.linkPatientRepository = linkPatientRepository;
             this.patientRepository = patientRepository;
             this.careContextRepository = careContextRepository;
+            this.logger = logger;
         }
 
         public virtual async Task<ValueTuple<DiscoveryRepresentation, ErrorRepresentation>> PatientFor(
@@ -39,23 +45,28 @@ namespace In.ProjectEKA.HipService.Discovery
         {
             if (await AlreadyExists(request.TransactionId))
             {
-                Log.Information($"Discovery Request already exists for {request.TransactionId}.");
-                return GetError(ErrorCode.DuplicateDiscoveryRequest, ErrorMessage.RequestIdExists);
+                logger.Log(LogLevel.Error, LogEvents.Discovery, "Discovery Request already exists for {request.TransactionId}.");
+                return (null,
+                    new ErrorRepresentation(new Error(ErrorCode.DuplicateDiscoveryRequest, "Discovery Request already exists")));
             }
 
             var (linkedAccounts, exception) = await linkPatientRepository.GetLinkedCareContexts(request.Patient.Id);
 
             if (exception != null)
             {
-                Log.Error(exception);
-                return GetError(ErrorCode.FailedToGetLinkedCareContexts, ErrorMessage.FailedToGetLinkedCareContexts);
+                logger.Log(LogLevel.Critical, LogEvents.Discovery, exception, "Failed to get care contexts");
+                return (null,
+                    new ErrorRepresentation(new Error(ErrorCode.FailedToGetLinkedCareContexts,
+                        "Failed to get Linked Care Contexts")));
             }
 
             var linkedCareContexts = linkedAccounts.ToList();
             if (HasAny(linkedCareContexts))
             {
-                Log.Information($"Found already linked care contexts for transaction {request.TransactionId}.");
-
+                logger.Log(LogLevel.Information,
+                    LogEvents.Discovery,
+                    "User has already linked care contexts: {TransactionID}",
+                    request.TransactionId);
                 var patient = await patientRepository.PatientWithAsync(linkedCareContexts.First().PatientReferenceNumber);
                 return await patient
                     .Map(async patient =>
@@ -88,7 +99,8 @@ namespace In.ProjectEKA.HipService.Discovery
             }
             catch (OpenMrsFormatException e)
             {
-                Log.Error($"Could not get care contexts for transaction {request.TransactionId}.", e);
+                logger.Log(LogLevel.Error,
+                    LogEvents.Discovery,$"Could not get care contexts for transaction {request.TransactionId}.", e);
                 return GetError(ErrorCode.CareContextConfiguration, ErrorMessage.HipConfiguration);
             }
 

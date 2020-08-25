@@ -1,30 +1,25 @@
 namespace In.ProjectEKA.HipService.Link
 {
     using System;
-    using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
     using System.Transactions;
+    using Common;
     using Discovery;
-    using Hangfire.Dashboard.Resources;
     using HipLibrary.Patient;
     using HipLibrary.Patient.Model;
-    using Hl7.Fhir.Model;
     using Logger;
     using Microsoft.Extensions.Options;
     using Model;
-    using Optional;
-    using Patient = HipLibrary.Patient.Model.Patient;
-    using Task = System.Threading.Tasks.Task;
 
     public class LinkPatient
     {
-        private readonly ILinkPatientRepository linkPatientRepository;
         private readonly IDiscoveryRequestRepository discoveryRequestRepository;
+        private readonly ILinkPatientRepository linkPatientRepository;
+        private readonly IOptions<OtpServiceConfiguration> otpService;
         private readonly IPatientRepository patientRepository;
         private readonly IPatientVerification patientVerification;
         private readonly ReferenceNumberGenerator referenceNumberGenerator;
-        private readonly IOptions<OtpServiceConfiguration> otpService;
 
         public LinkPatient(
             ILinkPatientRepository linkPatientRepository,
@@ -57,37 +52,34 @@ namespace In.ProjectEKA.HipService.Link
             {
                 if (!await SaveInitiatedLinkRequest(request.RequestId, request.TransactionId, linkRefNumber)
                     .ConfigureAwait(false))
-                {
                     return (null,
-                        new ErrorRepresentation(new Error(ErrorCode.DuplicateRequestId, ErrorMessage.DuplicateRequestId))); 
-                }
+                        new ErrorRepresentation(new Error(ErrorCode.DuplicateRequestId, ErrorMessage.DuplicateRequestId))
+                        );
 
                 var careContextReferenceNumbers = request.Patient.CareContexts
                     .Select(context => context.ReferenceNumber)
                     .ToArray();
                 var (_, exception) = await linkPatientRepository.SaveRequestWith(
-                        linkRefNumber,
-                        request.Patient.ConsentManagerId,
-                        request.Patient.ConsentManagerUserId,
-                        request.Patient.ReferenceNumber,
-                        careContextReferenceNumbers)
+                    linkRefNumber,
+                    request.Patient.ConsentManagerId,
+                    request.Patient.ConsentManagerUserId,
+                    request.Patient.ReferenceNumber,
+                    careContextReferenceNumbers)
                     .ConfigureAwait(false);
                 if (exception != null)
-                {
                     return (null,
                         new ErrorRepresentation(new Error(ErrorCode.ServerInternalError,
                             ErrorMessage.DatabaseStorageError)));
-                }
 
                 var session = new Session(
                     linkRefNumber,
-                    new Communication(CommunicationMode.MOBILE, patient.PhoneNumber));
+                    new Communication(CommunicationMode.MOBILE, patient.PhoneNumber),
+                    new OtpGenerationDetail(otpService.Value.SenderSystemName,
+                        OtpAction.LINK_PATIENT_CARECONTEXT.ToString()));
                 var otpGeneration = await patientVerification.SendTokenFor(session);
                 if (otpGeneration != null)
-                {
                     return (null,
                         new ErrorRepresentation(new Error(ErrorCode.OtpGenerationFailed, otpGeneration.Message)));
-                }
 
                 await discoveryRequestRepository.Delete(request.TransactionId, request.Patient.ConsentManagerUserId)
                     .ConfigureAwait(false);
@@ -116,10 +108,8 @@ namespace In.ProjectEKA.HipService.Link
                                 patient.CareContexts.First(info => info.ReferenceNumber == context.ReferenceNumber)
                                     .Display)).ToList();
                         if (programs.Count != request.Patient.CareContexts.Count())
-                        {
                             return (null, new ErrorRepresentation(new Error(ErrorCode.CareContextNotFound,
                                 ErrorMessage.CareContextNotFound)));
-                        }
 
                         return (patient, (ErrorRepresentation) null);
                     })
@@ -127,24 +117,21 @@ namespace In.ProjectEKA.HipService.Link
                     new ErrorRepresentation(new Error(ErrorCode.NoPatientFound, ErrorMessage.NoPatientFound))));
         }
 
-        public virtual async Task<ValueTuple<PatientLinkConfirmationRepresentation, ErrorRepresentation>>
+        public virtual async Task<ValueTuple<PatientLinkConfirmationRepresentation, string, ErrorRepresentation>>
             VerifyAndLinkCareContext(
-                LinkConfirmationRequest request)
+            LinkConfirmationRequest request)
         {
-            var errorResponse = await patientVerification.Verify(request.LinkReferenceNumber, request.Token);
-            if (errorResponse != null)
-            {
-                return (null, new ErrorRepresentation(errorResponse.toError()));
-            }
-
             var (linkEnquires, exception) =
                 await linkPatientRepository.GetPatientFor(request.LinkReferenceNumber);
-
+            var cmId = "";
             if (exception != null)
-            {
-                return (null,
+                return (null,cmId,
                     new ErrorRepresentation(new Error(ErrorCode.NoLinkRequestFound, ErrorMessage.NoLinkRequestFound)));
-            }
+            cmId = linkEnquires.ConsentManagerId;
+
+            var errorResponse = await patientVerification.Verify(request.LinkReferenceNumber, request.Token);
+            if (errorResponse != null)
+                return (null,cmId, new ErrorRepresentation(errorResponse.toError()));
 
             var patient = await patientRepository.PatientWithAsync(linkEnquires.PatientReferenceNumber);
             return await patient.Map( async patient =>
@@ -171,39 +158,29 @@ namespace In.ProjectEKA.HipService.Link
                             $"{patient.Name}",
                             representations));
                     return await SaveLinkedAccounts(linkEnquires)
-                        ? (patientLinkResponse, (ErrorRepresentation) null)
-                        : (null,
+                        ? (patientLinkResponse,cmId, (ErrorRepresentation) null)
+                        : (null,cmId,
                             new ErrorRepresentation(new Error(ErrorCode.NoPatientFound,
                                 ErrorMessage.NoPatientFound)));
-                }).ValueOr(Task.FromResult<ValueTuple<PatientLinkConfirmationRepresentation, ErrorRepresentation>>((null, new ErrorRepresentation(new Error(ErrorCode.CareContextNotFound,
-                        ErrorMessage.CareContextNotFound)))) );
+                }).ValueOr(
+                    Task.FromResult<ValueTuple<PatientLinkConfirmationRepresentation, string, ErrorRepresentation>>(
+                        (null, cmId,new ErrorRepresentation(new Error(ErrorCode.CareContextNotFound,
+                            ErrorMessage.CareContextNotFound)))));
         }
 
         private async Task<bool> SaveLinkedAccounts(LinkEnquires linkEnquires)
         {
             var linkedAccount = await linkPatientRepository.Save(
-                    linkEnquires.ConsentManagerUserId, 
-                    linkEnquires.PatientReferenceNumber, 
-                    linkEnquires.LinkReferenceNumber, 
-                    linkEnquires.CareContexts.Select(context => context.CareContextNumber).ToList())
+                linkEnquires.ConsentManagerUserId,
+                linkEnquires.PatientReferenceNumber,
+                linkEnquires.LinkReferenceNumber,
+                linkEnquires.CareContexts.Select(context => context.CareContextNumber).ToList())
                 .ConfigureAwait(false);
             return linkedAccount.HasValue;
         }
 
-        public async Task<string> GetCmId(string linkReferenceNumber)
-        {
-            var (linkEnquires, exception) =
-                await linkPatientRepository.GetPatientFor(linkReferenceNumber);
-
-            if (exception != null)
-            {
-                return "";
-            }
-
-            return linkEnquires.ConsentManagerId;
-        }
-
-        private async Task<bool> SaveInitiatedLinkRequest(string requestId, string transactionId, string linkReferenceNumber)
+        private async Task<bool> SaveInitiatedLinkRequest(string requestId, string transactionId,
+            string linkReferenceNumber)
         {
             var savedLinkRequest = await linkPatientRepository.Save(requestId, transactionId, linkReferenceNumber)
                 .ConfigureAwait(false);

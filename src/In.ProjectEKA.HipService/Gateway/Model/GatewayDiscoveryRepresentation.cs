@@ -5,15 +5,7 @@ namespace In.ProjectEKA.HipService.Gateway.Model
 
     public class GatewayDiscoveryRepresentation
     {
-        public PatientEnquiryRepresentation Patient { get; }
-        public Guid RequestId { get; }
-        public DateTime Timestamp { get; }
-        public string TransactionId { get; }
-        public Error Error { get; }
-        public DiscoveryResponse Resp { get; }
-
-        public GatewayDiscoveryRepresentation(
-            PatientEnquiryRepresentation patient,
+        public GatewayDiscoveryRepresentation(PatientEnquiryRepresentation patient,
             Guid requestId,
             DateTime timestamp,
             string transactionId,
@@ -27,5 +19,12 @@ namespace In.ProjectEKA.HipService.Gateway.Model
             Error = error;
             Resp = resp;
         }
+
+        public PatientEnquiryRepresentation Patient { get; }
+        public Guid RequestId { get; }
+        public DateTime Timestamp { get; }
+        public string TransactionId { get; }
+        public Error Error { get; }
+        public Resp Resp { get; }
     }
 }

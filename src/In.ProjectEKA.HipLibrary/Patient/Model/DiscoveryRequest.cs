@@ -1,8 +1,10 @@
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+
 namespace In.ProjectEKA.HipLibrary.Patient.Model
 {
+    using System;
+
     public class DiscoveryRequest
     {
         public PatientEnquiry Patient { get; }

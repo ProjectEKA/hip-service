@@ -3,32 +3,36 @@ namespace In.ProjectEKA.HipService.DataFlow
     using System;
     using System.Globalization;
     using System.Threading.Tasks;
+    using Common;
     using HipLibrary.Patient.Model;
     using HipService.Consent;
-    using Logger;
     using MessagingQueue;
+    using Microsoft.Extensions.Logging;
     using Microsoft.Extensions.Options;
     using Model;
 
     public class DataFlow : IDataFlow
     {
-        private readonly IMessagingQueueManager messagingQueueManager;
-        private readonly IDataFlowRepository dataFlowRepository;
         private readonly IConsentRepository consentRepository;
-        private readonly IHealthInformationRepository healthInformationRepository;
         private readonly IOptions<DataFlowConfiguration> dataFlowConfiguration;
+        private readonly IDataFlowRepository dataFlowRepository;
+        private readonly IHealthInformationRepository healthInformationRepository;
+        private readonly ILogger<DataFlow> logger;
+        private readonly IMessagingQueueManager messagingQueueManager;
 
         public DataFlow(IDataFlowRepository dataFlowRepository,
             IMessagingQueueManager messagingQueueManager,
             IConsentRepository consentRepository,
             IHealthInformationRepository healthInformationRepository,
-            IOptions<DataFlowConfiguration> dataFlowConfiguration)
+            IOptions<DataFlowConfiguration> dataFlowConfiguration,
+            ILogger<DataFlow> logger)
         {
             this.dataFlowRepository = dataFlowRepository;
             this.messagingQueueManager = messagingQueueManager;
             this.consentRepository = consentRepository;
             this.healthInformationRepository = healthInformationRepository;
             this.dataFlowConfiguration = dataFlowConfiguration;
+            this.logger = logger;
         }
 
         public async Task<Tuple<HealthInformationTransactionResponse, ErrorRepresentation>> HealthInformationRequestFor(
@@ -46,8 +50,7 @@ namespace In.ProjectEKA.HipService.DataFlow
                 request.KeyMaterial,
                 gatewayId,
                 consent.ConsentArtefactId,
-                consent.ConsentArtefact.ConsentManager.Id
-            );
+                consent.ConsentArtefact.ConsentManager.Id);
             var result = await dataFlowRepository.SaveRequest(request.TransactionId, request).ConfigureAwait(false);
             var (response, errorRepresentation) = result.Map(r =>
             {
@@ -59,6 +62,10 @@ namespace In.ProjectEKA.HipService.DataFlow
 
             if (errorRepresentation != null)
             {
+                logger.Log(LogLevel.Error,
+                    LogEvents.DataFlow,
+                    "Failed to save data request: {@ErrorRepresentation}",
+                    errorRepresentation);
                 return new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(null, errorRepresentation);
             }
 
@@ -66,6 +73,10 @@ namespace In.ProjectEKA.HipService.DataFlow
             {
                 var errorResponse = new ErrorRepresentation(new Error(ErrorCode.ExpiredKeyPair,
                     ErrorMessage.ExpiredKeyPair));
+                logger.Log(LogLevel.Error,
+                    LogEvents.DataFlow,
+                    "Encryption key expired: {@ErrorRepresentation}",
+                    errorResponse);
                 return new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(null, errorResponse);
             }
 
@@ -73,17 +84,14 @@ namespace In.ProjectEKA.HipService.DataFlow
             return new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(response, null);
         }
 
-        public async Task<String> GetPatientId(String consentId) 
+        public async Task<string> GetPatientId(string consentId)
         {
             var consent = await consentRepository.GetFor(consentId);
-            return consent.ConsentArtefact.Patient.Id;
-        }
-
-        private static Tuple<HealthInformationTransactionResponse, ErrorRepresentation> ConsentArtefactNotFound()
-        {
-            return new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(null,
-                new ErrorRepresentation(new Error(ErrorCode.ContextArtefactIdNotFound,
-                    ErrorMessage.ContextArtefactIdNotFound)));
+            if (consent != null)
+                return consent.ConsentArtefact.Patient.Id;
+            logger.Log(LogLevel.Error, LogEvents.DataFlow, "Consent does not exist: {Consent}", consentId);
+            // need to handle it better by returning optional
+            return null;
         }
 
         public async Task<Tuple<HealthInformationResponse, ErrorRepresentation>> HealthInformationFor(
@@ -94,6 +102,13 @@ namespace In.ProjectEKA.HipService.DataFlow
             return healthInformation
                 .Map(information => HealthInformation(token, information))
                 .ValueOr(ErrorOf(ErrorResponse.HealthInformationNotFound));
+        }
+
+        private static Tuple<HealthInformationTransactionResponse, ErrorRepresentation> ConsentArtefactNotFound()
+        {
+            return new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(null,
+                new ErrorRepresentation(new Error(ErrorCode.ContextArtefactIdNotFound,
+                    ErrorMessage.ContextArtefactIdNotFound)));
         }
 
         private Tuple<HealthInformationResponse, ErrorRepresentation> HealthInformation(
@@ -116,17 +131,18 @@ namespace In.ProjectEKA.HipService.DataFlow
 
         private static Tuple<HealthInformationResponse, ErrorRepresentation> ErrorOf(Error error)
         {
-            var errorResponse = new ErrorRepresentation(error);
-            return new Tuple<HealthInformationResponse, ErrorRepresentation>(null, errorResponse);
+            return new Tuple<HealthInformationResponse, ErrorRepresentation>(null, new ErrorRepresentation(error));
         }
 
-        private static bool IsExpired(string expiryDate)
+        private bool IsExpired(string expiryDate)
         {
             var formatStrings = new[]
             {
                 "yyyy-MM-dd", "yyyy-MM-dd hh:mm:ss", "yyyy-MM-dd hh:mm:ss tt", "yyyy-MM-ddTHH:mm:ss.fffzzz",
-                "yyyy-MM-dd'T'HH:mm:ss.fff","yyyy-MM-dd'T'HH:mm:ss.ff","yyyy-MM-dd'T'HH:mm:ss.f", "yyyy-MM-dd'T'HH:mm:ss.ffff", "yyyy-MM-dd'T'HH:mm:ss.fffff",
-                "yyyy-MM-dd'T'HH:mm:ss","dd/MM/yyyy", "dd/MM/yyyy hh:mm:ss", "dd/MM/yyyy hh:mm:ss tt", "dd/MM/yyyyTHH:mm:ss.fffzzz",
+                "yyyy-MM-dd'T'HH:mm:ss.fff", "yyyy-MM-dd'T'HH:mm:ss.ff", "yyyy-MM-dd'T'HH:mm:ss.f",
+                "yyyy-MM-dd'T'HH:mm:ss.ffff", "yyyy-MM-dd'T'HH:mm:ss.fffff",
+                "yyyy-MM-dd'T'HH:mm:ss", "dd/MM/yyyy", "dd/MM/yyyy hh:mm:ss", "dd/MM/yyyy hh:mm:ss tt",
+                "dd/MM/yyyyTHH:mm:ss.fffzzz",
                 "yyyy-MM-dd'T'HH:mm:ss.ffffff"
             };
             var tryParseExact = DateTime.TryParseExact(expiryDate,
@@ -135,9 +151,7 @@ namespace In.ProjectEKA.HipService.DataFlow
                 DateTimeStyles.None,
                 out var expiryDateTime);
             if (!tryParseExact)
-            {
-                Log.Error($"Error parsing date: {expiryDate}");
-            }
+                logger.Log(LogLevel.Error, LogEvents.DataFlow, "Error parsing date: {ExpiryDate}", expiryDate);
 
             var currentDate = DateTime.Today;
             return expiryDateTime < currentDate;
@@ -145,7 +159,7 @@ namespace In.ProjectEKA.HipService.DataFlow
 
         private void PublishDataRequest(DataRequest dataRequest)
         {
-            Log.Information("Publishing dataRequest: {dataRequest}", dataRequest);
+            logger.Log(LogLevel.Information, LogEvents.DataFlow, "Publishing dataRequest: {@DataRequest}", dataRequest);
             messagingQueueManager.Publish(
                 dataRequest,
                 MessagingQueueConstants.DataRequestExchangeName,

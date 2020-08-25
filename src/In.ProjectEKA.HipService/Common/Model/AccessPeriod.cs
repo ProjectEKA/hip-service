@@ -4,13 +4,13 @@ namespace In.ProjectEKA.HipService.Common.Model
 
     public class AccessPeriod
     {
-        public DateTime From { get; }
-        public DateTime To { get; }
-
-        public AccessPeriod(DateTime @from, DateTime date)
+        public AccessPeriod(DateTime from, DateTime date)
         {
-            From = @from;
+            From = from;
             To = date;
         }
+
+        public DateTime From { get; }
+        public DateTime To { get; }
     }
 }

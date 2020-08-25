@@ -5,17 +5,6 @@ namespace In.ProjectEKA.HipService.DataFlow
 
     public class DataRequest
     {
-        public IEnumerable<GrantedContext> CareContexts { get; }
-        public DateRange DateRange { get; }
-        public string DataPushUrl { get; }
-        public IEnumerable<HiType> HiType { get; }
-        public string TransactionId { get; }
-        public KeyMaterial KeyMaterial { get; }
-        public string GatewayId { get; }
-        public string ConsentId { get; }
-        public string CmSuffix { get; }
-
-
         public DataRequest(IEnumerable<GrantedContext> careContexts,
             DateRange dateRange,
             string dataPushUrl,
@@ -36,5 +25,15 @@ namespace In.ProjectEKA.HipService.DataFlow
             ConsentId = consentId;
             CmSuffix = cmSuffix;
         }
+
+        public IEnumerable<GrantedContext> CareContexts { get; }
+        public DateRange DateRange { get; }
+        public string DataPushUrl { get; }
+        public IEnumerable<HiType> HiType { get; }
+        public string TransactionId { get; }
+        public KeyMaterial KeyMaterial { get; }
+        public string GatewayId { get; }
+        public string ConsentId { get; }
+        public string CmSuffix { get; }
     }
 }

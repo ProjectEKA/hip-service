@@ -1,14 +1,14 @@
-using In.ProjectEKA.HipLibrary.Patient.Model;
-
 namespace In.ProjectEKA.HipService.Discovery
 {
+    using HipLibrary.Patient.Model;
+
     public class DiscoveryRepresentation
     {
-        public PatientEnquiryRepresentation Patient { get; }
-
         public DiscoveryRepresentation(PatientEnquiryRepresentation patient)
         {
             Patient = patient;
         }
+
+        public PatientEnquiryRepresentation Patient { get; }
     }
 }

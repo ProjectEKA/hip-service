@@ -1,6 +1,4 @@
-using static In.ProjectEKA.HipService.Gateway.GatewayPathConstants;
-
-namespace In.ProjectEKA.HipService.DataFlow
+    namespace In.ProjectEKA.HipService.DataFlow
 {
     using System;
     using System.Threading.Tasks;
@@ -13,6 +11,8 @@ namespace In.ProjectEKA.HipService.DataFlow
     using Model;
     using Gateway;
     using Logger;
+    using static Common.Constants;
+
     
     [ApiController]
     public class DataFlowController : ControllerBase
@@ -25,6 +25,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             this.dataFlow = dataFlow;
         }
 
+        [Obsolete]
         [Authorize]
         [HttpPost]
         [Route("health-information/request")]
@@ -62,7 +63,6 @@ namespace In.ProjectEKA.HipService.DataFlow
     }
 
     [ApiController]
-    [Route("/v1/health-information/hip")]
     public class PatientDataFlowController : ControllerBase
     {
         private readonly IDataFlow dataFlow;
@@ -76,8 +76,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             this.gatewayClient = gatewayClient;
         }
 
-        [Route("request")]
-        [HttpPost]
+        [HttpPost(PATH_HEALTH_INFORMATION_HIP_REQUEST)]
         public AcceptedResult HealthInformationRequestFor(PatientHealthInformationRequest healthInformationRequest,
                                                           [FromHeader(Name = "X-GatewayID")] string gatewayId)
         {
@@ -85,7 +84,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             return Accepted();
         }
 
-        [ApiExplorerSettings(IgnoreApi = true)]
+        [NonAction]
         public async Task HealthInformationOf(PatientHealthInformationRequest healthInformationRequest, string gatewayId)
         {
             try
@@ -111,7 +110,7 @@ namespace In.ProjectEKA.HipService.DataFlow
                     new DataFlowRequestResponse(healthInformationRequest.TransactionId, sessionStatus.ToString()),
                     error?.Error,
                     new Resp(healthInformationRequest.RequestId));
-                await gatewayClient.SendDataToGateway(HealthInformationOnRequestPath, gatewayResponse , cmSuffix);
+                await gatewayClient.SendDataToGateway(PATH_HEALTH_INFORMATION_ON_REQUEST, gatewayResponse , cmSuffix);
             }  
             catch (Exception exception)
             {

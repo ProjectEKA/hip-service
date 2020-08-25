@@ -2,24 +2,24 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
 {
     public enum ErrorCode
     {
-        NoPatientFound = 1000,
-        MultiplePatientsFound = 1001,
-        CareContextNotFound = 1002,
-        OtpInValid = 1003,
-        OtpExpired = 1004,
-        OtpGenerationFailed = 1005,
-        NoLinkRequestFound = 1006,
-        ServerInternalError = 1007,
-        DiscoveryRequestNotFound = 1008,
-        ContextArtefactIdNotFound = 1009,
-        InvalidToken = 1010,
-        HealthInformationNotFound = 1011,
-        LinkExpired = 1012,
-        ExpiredKeyPair = 1013,
-        FailedToGetLinkedCareContexts = 1014,
-        DuplicateDiscoveryRequest = 1015,
-        DuplicateRequestId = 1016,
-        CareContextConfiguration = 1017,
-        OpenMrsConnection = 1018
+        NoPatientFound = 3404,
+        MultiplePatientsFound = 3403,
+        CareContextNotFound = 3402,
+        OtpInValid = 3405,
+        OtpExpired = 3406,
+        OtpGenerationFailed = 3501,
+        NoLinkRequestFound = 3413,
+        ServerInternalError = 3500,
+        DiscoveryRequestNotFound = 3407,
+        ContextArtefactIdNotFound = 3416,
+        InvalidToken = 3401,
+        HealthInformationNotFound = 3502,
+        LinkExpired = 3408,
+        ExpiredKeyPair = 3410,
+        FailedToGetLinkedCareContexts = 3507,
+        DuplicateDiscoveryRequest = 3409,
+        DuplicateRequestId = 3429,
+        CareContextConfiguration = 3430,
+        OpenMrsConnection = 3431
     }
 }

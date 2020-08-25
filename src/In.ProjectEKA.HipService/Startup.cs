@@ -66,7 +66,10 @@ namespace In.ProjectEKA.HipService
 
         private IConfiguration Configuration { get; }
 
-        public void ConfigureServices(IServiceCollection services) =>
+        private HttpClient HttpClient { get; }
+
+        public void ConfigureServices(IServiceCollection services)
+        {
             services
                 .AddDbContext<LinkPatientContext>(options =>
                     options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"),
@@ -159,7 +162,7 @@ namespace In.ProjectEKA.HipService
                 .AddJwtBearer(options =>
                 {
                     // Need to validate Audience and Issuer properly
-                    options.Authority = $"{Configuration.GetValue<string>("Gateway:url")}/v1";
+                    options.Authority = $"{Configuration.GetValue<string>("Gateway:url")}/{Constants.CURRENT_VERSION}";
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuerSigningKey = true,
@@ -174,15 +177,12 @@ namespace In.ProjectEKA.HipService
                         OnTokenValidated = context =>
                         {
                             if (!IsTokenValid(context))
-                            {
                                 context.Fail("Unable to validate token.");
-                            }
                             return Task.CompletedTask;
                         }
                     };
                 });
-
-        private HttpClient HttpClient { get; }
+        }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -233,9 +233,7 @@ namespace In.ProjectEKA.HipService
         private static bool CheckRoleInAccessToken(JwtSecurityToken accessToken)
         {
             if (!(accessToken.Payload["realm_access"] is JObject resourceAccess))
-            {
                 return false;
-            }
             var token = new Token(resourceAccess["roles"]?.ToObject<List<string>>() ?? new List<string>());
             return token.Roles.Contains("gateway", StringComparer.OrdinalIgnoreCase);
         }
@@ -245,13 +243,9 @@ namespace In.ProjectEKA.HipService
             const string claimTypeClientId = "clientId";
             var accessToken = context.SecurityToken as JwtSecurityToken;
             if (!CheckRoleInAccessToken(accessToken))
-            {
                 return false;
-            }
             if (!context.Principal.HasClaim(claim => claim.Type == claimTypeClientId))
-            {
                 return false;
-            }
             var clientId = context.Principal.Claims.First(claim => claim.Type == claimTypeClientId).Value;
             context.Request.Headers["X-GatewayID"] = clientId;
             return true;

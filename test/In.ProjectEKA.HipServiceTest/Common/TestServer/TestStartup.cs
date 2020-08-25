@@ -12,6 +12,7 @@
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Hosting;
     using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.Extensions.Logging;
     using Moq;
     using Newtonsoft.Json;
 
@@ -35,13 +36,15 @@
             Mock<IPatientRepository> patientRepository = new Mock<IPatientRepository>();
             Mock<ICareContextRepository> careContextRepository = new Mock<ICareContextRepository>();
             Mock<IBackgroundJobClient> backgroundJobClient = new Mock<IBackgroundJobClient>();
+            Mock<ILogger<PatientDiscovery>> logger = new Mock<ILogger<PatientDiscovery>>();
 
             var patientDiscovery = new PatientDiscovery(
                 matchingRepository.Object,
                 discoveryRequestRepository.Object,
                 linkPatientRepository.Object,
                 patientRepository.Object,
-                careContextRepository.Object);
+                careContextRepository.Object,
+                logger.Object);
 
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
             var httpClient = new HttpClient(handlerMock.Object);

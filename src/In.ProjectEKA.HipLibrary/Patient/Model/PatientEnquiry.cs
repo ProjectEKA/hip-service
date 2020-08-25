@@ -7,23 +7,6 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
     [AtLeastOneHasValueValidation("Name", "Gender", ErrorMessage = "Patient name or gender must be provided.")]
     public class PatientEnquiry
     {
-        /// <summary>
-        /// Identifier of patient at consent manager
-        /// </summary>
-        [Required(ErrorMessage = "Patient id must be provided.")]
-        public string Id { get; }
-
-        public IEnumerable<Identifier> VerifiedIdentifiers { get; }
-
-        public IEnumerable<Identifier> UnverifiedIdentifiers { get; }
-
-        public string Name { get; }
-
-        public Gender? Gender { get; }
-
-        // ReSharper disable once MemberCanBePrivate.Global
-        // TODO: Need to be used while doing discovery
-        public ushort? YearOfBirth { get; }
 
         public PatientEnquiry(
             string id,
@@ -40,5 +23,20 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
             Gender = gender;
             YearOfBirth = yearOfBirth;
         }
+
+        [Required(ErrorMessage = "Patient id must be provided.")]
+        public string Id { get; }
+
+        public IEnumerable<Identifier> VerifiedIdentifiers { get; }
+
+        public IEnumerable<Identifier> UnverifiedIdentifiers { get; }
+
+        public string Name { get; }
+
+        public Gender? Gender { get; }
+
+        // ReSharper disable once MemberCanBePrivate.Global
+        // TODO: Need to be used while doing discovery
+        public ushort? YearOfBirth { get; }
     }
 }

@@ -6,6 +6,19 @@ namespace In.ProjectEKA.HipService.Consent.Model
 
     public class Consent
     {
+        public Consent(string consentArtefactId,
+            ConsentArtefact consentArtefact,
+            string signature,
+            ConsentStatus status,
+            string consentManagerId)
+        {
+            ConsentArtefactId = consentArtefactId;
+            ConsentArtefact = consentArtefact;
+            Signature = signature;
+            Status = status;
+            ConsentManagerId = consentManagerId;
+        }
+
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
         public int Id { get; set; }
@@ -19,18 +32,5 @@ namespace In.ProjectEKA.HipService.Consent.Model
         public ConsentStatus Status { get; set; }
 
         public string ConsentManagerId { get; set; }
-
-        public Consent(string consentArtefactId,
-            ConsentArtefact consentArtefact,
-            string signature,
-            ConsentStatus status,
-            string consentManagerId)
-        {
-            ConsentArtefactId = consentArtefactId;
-            ConsentArtefact = consentArtefact;
-            Signature = signature;
-            Status = status;
-            ConsentManagerId = consentManagerId;
-        }
     }
 }

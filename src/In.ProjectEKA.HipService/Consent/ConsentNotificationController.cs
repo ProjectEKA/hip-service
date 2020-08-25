@@ -1,20 +1,19 @@
-using static In.ProjectEKA.HipService.Gateway.GatewayPathConstants;
-
-using System;
-using In.ProjectEKA.HipLibrary.Patient.Model;
-using In.ProjectEKA.HipService.Gateway.Model;
 
 namespace In.ProjectEKA.HipService.Consent
 {
+    using System;
     using System.Threading.Tasks;
     using Common.Model;
+    using Gateway;
+    using Gateway.Model;
     using Hangfire;
+    using HipLibrary.Patient.Model;
     using Microsoft.AspNetCore.Mvc;
     using Model;
-    using Gateway;
+    using static Common.Constants;
 
     [ApiController]
-    [Route("v1/consents/hip")]
+    [Route(PATH_CONSENTS_HIP)]
     public class ConsentNotificationController : ControllerBase
     {
         private readonly IConsentRepository consentRepository;
@@ -33,7 +32,6 @@ namespace In.ProjectEKA.HipService.Consent
             this.gatewayClient = gatewayClient;
         }
 
-        [Route("notify")]
         [HttpPost]
         public AcceptedResult ConsentNotification([FromBody] ConsentArtefactRepresentation consentArtefact)
         {
@@ -69,7 +67,7 @@ namespace In.ProjectEKA.HipService.Consent
                             notification.ConsentId),
                         null,
                         new Resp(consentArtefact.RequestId));
-                    await gatewayClient.SendDataToGateway(ConsentOnNotifyPath, gatewayResponse, cmSuffix);
+                    await gatewayClient.SendDataToGateway(PATH_CONSENT_ON_NOTIFY, gatewayResponse, cmSuffix);
                 }
             }
         }

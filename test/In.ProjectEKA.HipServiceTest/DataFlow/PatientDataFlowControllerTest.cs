@@ -7,12 +7,14 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
     using Hangfire.Common;
     using Hangfire.States;
     using HipLibrary.Patient.Model;
+    using static HipService.Common.Constants;
     using HipService.DataFlow;
     using Microsoft.AspNetCore.Http;
     using Moq;
     using Xunit;
     using HipService.Gateway;
     using HipService.Gateway.Model;
+    using Microsoft.Extensions.Logging;
 
     public class PatientDataFlowControllerTest
     {
@@ -20,7 +22,15 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
         private readonly Mock<IDataFlow> dataFlow = new Mock<IDataFlow>();
         private readonly PatientDataFlowController patientDataFlowController;
 
+        private readonly Mock<ILogger<PatientDataFlowController>> logger =
+            new Mock<ILogger<PatientDataFlowController>>();
+
         private readonly Mock<GatewayClient> gatewayClient = new Mock<GatewayClient>(MockBehavior.Strict, null, null);
+
+        private readonly GatewayConfiguration gatewayConfiguration = new GatewayConfiguration
+        {
+            CmSuffix = "ncg"
+        };
 
         public PatientDataFlowControllerTest()
         {
@@ -67,15 +77,14 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                 healthInformationRequest.KeyMaterial);
             var request = new PatientHealthInformationRequest(transactionId, requestId, It.IsAny<DateTime>(), hiRequest);
             var expectedResponse = new HealthInformationTransactionResponse(transactionId);
-
             dataFlow.Setup(d => d.HealthInformationRequestFor(healthInformationRequest, gatewayId))
                 .ReturnsAsync(
                     new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(expectedResponse, null));
             gatewayClient.Setup(
                 client =>
-                    client.SendDataToGateway("/v1/health-information/hip/on-request",
+                    client.SendDataToGateway(PATH_HEALTH_INFORMATION_ON_REQUEST,
                         It.IsAny<GatewayDataFlowRequestResponse>(), "ncg"));
-            dataFlow.Setup(d => d.GetPatientId(It.IsAny<string>())).ReturnsAsync("abc@ncg");
+
             await patientDataFlowController.HealthInformationOf(request, gatewayId);
 
             gatewayClient.Verify();

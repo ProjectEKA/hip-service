@@ -7,14 +7,14 @@ namespace In.ProjectEKA.HipService.MessagingQueue
 
     public static class MessagingQueueCollectionExtensions
     {
-        public static IServiceCollection AddRabbit(this IServiceCollection services, IConfiguration configuration)  
-        {  
-            var rabbitConfig = configuration.GetSection("rabbit");  
+        public static IServiceCollection AddRabbit(this IServiceCollection services, IConfiguration configuration)
+        {
+            var rabbitConfig = configuration.GetSection("rabbit");
             services.Configure<MessagingQueueOptions>(rabbitConfig);
-            services.AddSingleton<ObjectPoolProvider, DefaultObjectPoolProvider>();  
+            services.AddSingleton<ObjectPoolProvider, DefaultObjectPoolProvider>();
             services.AddSingleton<IPooledObjectPolicy<IModel>, MessagingQueueModelPooledObjectPolicy>();
             services.AddSingleton<IMessagingQueueManager, MessagingQueueManager>();
-            return services;  
-        } 
+            return services;
+        }
     }
 }
