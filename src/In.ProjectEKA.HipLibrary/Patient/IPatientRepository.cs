@@ -6,6 +6,6 @@ namespace In.ProjectEKA.HipLibrary.Patient
 
     public interface IPatientRepository
     {
-        Task<Option<Patient>> PatientWithAsync(string referenceNumber);
+        Task<Option<Patient>> PatientWithAsync(string patientIdentifier);
     }
 }

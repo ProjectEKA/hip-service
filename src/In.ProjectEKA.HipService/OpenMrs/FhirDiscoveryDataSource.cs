@@ -55,5 +55,23 @@ namespace In.ProjectEKA.HipService.OpenMrs
             var patient = new FhirJsonParser().Parse<Patient>(content);
             return patient;
         }
+
+        public async Task<Patient> LoadPatientAsyncWithIndentifier(string patientIdentifier)
+        {
+            var path = DiscoveryPathConstants.OnPatientPath;
+            var query = HttpUtility.ParseQueryString(string.Empty);
+            if (!string.IsNullOrEmpty(patientIdentifier)) {
+                query["identifier"]=patientIdentifier;
+            }
+            if (query.ToString() != ""){
+                path = $"{path}/?{query}";
+            }
+
+            var response = await openMrsClient.GetAsync(path);
+            var content = await response.Content.ReadAsStringAsync();
+            var bundle = new FhirJsonParser().Parse<Bundle>(content);
+
+            return (Patient) bundle.Entry[0].Resource;
+        }
     }
 }

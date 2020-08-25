@@ -93,7 +93,7 @@ namespace In.ProjectEKA.HipService.Discovery
             {
                 foreach (var patient in patients)
                 {
-                    var careContexts = await careContextRepository.GetCareContexts(patient.Identifier);
+                    var careContexts = await careContextRepository.GetCareContexts(patient.Uuid);
                     patient.CareContexts = careContexts;
                 }
             }

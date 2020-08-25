@@ -34,6 +34,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
         DiscoveryRequestPayloadBuilder discoveryRequestBuilder;
 
         string openMrsPatientReferenceNumber;
+        string openMrsPatientIdentifier;
         string name;
         string phoneNumber;
         string consentManagerUserId;
@@ -53,6 +54,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 logger.Object);
 
             openMrsPatientReferenceNumber = Faker().Random.String();
+            openMrsPatientIdentifier = Faker().Random.String();
             name = Faker().Random.String();
             phoneNumber = Faker().Phone.PhoneNumber();
             consentManagerUserId = Faker().Random.String();
@@ -67,10 +69,10 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 .WithPatientName(name)
                 .WithPatientGender(gender)
                 .WithVerifiedIdentifiers(IdentifierType.MOBILE, phoneNumber)
-                .WithUnverifiedIdentifiers(IdentifierType.MR, openMrsPatientReferenceNumber)
+                .WithUnverifiedIdentifiers(IdentifierType.MR, openMrsPatientIdentifier)
                 .WithTransactionId(transactionId);
 
-        }        
+        }
 
         [Fact]
         private async void ShouldReturnPatientForAlreadyLinkedPatient()
@@ -85,7 +87,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 expectedMatchTypes: Match.ConsentManagerUserId);
             var discoveryRequest = discoveryRequestBuilder.Build();
             SetupPatientRepository(alreadyLinked, unlinkedCareContext.First());
-            SetupLinkRepositoryWithLinkedPatient(alreadyLinked, openMrsPatientReferenceNumber);
+            SetupLinkRepositoryWithLinkedPatient(alreadyLinked, openMrsPatientIdentifier);
 
             var (discoveryResponse, error) = await patientDiscovery.PatientFor(discoveryRequest);
 
@@ -234,7 +236,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             var expectedPatient = BuildExpectedPatientByExpectedMatchTypes(careContextRepresentations.ToList() , Match.Mobile,
                     Match.Name,
                     Match.Gender);
-         
+
             var discoveryRequest = discoveryRequestBuilder.WithUnverifiedIdentifiers(null).Build();
             SetupLinkRepositoryWithLinkedPatient();
             SetupMatchingRepositoryForDiscoveryRequest(discoveryRequest);
@@ -306,7 +308,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                     _ => expectedCareContextRepresentation
                 };
 
-            return new PatientEnquiryRepresentation(openMrsPatientReferenceNumber,
+            return new PatientEnquiryRepresentation(openMrsPatientIdentifier,
                 name,
                 expectedCareContexts,
                 expectedMatchTypes?.Select(m => m.ToString()));
@@ -352,10 +354,11 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                     .Select(_ => new Patient
                         {
                             Gender = gender,
-                            Identifier = openMrsPatientReferenceNumber,
+                            Uuid = openMrsPatientReferenceNumber,
                             Name = name,
                             PhoneNumber = phoneNumber,
-                            YearOfBirth = yearOfBirth
+                            YearOfBirth = yearOfBirth,
+                            Identifier = openMrsPatientIdentifier
                         }).ToList().AsQueryable()));
         }
 
@@ -365,7 +368,8 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 new Patient
                 {
                     PhoneNumber = phoneNumber,
-                    Identifier = openMrsPatientReferenceNumber,
+                    Uuid = openMrsPatientReferenceNumber,
+                    Identifier = openMrsPatientIdentifier,
                     Gender = Faker().PickRandom<Gender>(),
                     Name = name,
                     CareContexts = new[]

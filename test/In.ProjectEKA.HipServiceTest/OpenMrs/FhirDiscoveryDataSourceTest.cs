@@ -180,6 +180,31 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
         }
 
         [Fact]
+        public async System.Threading.Tasks.Task LoadPatientAsyncWithIndentifier_ShouldReturnPatient_WhenFound() {
+            //Given
+            var openmrsClientMock = new Mock<IOpenMrsClient>();
+            var discoveryDataSource = new FhirDiscoveryDataSource(openmrsClientMock.Object);
+            var identifier = "GAN203007";
+            var path = $"{Endpoints.Fhir.OnPatientPath}/?identifier={identifier}";
+
+            openmrsClientMock
+                .Setup(x => x.GetAsync(path))
+                .ReturnsAsync(new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Content = new StringContent(BundleSampleWithOnePatientRecord)
+                })
+                .Verifiable();
+
+            //When
+            var patient = await discoveryDataSource.LoadPatientAsyncWithIndentifier(identifier);
+
+            //Then
+            Assert.NotNull(patient);
+            patient.Name[0].GivenElement.First().ToString().Should().Be("David");
+        }
+
+        [Fact]
         public async System.Threading.Tasks.Task LoadPatientAsync_ShouldReturnError_WhenFound() {
             //Given
             var openmrsClientMock = new Mock<IOpenMrsClient>();
@@ -321,6 +346,76 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
                         ]
                     }
                 },
+                {
+                    ""resource"": {
+                        ""resourceType"": ""Patient"",
+                        ""id"": ""0b573f9a-d75d-47fe-a655-043dc2f6b4fa"",
+                        ""identifier"": [
+                            {
+                                ""id"": ""51356861-8ef6-44bb-af81-58d36b13943b"",
+                                ""use"": ""official"",
+                                ""system"": ""Patient Identifier"",
+                                ""value"": ""GAN203007""
+                            },
+                            {
+                                ""id"": ""4330e82a-679a-47d0-baa6-17a5bee302fd"",
+                                ""use"": ""usual"",
+                                ""system"": ""National ID"",
+                                ""value"": ""NAT2805""
+                            }
+                        ],
+                        ""active"": true,
+                        ""name"": [
+                            {
+                                ""id"": ""e54cd2af-b8f9-4d92-a234-00b11660814d"",
+                                ""family"": ""Diabetes"",
+                                ""given"": [
+                                    ""David""
+                                ]
+                            }
+                        ],
+                        ""gender"": ""male"",
+                        ""birthDate"": ""1997-04-10"",
+                        ""deceasedBoolean"": false,
+                        ""address"": [
+                            {
+                                ""id"": ""cb5f7a58-a604-4534-8fc2-9f57ffed0468"",
+                                ""extension"": [
+                                    {
+                                        ""url"": ""https://fhir.openmrs.org/ext/address"",
+                                        ""extension"": [
+                                            {
+                                                ""url"": ""https://fhir.openmrs.org/ext/address#address3"",
+                                                ""valueString"": ""Kota""
+                                            }
+                                        ]
+                                    }
+                                ],
+                                ""use"": ""home"",
+                                ""city"": ""AAMAGOHAN"",
+                                ""state"": ""Chattisgarh""
+                            }
+                        ]
+                    }
+                }
+            ]
+        }";
+
+        private const string BundleSampleWithOnePatientRecord = @"{
+            ""resourceType"": ""Bundle"",
+            ""id"": ""fbfee329-6108-4a7e-87b4-e047ae013c3a"",
+            ""meta"": {
+                ""lastUpdated"": ""2020-07-15T12:05:34.177+05:30""
+            },
+            ""type"": ""searchset"",
+            ""total"": 1,
+            ""link"": [
+                {
+                    ""relation"": ""self"",
+                    ""url"": ""http://bahmni-0.92.bahmni-covid19.in/openmrs/ws/fhir2/Patient""
+                }
+            ],
+            ""entry"": [
                 {
                     ""resource"": {
                         ""resourceType"": ""Patient"",

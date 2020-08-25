@@ -28,7 +28,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
                 new CareContextRepresentation("testReferenceNumber2", "display2")
             };
             var phoneNumber = "+91-9999999999";
-            patientDal.Setup(e => e.LoadPatientAsync(It.IsAny<string>()))
+            patientDal.Setup(e => e.LoadPatientAsyncWithIndentifier(It.IsAny<string>()))
                 .Returns(Task.FromResult(
                     new OpenMrsPatient() {
                         Name = new List<OpenMrsPatientName>{
@@ -37,7 +37,8 @@ namespace In.ProjectEKA.HipServiceTest.Link
                             }}
                         },
                         Gender = OpenMrsGender.Female,
-                        BirthDate = "1981"
+                        BirthDate = "1981",
+                        Id = "someid"
                     }
                 ));
             careContextRepository.Setup(e => e.GetCareContexts(It.IsAny<string>())).Returns(Task.FromResult(
@@ -49,14 +50,14 @@ namespace In.ProjectEKA.HipServiceTest.Link
         [Fact]
         private async void PatientRepositoryPatientWith_ReturnHIPPatient()
         {
-            var patientId = "someid";
+            var patientIdentifier = "someidentifier";
             var repo = new OpenMrsPatientRepository(patientDal.Object, careContextRepository.Object, phoneNumberRepository.Object);
 
-            var patient = await repo.PatientWithAsync(patientId);
+            var patient = await repo.PatientWithAsync(patientIdentifier);
 
-            patientDal.Verify( x => x.LoadPatientAsync(patientId), Times.Once);
-            careContextRepository.Verify(x => x.GetCareContexts(patientId), Times.Once);
             var patientValue = patient.ValueOr(new Patient());
+            patientDal.Verify( x => x.LoadPatientAsyncWithIndentifier(patientIdentifier), Times.Once);
+            careContextRepository.Verify(x => x.GetCareContexts(patientValue.Uuid), Times.Once);
             patientValue.Name.Should().Be("test");
             patientValue.Gender.Should().Be(Gender.F);
             patientValue.YearOfBirth.Should().Be(1981);

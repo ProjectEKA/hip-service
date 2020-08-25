@@ -20,11 +20,12 @@ namespace In.ProjectEKA.HipService.OpenMrs
             _phoneNumberRepository = phoneNumberRepository;
         }
 
-        public async Task<Option<Patient>> PatientWithAsync(string referenceNumber)
+        public async Task<Option<Patient>> PatientWithAsync(string patientIdentifier)
         {
-            var fhirPatient = await _patientDal.LoadPatientAsync(referenceNumber);
+            var fhirPatient = await _patientDal.LoadPatientAsyncWithIndentifier(patientIdentifier);
             var firstName = fhirPatient.Name[0].GivenElement.FirstOrDefault().ToString();
             var hipPatient = fhirPatient.ToHipPatient(firstName);
+            var referenceNumber = hipPatient.Uuid;
             hipPatient.CareContexts = await _careContextRepository.GetCareContexts(referenceNumber);
             hipPatient.PhoneNumber = await _phoneNumberRepository.GetPhoneNumber(referenceNumber);
 

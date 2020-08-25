@@ -8,5 +8,6 @@ namespace In.ProjectEKA.HipService.OpenMrs
     {
         Task<List<Patient>> LoadPatientsAsync(string name, AdministrativeGender? gender, string yearOfBirth);
         Task<Patient> LoadPatientAsync(string id);
+        Task<Patient> LoadPatientAsyncWithIndentifier(string patientIdentifier);
     }
 }

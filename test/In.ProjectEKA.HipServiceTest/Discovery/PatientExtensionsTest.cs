@@ -9,6 +9,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
     using OpenMrsPatient = Hl7.Fhir.Model.Patient;
     using OpenMrsPatientName = Hl7.Fhir.Model.HumanName;
     using OpenMrsGender = Hl7.Fhir.Model.AdministrativeGender;
+    using OpenMrsIdentifier = Hl7.Fhir.Model.Identifier;
     using In.ProjectEKA.HipService.OpenMrs.Mappings;
 
     public class PatientExtensionsTest
@@ -84,21 +85,49 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
 
         [Theory]
         [InlineData("1")]
-        [InlineData("12345678-1234-1234-1234-123456789abc")]
+        [InlineData("BAH203001")]
         [InlineData(null)]
-        private void ToHipPatient_GivenOpenMrsPatient_IdIsMappedToPatientId(string patientId)
+        private void ToHipPatient_GivenOpenMrsPatient_IdentifierIsMappedToPatientIdentifier(string identifier)
         {
             var openMrsPatient = new OpenMrsPatient()
             {
                 Name = new List<OpenMrsPatientName> { new OpenMrsPatientName() { Text = patientName } },
                 Gender = OpenMrsGender.Female,
                 BirthDate = "1999",
-                Id = patientId
+                Identifier = new List<OpenMrsIdentifier> {
+                    new OpenMrsIdentifier() {
+                        System = "Patient Identifier",
+                        Value = identifier,
+                    },
+                    new OpenMrsIdentifier() {
+                        System = "National ID",
+                        Value = "Some value else that we don't need",
+                    }
+                }
             };
 
             var hipPatient = openMrsPatient.ToHipPatient(patientName);
 
-            hipPatient.Identifier.Should().Be(patientId);
+            hipPatient.Identifier.Should().Be(identifier);
+        }
+
+        [Theory]
+        [InlineData("1")]
+        [InlineData("12345678-1234-1234-1234-123456789abc")]
+        [InlineData(null)]
+        private void ToHipPatient_GivenOpenMrsPatient_UuidIsMappedToPatientUuid(string patientUuid)
+        {
+            var openMrsPatient = new OpenMrsPatient()
+            {
+                Name = new List<OpenMrsPatientName> { new OpenMrsPatientName() { Text = patientName } },
+                Gender = OpenMrsGender.Female,
+                BirthDate = "1999",
+                Id = patientUuid,
+            };
+
+            var hipPatient = openMrsPatient.ToHipPatient(patientName);
+
+            hipPatient.Uuid.Should().Be(patientUuid);
         }
     }
 }
