@@ -67,7 +67,7 @@ namespace In.ProjectEKA.TMHHip.Discovery
                     {
                         patient.Gender = Enum.Parse<Gender>(patientFromTmh.Gender);
                     }
-                    catch (Exception e)
+                    catch (ArgumentException e)
                     {
                         Log.Error(e.Message);
                         patient.Gender = Gender.M;
