@@ -133,7 +133,7 @@ namespace In.ProjectEKA.HipService.Link
             if (request.Error != null)
             {
                 Log.Information($" Error Code:{request.Error.Code}," +
-                                $" Error Message:{request.Error.Message},");
+                                $" Error Message:{request.Error.Message}.");
             }
             else if (request.AuthInit != null)
             {
