@@ -50,7 +50,7 @@ namespace In.ProjectEKA.FHIRHipTest.Link
                 .Verifiable();
             var patientRepository = new PatientRepository(httpClient, patientConfiguration.Value);
 
-            var patient =  patientRepository.PatientWith(patientReferenceNumber);
+            patientRepository.PatientWith(patientReferenceNumber);
 
             handlerMock.Protected().Verify(
                 "SendAsync",

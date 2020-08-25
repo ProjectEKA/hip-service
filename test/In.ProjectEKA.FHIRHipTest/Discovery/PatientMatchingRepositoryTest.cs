@@ -61,7 +61,7 @@ namespace In.ProjectEKA.FHIRHipTest.Discovery
             
             var patientMatchingRepository = new PatientMatchingRepository(httpClient, patientConfiguration.Value);
 
-            var patientInfo = await patientMatchingRepository.Where(request);
+            await patientMatchingRepository.Where(request);
 
             handlerMock.Protected().Verify(
                 "SendAsync",

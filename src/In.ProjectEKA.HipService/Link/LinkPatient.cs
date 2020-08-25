@@ -40,7 +40,7 @@ namespace In.ProjectEKA.HipService.Link
         public virtual async Task<ValueTuple<PatientLinkEnquiryRepresentation, ErrorRepresentation>> LinkPatients(
             PatientLinkEnquiry request)
         {
-            var (patient, error) = await PatientAndCareContextValidation(request);
+            var (patient, error) = await PatientAndCareContextValidation(request).ConfigureAwait(false);
             if (error != null)
             {
                 Log.Error(error.Error.Message);
@@ -99,7 +99,7 @@ namespace In.ProjectEKA.HipService.Link
             PatientLinkEnquiry request)
         {
             var patientInfo =
-                await patientRepository.PatientWith(request.Patient.ReferenceNumber);
+                await patientRepository.PatientWith(request.Patient.ReferenceNumber).ConfigureAwait(false);
             return patientInfo.Map(
                     patient =>
                     {
@@ -135,7 +135,7 @@ namespace In.ProjectEKA.HipService.Link
             if (errorResponse != null)
                 return (null,cmId, new ErrorRepresentation(errorResponse.toError()));
             var patientInfo =
-                await patientRepository.PatientWith(linkEnquires.PatientReferenceNumber);
+                await patientRepository.PatientWith(linkEnquires.PatientReferenceNumber).ConfigureAwait(false);
             return await patientInfo.Map(async patient =>
                 {
                     var savedLinkRequests = await linkPatientRepository.Get(request.LinkReferenceNumber);
