@@ -52,7 +52,7 @@ namespace In.ProjectEKA.HipService.User
                 logger.LogInformation($"Access Token is: {authOnConfirmResponse.Auth.AccessToken}");
             else
                 logger.LogInformation($" Error Code:{authOnConfirmResponse.Error.Code}," +
-                                      $" Error Message:{authOnConfirmResponse.Error.Message}");
+                                      $" Error Message:{authOnConfirmResponse.Error.Message}.");
         }
     }
 }
