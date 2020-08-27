@@ -1,7 +1,7 @@
-using System.Collections.Generic;
-
 namespace In.ProjectEKA.TMHHip.DataFlow.Model
 {
+    using System.Collections.Generic;
+
     public class ObservationResponse
     {
         public string ResourceType { get; set; }
@@ -24,5 +24,13 @@ namespace In.ProjectEKA.TMHHip.DataFlow.Model
         public string Id { get; set; }
         public string Type { get; set; }
         public IEnumerable<ICondition> Entry { get; set; }
+    }
+
+    public class DiagnosticReportResponse
+    {
+        public string ResourceType { get; set; }
+        public string Id { get; set; }
+        public string Type { get; set; }
+        public IEnumerable<IDiagnosticReport> Entry { get; set; }
     }
 }

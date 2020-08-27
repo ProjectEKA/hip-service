@@ -101,7 +101,47 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                         break;
                     }
                     case HiType.DiagnosticReport:
+                    {
+                        if (tmhPatientData.DiagnosticReportAsPdf != null &&
+                            tmhPatientData.DiagnosticReportAsPdf.Any())
+                        {
+                            var diagnosticReportResponse = FetchDiagnosticReportPdfsData(dataRequest,
+                                tmhPatientData.DiagnosticReportAsPdf, patientName).GetAwaiter().GetResult();
+                            if (diagnosticReportResponse.HasValue)
+                            {
+                                var serializeObject = JsonConvert.SerializeObject(
+                                    diagnosticReportResponse.ValueOr((DiagnosticReportResponse) null),
+                                    new JsonSerializerSettings
+                                    {
+                                        Formatting = Formatting.Indented,
+                                        ContractResolver = new CamelCasePropertyNamesContractResolver()
+                                    });
+                                var careBundle = new CareBundle(caseId, parser.Parse<Bundle>(serializeObject));
+                                careBundles.Add(careBundle);
+                            }
+                        }
+
+                        if (tmhPatientData.DiagnosticReportAsImages != null &&
+                            tmhPatientData.DiagnosticReportAsImages.Any())
+                        {
+                            var diagnosticReportResponse = FetchDiagnosticReportImagesData(dataRequest,
+                                tmhPatientData.DiagnosticReportAsImages, patientName).GetAwaiter().GetResult();
+                            if (diagnosticReportResponse.HasValue)
+                            {
+                                var serializeObject = JsonConvert.SerializeObject(
+                                    diagnosticReportResponse.ValueOr((DiagnosticReportResponse) null),
+                                    new JsonSerializerSettings
+                                    {
+                                        Formatting = Formatting.Indented,
+                                        ContractResolver = new CamelCasePropertyNamesContractResolver()
+                                    });
+                                var careBundle = new CareBundle(caseId, parser.Parse<Bundle>(serializeObject));
+                                careBundles.Add(careBundle);
+                            }
+                        }
+
                         break;
+                    }
                     case HiType.Medication:
                         break;
                     case HiType.DocumentReference:
@@ -117,6 +157,48 @@ namespace In.ProjectEKA.TMHHip.DataFlow
 
             var entries = new Entries(careBundles);
             return Option.Some(entries);
+        }
+
+        private static async Task<Option<DiagnosticReportResponse>> FetchDiagnosticReportImagesData(
+            DataRequest dataRequest, List<DiagnosticReportAsImage> diagnosticReportAsImages, string patientName)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static async Task<Option<DiagnosticReportResponse>> FetchDiagnosticReportPdfsData(
+            DataRequest dataRequest, List<DiagnosticReportAsPdf> diagnosticReportAsPdfs, string patientName)
+        {
+            var uuid = Uuid.Generate().Value;
+            var id = uuid.Split(":").Last();
+            var representations = new List<DiagnosticReportPdfRepresentation>();
+            foreach (var reportAsPdf in diagnosticReportAsPdfs)
+            {
+                var pdfText = new Text("additional",
+                    "<div xmlns=\"http://www.w3.org/1999/xhtml\">Unstructured data can be sent here</div>");
+                var code = new Code(reportAsPdf.ReportText);
+                var subject = new Subject(patientName);
+                var performer = new Performer(reportAsPdf.Performer);
+                var presentedForm = new PresentedForm(reportAsPdf.ContentType, "", reportAsPdf.ReportTitle);
+                var pdfResource = new DiagnosticReportPDFResource(HiType.DiagnosticReport, id, pdfText, "final", code,
+                    subject, reportAsPdf.EffectiveDateTime, reportAsPdf.Issued, new List<Performer> {performer},
+                    new List<PresentedForm> {presentedForm}, reportAsPdf.ReportConclusion);
+                representations.Add(new DiagnosticReportPdfRepresentation(uuid,pdfResource));
+            }
+            
+            if (!representations.Any())
+            {
+                return Option.None<DiagnosticReportResponse>();
+            }
+
+            var diagnosticReportResponse = new DiagnosticReportResponse()
+            {
+                Entry = representations,
+                Id = Uuid.Generate().Value.Split(":").Last(),
+                ResourceType = "Bundle",
+                Type = "collection"
+            };
+
+            return Option.Some(diagnosticReportResponse);
         }
 
         private static IEnumerable<CareBundle> ProcessObservationsData(DataRequest dataRequest,

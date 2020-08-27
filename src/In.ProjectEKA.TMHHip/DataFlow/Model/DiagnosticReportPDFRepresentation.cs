@@ -6,19 +6,19 @@ namespace In.ProjectEKA.TMHHip.DataFlow.Model
     using Newtonsoft.Json;
     using Newtonsoft.Json.Converters;
 
-    public class DiagnosticReportPdfRepresentation
+    public class DiagnosticReportPdfRepresentation:IDiagnosticReport
     {
         private string FullUrl { get; set; }
-        private DiagnosticReportPDF Resource { get; set; }
+        private DiagnosticReportPDFResource Resource { get; set; }
 
-        public DiagnosticReportPdfRepresentation(string fullUrl, DiagnosticReportPDF resource)
+        public DiagnosticReportPdfRepresentation(string fullUrl, DiagnosticReportPDFResource resource)
         {
             FullUrl = fullUrl;
             Resource = resource;
         }
     }
 
-    public class DiagnosticReportPDF
+    public class DiagnosticReportPDFResource
     {
         [JsonConverter(typeof(StringEnumConverter))]
         private HiType ResourceType { get; set; }
@@ -35,7 +35,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow.Model
         private IEnumerable<PresentedForm> PresentedForm { get; set; }
         private string Conclusion { get; set; }
 
-        public DiagnosticReportPDF(HiType resourceType, string id, Text text, string status, Code code, Subject subject,
+        public DiagnosticReportPDFResource(HiType resourceType, string id, Text text, string status, Code code, Subject subject,
             DateTime effectiveDateTime, DateTime issued, IEnumerable<Performer> performer,
             IEnumerable<PresentedForm> presentedForm, string conclusion)
         {
