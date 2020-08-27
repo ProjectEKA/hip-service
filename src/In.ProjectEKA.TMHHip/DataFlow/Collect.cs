@@ -4,6 +4,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
+    using System.Net;
     using System.Net.Http;
     using System.Text;
     using System.Threading.Tasks;
@@ -178,13 +179,14 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                 var code = new Code(reportAsPdf.ReportText);
                 var subject = new Subject(patientName);
                 var performer = new Performer(reportAsPdf.Performer);
-                var presentedForm = new PresentedForm(reportAsPdf.ContentType, "", reportAsPdf.ReportTitle);
+                var presentedForm = new PresentedForm(reportAsPdf.ContentType, PdfToBase64(reportAsPdf.ReportUrl),
+                    reportAsPdf.ReportTitle);
                 var pdfResource = new DiagnosticReportPDFResource(HiType.DiagnosticReport, id, pdfText, "final", code,
                     subject, reportAsPdf.EffectiveDateTime, reportAsPdf.Issued, new List<Performer> {performer},
                     new List<PresentedForm> {presentedForm}, reportAsPdf.ReportConclusion);
-                representations.Add(new DiagnosticReportPdfRepresentation(uuid,pdfResource));
+                representations.Add(new DiagnosticReportPdfRepresentation(uuid, pdfResource));
             }
-            
+
             if (!representations.Any())
             {
                 return Option.None<DiagnosticReportResponse>();
@@ -643,6 +645,18 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                             $" From date:{request.DateRange.From}," +
                             $" To date:{request.DateRange.To}, " +
                             $"CallbackUrl:{request.DataPushUrl}");
+        }
+
+        private static string PdfToBase64(string pdfUrl)
+        {
+            string base64String;
+            using (WebClient client = new WebClient())
+            {
+                var bytes = client.DownloadData(pdfUrl);
+                base64String = Convert.ToBase64String(bytes);
+            }
+
+            return base64String;
         }
     }
 }
