@@ -4,7 +4,6 @@ namespace In.ProjectEKA.TMHHip.DataFlow
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
-    using System.Net;
     using System.Net.Http;
     using System.Text;
     using System.Threading.Tasks;
@@ -173,19 +172,15 @@ namespace In.ProjectEKA.TMHHip.DataFlow
             var uuid = Uuid.Generate().Value;
             var id = uuid.Split(":").Last();
             var representations = (from reportAsPdf in diagnosticReportAsPdfs
-                where WithinRange(dataRequest.DateRange, reportAsPdf.EffectiveDateTime)
+                where WithinRange(dataRequest.DateRange, reportAsPdf.Issued)
                 let pdfText =
                     new Text("additional",
                         "<div xmlns=\"http://www.w3.org/1999/xhtml\">Unstructured data can be sent here</div>")
                 let code = new Code(reportAsPdf.ReportText)
                 let subject = new Subject(patientName)
                 let performer = new Performer(reportAsPdf.Performer)
-                // let presentedForm =
-                //     new PresentedForm(reportAsPdf.ContentType, PdfToBase64(reportAsPdf.ReportUrl),
-                //         reportAsPdf.ReportTitle)
-                let presentedForm =
-                    new PresentedForm(reportAsPdf.ContentType, "",
-                        reportAsPdf.ReportTitle)
+                let pdfData = CustomWebclient.PdfToBase64(reportAsPdf.ReportUrl)
+                let presentedForm = new PresentedForm(reportAsPdf.ContentType, pdfData, reportAsPdf.ReportTitle)
                 select new DiagnosticReportPDFResource(HiType.DiagnosticReport, id, pdfText, "final", code, subject,
                     reportAsPdf.EffectiveDateTime, reportAsPdf.Issued, new List<Performer> {performer},
                     new List<PresentedForm> {presentedForm}, reportAsPdf.ReportConclusion)
@@ -650,15 +645,6 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                             $" From date:{request.DateRange.From}," +
                             $" To date:{request.DateRange.To}, " +
                             $"CallbackUrl:{request.DataPushUrl}");
-        }
-
-        private static string PdfToBase64(string pdfUrl)
-        {
-            using var webClient = new WebClient();
-            var bytes = webClient.DownloadData(pdfUrl);
-            var base64String = Convert.ToBase64String(bytes);
-
-            return base64String;
         }
     }
 }
