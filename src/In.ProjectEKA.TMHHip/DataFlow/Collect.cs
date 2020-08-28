@@ -19,6 +19,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
     using Serilog;
     using Code = Model.Code;
     using Coding = Model.Coding;
+    using Endpoint = Model.Endpoint;
     using JsonSerializer = System.Text.Json.JsonSerializer;
     using Resource = Model.Resource;
 
@@ -162,7 +163,84 @@ namespace In.ProjectEKA.TMHHip.DataFlow
         private static async Task<Option<DiagnosticReportResponse>> FetchDiagnosticReportImagesData(
             DataRequest dataRequest, List<DiagnosticReportAsImage> diagnosticReportAsImages, string patientName)
         {
-            throw new NotImplementedException();
+            LogDataRequest(dataRequest);
+            var uuid = Uuid.Generate().Value;
+            var id = uuid.Split(":").Last();
+            var representations = new List<IDiagnosticReport>();
+            foreach (var reportAsImage in diagnosticReportAsImages)
+            {
+                if (!WithinRange(dataRequest.DateRange, reportAsImage.Issued)) continue;
+
+                var imagingStudyUuid = Uuid.Generate().Value;
+                var imagingStudyId = imagingStudyUuid.Split(":").Last();
+                var diagRepImageRep = new DiagnosticReportImageRepresentation(uuid,
+                    GetDiagRepResource(reportAsImage, imagingStudyUuid, imagingStudyId, id, patientName));
+                representations.Add(diagRepImageRep);
+
+                var endpointUuid = Uuid.Generate().Value;
+                var endpointId = endpointUuid.Split(":").Last();
+                var repImagingStudyText = new Text("generated",
+                    "<div xmlns=\"http://www.w3.org/1999/xhtml\">Unstructured data can be sent here</div>");
+                var diagRepImagingStudyRep =
+                    new DiagnosticReportImagingStudyRepresentation(imagingStudyUuid, GetImagingStudyResource(endpointId,
+                        reportAsImage,
+                        repImagingStudyText, imagingStudyId));
+                representations.Add(diagRepImagingStudyRep);
+                
+                var diagRepEndpointRep = new DiagnosticReportEndpointRepresentation(endpointUuid,
+                    GetEndpointResource(reportAsImage, endpointId, repImagingStudyText));
+                representations.Add(diagRepEndpointRep);
+            }
+
+            if (!representations.Any())
+            {
+                return Option.None<DiagnosticReportResponse>();
+            }
+
+            var diagnosticReportResponse = new DiagnosticReportResponse
+            {
+                Entry = representations,
+                Id = Uuid.Generate().Value.Split(":").Last(),
+                ResourceType = "Bundle",
+                Type = "collection"
+            };
+            return Option.Some<DiagnosticReportResponse>(diagnosticReportResponse);
+        }
+
+        private static EndpointResource GetEndpointResource(DiagnosticReportAsImage reportAsImage,
+            string endpointId, Text repImagingStudyText)
+        {
+            var connectionType =
+                new ConnectionType("http://terminology.hl7.org/CodeSystem/endpoint-connection-type",
+                    "dicom-wado-rs");
+            return new EndpointResource(HiType.Endpoint, endpointId, repImagingStudyText, "active",
+                connectionType, new List<PayloadType> {new PayloadType(reportAsImage.PayloadType)},
+                new List<string> {reportAsImage.PayloadMimeType},
+                reportAsImage.ReportUrl);
+        }
+
+        private static ImagingStudyResource GetImagingStudyResource(string endpointId,
+            DiagnosticReportAsImage reportAsImage, Text repImagingStudyText, string imagingStudyId)
+        {
+            var subjectImagingStudy = new SubjectDiagReport(reportAsImage.SubjectReference);
+            return new ImagingStudyResource(HiType.ImagingStudy, imagingStudyId,
+                repImagingStudyText, subjectImagingStudy, "available", reportAsImage.StudyStartDate,
+                reportAsImage.NumberOfSeries,
+                reportAsImage.NumberOfInstances,
+                new List<Endpoint> {new Endpoint("Endpoint" + "/" + endpointId)});
+        }
+
+        private static DiagnosticReportImage GetDiagRepResource(DiagnosticReportAsImage reportAsImage,
+            string imagingStudyUuid, string imagingStudyId, string id, string patientName)
+        {
+            var repText = new Text("additional",
+                "<div xmlns=\"http://www.w3.org/1999/xhtml\">Unstructured data can be sent here</div>");
+            var imagingStudy = new DiagnosticReportImagingStudy("ImagingStudy" + "/" + imagingStudyId);
+            return new DiagnosticReportImage(HiType.DiagnosticReport, id, repText, "final",
+                new Code(reportAsImage.ReportText), new Subject(patientName), reportAsImage.EffectiveDateTime,
+                reportAsImage.Issued, new List<Performer> {new Performer(reportAsImage.Performer)},
+                new List<DiagnosticReportImagingStudy> {imagingStudy},
+                reportAsImage.ReportConclusion);
         }
 
         private static async Task<Option<DiagnosticReportResponse>> FetchDiagnosticReportPdfsData(

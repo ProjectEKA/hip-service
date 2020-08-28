@@ -31,12 +31,12 @@ namespace In.ProjectEKA.TMHHip.DataFlow.Model
         private DateTime EffectiveDateTime { get; set; }
         private DateTime Issued { get; set; }
         private IEnumerable<Performer> Performer { get; set; }
-        private IEnumerable<ImagingStudy> ImagingStudy { get; set; }
+        private IEnumerable<DiagnosticReportImagingStudy> ImagingStudy { get; set; }
         private string Conclusion { get; set; }
 
         public DiagnosticReportImage(HiType resourceType, string id, Text text, string status, Code code,
             Subject subject, DateTime effectiveDateTime, DateTime issued, IEnumerable<Performer> performer,
-            IEnumerable<ImagingStudy> imagingStudy, string conclusion)
+            IEnumerable<DiagnosticReportImagingStudy> imagingStudy, string conclusion)
         {
             ResourceType = resourceType;
             Id = id;
@@ -52,11 +52,11 @@ namespace In.ProjectEKA.TMHHip.DataFlow.Model
         }
     }
 
-    public class ImagingStudy
+    public class DiagnosticReportImagingStudy
     {
         private string Reference { get; set; }
 
-        public ImagingStudy(string reference)
+        public DiagnosticReportImagingStudy(string reference)
         {
             Reference = reference;
         }
