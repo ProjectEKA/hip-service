@@ -13,7 +13,8 @@ namespace In.ProjectEKA.HipService.Discovery
             new Dictionary<IdentifierType, IdentifierTypeExt>
             {
                 {IdentifierType.MOBILE, IdentifierTypeExt.Mobile},
-                {IdentifierType.MR, IdentifierTypeExt.Mr}
+                {IdentifierType.MR, IdentifierTypeExt.Mr},
+                {IdentifierType.NDHM_HEALTH_NUMBER, IdentifierTypeExt.NdhmHealthNumber}
             };
 
         private static PatientWithRank<Patient> RankPatient(Patient patient, DiscoveryRequest request)
@@ -85,7 +86,8 @@ namespace In.ProjectEKA.HipService.Discovery
             Name,
             Mr,
             Gender,
-            Empty
+            Empty,
+            NdhmHealthNumber
         }
 
         private class IdentifierExt
