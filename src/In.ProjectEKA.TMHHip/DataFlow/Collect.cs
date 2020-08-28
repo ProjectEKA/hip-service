@@ -169,30 +169,35 @@ namespace In.ProjectEKA.TMHHip.DataFlow
         private static async Task<Option<DiagnosticReportResponse>> FetchDiagnosticReportPdfsData(
             DataRequest dataRequest, List<DiagnosticReportAsPdf> diagnosticReportAsPdfs, string patientName)
         {
+            LogDataRequest(dataRequest);
             var uuid = Uuid.Generate().Value;
             var id = uuid.Split(":").Last();
-            var representations = new List<DiagnosticReportPdfRepresentation>();
-            foreach (var reportAsPdf in diagnosticReportAsPdfs)
-            {
-                var pdfText = new Text("additional",
-                    "<div xmlns=\"http://www.w3.org/1999/xhtml\">Unstructured data can be sent here</div>");
-                var code = new Code(reportAsPdf.ReportText);
-                var subject = new Subject(patientName);
-                var performer = new Performer(reportAsPdf.Performer);
-                var presentedForm = new PresentedForm(reportAsPdf.ContentType, PdfToBase64(reportAsPdf.ReportUrl),
-                    reportAsPdf.ReportTitle);
-                var pdfResource = new DiagnosticReportPDFResource(HiType.DiagnosticReport, id, pdfText, "final", code,
-                    subject, reportAsPdf.EffectiveDateTime, reportAsPdf.Issued, new List<Performer> {performer},
-                    new List<PresentedForm> {presentedForm}, reportAsPdf.ReportConclusion);
-                representations.Add(new DiagnosticReportPdfRepresentation(uuid, pdfResource));
-            }
+            var representations = (from reportAsPdf in diagnosticReportAsPdfs
+                where WithinRange(dataRequest.DateRange, reportAsPdf.EffectiveDateTime)
+                let pdfText =
+                    new Text("additional",
+                        "<div xmlns=\"http://www.w3.org/1999/xhtml\">Unstructured data can be sent here</div>")
+                let code = new Code(reportAsPdf.ReportText)
+                let subject = new Subject(patientName)
+                let performer = new Performer(reportAsPdf.Performer)
+                // let presentedForm =
+                //     new PresentedForm(reportAsPdf.ContentType, PdfToBase64(reportAsPdf.ReportUrl),
+                //         reportAsPdf.ReportTitle)
+                let presentedForm =
+                    new PresentedForm(reportAsPdf.ContentType, "",
+                        reportAsPdf.ReportTitle)
+                select new DiagnosticReportPDFResource(HiType.DiagnosticReport, id, pdfText, "final", code, subject,
+                    reportAsPdf.EffectiveDateTime, reportAsPdf.Issued, new List<Performer> {performer},
+                    new List<PresentedForm> {presentedForm}, reportAsPdf.ReportConclusion)
+                into pdfResource
+                select new DiagnosticReportPdfRepresentation(uuid, pdfResource)).ToList();
 
             if (!representations.Any())
             {
                 return Option.None<DiagnosticReportResponse>();
             }
 
-            var diagnosticReportResponse = new DiagnosticReportResponse()
+            var diagnosticReportResponse = new DiagnosticReportResponse
             {
                 Entry = representations,
                 Id = Uuid.Generate().Value.Split(":").Last(),
@@ -649,12 +654,9 @@ namespace In.ProjectEKA.TMHHip.DataFlow
 
         private static string PdfToBase64(string pdfUrl)
         {
-            string base64String;
-            using (WebClient client = new WebClient())
-            {
-                var bytes = client.DownloadData(pdfUrl);
-                base64String = Convert.ToBase64String(bytes);
-            }
+            using var webClient = new WebClient();
+            var bytes = webClient.DownloadData(pdfUrl);
+            var base64String = Convert.ToBase64String(bytes);
 
             return base64String;
         }

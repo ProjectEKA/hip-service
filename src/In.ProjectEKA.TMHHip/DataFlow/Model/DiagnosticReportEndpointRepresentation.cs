@@ -48,7 +48,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow.Model
     {
         private string Text { get; set; }
 
-        private PayloadType(string text)
+        public PayloadType(string text)
         {
             Text = text;
         }
