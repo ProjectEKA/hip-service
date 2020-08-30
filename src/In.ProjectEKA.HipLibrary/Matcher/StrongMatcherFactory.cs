@@ -13,7 +13,8 @@
             new Dictionary<IdentifierType, IIdentifierMatcher>
             {
                 {IdentifierType.MOBILE, new PhoneNumberMatcher()},
-                {IdentifierType.MR, new MedicalRecordMatcher()}
+                {IdentifierType.MR, new MedicalRecordMatcher()},
+                {IdentifierType.NDHM_HEALTH_NUMBER, new HealthNumberMatcher()}
             };
 
         private StrongMatcherFactory()
