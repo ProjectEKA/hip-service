@@ -286,7 +286,7 @@ namespace In.ProjectEKA.TMHHipTest.DataFlow
             var patientRepository = new PatientRepository(repoClient);
             var collect = new Collect(tmhClient, patientRepository);
             var dateObj = new DateTime(2018, 1, 1);
-            var reportAsImage = new DiagnosticReportAsImage()
+            var reportAsImage = new DiagnosticReportAsImage
             {
                 ReportText = "reportText",
                 Issued = dateObj,

@@ -169,12 +169,15 @@ namespace In.ProjectEKA.TMHHip.DataFlow
             var representations = new List<IDiagnosticReport>();
             foreach (var reportAsImage in diagnosticReportAsImages)
             {
-                if (!WithinRange(dataRequest.DateRange, reportAsImage.Issued)) continue;
+                if (!WithinRange(dataRequest.DateRange, reportAsImage.Issued))
+                {
+                    continue;
+                }
 
                 var imagingStudyUuid = Uuid.Generate().Value;
                 var imagingStudyId = imagingStudyUuid.Split(":").Last();
                 var diagRepImageRep = new DiagnosticReportImageRepresentation(uuid,
-                    GetDiagRepResource(reportAsImage, imagingStudyUuid, imagingStudyId, id, patientName));
+                    GetDiagRepResource(reportAsImage, imagingStudyId, id, patientName));
                 representations.Add(diagRepImageRep);
 
                 var endpointUuid = Uuid.Generate().Value;
@@ -186,7 +189,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                         reportAsImage,
                         repImagingStudyText, imagingStudyId));
                 representations.Add(diagRepImagingStudyRep);
-                
+
                 var diagRepEndpointRep = new DiagnosticReportEndpointRepresentation(endpointUuid,
                     GetEndpointResource(reportAsImage, endpointId, repImagingStudyText));
                 representations.Add(diagRepEndpointRep);
@@ -231,7 +234,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
         }
 
         private static DiagnosticReportImage GetDiagRepResource(DiagnosticReportAsImage reportAsImage,
-            string imagingStudyUuid, string imagingStudyId, string id, string patientName)
+            string imagingStudyId, string id, string patientName)
         {
             var repText = new Text("additional",
                 "<div xmlns=\"http://www.w3.org/1999/xhtml\">Unstructured data can be sent here</div>");

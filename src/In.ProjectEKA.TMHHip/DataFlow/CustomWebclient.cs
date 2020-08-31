@@ -7,7 +7,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
     internal class CustomWebclient : WebClient
     {
         [SecuritySafeCritical]
-        private CustomWebclient() : base()
+        private CustomWebclient()
         {
         }
 
@@ -17,7 +17,11 @@ namespace In.ProjectEKA.TMHHip.DataFlow
         protected override WebRequest GetWebRequest(Uri myAddress)
         {
             WebRequest request = base.GetWebRequest(myAddress);
-            if (!(request is HttpWebRequest)) return request;
+            if (!(request is HttpWebRequest))
+            {
+                return request;
+            }
+
             (request as HttpWebRequest).CookieContainer = cookieContainer;
             (request as HttpWebRequest).AllowAutoRedirect = true;
             return request;
