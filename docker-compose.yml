@@ -8,6 +8,8 @@ services:
       - db
       - rabbitmq
       - otp
+    environment: 
+      - HEALTH_CHECK_DURATION=5000
   otp:
     build: src/In.ProjectEKA.OtpService/.
     depends_on:

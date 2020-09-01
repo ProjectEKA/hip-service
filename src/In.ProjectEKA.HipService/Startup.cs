@@ -26,6 +26,7 @@ namespace In.ProjectEKA.HipService
     using Hangfire.MemoryStorage;
     using HipLibrary.Matcher;
     using HipLibrary.Patient;
+    using In.ProjectEKA.HipService.OpenMrs.HealthCheck;
     using In.ProjectEKA.HipService.OpenMrs;
     using Link;
     using Link.Database;
@@ -66,8 +67,6 @@ namespace In.ProjectEKA.HipService
 
         private IConfiguration Configuration { get; }
 
-        private HttpClient HttpClient { get; }
-
         public void ConfigureServices(IServiceCollection services)
         {
             services
@@ -104,6 +103,12 @@ namespace In.ProjectEKA.HipService
                 .AddSingleton<DataEntryFactory>()
                 .AddSingleton<DataFlowMessageHandler>()
                 .AddSingleton(HttpClient)
+                .AddScoped<IHealthCheckClient> (_ => new OpenMrsHealthCheckClient (new Dictionary<string, string> { 
+                { "OpenMRS-FHIR", "ws/fhir2/Patient" },
+                { "OpenMRS-REST", "ws/rest/v1/visit" }}, 
+                new OpenMrsClient (HttpClient,Configuration.GetSection ("OpenMrs").Get<OpenMrsConfiguration> ())))
+                .AddSingleton<IHealthCheckStatus,HealthCheckStatus>()
+                .AddSingleton<HealthChecker>()
                 .AddScoped<IPatientVerification, PatientVerification>()
                 .AddScoped<IConsentRepository, ConsentRepository>()
                 .AddHostedService<MessagingQueueListener>()
@@ -181,8 +186,11 @@ namespace In.ProjectEKA.HipService
                             return Task.CompletedTask;
                         }
                     };
-                });
+                })
+                .Services.AddHealthChecks ();
         }
+
+        private HttpClient HttpClient { get; }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -212,7 +220,11 @@ namespace In.ProjectEKA.HipService
                 .UseSerilogRequestLogging()
                 .UseAuthentication()
                 .UseAuthorization()
-                .UseEndpoints(endpoints => { endpoints.MapControllers(); })
+                .UseHealthCheckMiddleware()
+                .UseEndpoints(endpoints => { 
+                    endpoints.MapControllers();
+                    endpoints.MapHealthChecks("/health");
+                })
                 .UseHangfireServer(new BackgroundJobServerOptions
                 {
                     CancellationCheckInterval = TimeSpan.FromMinutes(
