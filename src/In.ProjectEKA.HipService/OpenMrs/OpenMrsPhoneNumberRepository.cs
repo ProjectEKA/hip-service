@@ -29,7 +29,7 @@ namespace In.ProjectEKA.HipService.OpenMrs
             {
                 var display = attributes[i].GetProperty("display");
                 var strlist = display.ToString().Split(" = ");
-                if (strlist[0] == "secondaryContact") {
+                if (strlist[0] == "primaryContact") {
                     return strlist[1];
                 }
             }

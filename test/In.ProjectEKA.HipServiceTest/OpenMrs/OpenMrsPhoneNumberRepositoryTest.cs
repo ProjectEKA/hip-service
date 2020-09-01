@@ -11,7 +11,7 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
     public class OpenMrsPhoneNumberRepositoryTest
     {
         [Fact]
-        public async System.Threading.Tasks.Task GetPhoneNumber_ShouldExtractSecondaryContactFromPatientDataAsPhoneNumber_WhenSpecifyPatientId() {
+        public async System.Threading.Tasks.Task GetPhoneNumber_ShouldExtractPrimaryContactFromPatientDataAsPhoneNumber_WhenSpecifyPatientId() {
             //Given
             var openmrsClientMock = new Mock<IOpenMrsClient>();
             var repository = new OpenMrsPhoneNumberRepository(openmrsClientMock.Object);
@@ -23,7 +23,7 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
                 .ReturnsAsync(new HttpResponseMessage
                 {
                     StatusCode = HttpStatusCode.OK,
-                    Content = new StringContent(OpenMrsRestPatientSampleWithSecondaryContact)
+                    Content = new StringContent(OpenMrsRestPatientSampleWithPrimaryContact)
                 })
                 .Verifiable();
 
@@ -31,11 +31,11 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
             var phoneNumber = await repository.GetPhoneNumber(patientId);
 
             //Then
-            phoneNumber.Should().Be("+91-9999999999");
+            phoneNumber.Should().Be("+91-9999999988");
         }
 
         [Fact]
-        public async System.Threading.Tasks.Task GetPhoneNumber_ShouldReturnNull_WhenThereIsNoSecondaryPhoneNumber() {
+        public async System.Threading.Tasks.Task GetPhoneNumber_ShouldReturnNull_WhenThereIsNoPrimaryPhoneNumber() {
             //Given
             var openmrsClientMock = new Mock<IOpenMrsClient>();
             var repository = new OpenMrsPhoneNumberRepository(openmrsClientMock.Object);
@@ -47,7 +47,7 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
                 .ReturnsAsync(new HttpResponseMessage
                 {
                     StatusCode = HttpStatusCode.OK,
-                    Content = new StringContent(OpenMrsRestPatientSampleWithoutSecondaryContact)
+                    Content = new StringContent(OpenMrsRestPatientSampleWithoutPrimaryContact)
                 })
                 .Verifiable();
 
@@ -58,7 +58,7 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
             phoneNumber.Should().Be(null);
         }
 
-        private const string OpenMrsRestPatientSampleWithSecondaryContact = @"{
+        private const string OpenMrsRestPatientSampleWithPrimaryContact = @"{
             ""uuid"": ""81bcb347-3ed7-4b8e-a0fd-5b72eabed934"",
             ""display"": ""GAN203006 - Test Test"",
             ""identifiers"": [
@@ -125,6 +125,16 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
                         ]
                     },
                     {
+                        ""uuid"": ""df4af84e-bc10-4620-b8f0-df1a355cba55"",
+                        ""display"": ""primaryContact = +91-9999999988"",
+                        ""links"": [
+                            {
+                                ""rel"": ""self"",
+                                ""uri"": ""http://qa-01.bahmni-covid19.in/openmrs/ws/rest/v1/person/81bcb347-3ed7-4b8e-a0fd-5b72eabed934/attribute/df4af84e-bc10-4620-b8f0-df1a355cba55""
+                            }
+                        ]
+                    },
+                    {
                         ""uuid"": ""df4af84e-bc10-4620-b8f0-df1a355cba54"",
                         ""display"": ""secondaryContact = +91-9999999999"",
                         ""links"": [
@@ -174,7 +184,7 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
             ""resourceVersion"": ""1.8""
         }";
 
-        private const string OpenMrsRestPatientSampleWithoutSecondaryContact = @"{
+        private const string OpenMrsRestPatientSampleWithoutPrimaryContact = @"{
             ""person"": {
                 ""attributes"": []
             }
