@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "81d81127-5476-49d4-8c22-6d5bb3097acc",
+		"_postman_id": "bf93548b-3b2d-497b-a47e-8f566dc1b1b5",
 		"name": "HIP sample request",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -22,7 +22,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"transactionId\": \"2\",\n    \"patient\": {\n        \"id\": \"<patient-id>@<consent-manager-id>\",\n        \"verifiedIdentifiers\": [\n            {\n                \"type\": \"MOBILE\",\n                \"value\": \"+919800083232\"\n            }\n        ],\n        \"unverifiedIdentifiers\": [\n            {\n                \"type\": \"MOBILE\",\n                \"value\": \"+919800083232\"\n            }\n        ],\n        \"name\": \"kalyan\",\n        \"gender\": \"M\",\n        \"yearOfBirth\": 1997\n    }\n}",
+					"raw": "{\n    \"transactionId\": \"20\",\n    \"requestId\": \"f7648e71-4172-4550-bcbb-5479d3027d77\",\n    \"patient\": {\n        \"id\": \"<patient-id>@<consent-manager-id>\",\n        \"verifiedIdentifiers\": [\n            {\n                \"type\": \"MOBILE\",\n                \"value\": \"+919800083232\"\n            }\n        ],\n        \"unverifiedIdentifiers\": [\n            {\n                \"type\": \"MOBILE\",\n                \"value\": \"+919800083232\"\n            }\n        ],\n        \"name\": \"kalyan\",\n        \"gender\": \"M\",\n        \"yearOfBirth\": 1997\n    }\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -30,16 +30,98 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:9052/v1/care-contexts/discover",
+					"raw": "http://localhost:9052/v0.5/care-contexts/discover",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "9052",
 					"path": [
-						"v1",
+						"v0.5",
 						"care-contexts",
 						"discover"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Happy Case Linking Init",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"transactionId\": \"20\",\n    \"requestId\": \"f7648e71-4172-4550-bcbb-5479d3027d77\",\n    \"patient\": {\n        \"id\": \"<patient-id>@<consent-manager-id>\",\n        \"careContexts\": [\n            {\n                \"referenceNumber\": \"OPD\"\n            }\n        ],\n        \"referenceNumber\": \"GAN203015\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9052/v0.5/links/link/init",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9052",
+					"path": [
+						"v0.5",
+						"links",
+						"link",
+						"init"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Happy Case Linking Confirm",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"transactionId\": \"20\",\n    \"requestId\": \"f7648e71-4172-4550-bcbb-5479d3027d77\",\n    \"confirmation\": {\n        \"linkRefNumber\": \"50e703dd-a789-4d48-8cf6-41a9a2a88fa9\",\n        \"token\": \"666666\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9052/v0.5/links/link/confirm",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9052",
+					"path": [
+						"v0.5",
+						"links",
+						"link",
+						"confirm"
 					]
 				}
 			},
@@ -51,7 +133,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "0a05bddd-10a9-487b-8e8e-a94ec19debef",
+						"id": "5fe77d06-202e-4f95-9d4f-c2b6867bfda7",
 						"exec": [
 							"var res = JSON.parse(responseBody);",
 							"pm.environment.set(\"Token\", res.access_token);"
@@ -139,7 +221,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "a0bb0091-7cbe-44f7-b4c5-60ee2596f854",
+				"id": "e6060b23-f1fe-403b-a66a-9b63cb0a1fee",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -149,7 +231,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "be1a3f03-46e0-47e8-843e-42331ce3fda6",
+				"id": "c7b9984d-aecd-4f64-a802-c87771b5f23a",
 				"type": "text/javascript",
 				"exec": [
 					""

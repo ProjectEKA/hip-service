@@ -1,5 +1,5 @@
 (request, state, logger) => {
-    logger.info("/v1/.well-known/openid-configuration is called");
+    logger.info(request.path + " is called");
     logger.info(request.body);
     return {
       headers: {

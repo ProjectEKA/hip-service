@@ -1,5 +1,5 @@
 (request, state, logger) => {
-    logger.info("/v1/care-contexts/on-discover is called");
+    logger.info(request.path + " is called");
     logger.info(request.body);
     return {
       headers: {

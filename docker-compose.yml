@@ -11,7 +11,7 @@ services:
     environment: 
       - HEALTH_CHECK_DURATION=5000
   otp:
-    build: src/In.ProjectEKA.OtpService/.
+    image: "ganesan92/otp-service"
     depends_on:
       - db
   gateway:
