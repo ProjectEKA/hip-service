@@ -68,12 +68,12 @@ namespace In.ProjectEKA.HipService.Gateway
             }
         }
 
-        public virtual async Task SendDataToGateway<T>(string urlPath, T response, string cmSuffix)
+        public virtual async Task SendDataToGateway<T>(string urlPath, T response, string cmSuffix, string correlationId)
         {
-            await PostTo(configuration.Url + urlPath, response, cmSuffix).ConfigureAwait(false);
+            await PostTo(configuration.Url + urlPath, response, cmSuffix, correlationId).ConfigureAwait(false);
         }
 
-        private async Task PostTo<T>(string gatewayUrl, T representation, string cmSuffix)
+        private async Task PostTo<T>(string gatewayUrl, T representation, string cmSuffix, string correlationId)
         {
             try
             {
@@ -83,7 +83,7 @@ namespace In.ProjectEKA.HipService.Gateway
                     try
                     {
                         await httpClient
-                            .SendAsync(CreateHttpRequest(gatewayUrl, representation, accessToken, cmSuffix))
+                            .SendAsync(CreateHttpRequest(gatewayUrl, representation, accessToken, cmSuffix, correlationId))
                             .ConfigureAwait(false);
                     }
                     catch (Exception exception)

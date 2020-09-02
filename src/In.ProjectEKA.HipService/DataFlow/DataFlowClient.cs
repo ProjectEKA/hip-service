@@ -50,7 +50,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             try
             {
                 // TODO: Need to handle non 2xx response also
-                await httpClient.SendAsync(CreateHttpRequest(dataPushUrl, dataResponse)).ConfigureAwait(false);
+                await httpClient.SendAsync(CreateHttpRequest(dataPushUrl, dataResponse, null)).ConfigureAwait(false);
             }
             catch (Exception exception)
             {

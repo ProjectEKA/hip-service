@@ -28,7 +28,7 @@ namespace In.ProjectEKA.HipService.DataFlow
                     dataNotificationRequest.StatusNotification));
             await gatewayClient.SendDataToGateway(PATH_HEALTH_INFORMATION_NOTIFY_GATEWAY,
                 notificationRequest,
-                cmSuffix);
+                cmSuffix, null);
         }
     }
 }
