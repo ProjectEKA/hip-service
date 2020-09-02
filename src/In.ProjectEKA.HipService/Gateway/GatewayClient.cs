@@ -23,7 +23,7 @@ namespace In.ProjectEKA.HipService.Gateway
             configuration = gatewayConfiguration;
         }
 
-        public virtual async Task<Option<string>> Authenticate()
+        public virtual async Task<Option<string>> Authenticate(String correlationId)
         {
             try
             {
@@ -45,7 +45,7 @@ namespace In.ProjectEKA.HipService.Gateway
                     Method = HttpMethod.Post,
                     Content = new StringContent(json, Encoding.UTF8, MediaTypeNames.Application.Json)
                 };
-
+                message.Headers.Add(Constants.CORRELATION_ID, correlationId);
                 var responseMessage = await httpClient.SendAsync(message).ConfigureAwait(false);
                 var response = await responseMessage.Content.ReadAsStringAsync();
 
@@ -77,7 +77,7 @@ namespace In.ProjectEKA.HipService.Gateway
         {
             try
             {
-                var token = await Authenticate().ConfigureAwait(false);
+                var token = await Authenticate(correlationId).ConfigureAwait(false);
                 token.MatchSome(async accessToken =>
                 {
                     try
