@@ -8,7 +8,8 @@ namespace In.ProjectEKA.HipService.DataFlow
     {
         Task<Tuple<HealthInformationTransactionResponse, ErrorRepresentation>> HealthInformationRequestFor(
             HealthInformationRequest request,
-            string gatewayId);
+            string gatewayId,
+            string correlationId);
 
         Task<Tuple<HealthInformationResponse, ErrorRepresentation>> HealthInformationFor(
             string informationId,
