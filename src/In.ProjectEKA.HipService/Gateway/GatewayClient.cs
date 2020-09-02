@@ -45,7 +45,8 @@ namespace In.ProjectEKA.HipService.Gateway
                     Method = HttpMethod.Post,
                     Content = new StringContent(json, Encoding.UTF8, MediaTypeNames.Application.Json)
                 };
-                message.Headers.Add(Constants.CORRELATION_ID, correlationId);
+                if (correlationId != null)
+                    message.Headers.Add(Constants.CORRELATION_ID, correlationId);
                 var responseMessage = await httpClient.SendAsync(message).ConfigureAwait(false);
                 var response = await responseMessage.Content.ReadAsStringAsync();
 
