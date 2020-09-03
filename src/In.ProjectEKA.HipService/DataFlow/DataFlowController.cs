@@ -85,7 +85,11 @@ namespace In.ProjectEKA.HipService.DataFlow
 
         [HttpPost(PATH_HEALTH_INFORMATION_HIP_REQUEST)]
         public AcceptedResult HealthInformationRequestFor(PatientHealthInformationRequest healthInformationRequest,
+<<<<<<< HEAD
            [FromHeader(Name = CORRELATION_ID)] string correlationId, 
+=======
+            [FromHeader(Name = CORRELATION_ID)] string correlationId, 
+>>>>>>> f7c263e... [Correlation_916] Bipul/Aditi | Add CorrelationId to trace request flow (#380)
             [FromHeader(Name = "X-GatewayID")] string gatewayId)
         {
             logger.Log(LogLevel.Information, LogEvents.DataFlow, "Data request received");
@@ -95,7 +99,12 @@ namespace In.ProjectEKA.HipService.DataFlow
 
         [NonAction]
         public async Task HealthInformationOf(PatientHealthInformationRequest healthInformationRequest,
+<<<<<<< HEAD
             string gatewayId, string correlationId) {
+=======
+            string gatewayId, string correlationId)
+        {
+>>>>>>> f7c263e... [Correlation_916] Bipul/Aditi | Add CorrelationId to trace request flow (#380)
             try
             {
                 var hiRequest = healthInformationRequest.HiRequest;
@@ -104,10 +113,13 @@ namespace In.ProjectEKA.HipService.DataFlow
                     hiRequest.DateRange,
                     hiRequest.DataPushUrl,
                     hiRequest.KeyMaterial);
+<<<<<<< HEAD
 
                 var patientId = await dataFlow.GetPatientId(hiRequest.Consent.Id);
                 var cmSuffix = patientId.Split("@")[1];
                 var sessionStatus = DataFlowRequestStatus.ACKNOWLEDGED;
+=======
+>>>>>>> f7c263e... [Correlation_916] Bipul/Aditi | Add CorrelationId to trace request flow (#380)
                 var (_, error) = await dataFlow.HealthInformationRequestFor(request, gatewayId, correlationId);
                 GatewayDataFlowRequestResponse gatewayResponse;
 

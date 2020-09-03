@@ -28,10 +28,13 @@ namespace In.ProjectEKA.HipService.Common
 
         public static readonly string PATH_AUTH_CONFIRM = "/" + CURRENT_VERSION + "/users/auth/confirm";
 
+<<<<<<< HEAD
         public static readonly string OPENMRS_FHIR = "ws/fhir2/R4/Patient";
         public static readonly string OPENMRS_REST = "ws/rest/v1/visit";
         public static readonly string CONFIG_KEY = "OpenMrs";
         
+=======
+>>>>>>> f7c263e... [Correlation_916] Bipul/Aditi | Add CorrelationId to trace request flow (#380)
         public const string CORRELATION_ID = "CORRELATION-ID";
     }
 }
