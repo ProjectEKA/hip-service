@@ -60,7 +60,7 @@ namespace In.ProjectEKA.HipService.Consent
                     new ConsentUpdateResponse(ConsentUpdateStatus.OK.ToString(), notification.ConsentId),
                     null,
                     new Resp(consentArtefact.RequestId));
-                await gatewayClient.SendDataToGateway(PATH_CONSENT_ON_NOTIFY, gatewayResponse, cmSuffix);
+                await gatewayClient.SendDataToGateway(PATH_CONSENT_ON_NOTIFY, gatewayResponse, cmSuffix, correlationId);
             }
             else
             {
