@@ -30,10 +30,11 @@ namespace In.ProjectEKA.HipService.DataFlow
         [Route("health-information/request")]
         public async Task<ActionResult> HealthInformationRequestFor(
             [FromBody] HealthInformationRequest healthInformationRequest,
+            [FromHeader(Name = CORRELATION_ID)] string correlationId,
             [FromHeader(Name = "X-GatewayID")] string consentManagerId)
         {
             var (healthInformationResponse, error) = await dataFlow
-                .HealthInformationRequestFor(healthInformationRequest, consentManagerId);
+                .HealthInformationRequestFor(healthInformationRequest, consentManagerId, correlationId);
             return error != null ? ServerResponseFor(error) : Ok(healthInformationResponse);
         }
 
@@ -104,7 +105,7 @@ namespace In.ProjectEKA.HipService.DataFlow
                     hiRequest.DateRange,
                     hiRequest.DataPushUrl,
                     hiRequest.KeyMaterial);
-                var (_, error) = await dataFlow.HealthInformationRequestFor(request, gatewayId);
+                var (_, error) = await dataFlow.HealthInformationRequestFor(request, gatewayId, correlationId);
                 GatewayDataFlowRequestResponse gatewayResponse;
                 if (error != null)
                 {
