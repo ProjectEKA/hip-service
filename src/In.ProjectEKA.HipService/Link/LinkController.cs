@@ -36,21 +36,25 @@ namespace In.ProjectEKA.HipService.Link
         }
 
         [HttpPost(PATH_LINKS_LINK_INIT)]
-        public AcceptedResult LinkFor(LinkReferenceRequest request)
+        public AcceptedResult LinkFor(
+            [FromHeader(Name = CORRELATION_ID)] string correlationId,
+            [FromBody] LinkReferenceRequest request)
         {
-            backgroundJob.Enqueue(() => LinkPatient(request));
+            backgroundJob.Enqueue(() => LinkPatient(request, correlationId));
             return Accepted();
         }
 
         [HttpPost(PATH_LINKS_LINK_CONFIRM)]
-        public AcceptedResult LinkPatientFor(LinkPatientRequest request)
+        public AcceptedResult LinkPatientFor( 
+            [FromHeader(Name = CORRELATION_ID)] string correlationId,
+            [FromBody] LinkPatientRequest request)
         {
-            backgroundJob.Enqueue(() => LinkPatientCareContextFor(request));
+            backgroundJob.Enqueue(() => LinkPatientCareContextFor(request, correlationId));
             return Accepted();
         }
 
         [NonAction]
-        public async Task LinkPatient(LinkReferenceRequest request)
+        public async Task LinkPatient(LinkReferenceRequest request, string correlationId)
         {
             var cmUserId = request.Patient.Id;
             var cmSuffix = cmUserId.Substring(
@@ -90,7 +94,7 @@ namespace In.ProjectEKA.HipService.Link
                     DateTime.Now.ToUniversalTime(),
                     Guid.NewGuid());
 
-                await gatewayClient.SendDataToGateway(PATH_ON_LINK_INIT, response, cmSuffix);
+                await gatewayClient.SendDataToGateway(PATH_ON_LINK_INIT, response, cmSuffix, correlationId);
             }
             catch (Exception exception)
             {
@@ -99,7 +103,7 @@ namespace In.ProjectEKA.HipService.Link
         }
 
         [NonAction]
-        public async Task LinkPatientCareContextFor(LinkPatientRequest request)
+        public async Task LinkPatientCareContextFor(LinkPatientRequest request, String correlationId)
         {
             try
             {
@@ -116,7 +120,7 @@ namespace In.ProjectEKA.HipService.Link
                     linkedPatientRepresentation,
                     error?.Error,
                     new Resp(request.RequestId));
-                await gatewayClient.SendDataToGateway(PATH_ON_LINK_CONFIRM, response, cmId);
+                await gatewayClient.SendDataToGateway(PATH_ON_LINK_CONFIRM, response, cmId, correlationId);
             }
             catch (Exception exception)
             {

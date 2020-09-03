@@ -1,3 +1,5 @@
+using Hl7.Fhir.Model;
+
 namespace In.ProjectEKA.HipServiceTest.DataFlow
 {
     using System;
@@ -54,11 +56,12 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                 healthInformationRequest.KeyMaterial);
             var request = new PatientHealthInformationRequest(transactionId, requestId, It.IsAny<DateTime>(), hiRequest);
             var expectedResponse = new HealthInformationTransactionResponse(transactionId);
-            dataFlow.Setup(d => d.HealthInformationRequestFor(healthInformationRequest, gatewayId))
+            var correlationId = Uuid.Generate().ToString();
+            dataFlow.Setup(d => d.HealthInformationRequestFor(healthInformationRequest, gatewayId, correlationId))
                 .ReturnsAsync(
                     new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(expectedResponse, null));
 
-            var response = patientDataFlowController.HealthInformationRequestFor(request, gatewayId);
+            var response = patientDataFlowController.HealthInformationRequestFor(request, gatewayId, correlationId );
             backgroundJobClient.Verify(client => client.Create(
                 It.Is<Job>(job => job.Method.Name == "HealthInformationOf" && job.Args[0] == request),
                 It.IsAny<EnqueuedState>()));
@@ -79,15 +82,16 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                 healthInformationRequest.KeyMaterial);
             var request = new PatientHealthInformationRequest(transactionId, requestId, It.IsAny<DateTime>(), hiRequest);
             var expectedResponse = new HealthInformationTransactionResponse(transactionId);
-            dataFlow.Setup(d => d.HealthInformationRequestFor(healthInformationRequest, gatewayId))
+            var correlationId = Uuid.Generate().ToString();
+            dataFlow.Setup(d => d.HealthInformationRequestFor(healthInformationRequest, gatewayId, correlationId))
                 .ReturnsAsync(
                     new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(expectedResponse, null));
             gatewayClient.Setup(
                 client =>
                     client.SendDataToGateway(PATH_HEALTH_INFORMATION_ON_REQUEST,
-                        It.IsAny<GatewayDataFlowRequestResponse>(), "ncg"));
+                        It.IsAny<GatewayDataFlowRequestResponse>(), "ncg", correlationId));
 
-            await patientDataFlowController.HealthInformationOf(request, gatewayId);
+            await patientDataFlowController.HealthInformationOf(request, correlationId, gatewayId);
 
             gatewayClient.Verify();
             dataFlow.Verify();

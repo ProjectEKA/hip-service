@@ -23,7 +23,7 @@ namespace In.ProjectEKA.HipService.Gateway
             configuration = gatewayConfiguration;
         }
 
-        public virtual async Task<Option<string>> Authenticate()
+        public virtual async Task<Option<string>> Authenticate(String correlationId)
         {
             try
             {
@@ -45,7 +45,8 @@ namespace In.ProjectEKA.HipService.Gateway
                     Method = HttpMethod.Post,
                     Content = new StringContent(json, Encoding.UTF8, MediaTypeNames.Application.Json)
                 };
-
+                if (correlationId != null)
+                    message.Headers.Add(Constants.CORRELATION_ID, correlationId);
                 var responseMessage = await httpClient.SendAsync(message).ConfigureAwait(false);
                 var response = await responseMessage.Content.ReadAsStringAsync();
 
@@ -68,22 +69,22 @@ namespace In.ProjectEKA.HipService.Gateway
             }
         }
 
-        public virtual async Task SendDataToGateway<T>(string urlPath, T response, string cmSuffix)
+        public virtual async Task SendDataToGateway<T>(string urlPath, T response, string cmSuffix, string correlationId)
         {
-            await PostTo(configuration.Url + urlPath, response, cmSuffix).ConfigureAwait(false);
+            await PostTo(configuration.Url + urlPath, response, cmSuffix, correlationId).ConfigureAwait(false);
         }
 
-        private async Task PostTo<T>(string gatewayUrl, T representation, string cmSuffix)
+        private async Task PostTo<T>(string gatewayUrl, T representation, string cmSuffix, string correlationId)
         {
             try
             {
-                var token = await Authenticate().ConfigureAwait(false);
+                var token = await Authenticate(correlationId).ConfigureAwait(false);
                 token.MatchSome(async accessToken =>
                 {
                     try
                     {
                         await httpClient
-                            .SendAsync(CreateHttpRequest(gatewayUrl, representation, accessToken, cmSuffix))
+                            .SendAsync(CreateHttpRequest(gatewayUrl, representation, accessToken, cmSuffix, correlationId))
                             .ConfigureAwait(false);
                     }
                     catch (Exception exception)

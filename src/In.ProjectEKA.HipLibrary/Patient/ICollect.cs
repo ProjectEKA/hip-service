@@ -6,6 +6,6 @@ namespace In.ProjectEKA.HipLibrary.Patient
 
     public interface ICollect
     {
-        Task<Option<Entries>> CollectData(DataRequest dataRequest);
+        Task<Option<Entries>> CollectData(TraceableDataRequest dataRequest);
     }
 }

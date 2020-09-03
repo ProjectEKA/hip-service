@@ -24,7 +24,7 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
             this.careContextMapFile = careContextMapFile;
         }
 
-        public async Task<Option<Entries>> CollectData(DataRequest dataRequest)
+        public async Task<Option<Entries>> CollectData(TraceableDataRequest dataRequest)
         {
             var bundles = new List<CareBundle>();
             var patientData = FindPatientData(dataRequest);
@@ -68,7 +68,7 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
             return aDateTime;
         }
 
-        private Dictionary<string, List<string>> FindPatientData(DataRequest request)
+        private Dictionary<string, List<string>> FindPatientData(TraceableDataRequest request)
         {
             try
             {
@@ -111,7 +111,7 @@ namespace In.ProjectEKA.DefaultHip.DataFlow
             return new Dictionary<string, List<string>>();
         }
 
-        private static void LogDataRequest(DataRequest request)
+        private static void LogDataRequest(TraceableDataRequest request)
         {
             var ccList = JsonConvert.SerializeObject(request.CareContexts);
             var requestedHiTypes = string.Join(", ", request.HiType.Select(hiType => hiType.ToString()));

@@ -30,10 +30,11 @@ namespace In.ProjectEKA.HipService.DataFlow
         [Route("health-information/request")]
         public async Task<ActionResult> HealthInformationRequestFor(
             [FromBody] HealthInformationRequest healthInformationRequest,
+            [FromHeader(Name = CORRELATION_ID)] string correlationId,
             [FromHeader(Name = "X-GatewayID")] string consentManagerId)
         {
             var (healthInformationResponse, error) = await dataFlow
-                .HealthInformationRequestFor(healthInformationRequest, consentManagerId);
+                .HealthInformationRequestFor(healthInformationRequest, consentManagerId, correlationId);
             return error != null ? ServerResponseFor(error) : Ok(healthInformationResponse);
         }
 
@@ -84,16 +85,17 @@ namespace In.ProjectEKA.HipService.DataFlow
 
         [HttpPost(PATH_HEALTH_INFORMATION_HIP_REQUEST)]
         public AcceptedResult HealthInformationRequestFor(PatientHealthInformationRequest healthInformationRequest,
+            [FromHeader(Name = CORRELATION_ID)] string correlationId, 
             [FromHeader(Name = "X-GatewayID")] string gatewayId)
         {
             logger.Log(LogLevel.Information, LogEvents.DataFlow, "Data request received");
-            backgroundJob.Enqueue(() => HealthInformationOf(healthInformationRequest, gatewayId));
+            backgroundJob.Enqueue(() => HealthInformationOf(healthInformationRequest, gatewayId, correlationId));
             return Accepted();
         }
 
         [NonAction]
         public async Task HealthInformationOf(PatientHealthInformationRequest healthInformationRequest,
-            string gatewayId)
+            string gatewayId, string correlationId)
         {
             try
             {
@@ -103,7 +105,7 @@ namespace In.ProjectEKA.HipService.DataFlow
                     hiRequest.DateRange,
                     hiRequest.DataPushUrl,
                     hiRequest.KeyMaterial);
-                var (_, error) = await dataFlow.HealthInformationRequestFor(request, gatewayId);
+                var (_, error) = await dataFlow.HealthInformationRequestFor(request, gatewayId, correlationId);
                 GatewayDataFlowRequestResponse gatewayResponse;
                 if (error != null)
                 {
@@ -135,7 +137,7 @@ namespace In.ProjectEKA.HipService.DataFlow
                 }
                 await gatewayClient.SendDataToGateway(PATH_HEALTH_INFORMATION_ON_REQUEST,
                     gatewayResponse,
-                    gatewayConfiguration.CmSuffix);
+                    gatewayConfiguration.CmSuffix, correlationId);
             }
             catch (Exception exception)
             {

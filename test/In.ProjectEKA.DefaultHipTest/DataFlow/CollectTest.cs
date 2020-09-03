@@ -1,3 +1,4 @@
+using Hl7.Fhir.Model;
 using Hl7.Fhir.Utility;
 
 namespace In.ProjectEKA.DefaultHipTest.DataFlow
@@ -38,7 +39,7 @@ namespace In.ProjectEKA.DefaultHipTest.DataFlow
                 HiType.DischargeSummary,
                 HiType.OPConsultation
             };
-            var dataRequest = new DataRequest(grantedContexts,
+            var traceableDataRequest = new TraceableDataRequest(grantedContexts,
                 dateRange,
                 "/someUrl",
                 hiTypes,
@@ -46,9 +47,10 @@ namespace In.ProjectEKA.DefaultHipTest.DataFlow
                 null,
                 consentManagerId,
                 consentId,
-                "sometext");
+                "sometext",
+                Uuid.Generate().ToString());
 
-            var entries = await collect.CollectData(dataRequest);
+            var entries = await collect.CollectData(traceableDataRequest);
             entries.ValueOrDefault().CareBundles.Count().Should().Be(18);
         }
 
@@ -73,7 +75,7 @@ namespace In.ProjectEKA.DefaultHipTest.DataFlow
                 HiType.Prescription,
                 HiType.DischargeSummary
             };
-            var dataRequest = new DataRequest(grantedContexts,
+            var traceableDataRequest = new TraceableDataRequest(grantedContexts,
                 dateRange,
                 "/someUrl",
                 hiTypes,
@@ -81,9 +83,10 @@ namespace In.ProjectEKA.DefaultHipTest.DataFlow
                 null,
                 consentManagerId,
                 consentId,
-                "sometext");
+                "sometext",
+                Uuid.Generate().ToString());
 
-            var entries = await collect.CollectData(dataRequest);
+            var entries = await collect.CollectData(traceableDataRequest);
             entries.ValueOrDefault().CareBundles.Count().Should().Be(17);
         }
     }

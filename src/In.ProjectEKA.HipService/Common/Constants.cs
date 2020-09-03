@@ -27,5 +27,7 @@ namespace In.ProjectEKA.HipService.Common
                                                                                "/health-information/notify";
 
         public static readonly string PATH_AUTH_CONFIRM = "/" + CURRENT_VERSION + "/users/auth/confirm";
+
+        public const string CORRELATION_ID = "CORRELATION-ID";
     }
 }
