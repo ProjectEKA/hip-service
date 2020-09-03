@@ -1,3 +1,5 @@
+using In.ProjectEKA.HipLibrary.Patient.Model;
+
 namespace In.ProjectEKA.HipService.DataFlow
 {
     using System.Threading.Tasks;
@@ -19,7 +21,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             this.dataEntryFactory = dataEntryFactory;
         }
 
-        public async Task HandleDataFlowMessage(HipLibrary.Patient.Model.DataRequest dataRequest)
+        public async Task HandleDataFlowMessage(TraceableDataRequest dataRequest)
         {
             var sentKeyMaterial = dataRequest.KeyMaterial;
             var data = await collect.CollectData(dataRequest).ConfigureAwait(false);

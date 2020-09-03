@@ -52,9 +52,11 @@ namespace In.ProjectEKA.HipService.Link
         /// <response code="202">Request accepted</response>
         [HttpPost(PATH_LINKS_LINK_INIT)]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
-        public AcceptedResult LinkFor([FromBody, BindRequired] LinkReferenceRequest request)
+        public AcceptedResult LinkFor(
+            [FromHeader(Name = CORRELATION_ID)] string correlationId,
+            [FromBody] LinkReferenceRequest request)
         {
-            backgroundJob.Enqueue(() => LinkPatient(request));
+            backgroundJob.Enqueue(() => LinkPatient(request, correlationId));
             return Accepted();
         }
 
@@ -72,14 +74,16 @@ namespace In.ProjectEKA.HipService.Link
         /// <response code="202">Request accepted</response>
         [HttpPost(PATH_LINKS_LINK_CONFIRM)]
         [ProducesResponseType(StatusCodes.Status202Accepted)]
-        public AcceptedResult LinkPatientFor([FromBody, BindRequired] LinkPatientRequest request)
+        public AcceptedResult LinkPatientFor( 
+            [FromHeader(Name = CORRELATION_ID)] string correlationId,
+            [FromBody] LinkPatientRequest request)
         {
-            backgroundJob.Enqueue(() => LinkPatientCareContextFor(request));
+            backgroundJob.Enqueue(() => LinkPatientCareContextFor(request, correlationId));
             return Accepted();
         }
 
         [NonAction]
-        public async Task LinkPatient(LinkReferenceRequest request)
+        public async Task LinkPatient(LinkReferenceRequest request, string correlationId)
         {
             var cmUserId = request.Patient.Id;
             var cmSuffix = cmUserId.Substring(
@@ -123,7 +127,7 @@ namespace In.ProjectEKA.HipService.Link
                     DateTime.Now.ToUniversalTime(),
                     Guid.NewGuid());
 
-                await gatewayClient.SendDataToGateway(PATH_ON_LINK_INIT, response, cmSuffix);
+                await gatewayClient.SendDataToGateway(PATH_ON_LINK_INIT, response, cmSuffix, correlationId);
             }
             catch (Exception exception)
             {
@@ -132,7 +136,7 @@ namespace In.ProjectEKA.HipService.Link
         }
 
         [NonAction]
-        public async Task LinkPatientCareContextFor(LinkPatientRequest request)
+        public async Task LinkPatientCareContextFor(LinkPatientRequest request, String correlationId)
         {
             try
             {
@@ -150,9 +154,8 @@ namespace In.ProjectEKA.HipService.Link
                     DateTime.Now.ToUniversalTime(),
                     linkedPatientRepresentation,
                     error?.Error,
-                    new Resp(request.RequestId)
-                );
-                await gatewayClient.SendDataToGateway(PATH_ON_LINK_CONFIRM, response, cmId);
+                    new Resp(request.RequestId));
+                await gatewayClient.SendDataToGateway(PATH_ON_LINK_CONFIRM, response, cmId, correlationId);
             }
             catch(Exception exception)
             {

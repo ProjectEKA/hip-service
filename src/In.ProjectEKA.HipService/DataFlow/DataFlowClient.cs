@@ -26,7 +26,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             this.gatewayConfiguration = gatewayConfiguration;
         }
 
-        public virtual async Task SendDataToHiu(HipLibrary.Patient.Model.DataRequest dataRequest,
+        public virtual async Task SendDataToHiu(TraceableDataRequest dataRequest,
             IEnumerable<Entry> data,
             KeyMaterial keyMaterial)
         {
@@ -34,14 +34,16 @@ namespace In.ProjectEKA.HipService.DataFlow
                 dataRequest.DataPushUrl,
                 dataRequest.CareContexts,
                 new DataResponse(dataRequest.TransactionId, data, keyMaterial),
-                dataRequest.CmSuffix).ConfigureAwait(false);
+                dataRequest.CmSuffix,
+                dataRequest.CorrelationId).ConfigureAwait(false);
         }
 
         private async Task PostTo(string consentId,
             string dataPushUrl,
             IEnumerable<GrantedContext> careContexts,
             DataResponse dataResponse,
-            string cmSuffix)
+            string cmSuffix,
+            string correlationId)
         {
             var grantedContexts = careContexts as GrantedContext[] ?? careContexts.ToArray();
             var hiStatus = HiStatus.DELIVERED;
@@ -50,7 +52,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             try
             {
                 // TODO: Need to handle non 2xx response also
-                await httpClient.SendAsync(CreateHttpRequest(dataPushUrl, dataResponse)).ConfigureAwait(false);
+                await httpClient.SendAsync(CreateHttpRequest(dataPushUrl, dataResponse, correlationId)).ConfigureAwait(false);
             }
             catch (Exception exception)
             {
@@ -73,7 +75,7 @@ namespace In.ProjectEKA.HipService.DataFlow
                     new StatusNotification(sessionStatus, gatewayConfiguration.ClientId, statusResponses),
                     consentId,
                     Guid.NewGuid());
-                await GetDataNotificationRequest(dataNotificationRequest, cmSuffix).ConfigureAwait(false);
+                await GetDataNotificationRequest(dataNotificationRequest, cmSuffix, correlationId).ConfigureAwait(false);
             }
             catch (Exception ex)
             {
@@ -82,9 +84,10 @@ namespace In.ProjectEKA.HipService.DataFlow
         }
 
         private async Task GetDataNotificationRequest(DataNotificationRequest dataNotificationRequest,
-            string cmSuffix)
+            string cmSuffix,
+            string correlationId)
         {
-            await dataFlowNotificationClient.NotifyGateway(cmSuffix, dataNotificationRequest);
+            await dataFlowNotificationClient.NotifyGateway(cmSuffix, dataNotificationRequest, correlationId);
         }
     }
 }

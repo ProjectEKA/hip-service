@@ -1,3 +1,5 @@
+using Hl7.Fhir.Model;
+
 namespace In.ProjectEKA.HipServiceTest.Gateway
 {
     using System;
@@ -46,6 +48,7 @@ namespace In.ProjectEKA.HipServiceTest.Gateway
             var gatewayClient = new GatewayClient(httpClient, gatewayConfiguration);
             var definition = new {accessToken = "Whatever", tokenType = "Bearer"};
             var result = JsonConvert.SerializeObject(definition);
+            var correlationId = Uuid.Generate().ToString();
             handlerMock
                 .Protected()
                 .Setup<Task<HttpResponseMessage>>(
@@ -61,7 +64,7 @@ namespace In.ProjectEKA.HipServiceTest.Gateway
                     StatusCode = HttpStatusCode.OK
                 }));
 
-            gatewayClient.SendDataToGateway(PATH_ON_DISCOVER, gatewayDiscoveryRepresentation, "ncg");
+            gatewayClient.SendDataToGateway(PATH_ON_DISCOVER, gatewayDiscoveryRepresentation, "ncg", correlationId);
 
             handlerMock.Protected().Verify(
                 "SendAsync",
@@ -97,6 +100,7 @@ namespace In.ProjectEKA.HipServiceTest.Gateway
                 null,
                 new DiscoveryResponse("requestId", HttpStatusCode.OK, "uselessMessage"));
             var gatewayClient = new GatewayClient(httpClient, gatewayConfiguration);
+            var correlationId = Uuid.Generate().ToString();
             handlerMock
                 .Protected()
                 .Setup<Task<HttpResponseMessage>>(
@@ -109,7 +113,7 @@ namespace In.ProjectEKA.HipServiceTest.Gateway
                 })
                 .Verifiable();
 
-            gatewayClient.SendDataToGateway(PATH_ON_DISCOVER, gatewayDiscoveryRepresentation, "ncg");
+            gatewayClient.SendDataToGateway(PATH_ON_DISCOVER, gatewayDiscoveryRepresentation, "ncg", correlationId);
 
             handlerMock.Protected().Verify(
                 "SendAsync",
@@ -126,6 +130,7 @@ namespace In.ProjectEKA.HipServiceTest.Gateway
             var httpClient = new HttpClient(handlerMock.Object);
             const string rootRul = "http://someUrl";
             var expectedUri = new Uri($"{rootRul}/{PATH_SESSIONS}");
+            var correlationId = Uuid.Generate().ToString();
             var configuration = new GatewayConfiguration
             {
                 Url = rootRul,
@@ -148,7 +153,7 @@ namespace In.ProjectEKA.HipServiceTest.Gateway
 
             var client = new GatewayClient(httpClient, configuration);
 
-            var result = await client.Authenticate();
+            var result = await client.Authenticate(correlationId);
 
             result.HasValue.Should().BeTrue();
             result.MatchSome(token => token.Should().BeEquivalentTo("bearer token"));
@@ -176,6 +181,7 @@ namespace In.ProjectEKA.HipServiceTest.Gateway
                 ClientSecret = TestBuilder.RandomString()
             };
             var response = JsonConvert.SerializeObject(new {error = "some failure happened"});
+            var correlationId = Uuid.Generate().ToString();
             handlerMock
                 .Protected()
                 .Setup<Task<HttpResponseMessage>>(
@@ -191,7 +197,7 @@ namespace In.ProjectEKA.HipServiceTest.Gateway
 
             var client = new GatewayClient(httpClient, configuration);
 
-            var result = await client.Authenticate();
+            var result = await client.Authenticate(correlationId);
 
             result.HasValue.Should().BeFalse();
             handlerMock.Protected().Verify(
@@ -208,8 +214,9 @@ namespace In.ProjectEKA.HipServiceTest.Gateway
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
             var httpClient = new HttpClient(handlerMock.Object);
             var gatewayClient = new GatewayClient(httpClient, null);
+            var correlationId = Uuid.Generate().ToString();
 
-            var result = await gatewayClient.Authenticate();
+            var result = await gatewayClient.Authenticate(correlationId);
 
             result.HasValue.Should().BeFalse();
             handlerMock.Protected().Verify(

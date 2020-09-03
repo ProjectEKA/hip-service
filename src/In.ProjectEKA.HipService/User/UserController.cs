@@ -7,6 +7,7 @@ namespace In.ProjectEKA.HipService.User
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.Extensions.Logging;
     using Newtonsoft.Json.Linq;
+    using static Common.Constants;
 
     [ApiController]
     public class UserController : ControllerBase
@@ -24,9 +25,11 @@ namespace In.ProjectEKA.HipService.User
         }
 
         [HttpPost(Constants.AUTH_CONFIRM)]
-        public AcceptedResult authConfirm(JObject request)
+        public AcceptedResult authConfirm( 
+            [FromHeader(Name = CORRELATION_ID)] string correlationId, 
+            [FromBody] JObject request)
         {
-            backgroundJob.Enqueue(() => AuthFor(request));
+            backgroundJob.Enqueue(() => AuthFor(request, correlationId));
             return Accepted();
         }
 
@@ -38,9 +41,9 @@ namespace In.ProjectEKA.HipService.User
         }
 
         [NonAction]
-        public async Task AuthFor(JObject request)
+        public async Task AuthFor(JObject request, string correlationId)
         {
-            await gatewayClient.SendDataToGateway(Constants.PATH_AUTH_CONFIRM, request, "ncg")
+            await gatewayClient.SendDataToGateway(Constants.PATH_AUTH_CONFIRM, request, "ncg", correlationId)
                 .ConfigureAwait(false);
         }
 

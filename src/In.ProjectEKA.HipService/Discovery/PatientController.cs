@@ -39,37 +39,20 @@
             this.backgroundJob = backgroundJob;
             this.logger = logger;
         }
-
-        /// <summary>
-        /// Discover patient's accounts
-        /// </summary>
-        /// <remarks>
-        /// Return only one patient record with (potentially masked) associated care contexts
-        /// 1. At least one of the verified identifier matches.
-        /// 2. Filter out records using unverified, firstName, secondName, gender and dob
-        /// if there are more than one patient records found from step 1.
-        /// 3. Store the discover request entry with transactionId and care contexts discovered for a given request
-        /// </remarks>
-        /// <response code="202">Request accepted</response>
-        [HttpPost]
-        [Consumes("application/json")]
-        [Produces("application/json")]
-        [ProducesResponseType(StatusCodes.Status202Accepted)]
-        public ActionResult DiscoverPatientCareContexts([FromBody, BindRequired] DiscoveryRequest request)
+        
+        [HttpPost(PATH_CARE_CONTEXTS_DISCOVER)]
+        public AcceptedResult DiscoverPatientCareContexts(
+            [FromHeader(Name = CORRELATION_ID)] string correlationId, 
+            [FromBody] DiscoveryRequest request)
         {
             logger.LogInformation(LogEvents.Discovery, "discovery request received for {Id} with {RequestId}",
                 request.Patient.Id, request.RequestId);
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            backgroundJob.Enqueue(() => GetPatientCareContext(request));
+            backgroundJob.Enqueue(() => GetPatientCareContext(request, correlationId));
             return Accepted();
         }
 
         [NonAction]
-        public async Task GetPatientCareContext(DiscoveryRequest request)
+        public async Task GetPatientCareContext(DiscoveryRequest request, string correlationId)
         {
             var patientId = request.Patient.Id;
             var cmSuffix = patientId.Substring(patientId.LastIndexOf("@", StringComparison.Ordinal) + 1);
@@ -86,7 +69,7 @@
                     "Response about to be send for {RequestId} with {@Patient}",
                     request.RequestId,
                     response?.Patient);
-                await gatewayClient.SendDataToGateway(PATH_ON_DISCOVER, gatewayDiscoveryRepresentation, cmSuffix);
+                await gatewayClient.SendDataToGateway(PATH_ON_DISCOVER, gatewayDiscoveryRepresentation, cmSuffix, correlationId);
             }
             catch (Exception exception)
             {
@@ -97,7 +80,7 @@
                     request.TransactionId, //TODO: should be reading transactionId from contract
                     new Error(ErrorCode.ServerInternalError, "Unreachable external service"),
                     new DiscoveryResponse(request.RequestId, HttpStatusCode.InternalServerError, "Unreachable external service"));
-                await gatewayClient.SendDataToGateway(PATH_ON_DISCOVER, gatewayDiscoveryRepresentation, cmSuffix);
+                await gatewayClient.SendDataToGateway(PATH_ON_DISCOVER, gatewayDiscoveryRepresentation, cmSuffix,correlationId);
                 logger.LogError(LogEvents.Discovery, exception, "Error happened for {RequestId}", request.RequestId);
             }
         }
