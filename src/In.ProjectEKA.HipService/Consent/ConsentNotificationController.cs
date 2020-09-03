@@ -53,6 +53,14 @@ namespace In.ProjectEKA.HipService.Consent
                     notification.Status,
                     notification.ConsentId);
                 await consentRepository.AddAsync(consent);
+                var cmSuffix = consent.ConsentArtefact.ConsentManager.Id;
+                var gatewayResponse = new GatewayConsentRepresentation(
+                    Guid.NewGuid(),
+                    DateTime.Now.ToUniversalTime(),
+                    new ConsentUpdateResponse(ConsentUpdateStatus.OK.ToString(), notification.ConsentId),
+                    null,
+                    new Resp(consentArtefact.RequestId));
+                await gatewayClient.SendDataToGateway(PATH_CONSENT_ON_NOTIFY, gatewayResponse, cmSuffix);
             }
             else
             {
@@ -61,7 +69,7 @@ namespace In.ProjectEKA.HipService.Consent
                 {
                     var consent = await consentRepository.GetFor(notification.ConsentId);
                     var cmSuffix = consent.ConsentArtefact.ConsentManager.Id;
-                    var gatewayResponse = new GatewayRevokedConsentRepresentation(
+                    var gatewayResponse = new GatewayConsentRepresentation(
                         Guid.NewGuid(),
                         DateTime.Now.ToUniversalTime(),
                         new ConsentUpdateResponse(ConsentUpdateStatus.OK.ToString(), notification.ConsentId),
