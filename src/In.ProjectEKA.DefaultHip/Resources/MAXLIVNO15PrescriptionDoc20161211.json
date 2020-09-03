@@ -1,0 +1,171 @@
+{
+  "resourceType": "Bundle",
+  "id": "460a66f2-b4dc-4a2a-b2c1-e7c2e8693cca",
+  "meta": {
+    "lastUpdated": "2016-12-11T00:00:00.000+05:30"
+  },
+  "identifier": {
+    "system": "https://www.max.in/bundle",
+    "value": "460a66f2-b4dc-4a2a-b2c1-e7c2e8693cca"
+  },
+  "type": "document",
+  "timestamp": "2016-12-11T00:00:00.000+05:30",
+  "entry": [
+    {
+      "fullUrl": "Composition/b6a05ad8-5996-4755-bdce-799eacf2367c",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "b6a05ad8-5996-4755-bdce-799eacf2367c",
+        "identifier": {
+          "system": "https://www.max.in/document",
+          "value": "b6a05ad8-5996-4755-bdce-799eacf2367c"
+        },
+        "status": "final",
+        "type": {
+          "coding": [
+            {
+              "system": "https://projecteka.in/sct",
+              "code": "440545006",
+              "display": "Prescription record"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/LIVNO15"
+        },
+        "encounter": {
+          "reference": "Encounter/588923ab-1f73-4770-b72c-fd37005873dd"
+        },
+        "date": "2016-12-11T00:00:00.605+05:30",
+        "author": [
+          {
+            "reference": "Practitioner/MAX191101"
+          }
+        ],
+        "title": "Prescription",
+        "section": [
+          {
+            "title": "OPD Prescription",
+            "code": {
+              "coding": [
+                {
+                  "system": "https://projecteka.in/sct",
+                  "code": "440545006",
+                  "display": "Prescription record"
+                }
+              ]
+            },
+            "entry": [
+              {
+                "reference": "MedicationRequest/c238c9ec-69c7-462e-afab-1e3369ed486a"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Practitioner/MAX191101",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "MAX191101",
+        "identifier": [
+          {
+            "system": "https://www.mciindia.in/doctor",
+            "value": "MAX191101"
+          }
+        ],
+        "name": [
+          {
+            "text": "Akshatha M K",
+            "prefix": [
+              "Dr"
+            ],
+            "suffix": [
+              "MD"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Patient/LIVNO15",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "LIVNO15",
+        "name": [
+          {
+            "text": "Alex Oxlade"
+          }
+        ],
+        "gender": "male"
+      }
+    },
+    {
+      "fullUrl": "Encounter/588923ab-1f73-4770-b72c-fd37005873dd",
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "588923ab-1f73-4770-b72c-fd37005873dd",
+        "status": "finished",
+        "class": {
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+          "code": "AMB",
+          "display": "Outpatient visit"
+        },
+        "subject": {
+          "reference": "Patient/LIVNO15"
+        },
+        "period": {
+          "start": "2016-12-11T00:00:00+05:30"
+        }
+      }
+    },
+    {
+      "fullUrl": "Condition/485bd424-d6c8-4d3e-a655-299b53edcb17",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "485bd424-d6c8-4d3e-a655-299b53edcb17",
+        "code": {
+          "text": "ear inflection"
+        },
+        "subject": {
+          "reference": "Patient/LIVNO15"
+        }
+      }
+    },
+    {
+      "fullUrl": "MedicationRequest/c238c9ec-69c7-462e-afab-1e3369ed486a",
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "c238c9ec-69c7-462e-afab-1e3369ed486a",
+        "status": "active",
+        "intent": "order",
+        "medicationCodeableConcept": {
+          "text": "azithromycin 500mg"
+        },
+        "subject": {
+          "reference": "Patient/LIVNO15"
+        },
+        "authoredOn": "2016-12-11T00:00:00+05:30",
+        "requester": {
+          "reference": "Practitioner/MAX191101"
+        },
+        "reasonReference": [
+          {
+            "reference": "Condition/485bd424-d6c8-4d3e-a655-299b53edcb17"
+          }
+        ],
+        "note": [
+          {
+            "text": "Do not discontinue"
+          }
+        ],
+        "dosageInstruction": [
+          {
+            "text": "1 capsule 2 times a day"
+          }
+        ]
+      }
+    }
+  ]
+}
