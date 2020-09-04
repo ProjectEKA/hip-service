@@ -88,14 +88,14 @@ namespace In.ProjectEKA.TMHHipTest.DataFlow
             {
                 HiType.Observation
             };
-            var dataRequest = new DataRequest(grantedContexts,
+            var dataRequest = new TraceableDataRequest(grantedContexts,
                 dateRange,
                 "/someUrl",
                 hiTypes,
                 "someTxnId",
                 null,
                 consentManagerId,
-                consentId, "ncg");
+                consentId, "ncg","correlationId");
 
             var entries = await collect.CollectData(dataRequest);
             entries.ValueOrDefault().CareBundles.Count().Should().Be(1);
@@ -176,14 +176,14 @@ namespace In.ProjectEKA.TMHHipTest.DataFlow
             {
                 HiType.DiagnosticReport
             };
-            var dataRequest = new DataRequest(grantedContexts,
+            var dataRequest = new TraceableDataRequest(grantedContexts,
                 dateRange,
                 "/someUrl",
                 hiTypes,
                 "someTxnId",
                 null,
                 consentManagerId,
-                consentId, "ncg");
+                consentId, "ncg","correlationId");
 
             var entries = await collect.CollectData(dataRequest);
             entries.ValueOrDefault().CareBundles.Count().Should().Be(1);
@@ -263,14 +263,14 @@ namespace In.ProjectEKA.TMHHipTest.DataFlow
             {
                 HiType.DiagnosticReport
             };
-            var dataRequest = new DataRequest(grantedContexts,
+            var dataRequest = new TraceableDataRequest(grantedContexts,
                 dateRange,
                 "/someUrl",
                 hiTypes,
                 "someTxnId",
                 null,
                 consentManagerId,
-                consentId, "ncg");
+                consentId, "ncg","correlationId");
 
             var entries = await collect.CollectData(dataRequest);
             entries.ValueOrDefault().CareBundles.Count().Should().Be(1);
@@ -355,14 +355,14 @@ namespace In.ProjectEKA.TMHHipTest.DataFlow
             {
                 HiType.DiagnosticReport
             };
-            var dataRequest = new DataRequest(grantedContexts,
+            var dataRequest = new TraceableDataRequest(grantedContexts,
                 dateRange,
                 "/someUrl",
                 hiTypes,
                 "someTxnId",
                 null,
                 consentManagerId,
-                consentId, "ncg");
+                consentId, "ncg","correlationId");
 
             var entries = await collect.CollectData(dataRequest);
             entries.ValueOrDefault().CareBundles.Count().Should().Be(1);
@@ -439,14 +439,14 @@ namespace In.ProjectEKA.TMHHipTest.DataFlow
             {
                 HiType.Observation
             };
-            var dataRequest = new DataRequest(grantedContexts,
+            var dataRequest = new TraceableDataRequest(grantedContexts,
                 dateRange,
                 "/someUrl",
                 hiTypes,
                 "someTxnId",
                 null,
                 consentManagerId,
-                consentId, "ncg");
+                consentId, "ncg","correlationId");
 
             var entries = await collect.CollectData(dataRequest);
             entries.ValueOrDefault().CareBundles.Count().Should().Be(1);
@@ -525,14 +525,14 @@ namespace In.ProjectEKA.TMHHipTest.DataFlow
             {
                 HiType.Observation
             };
-            var dataRequest = new DataRequest(grantedContexts,
+            var dataRequest = new TraceableDataRequest(grantedContexts,
                 dateRange,
                 "/someUrl",
                 hiTypes,
                 "someTxnId",
                 null,
                 consentManagerId,
-                consentId, "ncg");
+                consentId, "ncg","correlationId");
 
             var entries = await collect.CollectData(dataRequest);
             entries.ValueOrDefault().CareBundles.Count().Should().Be(1);
@@ -610,14 +610,14 @@ namespace In.ProjectEKA.TMHHipTest.DataFlow
             {
                 HiType.Observation
             };
-            var dataRequest = new DataRequest(grantedContexts,
+            var dataRequest = new TraceableDataRequest(grantedContexts,
                 dateRange,
                 "/someUrl",
                 hiTypes,
                 "someTxnId",
                 null,
                 consentManagerId,
-                consentId, "ncg");
+                consentId, "ncg","correlationId");
 
             var entries = await collect.CollectData(dataRequest);
             entries.ValueOrDefault().CareBundles.Count().Should().Be(1);
@@ -697,14 +697,14 @@ namespace In.ProjectEKA.TMHHipTest.DataFlow
             {
                 HiType.Condition
             };
-            var dataRequest = new DataRequest(grantedContexts,
+            var dataRequest = new TraceableDataRequest(grantedContexts,
                 dateRange,
                 "/someUrl",
                 hiTypes,
                 "someTxnId",
                 null,
                 consentManagerId,
-                consentId, "ncg");
+                consentId, "ncg","correlationId");
 
             var entries = await collect.CollectData(dataRequest);
             entries.ValueOrDefault().CareBundles.Count().Should().Be(1);
@@ -782,14 +782,14 @@ namespace In.ProjectEKA.TMHHipTest.DataFlow
             {
                 HiType.Observation
             };
-            var dataRequest = new DataRequest(grantedContexts,
+            var dataRequest = new TraceableDataRequest(grantedContexts,
                 dateRange,
                 "/someUrl",
                 hiTypes,
                 "someTxnId",
                 null,
                 consentManagerId,
-                consentId, "@ncg");
+                consentId, "@ncg","correlationId");
 
             var entries = await collect.CollectData(dataRequest);
             entries.ValueOrDefault().CareBundles.Count().Should().Be(1);
@@ -868,14 +868,14 @@ namespace In.ProjectEKA.TMHHipTest.DataFlow
             {
                 HiType.MedicationRequest
             };
-            var dataRequest = new DataRequest(grantedContexts,
+            var dataRequest = new TraceableDataRequest(grantedContexts,
                 dateRange,
                 "/someUrl",
                 hiTypes,
                 "someTxnId",
                 null,
                 consentManagerId,
-                consentId, "@ncg");
+                consentId, "@ncg","correlationId");
 
             var entries = await collect.CollectData(dataRequest);
             entries.ValueOrDefault().CareBundles.Count().Should().Be(1);
@@ -957,14 +957,14 @@ namespace In.ProjectEKA.TMHHipTest.DataFlow
                 HiType.MedicationRequest,
                 HiType.Observation
             };
-            var dataRequest = new DataRequest(grantedContexts,
+            var dataRequest = new TraceableDataRequest(grantedContexts,
                 dateRange,
                 "/someUrl",
                 hiTypes,
                 "someTxnId",
                 null,
                 consentManagerId,
-                consentId, "@ncg");
+                consentId, "@ncg","correlationId");
 
             var entries = await collect.CollectData(dataRequest);
             entries.ValueOrDefault().CareBundles.Count().Should().Be(2);

@@ -36,7 +36,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
             this.client.Timeout = TimeSpan.FromSeconds(20);
         }
 
-        public async Task<Option<Entries>> CollectData(DataRequest dataRequest)
+        public async Task<Option<Entries>> CollectData(TraceableDataRequest dataRequest)
         {
             var parser = new FhirJsonParser();
             var careBundles = new List<CareBundle>();
@@ -161,7 +161,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
         }
 
         private static async Task<Option<DiagnosticReportResponse>> FetchDiagnosticReportImagesData(
-            DataRequest dataRequest, List<DiagnosticReportAsImage> diagnosticReportAsImages, string patientName)
+            TraceableDataRequest dataRequest, List<DiagnosticReportAsImage> diagnosticReportAsImages, string patientName)
         {
             LogDataRequest(dataRequest);
             var uuid = Uuid.Generate().Value;
@@ -247,7 +247,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
         }
 
         private static async Task<Option<DiagnosticReportResponse>> FetchDiagnosticReportPdfsData(
-            DataRequest dataRequest, List<DiagnosticReportAsPdf> diagnosticReportAsPdfs, string patientName)
+            TraceableDataRequest dataRequest, List<DiagnosticReportAsPdf> diagnosticReportAsPdfs, string patientName)
         {
             LogDataRequest(dataRequest);
             var uuid = Uuid.Generate().Value;
@@ -284,7 +284,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
             return Option.Some(diagnosticReportResponse);
         }
 
-        private static IEnumerable<CareBundle> ProcessObservationsData(DataRequest dataRequest,
+        private static IEnumerable<CareBundle> ProcessObservationsData(TraceableDataRequest dataRequest,
             PatientData tmhPatientData,
             string patientName)
         {
@@ -403,7 +403,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
         }
 
 
-        private static async Task<Option<MedicationResponse>> FindMedicationRequestData(DataRequest dataRequest,
+        private static async Task<Option<MedicationResponse>> FindMedicationRequestData(TraceableDataRequest dataRequest,
             List<Prescription> prescriptions, string patientName)
         {
             LogDataRequest(dataRequest);
@@ -466,7 +466,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
             return Option.Some(medicationResponse);
         }
 
-        private static async Task<Option<ObservationResponse>> FetchClinicalNotes(DataRequest dataRequest,
+        private static async Task<Option<ObservationResponse>> FetchClinicalNotes(TraceableDataRequest dataRequest,
             List<ClinicalNote> clinicalNotes, string patientName)
         {
             LogDataRequest(dataRequest);
@@ -497,7 +497,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
             return Option.Some(observationResponse);
         }
 
-        private static async Task<Option<ConditionResponse>> FetchSwellingSymptomData(DataRequest dataRequest,
+        private static async Task<Option<ConditionResponse>> FetchSwellingSymptomData(TraceableDataRequest dataRequest,
             List<SwellingSymptomData> swellingSymptomsData, string patientName)
         {
             LogDataRequest(dataRequest);
@@ -532,7 +532,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
             return Option.Some(conditionResponse);
         }
 
-        private static async Task<Option<ObservationResponse>> FetchAllergiesData(DataRequest dataRequest,
+        private static async Task<Option<ObservationResponse>> FetchAllergiesData(TraceableDataRequest dataRequest,
             List<AllergyData> allergiesData, string patientName)
         {
             LogDataRequest(dataRequest);
@@ -563,7 +563,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
             return Option.Some(observationResponse);
         }
 
-        private static async Task<Option<ObservationResponse>> FetchAbdomenExaminationData(DataRequest dataRequest,
+        private static async Task<Option<ObservationResponse>> FetchAbdomenExaminationData(TraceableDataRequest dataRequest,
             List<AbdomenExaminationData> abdomenExaminationsData, string patientName)
         {
             LogDataRequest(dataRequest);
@@ -594,7 +594,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
             return Option.Some(observationResponse);
         }
 
-        private static async Task<Option<ObservationResponse>> FetchSurgeryHistoryData(DataRequest dataRequest,
+        private static async Task<Option<ObservationResponse>> FetchSurgeryHistoryData(TraceableDataRequest dataRequest,
             List<SurgeryHistory> surgeryHistories, string patientName)
         {
             LogDataRequest(dataRequest);
@@ -626,7 +626,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
             return Option.Some(observationResponse);
         }
 
-        private static async Task<Option<ObservationResponse>> FetchOralCavityExaminationsData(DataRequest dataRequest,
+        private static async Task<Option<ObservationResponse>> FetchOralCavityExaminationsData(TraceableDataRequest dataRequest,
             List<OralCavityExaminationData> oralCavityExaminationsData, string patientName)
         {
             LogDataRequest(dataRequest);
@@ -684,7 +684,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
         }
 
         private async Task<PatientData> FetchPatientData(
-            DataRequest dataRequest)
+            TraceableDataRequest dataRequest)
         {
             try
             {
@@ -715,7 +715,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
             }
         }
 
-        private static void LogDataRequest(DataRequest request)
+        private static void LogDataRequest(TraceableDataRequest request)
         {
             var ccList = JsonConvert.SerializeObject(request.CareContexts);
             var requestedHiTypes = string.Join(", ", request.HiType.Select(hiType => hiType.ToString()));
@@ -725,7 +725,8 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                             $"HiTypes:{requestedHiTypes}," +
                             $" From date:{request.DateRange.From}," +
                             $" To date:{request.DateRange.To}, " +
-                            $"CallbackUrl:{request.DataPushUrl}");
+                            $"CallbackUrl:{request.DataPushUrl}, "+
+                            $"CorrelationId:{request.CorrelationId}");
         }
     }
 }

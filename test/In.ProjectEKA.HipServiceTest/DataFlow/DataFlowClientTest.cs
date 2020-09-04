@@ -1,3 +1,5 @@
+using Hl7.Fhir.Model;
+
 namespace In.ProjectEKA.HipServiceTest.DataFlow
 {
     using System;
@@ -34,10 +36,11 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             const string transactionId = "transactionId";
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
             var httpClient = new HttpClient(handlerMock.Object);
-            var dataRequest = TestBuilder.DataRequest(transactionId);
+            var dataRequest = TestBuilder.TraceableDataRequest(transactionId);
             var content = TestBuilder.Faker().Random.String();
             var checksum = TestBuilder.Faker().Random.Hash();
             var dataNotificationRequest = TestBuilder.DataNotificationRequest(transactionId);
+            var correlationId = Uuid.Generate().ToString();
             var entries = new List<Entry>
             {
                 new Entry(content, MediaTypeNames.Application.Json, checksum, null, "careContextReference")
@@ -56,9 +59,9 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                 })
                 .Verifiable();
             dataFlowNotificationClient.Setup(client =>
-                client.NotifyGateway(dataRequest.CmSuffix, It.IsAny<DataNotificationRequest>()))
+                client.NotifyGateway(dataRequest.CmSuffix, It.IsAny<DataNotificationRequest>(), correlationId))
                 .Returns(Task.CompletedTask)
-                .Callback((string cmSuffix, DataNotificationRequest request) =>
+                .Callback((string cmSuffix, DataNotificationRequest request, string correlationId) =>
                 {
                     dataNotificationRequest.Should().NotBeNull();
                     dataNotificationRequest.Notifier.Id.Should().Be(request.Notifier.Id);
@@ -90,9 +93,10 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             };
             var handlerMock = new Mock<HttpMessageHandler>(MockBehavior.Strict);
             var httpClient = new HttpClient(handlerMock.Object);
-            var dataRequest = TestBuilder.DataRequest(TestBuilder.Faker().Random.Hash());
+            var dataRequest = TestBuilder.TraceableDataRequest(TestBuilder.Faker().Random.Hash());
             var entries = new List<Entry>().AsEnumerable();
             var dataFlowClient = new DataFlowClient(httpClient, dataFlowNotificationClient.Object, configuration);
+            var correlationId = Uuid.Generate().ToString();
             handlerMock
                 .Protected()
                 .Setup<Task<HttpResponseMessage>>(
@@ -101,7 +105,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                     ItExpr.IsAny<CancellationToken>())
                 .Throws(new Exception("Unknown exception"))
                 .Verifiable();
-            dataFlowNotificationClient.Setup(client => client.NotifyGateway(id, It.IsAny<DataNotificationRequest>()))
+            dataFlowNotificationClient.Setup(client => client.NotifyGateway(id, It.IsAny<DataNotificationRequest>(),correlationId))
                 .Returns(Task.CompletedTask);
 
             dataFlowClient.SendDataToHiu(dataRequest, entries, null);

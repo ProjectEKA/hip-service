@@ -1,3 +1,5 @@
+using Hl7.Fhir.Model;
+
 namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
 {
     using System;
@@ -61,6 +63,28 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
                 consentManagerId,
                 consentId,
                 faker.Random.Word());
+        }
+        
+        internal static HipLibrary.Patient.Model.TraceableDataRequest TraceableDataRequest(string transactionId)
+        {
+            const string consentManagerId = "ConsentManagerId";
+            const string consentId = "ConsentId";
+            var dateRange = new HipLibrary.Patient.Model.DateRange("from", "to");
+            const string callBackUrl = "http://callback/data/notification";
+            var keyMaterial = new KeyMaterialLib(faker.Random.Word(), faker.Random.Word(),
+                new KeyStructureLib("", "", faker.Random.Hash()),
+                faker.Random.Hash());
+            return new HipLibrary.Patient.Model.TraceableDataRequest(new List<GrantedContext>(),
+                dateRange,
+                callBackUrl,
+                new List<HiType>(),
+                transactionId,
+                keyMaterial,
+                consentManagerId,
+                consentId,
+                faker.Random.Word(),
+                Uuid.Generate().ToString()
+                );
         }
 
         internal static DataNotificationRequest DataNotificationRequest(string transactionId)

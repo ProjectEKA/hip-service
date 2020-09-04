@@ -16,7 +16,8 @@ namespace In.ProjectEKA.HipService.DataFlow
             this.gatewayClient = gatewayClient;
         }
 
-        public virtual async Task NotifyGateway(string cmSuffix, DataNotificationRequest dataNotificationRequest)
+        public virtual async Task NotifyGateway(string cmSuffix, DataNotificationRequest dataNotificationRequest,
+            string correlationId)
         {
             var notificationRequest = new GatewayDataNotificationRequest(Guid.NewGuid(),
                 DateTime.Now.ToUniversalTime(),
@@ -28,7 +29,7 @@ namespace In.ProjectEKA.HipService.DataFlow
                     dataNotificationRequest.StatusNotification));
             await gatewayClient.SendDataToGateway(PATH_HEALTH_INFORMATION_NOTIFY_GATEWAY,
                 notificationRequest,
-                cmSuffix);
+                cmSuffix, correlationId);
         }
     }
 }

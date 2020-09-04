@@ -15,7 +15,8 @@ namespace In.ProjectEKA.HipService.Discovery
             {
                 {IdentifierType.MOBILE, IdentifierTypeExt.Mobile},
                 {IdentifierType.MR, IdentifierTypeExt.Mr},
-                {IdentifierType.NDHM_HEALTH_NUMBER, IdentifierTypeExt.NdhmHealthNumber}
+                {IdentifierType.NDHM_HEALTH_NUMBER, IdentifierTypeExt.NdhmHealthNumber},
+                {IdentifierType.HEALTH_ID, IdentifierTypeExt.HealthId}
             };
 
         private static PatientWithRank<Patient> RankPatient(Patient patient, DiscoveryRequest request)
@@ -92,7 +93,8 @@ namespace In.ProjectEKA.HipService.Discovery
             Mr,
             Gender,
             Empty,
-            NdhmHealthNumber
+            NdhmHealthNumber,
+            HealthId
         }
 
         private class IdentifierExt

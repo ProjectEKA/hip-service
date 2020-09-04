@@ -1,3 +1,5 @@
+using Hl7.Fhir.Model;
+
 namespace In.ProjectEKA.HipServiceTest.DataFlow
 {
     using System;
@@ -53,7 +55,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
                 .ReturnsAsync(TestBuilder.DataFlowConsent());
 
             var (healthInformationResponse, _) =
-                await dataFlowService.HealthInformationRequestFor(request, consentMangerId);
+                await dataFlowService.HealthInformationRequestFor(request, consentMangerId, Uuid.Generate().ToString());
 
             dataFlowRepository.Verify();
             healthInformationResponse.AcknowledgementId.Should().BeEquivalentTo(transactionId);
@@ -73,7 +75,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             consentRepository.Setup(d => d.GetFor(request.Consent.Id))
                 .ReturnsAsync(TestBuilder.DataFlowConsent());
 
-            var (_, errorResponse) = await dataFlowService.HealthInformationRequestFor(request, consentMangerId);
+            var (_, errorResponse) = await dataFlowService.HealthInformationRequestFor(request, consentMangerId, Uuid.Generate().ToString());
 
             dataFlowRepository.Verify();
             errorResponse.Should().BeEquivalentTo(expectedError);

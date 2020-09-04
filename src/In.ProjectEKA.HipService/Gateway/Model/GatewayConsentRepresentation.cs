@@ -4,9 +4,9 @@ namespace In.ProjectEKA.HipService.Gateway.Model
     using Common.Model;
     using HipLibrary.Patient.Model;
 
-    public class GatewayRevokedConsentRepresentation
+    public class GatewayConsentRepresentation
     {
-        public GatewayRevokedConsentRepresentation(Guid requestId, DateTime timestamp,
+        public GatewayConsentRepresentation(Guid requestId, DateTime timestamp,
             ConsentUpdateResponse acknowledgement, Error error, Resp resp)
         {
             RequestId = requestId;

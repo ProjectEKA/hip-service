@@ -1,3 +1,5 @@
+using Hl7.Fhir.Model;
+
 namespace In.ProjectEKA.HipServiceTest.Link
 {
     using FluentAssertions;
@@ -43,6 +45,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
             const string patientReference = "4";
             var id = faker.Random.Hash();
             var transactionId = faker.Random.Hash();
+            var correlationId = Uuid.Generate().ToString();
             var linkRequest = new LinkReferenceRequest(
                 transactionId,
                 new PatientLinkReference(
@@ -56,7 +59,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
                 linkRequest.Patient.ReferenceNumber))
                 .ReturnsAsync(true);
 
-            var linkedResult = linkController.LinkFor(linkRequest);
+            var linkedResult = linkController.LinkFor(correlationId, linkRequest);
 
             backgroundJobClient.Verify(client => client.Create(
                 It.Is<Job>(job => job.Method.Name == "LinkPatient" && job.Args[0] == linkRequest),
@@ -78,6 +81,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
             var expectedResponse = new PatientLinkConfirmationRepresentation(new LinkConfirmationRepresentation("4",
                 Faker().Random.Word()
                 , careContext));
+            var correlationId = Uuid.Generate().ToString();
             link.Setup(e => e.VerifyAndLinkCareContext(It.Is<LinkConfirmationRequest>(p =>
                 p.Token == "1234" &&
                 p.LinkReferenceNumber == linkReferenceNumber)))
@@ -86,7 +90,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
             var linkPatientRequest = new LinkPatientRequest(Faker().Random.Hash(),
                 It.IsAny<string>(),
                 new LinkConfirmation(linkReferenceNumber, token));
-            var response = linkController.LinkPatientFor(linkPatientRequest);
+            var response = linkController.LinkPatientFor(correlationId, linkPatientRequest);
 
             backgroundJobClient.Verify(client => client.Create(
                 It.Is<Job>(job => job.Method.Name == "LinkPatientCareContextFor" && job.Args[0] == linkPatientRequest),
