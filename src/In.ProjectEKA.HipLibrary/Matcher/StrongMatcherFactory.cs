@@ -14,7 +14,8 @@
             {
                 {IdentifierType.MOBILE, new PhoneNumberMatcher()},
                 {IdentifierType.MR, new MedicalRecordMatcher()},
-                {IdentifierType.NDHM_HEALTH_NUMBER, new HealthNumberMatcher()}
+                {IdentifierType.NDHM_HEALTH_NUMBER, new HealthNumberMatcher()},
+                {IdentifierType.HEALTH_ID, new HealthIdMatcher()}
             };
 
         private StrongMatcherFactory()

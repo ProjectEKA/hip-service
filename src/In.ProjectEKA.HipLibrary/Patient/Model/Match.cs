@@ -8,6 +8,7 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
         Empty,
         ConsentManagerUserId,
         Mr,
-        NdhmHealthNumber
+        NdhmHealthNumber,
+        HealthId
     }
 }
