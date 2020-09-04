@@ -7,6 +7,8 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
         public string Identifier { get; set; }
         
         public string HealthNumber { get; set; }
+        
+        public string HealthId { get; set; }
 
         public Gender Gender { get; set; }
 
