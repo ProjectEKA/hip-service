@@ -11,6 +11,7 @@ namespace In.ProjectEKA.HipService.Patient
     using Model;
     using Newtonsoft.Json.Linq;
     using User;
+    using static Common.Constants;
 
     [ApiController]
     public class PatientController : ControllerBase
@@ -26,15 +27,17 @@ namespace In.ProjectEKA.HipService.Patient
             this.logger = logger;
         }
 
-        [HttpPost(Constants.PATH_PATIENT_PROFILE_SHARE)]
-        public AcceptedResult PatientProfile(JObject request)
+        [HttpPost(PATH_PATIENT_PROFILE_SHARE)]
+        public AcceptedResult PatientProfile(
+            [FromHeader(Name = CORRELATION_ID)] string correlationId,
+            JObject request)
         {
-            backgroundJob.Enqueue(() => ShareResponseFor(request));
+            backgroundJob.Enqueue(() => ShareResponseFor(request,correlationId));
             return Accepted();
         }
         
         [NonAction]
-        public async Task ShareResponseFor(JObject request)
+        public async Task ShareResponseFor(JObject request, String correlationId)
         {
             var patientProfileRequest = request.ToObject<PatientProfile>();
             logger.LogInformation($"Patient Details: {patientProfileRequest.Patient}");
@@ -44,10 +47,13 @@ namespace In.ProjectEKA.HipService.Patient
             var gatewayResponse = new PatientProfileAcknowledgementResponse(
                 Guid.NewGuid(),
                 DateTime.Now.ToUniversalTime(),
-                new Acknowledgement(patientProfileRequest.Patient.HealthId, Status.SUCCESS), 
-                new Resp(patientProfileRequest.RequestId), 
+                new Acknowledgement(patientProfileRequest.Patient.HealthId, Status.SUCCESS),
+                new Resp(patientProfileRequest.RequestId),
                 null);
-            await gatewayClient.SendDataToGateway(Constants.PATH_PATIENT_PROFILE_ON_SHARE, gatewayResponse, cmSuffix);
+            await gatewayClient.SendDataToGateway(PATH_PATIENT_PROFILE_ON_SHARE,
+                gatewayResponse,
+                cmSuffix,
+                correlationId);
         }
     }
 }
