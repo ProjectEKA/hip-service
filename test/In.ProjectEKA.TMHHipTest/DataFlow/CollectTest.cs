@@ -126,7 +126,7 @@ namespace In.ProjectEKA.TMHHipTest.DataFlow
             var diagReports = new List<DiagnosticReportAsPdf> {diagReport};
 
             var patientDataResponse =
-                JsonConvert.SerializeObject(new PatientData {DiagnosticReportAsPdf = diagReports});
+                JsonConvert.SerializeObject(new PatientData {DiagnosticReportAsPdfs = diagReports});
 
             var patient = new Patient
             {
@@ -213,7 +213,7 @@ namespace In.ProjectEKA.TMHHipTest.DataFlow
             var diagReports = new List<DiagnosticReportAsPdf> {diagReport};
 
             var patientDataResponse =
-                JsonConvert.SerializeObject(new PatientData {DiagnosticReportAsPdf = diagReports});
+                JsonConvert.SerializeObject(new PatientData {DiagnosticReportAsPdfs = diagReports});
 
             var patient = new Patient
             {

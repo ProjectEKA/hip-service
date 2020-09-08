@@ -103,11 +103,11 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                     }
                     case HiType.DiagnosticReport:
                     {
-                        if (tmhPatientData.DiagnosticReportAsPdf != null &&
-                            tmhPatientData.DiagnosticReportAsPdf.Any())
+                        if (tmhPatientData.DiagnosticReportAsPdfs != null &&
+                            tmhPatientData.DiagnosticReportAsPdfs.Any())
                         {
                             var diagnosticReportResponse = FetchDiagnosticReportPdfsData(dataRequest,
-                                tmhPatientData.DiagnosticReportAsPdf, patientName).GetAwaiter().GetResult();
+                                tmhPatientData.DiagnosticReportAsPdfs, patientName).GetAwaiter().GetResult();
                             if (diagnosticReportResponse.HasValue)
                             {
                                 var serializeObject = JsonConvert.SerializeObject(

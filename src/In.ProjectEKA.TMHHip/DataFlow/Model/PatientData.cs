@@ -11,7 +11,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow.Model
         public List<SurgeryHistory> SurgeryHistories { get; set; }
         public List<AllergyData> AllergiesData { get; set; }
         public List<SwellingSymptomData> SwellingSymptomsData { get; set; }
-        public List<DiagnosticReportAsPdf> DiagnosticReportAsPdf { get; set; }
+        public List<DiagnosticReportAsPdf> DiagnosticReportAsPdfs { get; set; }
         public List<DiagnosticReportAsImage> DiagnosticReportAsImages { get; set; }
     }
 }
