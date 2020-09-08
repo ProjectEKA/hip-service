@@ -1,17 +1,17 @@
-namespace In.ProjectEKA.HipService.DataFlow
+namespace In.ProjectEKA.HipLibrary.Patient.Model
 {
     using System.Collections.Generic;
-    using Common.Model;
+    using System.Linq;
 
-    public class DataRequest
+    public class TraceableDataRequest
     {
-        public DataRequest(IEnumerable<GrantedContext> careContexts,
+        public TraceableDataRequest(IEnumerable<GrantedContext> careContexts,
             DateRange dateRange,
             string dataPushUrl,
             IEnumerable<HiType> hiType,
             string transactionId,
             KeyMaterial keyMaterial,
-            string gatewayId,
+            string consentManagerId,
             string consentId,
             string cmSuffix,
             string correlationId)
@@ -22,7 +22,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             HiType = hiType;
             TransactionId = transactionId;
             KeyMaterial = keyMaterial;
-            GatewayId = gatewayId;
+            ConsentManagerId = consentManagerId;
             ConsentId = consentId;
             CmSuffix = cmSuffix;
             CorrelationId = correlationId;
@@ -34,9 +34,17 @@ namespace In.ProjectEKA.HipService.DataFlow
         public IEnumerable<HiType> HiType { get; }
         public string TransactionId { get; }
         public KeyMaterial KeyMaterial { get; }
-        public string GatewayId { get; }
+        public string ConsentManagerId { get; }
         public string ConsentId { get; }
         public string CmSuffix { get; }
         public string CorrelationId { get; }
+
+        public override string ToString()
+        {
+            var hiTypes = HiType
+                .Select(hiType => hiType.ToString())
+                .Aggregate("", (source, value) => source + " " + value);
+            return $"Data Request with {hiTypes}";
+        }
     }
 }

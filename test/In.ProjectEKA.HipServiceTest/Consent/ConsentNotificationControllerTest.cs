@@ -1,3 +1,4 @@
+using Hl7.Fhir.Model;
 using In.ProjectEKA.HipService.Gateway;
 
 namespace In.ProjectEKA.HipServiceTest.Consent
@@ -48,8 +49,9 @@ namespace In.ProjectEKA.HipServiceTest.Consent
                     notification.Signature,
                     ConsentStatus.GRANTED,
                     consentMangerId)));
+            var correlationId = Uuid.Generate().ToString();
 
-            var result = consentNotificationController.ConsentNotification(consentNotification);
+            var result = consentNotificationController.ConsentNotification(correlationId, consentNotification);
 
             backgroundJobClient.Verify(client => client.Create(
                 It.Is<Job>(job => job.Method.Name == "StoreConsent" && job.Args[0] == consentNotification),

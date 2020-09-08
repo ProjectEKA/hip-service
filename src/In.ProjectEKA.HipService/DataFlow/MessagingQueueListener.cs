@@ -51,7 +51,7 @@ namespace In.ProjectEKA.HipService.DataFlow
                 var body = ea.Body;
                 var message = Encoding.UTF8.GetString(body.ToArray());
                 var dataFlowMessage =
-                    JsonConvert.DeserializeObject<HipLibrary.Patient.Model.DataRequest>(message);
+                    JsonConvert.DeserializeObject<HipLibrary.Patient.Model.TraceableDataRequest>(message);
                 await dataFlowMessageHandler.HandleDataFlowMessage(dataFlowMessage);
                 channel.BasicAck(ea.DeliveryTag, false);
             };

@@ -1,3 +1,5 @@
+using Hl7.Fhir.Model;
+
 namespace In.ProjectEKA.HipServiceTest.DataFlow
 {
     using System;
@@ -28,11 +30,12 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var transactionId = TestBuilder.Faker().Random.Hash();
             var request = TestBuilder.HealthInformationRequest(transactionId);
             var expectedResponse = new HealthInformationTransactionResponse(transactionId);
-            dataFlow.Setup(d => d.HealthInformationRequestFor(request, consentMangerId))
+            var correlationId = Uuid.Generate().ToString();
+            dataFlow.Setup(d => d.HealthInformationRequestFor(request, consentMangerId, correlationId))
                 .ReturnsAsync(
                     new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(expectedResponse, null));
 
-            var response = await dataFlowController.HealthInformationRequestFor(request, consentMangerId);
+            var response = await dataFlowController.HealthInformationRequestFor(request, correlationId,  consentMangerId);
 
             dataFlow.Verify();
             response.Should()
@@ -51,12 +54,13 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var request = TestBuilder.HealthInformationRequest(TestBuilder.Faker().Random.Hash());
             var expectedError = new ErrorRepresentation(new Error(ErrorCode.ServerInternalError,
                 ErrorMessage.InternalServerError));
-            dataFlow.Setup(d => d.HealthInformationRequestFor(request, consentMangerId))
+            var correlationId = Uuid.Generate().ToString();
+            dataFlow.Setup(d => d.HealthInformationRequestFor(request, consentMangerId, correlationId))
                 .ReturnsAsync(
                     new Tuple<HealthInformationTransactionResponse, ErrorRepresentation>(null, expectedError));
 
             var response =
-                await dataFlowController.HealthInformationRequestFor(request, consentMangerId) as ObjectResult;
+                await dataFlowController.HealthInformationRequestFor(request, correlationId,  consentMangerId) as ObjectResult;
 
             dataFlow.Verify();
             response.StatusCode
