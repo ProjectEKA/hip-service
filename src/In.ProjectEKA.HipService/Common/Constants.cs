@@ -27,7 +27,7 @@ namespace In.ProjectEKA.HipService.Common
                                                                                "/health-information/notify";
 
         public static readonly string PATH_AUTH_CONFIRM = "/" + CURRENT_VERSION + "/users/auth/confirm";
-        public const string PATH_PATIENT_PROFILE_SHARE = "/" + CURRENT_VERSION + "/patient/profile/share";
-        public const string PATH_PATIENT_PROFILE_ON_SHARE = "/" + CURRENT_VERSION + "/patient/profile/on-share";
+        public const string PATH_PATIENT_PROFILE_SHARE = "/" + CURRENT_VERSION + "/patients/profile/share";
+        public const string PATH_PATIENT_PROFILE_ON_SHARE = "/" + CURRENT_VERSION + "/patients/profile/on-share";
     }
 }
