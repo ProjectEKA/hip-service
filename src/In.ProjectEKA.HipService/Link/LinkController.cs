@@ -150,6 +150,32 @@ namespace In.ProjectEKA.HipService.Link
             Log.Information($" Resp RequestId:{request.Resp.RequestId}");
             return Accepted();
         }
+        
+        [HttpPost(PATH_ON_FETCH_AUTH_MODES)]
+        public AcceptedResult OnFetchAuthMode(OnFetchAuthModeRequest request)
+        {
+            Log.Information("Auth on init request received." +
+                            $" RequestId:{request.RequestId}, " +
+                            $" Timestamp:{request.Timestamp},");
+            if (request.Error != null)
+            {
+                Log.Information($" Error Code:{request.Error.Code}," +
+                                $" Error Message:{request.Error.Message}.");
+            }
+            else if (request.Auth != null)
+            {
+                string authModes = "";
+                foreach (Mode mode in request.Auth.Modes)
+                {
+                    authModes += mode + ",";
+                }
+                
+                Log.Information($" Auth Purpose:{request.Auth.Purpose},");
+                Log.Information($" Auth Modes:{authModes},");
+            }
+            Log.Information($" Resp RequestId:{request.Resp.RequestId}");
+            return Accepted();
+        }
 
         [HttpPost(PATH_ON_ADD_CONTEXTS)]
         public AcceptedResult HipLinkOnAddContexts(HipLinkContextConfirmation confirmation)
