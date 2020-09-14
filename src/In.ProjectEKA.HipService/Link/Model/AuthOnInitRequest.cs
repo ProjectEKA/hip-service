@@ -5,18 +5,18 @@ namespace In.ProjectEKA.HipService.Link.Model
 
     public class AuthOnInitRequest
     {
-        public AuthOnInitRequest(string requestId, DateTime timestamp, AuthInit authInit, Error error, Resp resp)
+        public AuthOnInitRequest(string requestId, DateTime timestamp, Auth auth, Error error, Resp resp)
         {
             RequestId = requestId;
             Timestamp = timestamp;
-            AuthInit = authInit;
+            Auth = auth;
             Error = error;
             Resp = resp;
         }
 
         public string RequestId { get; }
         public DateTime Timestamp { get; }
-        public AuthInit AuthInit { get; }
+        public Auth Auth { get; }
         public Error Error { get; }
         public Resp Resp { get; }
     }

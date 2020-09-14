@@ -25,8 +25,8 @@ namespace In.ProjectEKA.HipService.User
         }
 
         [HttpPost(Constants.AUTH_CONFIRM)]
-        public AcceptedResult authConfirm( 
-            [FromHeader(Name = CORRELATION_ID)] string correlationId, 
+        public AcceptedResult authConfirm(
+            [FromHeader(Name = CORRELATION_ID)] string correlationId,
             [FromBody] JObject request)
         {
             backgroundJob.Enqueue(() => AuthFor(request, correlationId));
@@ -52,7 +52,25 @@ namespace In.ProjectEKA.HipService.User
         {
             var authOnConfirmResponse = response.ToObject<AuthOnConfirmResponse>();
             if (authOnConfirmResponse.Error == null)
-                logger.LogInformation($"Access Token is: {authOnConfirmResponse.Auth.AccessToken}");
+            {
+                if (authOnConfirmResponse.Auth.AccessToken != null)
+                    logger.LogInformation($"Access Token is: {authOnConfirmResponse.Auth.AccessToken}");
+                if (authOnConfirmResponse.Auth.Patient != null)
+                {
+                    logger.LogInformation($"Patient Name is: {authOnConfirmResponse.Auth.Patient.Name}");
+                    logger.LogInformation($"Patient Id is: {authOnConfirmResponse.Auth.Patient.Id}");
+                    logger.LogInformation($"Patient Birth Year is: {authOnConfirmResponse.Auth.Patient.YearOfBirth}");
+                    if (authOnConfirmResponse.Auth.Patient.Address != null)
+                    {
+                        logger.LogInformation(
+                            $"Patient District is: {authOnConfirmResponse.Auth.Patient.Address.District}");
+                        logger.LogInformation($"Patient State is: {authOnConfirmResponse.Auth.Patient.Address.State}");
+                        logger.LogInformation($"Patient Line is: {authOnConfirmResponse.Auth.Patient.Address.Line}");
+                        logger.LogInformation(
+                            $"Patient Pincode is: {authOnConfirmResponse.Auth.Patient.Address.PinCode}");
+                    }
+                }
+            }
             else
                 logger.LogInformation($" Error Code:{authOnConfirmResponse.Error.Code}," +
                                       $" Error Message:{authOnConfirmResponse.Error.Message}.");

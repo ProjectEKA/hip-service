@@ -27,7 +27,7 @@ namespace In.ProjectEKA.HipServiceTest.Link
             {
                 PhoneNumber = "+91666666666666",
                 Identifier = "4",
-                Gender = TestBuilders.Faker().PickRandom<Gender>(),
+                Gender = HipLibrary.Patient.Model.Gender.M,
                 Name = TestBuilders.Faker().Random.Word(),
                 CareContexts = new List<CareContextRepresentation>
                 {
