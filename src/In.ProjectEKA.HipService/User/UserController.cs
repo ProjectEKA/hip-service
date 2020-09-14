@@ -4,8 +4,8 @@ namespace In.ProjectEKA.HipService.User
     using Common;
     using Gateway;
     using Hangfire;
+    using Logger;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Logging;
     using Newtonsoft.Json.Linq;
     using static Common.Constants;
 
@@ -14,14 +14,11 @@ namespace In.ProjectEKA.HipService.User
     {
         private readonly IBackgroundJobClient backgroundJob;
         private readonly GatewayClient gatewayClient;
-        private readonly ILogger<UserController> logger;
 
-        public UserController(IBackgroundJobClient backgroundJob, GatewayClient gatewayClient,
-            ILogger<UserController> logger)
+        public UserController(IBackgroundJobClient backgroundJob, GatewayClient gatewayClient)
         {
             this.backgroundJob = backgroundJob;
             this.gatewayClient = gatewayClient;
-            this.logger = logger;
         }
 
         [HttpPost(Constants.AUTH_CONFIRM)]
@@ -54,25 +51,24 @@ namespace In.ProjectEKA.HipService.User
             if (authOnConfirmResponse.Error == null)
             {
                 if (authOnConfirmResponse.Auth.AccessToken != null)
-                    logger.LogInformation($"Access Token is: {authOnConfirmResponse.Auth.AccessToken}");
+                    Log.Information($"Access Token is: {authOnConfirmResponse.Auth.AccessToken}");
                 if (authOnConfirmResponse.Auth.Patient != null)
                 {
-                    logger.LogInformation($"Patient Name is: {authOnConfirmResponse.Auth.Patient.Name}");
-                    logger.LogInformation($"Patient Id is: {authOnConfirmResponse.Auth.Patient.Id}");
-                    logger.LogInformation($"Patient Birth Year is: {authOnConfirmResponse.Auth.Patient.YearOfBirth}");
+                    Log.Information("Patient: "+$" Name: {authOnConfirmResponse.Auth.Patient.Name},"+
+                                    $"Id: {authOnConfirmResponse.Auth.Patient.Id}, "+
+                    $"Birth Year: {authOnConfirmResponse.Auth.Patient.YearOfBirth}");
                     if (authOnConfirmResponse.Auth.Patient.Address != null)
                     {
-                        logger.LogInformation(
-                            $"Patient District is: {authOnConfirmResponse.Auth.Patient.Address.District}");
-                        logger.LogInformation($"Patient State is: {authOnConfirmResponse.Auth.Patient.Address.State}");
-                        logger.LogInformation($"Patient Line is: {authOnConfirmResponse.Auth.Patient.Address.Line}");
-                        logger.LogInformation(
-                            $"Patient Pincode is: {authOnConfirmResponse.Auth.Patient.Address.PinCode}");
+                        Log.Information("Patient Address Details: "+
+                            $" District: {authOnConfirmResponse.Auth.Patient.Address.District}, "+
+                                        $" State: {authOnConfirmResponse.Auth.Patient.Address.State}, "+ 
+                                        $" Line: {authOnConfirmResponse.Auth.Patient.Address.Line},"+
+                                        $" Pincode: {authOnConfirmResponse.Auth.Patient.Address.PinCode}");
                     }
                 }
             }
             else
-                logger.LogInformation($" Error Code:{authOnConfirmResponse.Error.Code}," +
+                Log.Error($" Error Code:{authOnConfirmResponse.Error.Code}," +
                                       $" Error Message:{authOnConfirmResponse.Error.Message}.");
         }
     }
