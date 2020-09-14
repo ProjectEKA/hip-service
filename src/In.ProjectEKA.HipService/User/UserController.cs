@@ -4,8 +4,8 @@ namespace In.ProjectEKA.HipService.User
     using Common;
     using Gateway;
     using Hangfire;
+    using Logger;
     using Microsoft.AspNetCore.Mvc;
-    using Microsoft.Extensions.Logging;
     using Newtonsoft.Json.Linq;
     using static Common.Constants;
 
@@ -14,14 +14,11 @@ namespace In.ProjectEKA.HipService.User
     {
         private readonly IBackgroundJobClient backgroundJob;
         private readonly GatewayClient gatewayClient;
-        private readonly ILogger<UserController> logger;
 
-        public UserController(IBackgroundJobClient backgroundJob, GatewayClient gatewayClient,
-            ILogger<UserController> logger)
+        public UserController(IBackgroundJobClient backgroundJob, GatewayClient gatewayClient)
         {
             this.backgroundJob = backgroundJob;
             this.gatewayClient = gatewayClient;
-            this.logger = logger;
         }
 
         [HttpPost(Constants.AUTH_CONFIRM)]
