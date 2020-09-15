@@ -95,7 +95,7 @@ namespace In.ProjectEKA.HipService.Link
             return (patientLinkReferenceResponse, null);
         }
 
-        private ValueTuple<Patient, ErrorRepresentation> PatientAndCareContextValidation(
+        private ValueTuple<HipLibrary.Patient.Model.Patient, ErrorRepresentation> PatientAndCareContextValidation(
             PatientLinkEnquiry request)
         {
             return patientRepository.PatientWith(request.Patient.ReferenceNumber)
