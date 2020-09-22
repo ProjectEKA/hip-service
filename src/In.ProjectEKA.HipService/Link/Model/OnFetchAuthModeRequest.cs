@@ -1,11 +1,11 @@
+using System;
+using In.ProjectEKA.HipLibrary.Patient.Model;
+
 namespace In.ProjectEKA.HipService.Link.Model
 {
-    using System;
-    using HipLibrary.Patient.Model;
-
-    public class AuthOnInitRequest
+    public class OnFetchAuthModeRequest
     {
-        public AuthOnInitRequest(string requestId, DateTime timestamp, Auth auth, Error error, Resp resp)
+        public OnFetchAuthModeRequest(string requestId, DateTime timestamp, AuthModeFetch auth, Error error, Resp resp)
         {
             RequestId = requestId;
             Timestamp = timestamp;
@@ -16,7 +16,7 @@ namespace In.ProjectEKA.HipService.Link.Model
 
         public string RequestId { get; }
         public DateTime Timestamp { get; }
-        public Auth Auth { get; }
+        public AuthModeFetch Auth { get; }
         public Error Error { get; }
         public Resp Resp { get; }
     }

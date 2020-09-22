@@ -59,7 +59,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 verifiedIdentifiers,
                 unverifiedIdentifiers,
                 name,
-                Gender.M,
+                HipLibrary.Patient.Model.Gender.M,
                 2019);
             var discoveryRequest = new DiscoveryRequest(patientRequest, RandomString(), transactionId, DateTime.Now);
             var sessionId = Faker().Random.Hash();
@@ -70,11 +70,11 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 It.IsAny<string>(),
                 linkedCareContext.ToList());
             var testPatient =
-                new Patient
+                new HipLibrary.Patient.Model.Patient
                 {
                     PhoneNumber = phoneNumber,
                     Identifier = patientId,
-                    Gender = Faker().PickRandom<Gender>(),
+                    Gender = Faker().PickRandom<HipLibrary.Patient.Model.Gender>(),
                     Name = name,
                     CareContexts = new[]
                     {
@@ -141,18 +141,18 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 verifiedIdentifiers,
                 unverifiedIdentifiers,
                 name,
-                Gender.M,
+                HipLibrary.Patient.Model.Gender.M,
                 yearOfBirth);
             var discoveryRequest = new DiscoveryRequest(patientRequest, RandomString(), transactionId, DateTime.Now);
             linkPatientRepository.Setup(e => e.GetLinkedCareContexts(consentManagerUserId))
                 .ReturnsAsync(new Tuple<IEnumerable<LinkedAccounts>, Exception>(new List<LinkedAccounts>(), null));
             matchingRepository
                 .Setup(repo => repo.Where(discoveryRequest))
-                .Returns(Task.FromResult(new List<Patient>
+                .Returns(Task.FromResult(new List<HipLibrary.Patient.Model.Patient>
                 {
-                    new Patient
+                    new HipLibrary.Patient.Model.Patient
                     {
-                        Gender = Gender.M,
+                        Gender = HipLibrary.Patient.Model.Gender.M,
                         Identifier = referenceNumber,
                         Name = name,
                         CareContexts = careContextRepresentations,
@@ -206,18 +206,18 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 verifiedIdentifiers,
                 null,
                 name,
-                Gender.M,
+                HipLibrary.Patient.Model.Gender.M,
                 yearOfBirth);
             var discoveryRequest = new DiscoveryRequest(patientRequest, RandomString(), transactionId, DateTime.Now);
             linkPatientRepository.Setup(e => e.GetLinkedCareContexts(consentManagerUserId))
                 .ReturnsAsync(new Tuple<IEnumerable<LinkedAccounts>, Exception>(new List<LinkedAccounts>(), null));
             matchingRepository
                 .Setup(repo => repo.Where(discoveryRequest))
-                .Returns(Task.FromResult(new List<Patient>
+                .Returns(Task.FromResult(new List<HipLibrary.Patient.Model.Patient>
                 {
-                    new Patient
+                    new HipLibrary.Patient.Model.Patient
                     {
-                        Gender = Gender.M,
+                        Gender = HipLibrary.Patient.Model.Gender.M,
                         Identifier = referenceNumber,
                         Name = name,
                         CareContexts = careContextRepresentations,
@@ -251,7 +251,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             var verifiedIdentifiers = new[] {new Identifier(IdentifierType.MOBILE, Faker().Phone.PhoneNumber())};
             var consentManagerUserId = Faker().Random.String();
             const ushort yearOfBirth = 2019;
-            var gender = Faker().PickRandom<Gender>();
+            HipLibrary.Patient.Model.Gender gender = Faker().PickRandom<HipLibrary.Patient.Model.Gender>();
             var name = Faker().Name.FullName();
             var patientRequest = new PatientEnquiry(consentManagerUserId,
                 verifiedIdentifiers,
@@ -266,15 +266,15 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
 
             matchingRepository
                 .Setup(repo => repo.Where(discoveryRequest))
-                .Returns(Task.FromResult(new List<Patient>
+                .Returns(Task.FromResult(new List<HipLibrary.Patient.Model.Patient>
                 {
-                    new Patient
+                    new HipLibrary.Patient.Model.Patient
                     {
                         YearOfBirth = yearOfBirth,
                         Gender = gender,
                         Name = name
                     },
-                    new Patient
+                    new HipLibrary.Patient.Model.Patient
                     {
                         YearOfBirth = yearOfBirth,
                         Gender = gender,
@@ -302,7 +302,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
             var patientReferenceNumber = Faker().Random.String();
             var consentManagerUserId = Faker().Random.String();
             const ushort yearOfBirth = 2019;
-            var gender = Faker().PickRandom<Gender>();
+            var gender = Faker().PickRandom<HipLibrary.Patient.Model.Gender>();
             var name = Faker().Name.FullName();
             var verifiedIdentifiers = new[] {new Identifier(IdentifierType.MOBILE, Faker().Phone.PhoneNumber())};
             var unverifiedIdentifiers = new[] {new Identifier(IdentifierType.MR, patientReferenceNumber)};
@@ -319,16 +319,16 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
 
             matchingRepository
                 .Setup(repo => repo.Where(discoveryRequest))
-                .Returns(Task.FromResult(new List<Patient>
+                .Returns(Task.FromResult(new List<HipLibrary.Patient.Model.Patient>
                 {
-                    new Patient
+                    new HipLibrary.Patient.Model.Patient
                     {
                         Identifier = patientReferenceNumber,
                         YearOfBirth = yearOfBirth,
                         Gender = gender,
                         Name = name
                     },
-                    new Patient
+                    new HipLibrary.Patient.Model.Patient
                     {
                         Identifier = patientReferenceNumber,
                         YearOfBirth = yearOfBirth,
@@ -362,7 +362,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 verifiedIdentifiers,
                 new List<Identifier>(),
                 null,
-                Gender.M,
+                HipLibrary.Patient.Model.Gender.M,
                 2019);
             var discoveryRequest = new DiscoveryRequest(patientRequest, Faker().Random.String(), RandomString(),
                 DateTime.Now);
@@ -391,7 +391,7 @@ namespace In.ProjectEKA.HipServiceTest.Discovery
                 identifiers,
                 new List<Identifier>(),
                 null,
-                Gender.M,
+                HipLibrary.Patient.Model.Gender.M,
                 2019);
             var discoveryRequest = new DiscoveryRequest(patientRequest, Faker().Random.String(), RandomString(),
                 DateTime.Now);
