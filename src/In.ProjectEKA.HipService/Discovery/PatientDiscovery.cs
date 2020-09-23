@@ -108,7 +108,7 @@ namespace In.ProjectEKA.HipService.Discovery
 
         private static IEnumerable<CareContextRepresentation> GetUnlinkedCareContexts(
             IEnumerable<LinkedAccounts> linkedAccounts,
-            Patient patient)
+            HipLibrary.Patient.Model.Patient patient)
         {
             var allLinkedCareContexts = linkedAccounts
                 .SelectMany(account => account.CareContexts)

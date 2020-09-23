@@ -36,21 +36,25 @@ namespace In.ProjectEKA.HipService.Link
         }
 
         [HttpPost(PATH_LINKS_LINK_INIT)]
-        public AcceptedResult LinkFor(LinkReferenceRequest request)
+        public AcceptedResult LinkFor(
+            [FromHeader(Name = CORRELATION_ID)] string correlationId,
+            [FromBody] LinkReferenceRequest request)
         {
-            backgroundJob.Enqueue(() => LinkPatient(request));
+            backgroundJob.Enqueue(() => LinkPatient(request, correlationId));
             return Accepted();
         }
 
         [HttpPost(PATH_LINKS_LINK_CONFIRM)]
-        public AcceptedResult LinkPatientFor(LinkPatientRequest request)
+        public AcceptedResult LinkPatientFor(
+            [FromHeader(Name = CORRELATION_ID)] string correlationId,
+            [FromBody] LinkPatientRequest request)
         {
-            backgroundJob.Enqueue(() => LinkPatientCareContextFor(request));
+            backgroundJob.Enqueue(() => LinkPatientCareContextFor(request, correlationId));
             return Accepted();
         }
 
         [NonAction]
-        public async Task LinkPatient(LinkReferenceRequest request)
+        public async Task LinkPatient(LinkReferenceRequest request, string correlationId)
         {
             var cmUserId = request.Patient.Id;
             var cmSuffix = cmUserId.Substring(
@@ -90,7 +94,7 @@ namespace In.ProjectEKA.HipService.Link
                     DateTime.Now.ToUniversalTime(),
                     Guid.NewGuid());
 
-                await gatewayClient.SendDataToGateway(PATH_ON_LINK_INIT, response, cmSuffix);
+                await gatewayClient.SendDataToGateway(PATH_ON_LINK_INIT, response, cmSuffix, correlationId);
             }
             catch (Exception exception)
             {
@@ -99,11 +103,11 @@ namespace In.ProjectEKA.HipService.Link
         }
 
         [NonAction]
-        public async Task LinkPatientCareContextFor(LinkPatientRequest request)
+        public async Task LinkPatientCareContextFor(LinkPatientRequest request, String correlationId)
         {
             try
             {
-                var (patientLinkResponse,cmId, error) = await linkPatient
+                var (patientLinkResponse, cmId, error) = await linkPatient
                     .VerifyAndLinkCareContext(new LinkConfirmationRequest(request.Confirmation.Token,
                         request.Confirmation.LinkRefNumber));
                 LinkConfirmationRepresentation linkedPatientRepresentation = null;
@@ -116,7 +120,7 @@ namespace In.ProjectEKA.HipService.Link
                     linkedPatientRepresentation,
                     error?.Error,
                     new Resp(request.RequestId));
-                await gatewayClient.SendDataToGateway(PATH_ON_LINK_CONFIRM, response, cmId);
+                await gatewayClient.SendDataToGateway(PATH_ON_LINK_CONFIRM, response, cmId, correlationId);
             }
             catch (Exception exception)
             {
@@ -125,7 +129,7 @@ namespace In.ProjectEKA.HipService.Link
         }
 
         [HttpPost(PATH_ON_AUTH_INIT)]
-        public AcceptedResult OnAuthInit(AuthOnInitRequest request)
+        public ActionResult OnAuthInit(AuthOnInitRequest request)
         {
             Log.Information("Auth on init request received." +
                             $" RequestId:{request.RequestId}, " +
@@ -135,13 +139,39 @@ namespace In.ProjectEKA.HipService.Link
                 Log.Information($" Error Code:{request.Error.Code}," +
                                 $" Error Message:{request.Error.Message}.");
             }
-            else if (request.AuthInit != null)
+            else
             {
-                Log.Information($" Transaction Id:{request.AuthInit.TransactionId},");
-                Log.Information($" Auth Type:{request.AuthInit.AuthType},");
-                Log.Information($" Auth Meta Mode:{request.AuthInit.Meta.Mode},");
-                Log.Information($" Auth Meta Hint:{request.AuthInit.Meta.Hint},");
-                Log.Information($" Auth Meta Expiry:{request.AuthInit.Meta.Expiry},");
+                Log.Information($" Transaction Id:{request.Auth.TransactionId},");
+                Log.Information($" Auth Meta Mode:{request.Auth.Mode},");
+                Log.Information($" Auth Meta Hint:{request.Auth.Meta.Hint},");
+                Log.Information($" Auth Meta Expiry:{request.Auth.Meta.Expiry},");
+            }
+
+            Log.Information($" Resp RequestId:{request.Resp.RequestId}");
+            return Accepted();
+        }
+        
+        [HttpPost(PATH_ON_FETCH_AUTH_MODES)]
+        public AcceptedResult OnFetchAuthMode(OnFetchAuthModeRequest request)
+        {
+            Log.Information("Auth on init request received." +
+                            $" RequestId:{request.RequestId}, " +
+                            $" Timestamp:{request.Timestamp},");
+            if (request.Error != null)
+            {
+                Log.Information($" Error Code:{request.Error.Code}," +
+                                $" Error Message:{request.Error.Message}.");
+            }
+            else if (request.Auth != null)
+            {
+                string authModes = "";
+                foreach (Mode mode in request.Auth.Modes)
+                {
+                    authModes += mode + ",";
+                }
+                
+                Log.Information($" Auth Purpose:{request.Auth.Purpose},");
+                Log.Information($" Auth Modes:{authModes},");
             }
             Log.Information($" Resp RequestId:{request.Resp.RequestId}");
             return Accepted();

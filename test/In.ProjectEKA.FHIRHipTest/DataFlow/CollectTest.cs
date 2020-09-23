@@ -70,7 +70,7 @@ namespace In.ProjectEKA.FHIRHipTest.DataFlow
                 })
                 .Verifiable();
             
-            var dataRequest = new DataRequest(grantedContexts,
+            var dataRequest = new TraceableDataRequest(grantedContexts,
                 dateRange,
                 "/someUrl",
                 hiTypes,
@@ -78,7 +78,8 @@ namespace In.ProjectEKA.FHIRHipTest.DataFlow
                 null,
                 consentManagerId,
                 consentId,
-                "sometext");
+                "sometext",
+                "someValue");
             var collect = new Collect(dataFlowConfiguration.Value, httpClient);
             var entries = await collect.CollectData(dataRequest);
             entries.ValueOrDefault().CareBundles.Should().NotBeNull();

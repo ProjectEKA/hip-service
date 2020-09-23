@@ -23,7 +23,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var dataFlowMessageHandler =
                 new DataFlowMessageHandler(collect.Object, dataFlowClient.Object, dataEntryFactory.Object);
             var transactionId = TestBuilder.Faker().Random.Uuid().ToString();
-            var dataRequest = TestBuilder.DataRequest(transactionId);
+            var dataRequest = TestBuilder.TraceableDataRequest(transactionId);
             var careBundles = new List<CareBundle> {new CareBundle("careContextReference", new Bundle())};
             var entries = new Entries(careBundles);
             var data = Option.Some(entries);

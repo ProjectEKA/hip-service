@@ -30,7 +30,7 @@ namespace In.ProjectEKA.FHIRHip.DataFlow
             HttpClient = httpClient;
         }
 
-        public async Task<Option<Entries>> CollectData(DataRequest dataRequest)
+        public async Task<Option<Entries>> CollectData(TraceableDataRequest dataRequest)
         {
             var bundles = new List<CareBundle>();
             var patientData = await FindPatientsData(dataRequest).ConfigureAwait(false);
@@ -48,7 +48,7 @@ namespace In.ProjectEKA.FHIRHip.DataFlow
             return Option.Some(entries);
         }
 
-        private async Task<Dictionary<string, List<string>>> FindPatientsData(DataRequest request)
+        private async Task<Dictionary<string, List<string>>> FindPatientsData(TraceableDataRequest request)
         {
             LogDataRequest(request);
             
@@ -109,7 +109,7 @@ namespace In.ProjectEKA.FHIRHip.DataFlow
             }
         }
 
-        private static void LogDataRequest(DataRequest request)
+        private static void LogDataRequest(TraceableDataRequest request)
         {
             var ccList = JsonConvert.SerializeObject(request.CareContexts);
             var requestedHiTypes = string.Join(", ", request.HiType.Select(hiType => hiType.ToString()));

@@ -13,7 +13,8 @@ namespace In.ProjectEKA.HipService.DataFlow
             KeyMaterial keyMaterial,
             string gatewayId,
             string consentId,
-            string cmSuffix)
+            string cmSuffix,
+            string correlationId)
         {
             CareContexts = careContexts;
             DateRange = dateRange;
@@ -24,6 +25,7 @@ namespace In.ProjectEKA.HipService.DataFlow
             GatewayId = gatewayId;
             ConsentId = consentId;
             CmSuffix = cmSuffix;
+            CorrelationId = correlationId;
         }
 
         public IEnumerable<GrantedContext> CareContexts { get; }
@@ -35,5 +37,6 @@ namespace In.ProjectEKA.HipService.DataFlow
         public string GatewayId { get; }
         public string ConsentId { get; }
         public string CmSuffix { get; }
+        public string CorrelationId { get; }
     }
 }

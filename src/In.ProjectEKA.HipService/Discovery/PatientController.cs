@@ -32,17 +32,19 @@
         }
 
         [HttpPost(PATH_CARE_CONTEXTS_DISCOVER)]
-        public AcceptedResult DiscoverPatientCareContexts(DiscoveryRequest request)
+        public AcceptedResult DiscoverPatientCareContexts(
+            [FromHeader(Name = CORRELATION_ID)] string correlationId, 
+            [FromBody] DiscoveryRequest request)
         {
             logger.LogInformation(LogEvents.Discovery, "discovery request received for {Id} with {RequestId}",
                 request.Patient.Id, request.RequestId);
-            backgroundJob.Enqueue(() => GetPatientCareContext(request));
+            backgroundJob.Enqueue(() => GetPatientCareContext(request, correlationId));
             return Accepted();
         }
 
         // ReSharper disable once MemberCanBePrivate.Global
         [NonAction]
-        public async Task GetPatientCareContext(DiscoveryRequest request)
+        public async Task GetPatientCareContext(DiscoveryRequest request, string correlationId)
         {
             try
             {
@@ -61,7 +63,7 @@
                     "Response about to be send for {RequestId} with {@Patient}",
                     request.RequestId,
                     response?.Patient);
-                await gatewayClient.SendDataToGateway(PATH_ON_DISCOVER, gatewayDiscoveryRepresentation, cmSuffix);
+                await gatewayClient.SendDataToGateway(PATH_ON_DISCOVER, gatewayDiscoveryRepresentation, cmSuffix, correlationId);
             }
             catch (Exception exception)
             {
