@@ -8,8 +8,8 @@ namespace In.ProjectEKA.TMHHip.DataFlow.Model
 
     public class DiagnosticReportImagingStudyRepresentation : IDiagnosticReport
     {
-        private string FullUrl { get; set; }
-        private ImagingStudyResource Resource { get; set; }
+        public string FullUrl { get; set; }
+        public ImagingStudyResource Resource { get; set; }
 
         public DiagnosticReportImagingStudyRepresentation(string fullUrl, ImagingStudyResource resource)
         {
@@ -21,18 +21,18 @@ namespace In.ProjectEKA.TMHHip.DataFlow.Model
     public class ImagingStudyResource
     {
         [JsonConverter(typeof(StringEnumConverter))]
-        private HiType ResourceType { get; set; }
+        public HiType ResourceType { get; set; }
 
-        private string Id { get; set; }
-        private Text Text { get; set; }
-        private SubjectDiagReport Subject { get; set; }
+        public string Id { get; set; }
+        public Text Text { get; set; }
+        public SubjectDiagReport Subject { get; set; }
 
-        private string Status { get; set; }
-        private DateTime Started { get; set; }
-        private int NumberOfSeries { get; set; }
-        private int NumberOfInstances { get; set; }
+        public string Status { get; set; }
+        public DateTime Started { get; set; }
+        public int NumberOfSeries { get; set; }
+        public int NumberOfInstances { get; set; }
 
-        private IEnumerable<Endpoint> Endpoint { get; set; }
+        public IEnumerable<Endpoint> Endpoint { get; set; }
 
         public ImagingStudyResource(HiType resourceType, string id, Text text, SubjectDiagReport subject, string status,
             DateTime started, int numberOfSeries, int numberOfInstances, IEnumerable<Endpoint> endpoint)
@@ -51,7 +51,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow.Model
 
     public class Endpoint
     {
-        private string Reference { get; set; }
+        public string Reference { get; set; }
 
         public Endpoint(string reference)
         {
@@ -61,7 +61,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow.Model
 
     public class SubjectDiagReport
     {
-        private string Reference { get; set; }
+        public string Reference { get; set; }
 
         public SubjectDiagReport(string reference)
         {

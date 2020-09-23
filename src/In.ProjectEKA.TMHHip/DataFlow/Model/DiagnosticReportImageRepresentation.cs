@@ -8,8 +8,8 @@ namespace In.ProjectEKA.TMHHip.DataFlow.Model
 
     public class DiagnosticReportImageRepresentation : IDiagnosticReport
     {
-        private string FullUrl { get; set; }
-        private DiagnosticReportImage Resource { get; set; }
+        public string FullUrl { get; set; }
+        public DiagnosticReportImage Resource { get; set; }
 
         public DiagnosticReportImageRepresentation(string fullUrl, DiagnosticReportImage resource)
         {
@@ -21,18 +21,18 @@ namespace In.ProjectEKA.TMHHip.DataFlow.Model
     public class DiagnosticReportImage
     {
         [JsonConverter(typeof(StringEnumConverter))]
-        private HiType ResourceType { get; set; }
+        public HiType ResourceType { get; set; }
 
-        private string Id { get; set; }
-        private Text Text { get; set; }
-        private string Status { get; set; }
-        private Code Code { get; set; }
-        private Subject Subject { get; set; }
-        private DateTime EffectiveDateTime { get; set; }
-        private DateTime Issued { get; set; }
-        private IEnumerable<Performer> Performer { get; set; }
-        private IEnumerable<DiagnosticReportImagingStudy> ImagingStudy { get; set; }
-        private string Conclusion { get; set; }
+        public string Id { get; set; }
+        public Text Text { get; set; }
+        public string Status { get; set; }
+        public Code Code { get; set; }
+        public Subject Subject { get; set; }
+        public DateTime EffectiveDateTime { get; set; }
+        public DateTime Issued { get; set; }
+        public IEnumerable<Performer> Performer { get; set; }
+        public IEnumerable<DiagnosticReportImagingStudy> ImagingStudy { get; set; }
+        public string Conclusion { get; set; }
 
         public DiagnosticReportImage(HiType resourceType, string id, Text text, string status, Code code,
             Subject subject, DateTime effectiveDateTime, DateTime issued, IEnumerable<Performer> performer,
@@ -54,7 +54,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow.Model
 
     public class DiagnosticReportImagingStudy
     {
-        private string Reference { get; set; }
+        public string Reference { get; set; }
 
         public DiagnosticReportImagingStudy(string reference)
         {

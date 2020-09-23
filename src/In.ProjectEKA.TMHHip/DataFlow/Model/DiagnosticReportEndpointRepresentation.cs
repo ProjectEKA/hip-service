@@ -7,8 +7,8 @@ namespace In.ProjectEKA.TMHHip.DataFlow.Model
 
     public class DiagnosticReportEndpointRepresentation : IDiagnosticReport
     {
-        private string FullUrl { get; set; }
-        private EndpointResource Resource { get; set; }
+        public string FullUrl { get; set; }
+        public EndpointResource Resource { get; set; }
 
         public DiagnosticReportEndpointRepresentation(string fullUrl, EndpointResource resource)
         {
@@ -20,15 +20,15 @@ namespace In.ProjectEKA.TMHHip.DataFlow.Model
     public class EndpointResource
     {
         [JsonConverter(typeof(StringEnumConverter))]
-        private HiType ResourceType { get; set; }
+        public HiType ResourceType { get; set; }
 
-        private string Id { get; set; }
-        private Text Text { get; set; }
-        private string Status { get; set; }
-        private ConnectionType ConnectionType { get; set; }
-        private IEnumerable<PayloadType> PayloadType { get; set; }
-        private IEnumerable<string> PayloadMimeType { get; set; }
-        private string Address { get; set; }
+        public string Id { get; set; }
+        public Text Text { get; set; }
+        public string Status { get; set; }
+        public ConnectionType ConnectionType { get; set; }
+        public IEnumerable<PayloadType> PayloadType { get; set; }
+        public IEnumerable<string> PayloadMimeType { get; set; }
+        public string Address { get; set; }
 
         public EndpointResource(HiType resourceType, string id, Text text, string status, ConnectionType connectionType,
             IEnumerable<PayloadType> payloadType, IEnumerable<string> payloadMimeType, string address)
@@ -46,7 +46,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow.Model
 
     public class PayloadType
     {
-        private string Text { get; set; }
+        public string Text { get; set; }
 
         public PayloadType(string text)
         {
@@ -56,8 +56,8 @@ namespace In.ProjectEKA.TMHHip.DataFlow.Model
 
     public class ConnectionType
     {
-        private string System { get; set; }
-        private string Code { get; set; }
+        public string System { get; set; }
+        public string Code { get; set; }
 
         public ConnectionType(string system, string code)
         {

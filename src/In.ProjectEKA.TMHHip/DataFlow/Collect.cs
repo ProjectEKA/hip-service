@@ -16,6 +16,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
     using Newtonsoft.Json.Serialization;
     using Optional;
     using Optional.Linq;
+    using Optional.Unsafe;
     using Serilog;
     using Code = Model.Code;
     using Coding = Model.Coding;
@@ -115,6 +116,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                                     new JsonSerializerSettings
                                     {
                                         Formatting = Formatting.Indented,
+                                        NullValueHandling = NullValueHandling.Ignore,
                                         ContractResolver = new CamelCasePropertyNamesContractResolver()
                                     });
                                 var careBundle = new CareBundle(caseId, parser.Parse<Bundle>(serializeObject));
@@ -161,7 +163,8 @@ namespace In.ProjectEKA.TMHHip.DataFlow
         }
 
         private static async Task<Option<DiagnosticReportResponse>> FetchDiagnosticReportImagesData(
-            TraceableDataRequest dataRequest, List<DiagnosticReportAsImage> diagnosticReportAsImages, string patientName)
+            TraceableDataRequest dataRequest, List<DiagnosticReportAsImage> diagnosticReportAsImages,
+            string patientName)
         {
             LogDataRequest(dataRequest);
             var uuid = Uuid.Generate().Value;
@@ -250,23 +253,30 @@ namespace In.ProjectEKA.TMHHip.DataFlow
             TraceableDataRequest dataRequest, List<DiagnosticReportAsPdf> diagnosticReportAsPdfs, string patientName)
         {
             LogDataRequest(dataRequest);
-            var uuid = Uuid.Generate().Value;
-            var id = uuid.Split(":").Last();
-            var representations = (from reportAsPdf in diagnosticReportAsPdfs
-                where WithinRange(dataRequest.DateRange, reportAsPdf.Issued)
-                let pdfText =
+            var representations = new List<IDiagnosticReport>();
+            foreach (var reportAsPdf in diagnosticReportAsPdfs)
+            {
+                if (!WithinRange(dataRequest.DateRange, reportAsPdf.Issued))
+                {
+                    continue;
+                }
+
+                var uuid = Uuid.Generate().Value;
+                var id = uuid.Split(":").Last();
+                var pdfText =
                     new Text("additional",
-                        "<div xmlns=\"http://www.w3.org/1999/xhtml\">Unstructured data can be sent here</div>")
-                let code = new Code(reportAsPdf.ReportText)
-                let subject = new Subject(patientName)
-                let performer = new Performer(reportAsPdf.Performer)
-                let pdfData = CustomWebclient.PdfToBase64(reportAsPdf.ReportUrl)
-                let presentedForm = new PresentedForm(reportAsPdf.ContentType, pdfData, reportAsPdf.ReportTitle)
-                select new DiagnosticReportPDFResource(HiType.DiagnosticReport, id, pdfText, "final", code, subject,
-                    reportAsPdf.EffectiveDateTime, reportAsPdf.Issued, new List<Performer> {performer},
-                    new List<PresentedForm> {presentedForm}, reportAsPdf.ReportConclusion)
-                into pdfResource
-                select new DiagnosticReportPdfRepresentation(uuid, pdfResource)).ToList();
+                        "<div xmlns=\"http://www.w3.org/1999/xhtml\">Unstructured data can be sent here</div>");
+                var code = new Code(reportAsPdf.ReportText);
+                var subject = new Subject(patientName);
+                var performer = new Performer(reportAsPdf.Performer);
+                var pdfData = CustomWebclient.PdfToBase64(reportAsPdf.ReportUrl);
+                var presentedForm = new PresentedForm(reportAsPdf.ContentType, pdfData, reportAsPdf.ReportTitle);
+                var diagRepPdfResource = new DiagnosticReportPDFResource(HiType.DiagnosticReport, id, null, "final",
+                    code, subject, reportAsPdf.EffectiveDateTime, reportAsPdf.Issued, new List<Performer> {performer},
+                    new List<PresentedForm> {presentedForm}, reportAsPdf.ReportConclusion);
+                var diagRepRepresentation = new DiagnosticReportPdfRepresentation(uuid, diagRepPdfResource);
+                representations.Add(diagRepRepresentation);
+            }
 
             if (!representations.Any())
             {
@@ -403,7 +413,8 @@ namespace In.ProjectEKA.TMHHip.DataFlow
         }
 
 
-        private static async Task<Option<MedicationResponse>> FindMedicationRequestData(TraceableDataRequest dataRequest,
+        private static async Task<Option<MedicationResponse>> FindMedicationRequestData(
+            TraceableDataRequest dataRequest,
             List<Prescription> prescriptions, string patientName)
         {
             LogDataRequest(dataRequest);
@@ -563,7 +574,8 @@ namespace In.ProjectEKA.TMHHip.DataFlow
             return Option.Some(observationResponse);
         }
 
-        private static async Task<Option<ObservationResponse>> FetchAbdomenExaminationData(TraceableDataRequest dataRequest,
+        private static async Task<Option<ObservationResponse>> FetchAbdomenExaminationData(
+            TraceableDataRequest dataRequest,
             List<AbdomenExaminationData> abdomenExaminationsData, string patientName)
         {
             LogDataRequest(dataRequest);
@@ -626,7 +638,8 @@ namespace In.ProjectEKA.TMHHip.DataFlow
             return Option.Some(observationResponse);
         }
 
-        private static async Task<Option<ObservationResponse>> FetchOralCavityExaminationsData(TraceableDataRequest dataRequest,
+        private static async Task<Option<ObservationResponse>> FetchOralCavityExaminationsData(
+            TraceableDataRequest dataRequest,
             List<OralCavityExaminationData> oralCavityExaminationsData, string patientName)
         {
             LogDataRequest(dataRequest);
@@ -725,7 +738,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                             $"HiTypes:{requestedHiTypes}," +
                             $" From date:{request.DateRange.From}," +
                             $" To date:{request.DateRange.To}, " +
-                            $"CallbackUrl:{request.DataPushUrl}, "+
+                            $"CallbackUrl:{request.DataPushUrl}, " +
                             $"CorrelationId:{request.CorrelationId}");
         }
     }
