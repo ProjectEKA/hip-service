@@ -13,11 +13,11 @@ namespace In.ProjectEKA.HipService
     using DataFlow;
     using DataFlow.Database;
     using DataFlow.Encryptor;
-    using DefaultHip.DataFlow;
-    using DefaultHip.Discovery;
-    using DefaultHip.Link;
     using Discovery;
     using Discovery.Database;
+    using FHIRHip.DataFlow;
+    using FHIRHip.Discovery;
+    using FHIRHip.Link;
     using Gateway;
     using Hangfire;
     using Hangfire.MemoryStorage;
@@ -80,15 +80,15 @@ namespace In.ProjectEKA.HipService
                         x => x.MigrationsAssembly("In.ProjectEKA.HipService")))
                 .AddHangfire(config => { config.UseMemoryStorage(); })
                 .AddSingleton<IEncryptor, Encryptor>()
-                .AddSingleton<IPatientRepository>(new PatientRepository("demoPatients.json"))
-                .AddSingleton<ICollect>(new Collect("demoPatientCareContextDataMap.json"))
-                .AddSingleton<IPatientRepository>(new PatientRepository("demoPatients.json"))
+                .AddSingleton<IPatientRepository>(new PatientRepository(HttpClient, Configuration.GetSection("patientConfig").Get<FHIRHip.Discovery.Model.PatientConfiguration>()))
+                .AddSingleton<ICollect>(new Collect(Configuration.GetSection("dataFlow").Get<FHIRHip.DataFlow.Model.DataFlowConfiguration>(), HttpClient))
+                .AddSingleton<IPatientRepository>(new PatientRepository(HttpClient, Configuration.GetSection("patientConfig").Get<FHIRHip.Discovery.Model.PatientConfiguration>()))
                 .AddRabbit(Configuration)
                 .Configure<OtpServiceConfiguration>(Configuration.GetSection("OtpService"))
                 .Configure<DataFlowConfiguration>(Configuration.GetSection("dataFlow"))
                 .Configure<HipConfiguration>(Configuration.GetSection("hip"))
                 .AddScoped<ILinkPatientRepository, LinkPatientRepository>()
-                .AddSingleton<IMatchingRepository>(new PatientMatchingRepository("demoPatients.json"))
+                .AddSingleton<IMatchingRepository>(new PatientMatchingRepository(HttpClient, Configuration.GetSection("patientConfig").Get<FHIRHip.Discovery.Model.PatientConfiguration>()))
                 .AddScoped<IDiscoveryRequestRepository, DiscoveryRequestRepository>()
                 .AddScoped<PatientDiscovery>()
                 .AddScoped<LinkPatient>()

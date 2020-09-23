@@ -1,4 +1,4 @@
-namespace In.ProjectEKA.DefaultHip.Patient
+namespace In.ProjectEKA.FHIRHip.Patient
 {
     using System.Collections.Generic;
     using System.IO;

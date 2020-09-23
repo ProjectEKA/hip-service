@@ -1,4 +1,4 @@
-namespace In.ProjectEKA.HipService.DataFlow
+namespace In.ProjectEKA.FHIRHip.DataFlow.Model
 {
     public class DataFlowConfiguration
     {
