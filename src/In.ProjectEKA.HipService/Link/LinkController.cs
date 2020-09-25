@@ -169,10 +169,12 @@ namespace In.ProjectEKA.HipService.Link
                 {
                     authModes += mode + ",";
                 }
-                
+
+                authModes = authModes.Remove(authModes.Length - 1, 1);
                 Log.Information($" Auth Purpose:{request.Auth.Purpose},");
-                Log.Information($" Auth Modes:{authModes},");
+                Log.Information($" Auth Modes:{authModes}.");
             }
+
             Log.Information($" Resp RequestId:{request.Resp.RequestId}");
             return Accepted();
         }
