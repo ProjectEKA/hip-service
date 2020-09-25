@@ -9,7 +9,13 @@ namespace In.ProjectEKA.HipService.Common.Heartbeat
     public class HeartbeatController : ControllerBase
     {
         [HttpGet(PATH_HEART_BEAT)]
-        public HeartbeatResponse GetProvidersByName()
+        public HeartbeatResponse getLiveliness()
+        {
+            return Heartbeat.GetHealthStatus();
+        }
+
+        [HttpGet(PATH_READINESS)]
+        public HeartbeatResponse getReadiness()
         {
             return Heartbeat.GetHealthStatus();
         }
