@@ -54,17 +54,17 @@ namespace In.ProjectEKA.HipService.User
                     Log.Information($"Access Token is: {authOnConfirmResponse.Auth.AccessToken}");
                 if (authOnConfirmResponse.Auth.Patient != null)
                 {
-                    Log.Information("Patient Demographics Details:  "+$" Name: {authOnConfirmResponse.Auth.Patient.Name},"+
+                    Log.Information("Patient Demographics Details:  "+$" Name: {authOnConfirmResponse.Auth.Patient.Name}, "+
                                     $"Id: {authOnConfirmResponse.Auth.Patient.Id}, "+
-                    $"Birth Year: {authOnConfirmResponse.Auth.Patient.YearOfBirth}, "+
+                                    $"Birth Year: {authOnConfirmResponse.Auth.Patient.YearOfBirth}, "+
                                     $"Gender: {authOnConfirmResponse.Auth.Patient.Gender}, ");
                     if (authOnConfirmResponse.Auth.Patient.Address != null)
                     {
                         Log.Information("Patient Address Details: "+
-                            $" District: {authOnConfirmResponse.Auth.Patient.Address.District}, "+
-                                        $" State: {authOnConfirmResponse.Auth.Patient.Address.State}, "+ 
-                                        $" Line: {authOnConfirmResponse.Auth.Patient.Address.Line},"+
-                                        $" Pincode: {authOnConfirmResponse.Auth.Patient.Address.PinCode}");
+                                    $"District: {authOnConfirmResponse.Auth.Patient.Address.District}, "+
+                                    $"State: {authOnConfirmResponse.Auth.Patient.Address.State}, "+ 
+                                    $"Line: {authOnConfirmResponse.Auth.Patient.Address.Line}, "+
+                                    $"Pincode: {authOnConfirmResponse.Auth.Patient.Address.PinCode}");
                     }
                 }
             }
