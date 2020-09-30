@@ -16,13 +16,13 @@ namespace In.ProjectEKA.TMHHip.DataFlow
     using Newtonsoft.Json.Serialization;
     using Optional;
     using Optional.Linq;
-    using Optional.Unsafe;
     using Serilog;
     using Code = Model.Code;
     using Coding = Model.Coding;
     using Endpoint = Model.Endpoint;
     using JsonSerializer = System.Text.Json.JsonSerializer;
     using Resource = Model.Resource;
+    using System.IO;
 
     public class Collect : ICollect
     {
@@ -143,6 +143,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                             }
                         }
 
+                        careBundles.Add(new CareBundle(caseId, await ReadJsonAsync<Bundle>("MockedDicomImageData.json")));
                         break;
                     }
                     case HiType.Medication:
@@ -740,6 +741,12 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                             $" To date:{request.DateRange.To}, " +
                             $"CallbackUrl:{request.DataPushUrl}, " +
                             $"CorrelationId:{request.CorrelationId}");
+        }
+        private static async Task<T> ReadJsonAsync<T>(string filePath) where T : Base
+        {
+            var jsonData = await File.ReadAllTextAsync(filePath);
+            var fjp = new FhirJsonParser();
+            return fjp.Parse<T>(jsonData);
         }
     }
 }
