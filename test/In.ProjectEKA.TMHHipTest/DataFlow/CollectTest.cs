@@ -186,7 +186,7 @@ namespace In.ProjectEKA.TMHHipTest.DataFlow
                 consentId, "ncg","correlationId");
 
             var entries = await collect.CollectData(dataRequest);
-            entries.ValueOrDefault().CareBundles.Count().Should().Be(1);
+            entries.ValueOrDefault().CareBundles.Count().Should().Be(2);
         }
 
         [Fact]
@@ -273,7 +273,7 @@ namespace In.ProjectEKA.TMHHipTest.DataFlow
                 consentId, "ncg","correlationId");
 
             var entries = await collect.CollectData(dataRequest);
-            entries.ValueOrDefault().CareBundles.Count().Should().Be(1);
+            entries.ValueOrDefault().CareBundles.Count().Should().Be(2);
         }
 
         [Fact]
@@ -365,7 +365,7 @@ namespace In.ProjectEKA.TMHHipTest.DataFlow
                 consentId, "ncg","correlationId");
 
             var entries = await collect.CollectData(dataRequest);
-            entries.ValueOrDefault().CareBundles.Count().Should().Be(1);
+            entries.ValueOrDefault().CareBundles.Count().Should().Be(2);
         }
 
         [Fact]

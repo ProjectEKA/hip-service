@@ -143,7 +143,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                             }
                         }
 
-                        careBundles.Add(new CareBundle(caseId, await ReadJsonAsync<Bundle>("MockedDicomImageData.json")));
+                        careBundles.Add(new CareBundle(caseId, await ReadJsonAsync<Bundle>("MockedDicomImageData.json").ConfigureAwait(false)));
                         break;
                     }
                     case HiType.Medication:
@@ -272,7 +272,7 @@ namespace In.ProjectEKA.TMHHip.DataFlow
                 var performer = new Performer(reportAsPdf.Performer);
                 var pdfData = CustomWebclient.PdfToBase64(reportAsPdf.ReportUrl);
                 var presentedForm = new PresentedForm(reportAsPdf.ContentType, pdfData, reportAsPdf.ReportTitle);
-                var diagRepPdfResource = new DiagnosticReportPDFResource(HiType.DiagnosticReport, id, null, "final",
+                var diagRepPdfResource = new DiagnosticReportPDFResource(HiType.DiagnosticReport, id, pdfText, "final",
                     code, subject, reportAsPdf.EffectiveDateTime, reportAsPdf.Issued, new List<Performer> {performer},
                     new List<PresentedForm> {presentedForm}, reportAsPdf.ReportConclusion);
                 var diagRepRepresentation = new DiagnosticReportPdfRepresentation(uuid, diagRepPdfResource);
