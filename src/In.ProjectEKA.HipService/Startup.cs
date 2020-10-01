@@ -13,9 +13,6 @@ namespace In.ProjectEKA.HipService
     using DataFlow;
     using DataFlow.Database;
     using DataFlow.Encryptor;
-    using DefaultHip.DataFlow;
-    using DefaultHip.Discovery;
-    using DefaultHip.Link;
     using Discovery;
     using Discovery.Database;
     using Gateway;
@@ -38,6 +35,9 @@ namespace In.ProjectEKA.HipService
     using Newtonsoft.Json;
     using Newtonsoft.Json.Linq;
     using Serilog;
+    using TMHHip.DataFlow;
+    using TMHHip.Discovery;
+    using TMHHip.Link;
 
     public class Startup
     {
@@ -80,17 +80,16 @@ namespace In.ProjectEKA.HipService
                         x => x.MigrationsAssembly("In.ProjectEKA.HipService")))
                 .AddHangfire(config => { config.UseMemoryStorage(); })
                 .AddSingleton<IEncryptor, Encryptor>()
-                .AddSingleton<IPatientRepository>(new PatientRepository("demoPatients.json"))
-                .AddSingleton<ICollect>(new Collect("demoPatientCareContextDataMap.json"))
-                .AddSingleton<IPatientRepository>(new PatientRepository("demoPatients.json"))
                 .AddRabbit(Configuration)
+                .AddSingleton<IMatchingRepository, PatientMatchingRepository>()
                 .Configure<OtpServiceConfiguration>(Configuration.GetSection("OtpService"))
                 .Configure<DataFlowConfiguration>(Configuration.GetSection("dataFlow"))
                 .Configure<HipConfiguration>(Configuration.GetSection("hip"))
                 .AddScoped<ILinkPatientRepository, LinkPatientRepository>()
-                .AddSingleton<IMatchingRepository>(new PatientMatchingRepository("demoPatients.json"))
+                .AddSingleton<IPatientRepository, PatientRepository>()
                 .AddScoped<IDiscoveryRequestRepository, DiscoveryRequestRepository>()
                 .AddScoped<PatientDiscovery>()
+                .AddTransient<ICollect, Collect>()
                 .AddScoped<LinkPatient>()
                 .AddScoped<ReferenceNumberGenerator>()
                 .AddSingleton(Configuration)
@@ -140,7 +139,10 @@ namespace In.ProjectEKA.HipService
                         OnTokenValidated = context =>
                         {
                             if (!IsTokenValid(context))
+                            {
                                 context.Fail("Unable to validate token.");
+                            }
+
                             return Task.CompletedTask;
                         }
                     };
@@ -178,7 +180,10 @@ namespace In.ProjectEKA.HipService
         private static bool CheckRoleInAccessToken(JwtSecurityToken accessToken)
         {
             if (!(accessToken.Payload["realm_access"] is JObject resourceAccess))
+            {
                 return false;
+            }
+
             var token = new Token(resourceAccess["roles"]?.ToObject<List<string>>() ?? new List<string>());
             return token.Roles.Contains("gateway", StringComparer.OrdinalIgnoreCase);
         }
@@ -188,9 +193,15 @@ namespace In.ProjectEKA.HipService
             const string claimTypeClientId = "clientId";
             var accessToken = context.SecurityToken as JwtSecurityToken;
             if (!CheckRoleInAccessToken(accessToken))
+            {
                 return false;
+            }
+
             if (!context.Principal.HasClaim(claim => claim.Type == claimTypeClientId))
+            {
                 return false;
+            }
+
             var clientId = context.Principal.Claims.First(claim => claim.Type == claimTypeClientId).Value;
             context.Request.Headers["X-GatewayID"] = clientId;
             return true;
