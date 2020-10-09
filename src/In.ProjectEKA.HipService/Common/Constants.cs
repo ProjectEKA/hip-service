@@ -27,5 +27,8 @@ namespace In.ProjectEKA.HipService.Common
                                                                                "/health-information/notify";
 
         public static readonly string PATH_AUTH_CONFIRM = "/" + CURRENT_VERSION + "/users/auth/confirm";
+        public static readonly string OPENMRS_FHIR = "ws/fhir2/R/Patient";
+        public static readonly string OPENMRS_REST = "ws/rest/v1/visit";
+        public static readonly string CONFIG_KEY = "OpenMrs";
     }
 }

@@ -1,7 +1,10 @@
 // You may need to install the Microsoft.AspNetCore.Http.Abstractions package into your project
+
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using In.ProjectEKA.HipLibrary.Patient.Model;
+using In.ProjectEKA.HipService.Common.Heartbeat.Model;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
@@ -13,9 +16,10 @@ public class HealthCheckMiddleware
     private readonly IHealthCheckStatus healthCheckStatus;
     private readonly HealthChecker healthChecker;
 
-    public HealthCheckMiddleware(RequestDelegate next, IHealthCheckStatus inithealthCheckStatus, IServiceProvider serviceProvider)
+    public HealthCheckMiddleware(RequestDelegate next, IHealthCheckStatus inithealthCheckStatus,
+        IServiceProvider serviceProvider)
     {
-        healthChecker = (HealthChecker)serviceProvider.GetService(typeof(HealthChecker));
+        healthChecker = (HealthChecker) serviceProvider.GetService(typeof(HealthChecker));
         healthCheckStatus = inithealthCheckStatus;
         _next = next;
     }
@@ -24,6 +28,7 @@ public class HealthCheckMiddleware
     {
         Dictionary<string, string> healthStatus = healthCheckStatus.GetStatus("health");
         bool healthy = true;
+        String errorMessage = "";
         if (healthStatus != null)
         {
             foreach (var entry in healthStatus)
@@ -31,14 +36,17 @@ public class HealthCheckMiddleware
                 if (entry.Value != "Healthy")
                 {
                     healthy = false;
-                    break;
+                    errorMessage = entry.Key + " is " + entry.Value + "," + errorMessage;
                 }
             }
         }
+
         if (!healthy)
         {
             httpContext.Response.StatusCode = 500;
-            await httpContext.Response.WriteAsync(JsonConvert.SerializeObject(healthStatus));
+            await httpContext.Response.WriteAsync(JsonConvert.SerializeObject(new HeartbeatResponse(
+                DateTime.Now.ToUniversalTime(), HeartbeatStatus.DOWN.ToString(),
+                new Error(ErrorCode.HeartBeat, errorMessage))));
         }
         else
         {

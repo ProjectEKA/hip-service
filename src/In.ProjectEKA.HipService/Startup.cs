@@ -104,9 +104,9 @@ namespace In.ProjectEKA.HipService
                 .AddSingleton<DataFlowMessageHandler>()
                 .AddSingleton(HttpClient)
                 .AddScoped<IHealthCheckClient> (_ => new OpenMrsHealthCheckClient (new Dictionary<string, string> { 
-                { "OpenMRS-FHIR", "ws/fhir2/Patient" },
-                { "OpenMRS-REST", "ws/rest/v1/visit" }}, 
-                new OpenMrsClient (HttpClient,Configuration.GetSection ("OpenMrs").Get<OpenMrsConfiguration> ())))
+                { "OpenMRS-FHIR", Constants.OPENMRS_FHIR },
+                { "OpenMRS-REST", Constants.OPENMRS_REST }}, 
+                new OpenMrsClient (HttpClient,Configuration.GetSection (Constants.CONFIG_KEY).Get<OpenMrsConfiguration> ())))
                 .AddSingleton<IHealthCheckStatus,HealthCheckStatus>()
                 .AddSingleton<HealthChecker>()
                 .AddScoped<IPatientVerification, PatientVerification>()

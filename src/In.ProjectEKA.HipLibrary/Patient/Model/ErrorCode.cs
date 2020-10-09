@@ -20,6 +20,7 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
         DuplicateDiscoveryRequest = 3409,
         DuplicateRequestId = 3429,
         CareContextConfiguration = 3430,
-        OpenMrsConnection = 3431
+        OpenMrsConnection = 3431,
+        HeartBeat=3432
     }
 }

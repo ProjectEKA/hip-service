@@ -2,18 +2,11 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
 {
     using System.Collections.Generic;
     using System.IO;
-    using System.Net.Http;
-    using System.Net;
     using System.Threading.Tasks;
-    using System.Threading;
     using System;
     using FluentAssertions;
     using In.ProjectEKA.HipService.OpenMrs.HealthCheck;
-    using In.ProjectEKA.HipService.OpenMrs;
-    using In.ProjectEKA.HipService;
-    using Microsoft.AspNetCore.Hosting;
     using Microsoft.AspNetCore.Http;
-    using Moq.Protected;
     using Moq;
     using Newtonsoft.Json;
     using Xunit;
@@ -49,7 +42,6 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
             healthCheckClient = new Mock<IHealthCheckClient>();
             healthCheckClient.Setup(x => x.CheckHealth())
                 .Returns(Task.FromResult(sampleServiceData));
-            var expectedResult = JsonConvert.SerializeObject(sampleServiceData);
 
             Dictionary<string, string> unhealthyresponse = new Dictionary<string, string> { { "Service1", "Unhealthy" }, { "Service2", "Healthy" } };
             healthCheckStatus.Setup(x => x.GetStatus("health"))
@@ -61,7 +53,8 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
 
             responseBody
                 .Should()
-                .BeEquivalentTo(expectedResult);
+                .Contain("Service1 is Unhealthy");
+            
             context.Response.StatusCode
                 .Should()
                 .Be(500);
@@ -91,7 +84,12 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
 
             responseBody
                 .Should()
-                .BeEquivalentTo(expectedResult);
+                .Contain("Service1 is Unhealthy");
+            
+            responseBody
+                .Should()
+                .Contain("Service2 is Unhealthy");
+            
             context.Response.StatusCode
                 .Should()
                 .Be(500);
