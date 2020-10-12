@@ -7,6 +7,7 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
         MR,
         MOBILE,
         NDHM_HEALTH_NUMBER,
-        HEALTH_ID
+        HEALTH_ID,
+        HEALTH_NUMBER
     }
 }
