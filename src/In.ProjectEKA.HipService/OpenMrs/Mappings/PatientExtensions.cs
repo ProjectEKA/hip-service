@@ -24,8 +24,7 @@
 
         private static string GetIdentifier(Hl7.Fhir.Model.Patient openMrsPatient) {
             return openMrsPatient.Identifier
-                .Where(identifier => identifier.System == "Patient Identifier")
-                .Select(identifier => identifier.Value)
+                .Select(identifier =>identifier.Value )
                 .FirstOrDefault();
         }
     }

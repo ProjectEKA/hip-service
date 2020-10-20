@@ -11,7 +11,7 @@ namespace In.ProjectEKA.HipServiceTest.OpenMrs
 
         public static class Fhir
         {
-            public const string OnPatientPath = "ws/fhir2/Patient";
+            public const string OnPatientPath = "ws/fhir2/R4/Patient";
         }
     }
 }

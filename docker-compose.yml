@@ -25,10 +25,11 @@ services:
     image: soluto/oidc-server-mock
     ports:
       - "8080:80"
+    container_name: oidc-server-mock
     environment:
       API_SCOPES_INLINE: |
         [
-          "some-app-scope-1"
+          { "Name": "some-app-scope-1" }
         ]
       CLIENTS_CONFIGURATION_PATH: /gatewayStubConfigurations/oicdConfigs/clients-config.json
     volumes:

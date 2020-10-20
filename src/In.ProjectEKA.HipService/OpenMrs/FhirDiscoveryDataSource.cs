@@ -30,7 +30,7 @@ namespace In.ProjectEKA.HipService.OpenMrs
                 query["birthdate"]=yearOfBirth;
             }
             if (query.ToString() != ""){
-                path = $"{path}/?{query}";
+                path = $"{path}?{query}";
             }
 
             var patients = new List<Patient>();

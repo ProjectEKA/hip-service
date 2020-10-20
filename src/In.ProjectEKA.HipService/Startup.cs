@@ -103,11 +103,14 @@ namespace In.ProjectEKA.HipService
                 .AddSingleton<DataEntryFactory>()
                 .AddSingleton<DataFlowMessageHandler>()
                 .AddSingleton(HttpClient)
-                .AddScoped<IHealthCheckClient> (_ => new OpenMrsHealthCheckClient (new Dictionary<string, string> { 
-                { "OpenMRS-FHIR", Constants.OPENMRS_FHIR },
-                { "OpenMRS-REST", Constants.OPENMRS_REST }}, 
-                new OpenMrsClient (HttpClient,Configuration.GetSection (Constants.CONFIG_KEY).Get<OpenMrsConfiguration> ())))
-                .AddSingleton<IHealthCheckStatus,HealthCheckStatus>()
+                .AddScoped<IHealthCheckClient>(_ => new OpenMrsHealthCheckClient(new Dictionary<string, string>
+                    {
+                        {"OpenMRS-FHIR", Constants.OPENMRS_FHIR},
+                        {"OpenMRS-REST", Constants.OPENMRS_REST}
+                    },
+                    new OpenMrsClient(HttpClient,
+                        Configuration.GetSection(Constants.CONFIG_KEY).Get<OpenMrsConfiguration>())))
+                .AddSingleton<IHealthCheckStatus, HealthCheckStatus>()
                 .AddSingleton<HealthChecker>()
                 .AddScoped<IPatientVerification, PatientVerification>()
                 .AddScoped<IConsentRepository, ConsentRepository>()
@@ -187,7 +190,7 @@ namespace In.ProjectEKA.HipService
                         }
                     };
                 })
-                .Services.AddHealthChecks ();
+                .Services.AddHealthChecks();
         }
 
         private HttpClient HttpClient { get; }
@@ -208,10 +211,7 @@ namespace In.ProjectEKA.HipService
             });
 
             app.UseSwagger();
-            app.UseSwaggerUI(c =>
-            {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "HIP Service");
-            });
+            app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "HIP Service"); });
 
             app.UseStaticFilesWithYaml()
                 .UseRouting()
@@ -221,7 +221,8 @@ namespace In.ProjectEKA.HipService
                 .UseAuthentication()
                 .UseAuthorization()
                 .UseHealthCheckMiddleware()
-                .UseEndpoints(endpoints => { 
+                .UseEndpoints(endpoints =>
+                {
                     endpoints.MapControllers();
                     endpoints.MapHealthChecks("/health");
                 })
