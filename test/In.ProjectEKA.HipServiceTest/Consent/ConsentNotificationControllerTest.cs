@@ -142,8 +142,8 @@ namespace In.ProjectEKA.HipServiceTest.Consent
                             c =>
                                 c.Acknowledgement.ConsentId == consentNotification.Notification.ConsentId
                                 && c.Resp.RequestId == consentNotification.RequestId),
-                        consentNotification.Notification.ConsentDetail.ConsentManager.Id
-                    ),
+                        consentNotification.Notification.ConsentDetail.ConsentManager.Id,
+                                correlationId),
                 Times.Once);
         }
     }
