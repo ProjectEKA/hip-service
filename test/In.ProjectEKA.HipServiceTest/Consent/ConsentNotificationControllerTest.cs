@@ -55,7 +55,7 @@ namespace In.ProjectEKA.HipServiceTest.Consent
                 .Setup(g =>
                     g.SendDataToGateway(
                         It.IsAny<string>(),
-                        It.IsAny<GatewayRevokedConsentRepresentation>(),
+                        It.IsAny<GatewayConsentRepresentation>(),
                         It.IsAny<string>()))
                 .Returns(Task.Run(() => { }));
         }
@@ -131,7 +131,7 @@ namespace In.ProjectEKA.HipServiceTest.Consent
 
             gatewayClient.Verify(g => g.SendDataToGateway(
                         "/v0.5/consents/hip/on-notify",
-                        It.Is<GatewayRevokedConsentRepresentation>(
+                        It.Is<GatewayConsentRepresentation>(
                             c =>
                                 c.Acknowledgement.ConsentId == consentNotification.Notification.ConsentId
                                 && c.Resp.RequestId == consentNotification.RequestId),

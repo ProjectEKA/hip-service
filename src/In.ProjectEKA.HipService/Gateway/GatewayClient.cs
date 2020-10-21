@@ -105,7 +105,7 @@ namespace In.ProjectEKA.HipService.Gateway
             }
         }
 
-        public void SendDataToGateway(object pATH_CONSENT_ON_NOTIFY, GatewayRevokedConsentRepresentation gatewayRevokedConsentRepresentation, string id)
+        public void SendDataToGateway(object pATH_CONSENT_ON_NOTIFY, GatewayConsentRepresentation gatewayRevokedConsentRepresentation, string id)
         {
             throw new NotImplementedException();
         }
