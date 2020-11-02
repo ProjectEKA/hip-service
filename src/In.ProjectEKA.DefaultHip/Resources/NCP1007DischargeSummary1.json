@@ -116,6 +116,16 @@
                       }
                    ]
                 }
+             ],
+             "attester": [
+               {
+                 "mode": "official",
+                 "time": "2019-01-04T09:10:14Z",
+                 "party": {
+                   "reference": "Organization/MaxSaket01",
+                   "display": "Max Super Speciality Hospital, Saket"
+                 }
+               }
              ]
           }
        },
