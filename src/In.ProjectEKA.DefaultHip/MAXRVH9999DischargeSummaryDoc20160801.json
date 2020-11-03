@@ -193,6 +193,16 @@
               }
             ]
           }
+        ],
+        "attester": [
+          {
+            "mode": "official",
+            "time": "2019-01-04T09:10:14Z",
+            "party": {
+              "reference": "Organization/MaxSaket01",
+              "display": "Max Super Speciality Hospital, Saket"
+            }
+          }
         ]
       }
     },
@@ -228,6 +238,12 @@
         "name": "Max Super Speciality Hospital, Saket",
         "alias": [
           "Max"
+        ],
+        "identifier": [
+          {
+            "system": "https://facilitysbx.ndhm.gov.in",
+            "value": "10000005"
+          }
         ],
         "telecom": [
           {
