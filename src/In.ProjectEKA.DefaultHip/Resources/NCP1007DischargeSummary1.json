@@ -148,6 +148,12 @@
                         "value":"(+91) 011-2651-5051"
                     }
                 ],
+                "identifier": [
+                  {
+                    "system": "https://facilitysbx.ndhm.gov.in",
+                    "value": "10000005"
+                  }
+                ],
                 "address":[
                     {
                         "line":[
