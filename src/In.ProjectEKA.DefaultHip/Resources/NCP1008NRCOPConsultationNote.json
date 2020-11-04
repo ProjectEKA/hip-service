@@ -70,7 +70,7 @@
                 ],
                 "title": "Consultation Report",
                 "custodian": {
-                    "reference": "Organization/MaxSaket01",
+                    "reference": "Organization/WellBeing",
 					"display": "Max Super Speciality Hospital, Saket"
                 },
                 "section":  [
@@ -238,10 +238,10 @@
             }
         },
         {
-            "fullUrl": "Organization/MaxSaket01",
+            "fullUrl": "Organization/WellBeing",
             "resource": {
                 "resourceType": "Organization",
-                "id": "MaxSaket01",
+                "id": "WellBeing01",
                 "meta": {
                     "profile":  [
                         "http://nrces.in/ndhm/fhir/r4/StructureDefinition/Organization"
@@ -249,7 +249,7 @@
                 },
                 "text": {
                     "status": "generated",
-                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Max Hospital. ph: +91 273 2139 3632, email:<a href=\"mailto:contact@max.in\">contact@max.in</a></div>"
+                    "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">WellBeing Hospital. ph: +91 273 2139 3632, email:<a href=\"mailto:contact@max.in\">contact@max.in</a></div>"
                 },
                 "identifier":  [
                     {
@@ -266,7 +266,7 @@
                         "value": "4567823"
                     }
                 ],
-                "name": "Max Healthcare, Saket",
+                "name": "WellBeing, Saket",
                 "telecom":  [
                     {
                         "system": "phone",

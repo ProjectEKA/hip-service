@@ -1,1 +1,252 @@
-{"resourceType":"Bundle","id":"e2358377-6b94-444e-adf5-ecb34672c913","meta":{"lastUpdated":"2019-12-13T00:00:00.000+05:30"},"identifier":{"system":"https://www.wbc.in/bundle","value":"e2358377-6b94-444e-adf5-ecb34672c913"},"type":"document","timestamp":"2019-12-13T00:00:00.000+05:30","entry":[{"fullUrl":"Composition/23ea3c35-3268-4642-b8da-0d9d26529eec","resource":{"resourceType":"Composition","id":"23ea3c35-3268-4642-b8da-0d9d26529eec","identifier":{"system":"https://www.wbc.in/document","value":"23ea3c35-3268-4642-b8da-0d9d26529eec"},"status":"final","type":{"coding":[{"system":"https://projecteka.in/sct","code":"440545006","display":"Prescription record"}]},"subject":{"reference":"Patient/RVH1003"},"encounter":{"reference":"Encounter/47e32221-5893-445f-b696-a2bd5936b963"},"date":"2019-12-13T00:00:00+05:30","author":[{"reference":"Practitioner/WBC1234","display":"Dr Manju Sengar"}],"title":"Prescription","section":[{"title":"OPD Prescription","code":{"coding":[{"system":"https://projecteka.in/sct","code":"440545006","display":"Prescription record"}]},"entry":[{"reference":"MedicationRequest/b0b3f55b-4291-41dd-86e9-4a91b1436791"},{"reference":"MedicationRequest/6422c723-8dd2-449c-8916-ac38deb83f0c"}]}]}},{"fullUrl":"Practitioner/WBC1234","resource":{"resourceType":"Practitioner","id":"WBC1234","identifier":[{"system":"https://www.mciindia.in/doctor","value":"WBC1234"}],"name":[{"text":"Manju Sengar","prefix":["Dr"],"suffix":["MD"]}]}},{"fullUrl":"Patient/RVH1003","resource":{"resourceType":"Patient","id":"RVH1003","name":[{"text":"Hina Patel"}],"gender":"female"}},{"fullUrl":"Encounter/47e32221-5893-445f-b696-a2bd5936b963","resource":{"resourceType":"Encounter","id":"47e32221-5893-445f-b696-a2bd5936b963","status":"finished","class":{"system":"http://terminology.hl7.org/CodeSystem/v3-ActCode","code":"AMB","display":"Outpatient visit"},"subject":{"reference":"Patient/RVH1003"},"period":{"start":"2019-12-13T00:00:00+05:30"}}},{"fullUrl":"MedicationRequest/b0b3f55b-4291-41dd-86e9-4a91b1436791","resource":{"resourceType":"MedicationRequest","id":"b0b3f55b-4291-41dd-86e9-4a91b1436791","status":"active","intent":"order","medicationCodeableConcept":{"text":"tramadol and paracetamol 500 mg"},"subject":{"reference":"Patient/RVH1003"},"authoredOn":"2019-12-13T00:00:00+05:30","requester":{"reference":"Practitioner/WBC1234"},"dosageInstruction":[{"text":"1 tablet once a day"}]}},{"fullUrl":"Condition/9e12e8a4-6ea1-4682-bb9c-19fd14aab2a5","resource":{"resourceType":"Condition","id":"9e12e8a4-6ea1-4682-bb9c-19fd14aab2a5","code":{"text":"worm infection"},"subject":{"reference":"Patient/RVH1003"}}},{"fullUrl":"MedicationRequest/6422c723-8dd2-449c-8916-ac38deb83f0c","resource":{"resourceType":"MedicationRequest","id":"6422c723-8dd2-449c-8916-ac38deb83f0c","status":"active","intent":"order","medicationCodeableConcept":{"text":"albendazole 400 mg"},"subject":{"reference":"Patient/RVH1003"},"authoredOn":"2019-12-13T00:00:00+05:30","requester":{"reference":"Practitioner/WBC1234"},"reasonReference":[{"reference":"Condition/9e12e8a4-6ea1-4682-bb9c-19fd14aab2a5"}],"dosageInstruction":[{"text":"1 time only"}]}}]}
+{
+  "resourceType": "Bundle",
+  "id": "e2358377-6b94-444e-adf5-ecb34672c913",
+  "meta": {
+    "lastUpdated": "2019-12-13T00:00:00.000+05:30"
+  },
+  "identifier": {
+    "system": "https://www.wbc.in/bundle",
+    "value": "e2358377-6b94-444e-adf5-ecb34672c913"
+  },
+  "type": "document",
+  "timestamp": "2019-12-13T00:00:00.000+05:30",
+  "entry": [
+    {
+      "fullUrl": "Composition/23ea3c35-3268-4642-b8da-0d9d26529eec",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "23ea3c35-3268-4642-b8da-0d9d26529eec",
+        "identifier": {
+          "system": "https://www.wbc.in/document",
+          "value": "23ea3c35-3268-4642-b8da-0d9d26529eec"
+        },
+        "status": "final",
+        "type": {
+          "coding": [
+            {
+              "system": "https://projecteka.in/sct",
+              "code": "440545006",
+              "display": "Prescription record"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/RVH1003"
+        },
+        "encounter": {
+          "reference": "Encounter/47e32221-5893-445f-b696-a2bd5936b963"
+        },
+        "date": "2019-12-13T00:00:00+05:30",
+        "author": [
+          {
+            "reference": "Practitioner/WBC1234",
+            "display": "Dr Manju Sengar"
+          }
+        ],
+        "title": "Prescription",
+        "section": [
+          {
+            "title": "OPD Prescription",
+            "code": {
+              "coding": [
+                {
+                  "system": "https://projecteka.in/sct",
+                  "code": "440545006",
+                  "display": "Prescription record"
+                }
+              ]
+            },
+            "entry": [
+              {
+                "reference": "MedicationRequest/b0b3f55b-4291-41dd-86e9-4a91b1436791"
+              },
+              {
+                "reference": "MedicationRequest/6422c723-8dd2-449c-8916-ac38deb83f0c"
+              }
+            ]
+          }
+        ],
+        "attester": [
+          {
+            "mode": "official",
+            "time": "2019-01-04T09:10:14Z",
+            "party": {
+              "reference": "Organization/WellBeing",
+              "display": "WellBeing, Saket"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Organization/WellBeing",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "WellBeing",
+        "meta": {
+          "profile":  [
+            "http://nrces.in/ndhm/fhir/r4/StructureDefinition/Organization"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Well Being Hospital. ph: +91 273 2139 3632, email:<a href=\"mailto:contact@max.in\">contact@max.in</a></div>"
+        },
+        "identifier":  [
+          {
+            "type": {
+              "coding":  [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                  "code": "PRN",
+                  "display": "+911234512345"
+                }
+              ]
+            },
+            "system": "https://ndhm.in/facility",
+            "value": "4567823"
+          },
+          {
+            "system": "https://facilitysbx.ndhm.gov.in",
+            "value": "10019843"
+          }
+        ],
+        "name": "WellBeing, Saket",
+        "telecom":  [
+          {
+            "system": "phone",
+            "value": "+91 273 2139 3632",
+            "use": "work"
+          },
+          {
+            "system": "email",
+            "value": "contact@max.in",
+            "use": "work"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Practitioner/WBC1234",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "WBC1234",
+        "identifier": [
+          {
+            "system": "https://www.mciindia.in/doctor",
+            "value": "WBC1234"
+          }
+        ],
+        "name": [
+          {
+            "text": "Manju Sengar",
+            "prefix": [
+              "Dr"
+            ],
+            "suffix": [
+              "MD"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Patient/RVH1003",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "RVH1003",
+        "name": [
+          {
+            "text": "Hina Patel"
+          }
+        ],
+        "gender": "female"
+      }
+    },
+    {
+      "fullUrl": "Encounter/47e32221-5893-445f-b696-a2bd5936b963",
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "47e32221-5893-445f-b696-a2bd5936b963",
+        "status": "finished",
+        "class": {
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+          "code": "AMB",
+          "display": "Outpatient visit"
+        },
+        "subject": {
+          "reference": "Patient/RVH1003"
+        },
+        "period": {
+          "start": "2019-12-13T00:00:00+05:30"
+        }
+      }
+    },
+    {
+      "fullUrl": "MedicationRequest/b0b3f55b-4291-41dd-86e9-4a91b1436791",
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "b0b3f55b-4291-41dd-86e9-4a91b1436791",
+        "status": "active",
+        "intent": "order",
+        "medicationCodeableConcept": {
+          "text": "tramadol and paracetamol 500 mg"
+        },
+        "subject": {
+          "reference": "Patient/RVH1003"
+        },
+        "authoredOn": "2019-12-13T00:00:00+05:30",
+        "requester": {
+          "reference": "Practitioner/WBC1234"
+        },
+        "dosageInstruction": [
+          {
+            "text": "1 tablet once a day"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Condition/9e12e8a4-6ea1-4682-bb9c-19fd14aab2a5",
+      "resource": {
+        "resourceType": "Condition",
+        "id": "9e12e8a4-6ea1-4682-bb9c-19fd14aab2a5",
+        "code": {
+          "text": "worm infection"
+        },
+        "subject": {
+          "reference": "Patient/RVH1003"
+        }
+      }
+    },
+    {
+      "fullUrl": "MedicationRequest/6422c723-8dd2-449c-8916-ac38deb83f0c",
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "6422c723-8dd2-449c-8916-ac38deb83f0c",
+        "status": "active",
+        "intent": "order",
+        "medicationCodeableConcept": {
+          "text": "albendazole 400 mg"
+        },
+        "subject": {
+          "reference": "Patient/RVH1003"
+        },
+        "authoredOn": "2019-12-13T00:00:00+05:30",
+        "requester": {
+          "reference": "Practitioner/WBC1234"
+        },
+        "reasonReference": [
+          {
+            "reference": "Condition/9e12e8a4-6ea1-4682-bb9c-19fd14aab2a5"
+          }
+        ],
+        "dosageInstruction": [
+          {
+            "text": "1 time only"
+          }
+        ]
+      }
+    }
+  ]
+}

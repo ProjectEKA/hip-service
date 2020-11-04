@@ -45,7 +45,7 @@
              },
              "author":[
                 {
-                   "reference":"Organization/MaxSaket01"
+                   "reference": "Organization/WellBeing"
                 },
                 {
                     "reference":"Practitioner/DHID1234"
@@ -60,67 +60,87 @@
                          {
                             "system":"https://projecteka.in/sct",
                             "code":"721981007",
-                            "display":"Diagnosti Report: Surgical Pathology"
+                           "display": "Diagnosti Report: Surgical Pathology"
                          }
                       ]
                    },
-                   "entry":[
-                      {
-                         "reference":"DiagnosticReport/a45840dc-cf6b-4fcc-acec-d54a3bea40ff"
-                      }
-                   ]
+                  "entry": [
+                    {
+                      "reference": "DiagnosticReport/a45840dc-cf6b-4fcc-acec-d54a3bea40ff"
+                    }
+                  ]
                 }
-             ]
+             ],
+            "attester": [
+              {
+                "mode": "official",
+                "time": "2019-01-04T09:10:14Z",
+                "party": {
+                  "reference": "Organization/WellBeing",
+                  "display": "WellBeing, Saket"
+                }
+              }
+            ]
           }
        },
-       {
-            "fullUrl": "Organization/MaxSaket01",
-            "resource" : {
-                "resourceType":"Organization",
-                "id":"MaxSaket01",
-                "name":"Max Super Speciality Hospital, Saket",
-                "alias":[
-                    "Max"
-                ],
-                "telecom":[
-                    {
-                        "system":"phone",
-                        "value":"(+91) 011-2651-5050"
-                    },
-                    {
-                        "system":"fax",
-                        "value":"(+91) 011-2651-5051"
-                    }
-                ],
-                "address":[
-                    {
-                        "line":[
-                            "1, 2, Press Enclave Marg, Saket Institutional Area, Saket"
-                        ],
-                        "city":"New Delhi",
-                        "state":"New Delhi",
-                        "postalCode":"110017",
-                        "country":"INDIA"
-                    }
-                ],
-                "endpoint":[
-                    {
-                        "reference":"https://www.max.in/hospital-network/max-super-speciality-hospital-saket",
-                        "display":"Website"
-                    }
+      {
+        "fullUrl": "Organization/WellBeing",
+        "resource": {
+          "resourceType": "Organization",
+          "id": "WellBeing",
+          "meta": {
+            "profile": [
+              "http://nrces.in/ndhm/fhir/r4/StructureDefinition/Organization"
+            ]
+          },
+          "text": {
+            "status": "generated",
+            "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Well Being Hospital. ph: +91 273 2139 3632, email:<a href=\"mailto:contact@max.in\">contact@max.in</a></div>"
+          },
+          "identifier": [
+            {
+              "type": {
+                "coding": [
+                  {
+                    "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                    "code": "PRN",
+                    "display": "+911234512345"
+                  }
                 ]
+              },
+              "system": "https://ndhm.in/facility",
+              "value": "4567823"
+            },
+            {
+              "system": "https://facilitysbx.ndhm.gov.in",
+              "value": "10019843"
             }
-        },
-        {
-            "fullUrl": "Practitioner/DHID1234",
-            "resource": {
-              "resourceType": "Practitioner",
-              "id": "DHID1234",
-              "identifier": [
-                {
-                  "system": "http://mciindia.org/",
-                  "value": "2318"
-                }
+          ],
+          "name": "WellBeing, Saket",
+          "telecom": [
+            {
+              "system": "phone",
+              "value": "+91 273 2139 3632",
+              "use": "work"
+            },
+            {
+              "system": "email",
+              "value": "contact@max.in",
+              "use": "work"
+            }
+          ]
+        }
+      },
+      {
+        "fullUrl": "Practitioner/DHID1234",
+        "resource": {
+          "resourceType": "Practitioner",
+          "id": "DHID1234",
+          "identifier": [
+            {
+              "system": "http://mciindia.org/",
+              "value": "2318"
+            }
               ],
               "name": [
                 {
@@ -192,7 +212,7 @@
              },
              "performer" : [
                 {
-                    "reference":"Organization/MaxSaket01"
+                  "reference": "Organization/WellBeing"
                 }
              ],
              "resultsInterpreter"  : [

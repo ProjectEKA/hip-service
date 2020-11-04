@@ -143,7 +143,7 @@
         "issued": "2019-08-01T00:00:00.000+05:30",
         "performer": [
           {
-            "reference": "Organization/MaxSaket01"
+            "reference": "Organization/WellBeing"
           }
         ],
         "resultsInterpreter": [
@@ -160,10 +160,10 @@
       }
     },
     {
-      "fullUrl": "Organization/MaxSaket01",
+      "fullUrl": "Organization/WellBeing",
       "resource": {
         "resourceType": "Organization",
-        "id": "MaxSaket01",
+        "id": "WellBeing01",
         "name": "Max Super Speciality Hospital, Saket",
         "alias": [
           "Max"

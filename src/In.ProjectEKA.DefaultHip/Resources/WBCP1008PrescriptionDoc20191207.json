@@ -1,1 +1,254 @@
-{"resourceType":"Bundle","id":"2a31a948-5393-449a-876a-644c9b9e00b2","meta":{"lastUpdated":"2019-12-07T00:00:00.000+05:30"},"identifier":{"system":"https://www.wbc.in/bundle","value":"2a31a948-5393-449a-876a-644c9b9e00b2"},"type":"document","timestamp":"2019-12-07T00:00:00.000+05:30","entry":[{"fullUrl":"Composition/3b2953f0-caf5-4587-9d7e-e3dcd64986c1","resource":{"resourceType":"Composition","id":"3b2953f0-caf5-4587-9d7e-e3dcd64986c1","identifier":{"system":"https://www.wbc.in/document","value":"3b2953f0-caf5-4587-9d7e-e3dcd64986c1"},"status":"final","type":{"coding":[{"system":"https://projecteka.in/sct","code":"440545006","display":"Prescription record"}]},"subject":{"reference":"Patient/RVH1003"},"encounter":{"reference":"Encounter/f757c5ba-44e0-48f7-a236-411630b644b4"},"date":"2019-12-07T00:00:00+05:30","author":[{"reference":"Practitioner/WBC191101"}],"title":"Prescription","section":[{"title":"OPD Prescription","code":{"coding":[{"system":"https://projecteka.in/sct","code":"440545006","display":"Prescription record"}]},"entry":[{"reference":"MedicationRequest/42ed8ab6-6a13-441f-b74d-7c7f17e9ebb4"},{"reference":"MedicationRequest/ccf78b4a-f8de-4f72-9174-1360c2fbf42c"}]}]}},{"fullUrl":"Practitioner/WBC191101","resource":{"resourceType":"Practitioner","id":"WBC191101","identifier":[{"system":"https://www.mciindia.in/doctor","value":"WBC191101"}],"name":[{"text":"Akshatha M K","prefix":["Dr"],"suffix":["MD"]}]}},{"fullUrl":"Patient/RVH1003","resource":{"resourceType":"Patient","id":"RVH1003","name":[{"text":"Hina Patel"}],"gender":"female"}},{"fullUrl":"Encounter/f757c5ba-44e0-48f7-a236-411630b644b4","resource":{"resourceType":"Encounter","id":"f757c5ba-44e0-48f7-a236-411630b644b4","status":"finished","class":{"system":"http://terminology.hl7.org/CodeSystem/v3-ActCode","code":"AMB","display":"Outpatient visit"},"subject":{"reference":"Patient/RVH1003"},"period":{"start":"2019-12-07T00:00:00+05:30"}}},{"fullUrl":"Medication/e27652b8-86c1-456a-84e3-7ce8d761e854","resource":{"resourceType":"Medication","id":"e27652b8-86c1-456a-84e3-7ce8d761e854","code":{"coding":[{"system":"https://projecteka.in/act","code":"C01EB16","display":"ibuprofen 30 mg Pediatric"}]}}},{"fullUrl":"MedicationRequest/42ed8ab6-6a13-441f-b74d-7c7f17e9ebb4","resource":{"resourceType":"MedicationRequest","id":"42ed8ab6-6a13-441f-b74d-7c7f17e9ebb4","status":"active","intent":"order","medicationReference":{"reference":"Medication/e27652b8-86c1-456a-84e3-7ce8d761e854"},"subject":{"reference":"Patient/RVH1003"},"authoredOn":"2019-12-07T00:00:00+05:30","requester":{"reference":"Practitioner/WBC191101"},"dosageInstruction":[{"text":"1 tablet 2 times a day"}]}},{"fullUrl":"MedicationRequest/ccf78b4a-f8de-4f72-9174-1360c2fbf42c","resource":{"resourceType":"MedicationRequest","id":"ccf78b4a-f8de-4f72-9174-1360c2fbf42c","status":"active","intent":"order","medicationCodeableConcept":{"text":"azithromycin 500mg"},"subject":{"reference":"Patient/RVH1003"},"authoredOn":"2019-12-07T00:00:00+05:30","requester":{"reference":"Practitioner/WBC191101"},"note":[{"text":"Do not discontinue"}],"dosageInstruction":[{"text":"1 capsule 2 times a day"}]}}]}
+{
+  "resourceType": "Bundle",
+  "id": "2a31a948-5393-449a-876a-644c9b9e00b2",
+  "meta": {
+    "lastUpdated": "2019-12-07T00:00:00.000+05:30"
+  },
+  "identifier": {
+    "system": "https://www.wbc.in/bundle",
+    "value": "2a31a948-5393-449a-876a-644c9b9e00b2"
+  },
+  "type": "document",
+  "timestamp": "2019-12-07T00:00:00.000+05:30",
+  "entry": [
+    {
+      "fullUrl": "Composition/3b2953f0-caf5-4587-9d7e-e3dcd64986c1",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "3b2953f0-caf5-4587-9d7e-e3dcd64986c1",
+        "identifier": {
+          "system": "https://www.wbc.in/document",
+          "value": "3b2953f0-caf5-4587-9d7e-e3dcd64986c1"
+        },
+        "status": "final",
+        "type": {
+          "coding": [
+            {
+              "system": "https://projecteka.in/sct",
+              "code": "440545006",
+              "display": "Prescription record"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/RVH1003"
+        },
+        "encounter": {
+          "reference": "Encounter/f757c5ba-44e0-48f7-a236-411630b644b4"
+        },
+        "date": "2019-12-07T00:00:00+05:30",
+        "author": [
+          {
+            "reference": "Practitioner/WBC191101"
+          }
+        ],
+        "title": "Prescription",
+        "section": [
+          {
+            "title": "OPD Prescription",
+            "code": {
+              "coding": [
+                {
+                  "system": "https://projecteka.in/sct",
+                  "code": "440545006",
+                  "display": "Prescription record"
+                }
+              ]
+            },
+            "entry": [
+              {
+                "reference": "MedicationRequest/42ed8ab6-6a13-441f-b74d-7c7f17e9ebb4"
+              },
+              {
+                "reference": "MedicationRequest/ccf78b4a-f8de-4f72-9174-1360c2fbf42c"
+              }
+            ]
+          }
+        ],
+        "attester": [
+          {
+            "mode": "official",
+            "time": "2019-01-04T09:10:14Z",
+            "party": {
+              "reference": "Organization/WellBeing",
+              "display": "WellBeing, Saket"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Organization/WellBeing",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "WellBeing",
+        "meta": {
+          "profile":  [
+            "http://nrces.in/ndhm/fhir/r4/StructureDefinition/Organization"
+          ]
+        },
+        "text": {
+          "status": "generated",
+          "div": "<div xmlns=\"http://www.w3.org/1999/xhtml\">Well Being Hospital. ph: +91 273 2139 3632, email:<a href=\"mailto:contact@max.in\">contact@max.in</a></div>"
+        },
+        "identifier":  [
+          {
+            "type": {
+              "coding":  [
+                {
+                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203",
+                  "code": "PRN",
+                  "display": "+911234512345"
+                }
+              ]
+            },
+            "system": "https://ndhm.in/facility",
+            "value": "4567823"
+          },
+          {
+            "system": "https://facilitysbx.ndhm.gov.in",
+            "value": "10019843"
+          }
+        ],
+        "name": "WellBeing, Saket",
+        "telecom":  [
+          {
+            "system": "phone",
+            "value": "+91 273 2139 3632",
+            "use": "work"
+          },
+          {
+            "system": "email",
+            "value": "contact@max.in",
+            "use": "work"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Practitioner/WBC191101",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "WBC191101",
+        "identifier": [
+          {
+            "system": "https://www.mciindia.in/doctor",
+            "value": "WBC191101"
+          }
+        ],
+        "name": [
+          {
+            "text": "Akshatha M K",
+            "prefix": [
+              "Dr"
+            ],
+            "suffix": [
+              "MD"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Patient/RVH1003",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "RVH1003",
+        "name": [
+          {
+            "text": "Hina Patel"
+          }
+        ],
+        "gender": "female"
+      }
+    },
+    {
+      "fullUrl": "Encounter/f757c5ba-44e0-48f7-a236-411630b644b4",
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "f757c5ba-44e0-48f7-a236-411630b644b4",
+        "status": "finished",
+        "class": {
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+          "code": "AMB",
+          "display": "Outpatient visit"
+        },
+        "subject": {
+          "reference": "Patient/RVH1003"
+        },
+        "period": {
+          "start": "2019-12-07T00:00:00+05:30"
+        }
+      }
+    },
+    {
+      "fullUrl": "Medication/e27652b8-86c1-456a-84e3-7ce8d761e854",
+      "resource": {
+        "resourceType": "Medication",
+        "id": "e27652b8-86c1-456a-84e3-7ce8d761e854",
+        "code": {
+          "coding": [
+            {
+              "system": "https://projecteka.in/act",
+              "code": "C01EB16",
+              "display": "ibuprofen 30 mg Pediatric"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "fullUrl": "MedicationRequest/42ed8ab6-6a13-441f-b74d-7c7f17e9ebb4",
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "42ed8ab6-6a13-441f-b74d-7c7f17e9ebb4",
+        "status": "active",
+        "intent": "order",
+        "medicationReference": {
+          "reference": "Medication/e27652b8-86c1-456a-84e3-7ce8d761e854"
+        },
+        "subject": {
+          "reference": "Patient/RVH1003"
+        },
+        "authoredOn": "2019-12-07T00:00:00+05:30",
+        "requester": {
+          "reference": "Practitioner/WBC191101"
+        },
+        "dosageInstruction": [
+          {
+            "text": "1 tablet 2 times a day"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "MedicationRequest/ccf78b4a-f8de-4f72-9174-1360c2fbf42c",
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "ccf78b4a-f8de-4f72-9174-1360c2fbf42c",
+        "status": "active",
+        "intent": "order",
+        "medicationCodeableConcept": {
+          "text": "azithromycin 500mg"
+        },
+        "subject": {
+          "reference": "Patient/RVH1003"
+        },
+        "authoredOn": "2019-12-07T00:00:00+05:30",
+        "requester": {
+          "reference": "Practitioner/WBC191101"
+        },
+        "note": [
+          {
+            "text": "Do not discontinue"
+          }
+        ],
+        "dosageInstruction": [
+          {
+            "text": "1 capsule 2 times a day"
+          }
+        ]
+      }
+    }
+  ]
+}

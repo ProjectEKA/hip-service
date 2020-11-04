@@ -209,10 +209,10 @@
           }
        },
        {
-            "fullUrl": "Organization/MaxSaket01",
+            "fullUrl": "Organization/WellBeing",
             "resource" : {
                 "resourceType":"Organization",
-                "id":"MaxSaket01",
+                "id":"WellBeing01",
                 "name":"Max Super Speciality Hospital, Saket",
                 "alias":[
                     "Max"
@@ -715,7 +715,7 @@
              },
              "performer" : [
                 {
-                    "reference":"Organization/MaxSaket01"
+                    "reference":"Organization/WellBeing"
                 }
              ],
              "resultsInterpreter"  : [
