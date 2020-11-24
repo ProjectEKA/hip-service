@@ -59,6 +59,13 @@ namespace In.ProjectEKA.HipService.User
                                     $"Id: {authOnConfirmResponse.Auth.Patient.Id}, "+
                                     $"Birth Year: {authOnConfirmResponse.Auth.Patient.YearOfBirth}, "+
                                     $"Gender: {authOnConfirmResponse.Auth.Patient.Gender}, ");
+                    if (authOnConfirmResponse.Auth.Identifier != null)
+                    {
+                        foreach (var identifier in authOnConfirmResponse.Auth.Identifier)
+                        {
+                            Log.Information($"Identifier type: {identifier.Type} , Identifier value: {identifier.Value}");
+                        }
+                    }
                     if (authOnConfirmResponse.Auth.Patient.Address != null)
                     {
                         Log.Information("Patient Address Details: "+
