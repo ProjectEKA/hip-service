@@ -19,7 +19,7 @@ jobs:
       - name: Run unit tests
         run: dotnet test hip-service.sln
       - name: Set env
-        run: echo ::set-env name=RELEASE_VERSION::$(echo $GITHUB_SHA | head -c7)
+        run: echo "RELEASE_VERSION=$(echo $GITHUB_SHA | head -c7)" >> $GITHUB_ENV
       - name: Test coverage
         run: dotnet test test/In.ProjectEKA.HipServiceTest/In.ProjectEKA.HipServiceTest.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
       - name: Docker Registry
