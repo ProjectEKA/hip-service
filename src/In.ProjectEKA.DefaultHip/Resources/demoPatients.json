@@ -216,14 +216,14 @@
     "caseReferenceNumber": "0012",
     "Gender": "M",
     "yearOfBirth": 1996,
-    "careContexts": [
+"careContexts": [
       {
-        "referenceNumber": "SC0011",
-        "display": "Speciality Care"
+        "referenceNumber": "NCP9999",
+        "display": "National Cancer program"
       },
       {
-        "referenceNumber": "NCP0013",
-        "display": "National Cancer program"
+        "referenceNumber": "RV-MHD-01.17.3112",
+        "display": "Dept of Psychiatry - Episode 1"
       }
     ]
   },
