@@ -8,6 +8,7 @@ namespace In.ProjectEKA.HipLibrary.Patient.Model
         MedicationRequest,
         DocumentReference,
         Prescription,
+        ImmunizationRecord,
         DischargeSummary,
         OPConsultation
     }

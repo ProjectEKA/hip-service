@@ -1,0 +1,116 @@
+{
+  "resourceType": "Bundle",
+  "id": "d23a560d-68cf-4dad-93be-52fc7dcfa572",
+  "meta": {
+    "lastUpdated": "2019-08-05T00:00:00.000+05:30"
+  },
+  "identifier": {
+    "system": "https://www.max.in/bundle",
+    "value": "d23a560d-68cf-4dad-93be-52fc7dcfa572"
+  },
+  "type": "document",
+  "timestamp": "2019-08-05T00:00:00.000+05:30",
+  "entry": [
+    {
+      "fullUrl": "Composition/ad514cb3-4f37-4196-9390-c7ad70ac23c8",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "ad514cb3-4f37-4196-9390-c7ad70ac23c8",
+        "identifier": {
+          "system": "https://www.max.in/document",
+          "value": "ad514cb3-4f37-4196-9390-c7ad70ac23c8"
+        },
+        "status": "final",
+        "type": {
+          "coding": [
+            {
+              "system": "https://projecteka.in/sct",
+              "code": "41000179103",
+              "display": "Immunization record"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/RVH1003"
+        },
+        "date": "2019-08-05T00:00:00+05:30",
+        "author": [
+          {
+            "reference": "Practitioner/MAX5001"
+          }
+        ],
+        "title": "Immunization",
+        "section": [
+          {
+            "title": "OPD Immunization",
+            "code": {
+              "coding": [
+                {
+                  "system": "https://projecteka.in/sct",
+                  "code": "41000179103",
+                  "display": "Immunization record"
+                }
+              ]
+            },
+            "entry": [
+              {
+                "reference": "Immunization/7756ff4d-247e-403e-9510-ddfcecc92389"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Practitioner/MAX5001",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "MAX5001",
+        "identifier": [
+          {
+            "system": "https://www.mciindia.in/doctor",
+            "value": "MAX5001"
+          }
+        ],
+        "name": [
+          {
+            "text": "Laxmikanth J",
+            "prefix": [
+              "Dr"
+            ],
+            "suffix": [
+              "MD"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Patient/RVH1003",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "RVH1003",
+        "name": [
+          {
+            "text": "Hina Patel"
+          }
+        ],
+        "gender": "female"
+      }
+    },
+    {
+      "fullUrl": "Immunization/7756ff4d-247e-403e-9510-ddfcecc92389",
+      "resource": {
+        "resourceType": "Immunization",
+        "id": "7756ff4d-247e-403e-9510-ddfcecc92389",
+        "status": "completed",
+        "vaccineCode": {
+          "text": "Rubella Vaccine"
+        },
+        "patient": {
+          "reference": "Patient/RVH1003"
+        }
+      }
+    }
+  ]
+}
