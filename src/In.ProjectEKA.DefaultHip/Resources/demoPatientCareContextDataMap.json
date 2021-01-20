@@ -173,22 +173,22 @@
             {
                 "capturedOn": "2019-08-01T12:04:50.818234",
                 "data":  {
-                    "prescription" : ["NCP1008PrescriptionDoc20190801.json"]
-
+                    "prescription" : ["NCP1008PrescriptionDoc20190801.json"],
+                    "immunizationrecord": ["MAXRVH1003ImmunizationDoc20190801.json"]
                 }
             },
             {
                 "capturedOn": "2019-08-03T12:04:50.818234",
                 "data":  {
-                    "prescription" : ["NCP1008PrescriptionDoc20190803.json"]
-
+                    "prescription" : ["NCP1008PrescriptionDoc20190803.json"],
+                    "immunizationrecord": ["MAXRVH1003ImmunizationDoc20190803.json"]
                 }
             },
             {
                 "capturedOn": "2019-08-05T12:04:50.818234",
                 "data":  {
-                    "prescription" : ["NCP1008PrescriptionDoc20190805.json"]
-
+                    "prescription" : ["NCP1008PrescriptionDoc20190805.json"],
+                    "immunizationrecord": ["MAXRVH1003ImmunizationDoc20190805.json"]
                 }
             },
             {

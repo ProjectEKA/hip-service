@@ -1,0 +1,116 @@
+{
+  "resourceType": "Bundle",
+  "id": "f4740560-26ca-421c-a244-a7441aa04ace",
+  "meta": {
+    "lastUpdated": "2019-08-03T00:00:00.000+05:30"
+  },
+  "identifier": {
+    "system": "https://www.max.in/bundle",
+    "value": "f4740560-26ca-421c-a244-a7441aa04ace"
+  },
+  "type": "document",
+  "timestamp": "2019-08-03T00:00:00.000+05:30",
+  "entry": [
+    {
+      "fullUrl": "Composition/2aae538c-62a4-4e5b-86e6-d579eee12f70",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "2aae538c-62a4-4e5b-86e6-d579eee12f70",
+        "identifier": {
+          "system": "https://www.max.in/document",
+          "value": "2aae538c-62a4-4e5b-86e6-d579eee12f70"
+        },
+        "status": "final",
+        "type": {
+          "coding": [
+            {
+              "system": "https://projecteka.in/sct",
+              "code": "41000179103",
+              "display": "Immunization record"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/RVH1003"
+        },
+        "date": "2019-08-03T00:00:00+05:30",
+        "author": [
+          {
+            "reference": "Practitioner/MAX1456"
+          }
+        ],
+        "title": "Immunization",
+        "section": [
+          {
+            "title": "OPD Immunization",
+            "code": {
+              "coding": [
+                {
+                  "system": "https://projecteka.in/sct",
+                  "code": "41000179103",
+                  "display": "Immunization record"
+                }
+              ]
+            },
+            "entry": [
+              {
+                "reference": "Immunization/7f84c5c2-8505-4ec2-aa80-e47fd8fc43e5"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Practitioner/MAX1456",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "MAX1456",
+        "identifier": [
+          {
+            "system": "https://www.mciindia.in/doctor",
+            "value": "MAX1456"
+          }
+        ],
+        "name": [
+          {
+            "text": "Harsh Dhave",
+            "prefix": [
+              "Dr"
+            ],
+            "suffix": [
+              "MBBS"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Patient/RVH1003",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "RVH1003",
+        "name": [
+          {
+            "text": "Hina Patel"
+          }
+        ],
+        "gender": "female"
+      }
+    },
+    {
+      "fullUrl": "Immunization/7f84c5c2-8505-4ec2-aa80-e47fd8fc43e5",
+      "resource": {
+        "resourceType": "Immunization",
+        "id": "7f84c5c2-8505-4ec2-aa80-e47fd8fc43e5",
+        "status": "completed",
+        "vaccineCode": {
+          "text": "Influenza - Live Attenuated"
+        },
+        "patient": {
+          "reference": "Patient/RVH1003"
+        }
+      }
+    }
+  ]
+}

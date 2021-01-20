@@ -683,4 +683,27 @@
     </Content>
   </ItemGroup>
   
+  <ItemGroup>
+    <Content Include="Resources\MAXRVH1003ImmunizationDoc20190801.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>MAXRVH1003ImmunizationDoc20190801.json</Link>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\MAXRVH1003ImmunizationDoc20190803.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>MAXRVH1003ImmunizationDoc20190803.json</Link>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\MAXRVH1003ImmunizationDoc20190805.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>MAXRVH1003ImmunizationDoc20190805.json</Link>
+    </Content>
+  </ItemGroup>
 </Project>
