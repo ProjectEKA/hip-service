@@ -67,6 +67,16 @@
               }
             ]
           }
+        ],
+        "attester": [
+          {
+            "mode": "official",
+            "time": "2019-01-01T09:10:14Z",
+            "party": {
+              "reference": "Organization/MaxSaket01",
+              "display": "Max Super Speciality Hospital, Saket"
+            }
+          }
         ]
       }
     },
@@ -143,7 +153,8 @@
         },
         "patient": {
           "reference": "Patient/RVH1003"
-        }
+        },
+        "occurrenceDateTime": "2019-08-01T01:00:00+05:30"
       }
     },
     {
@@ -163,7 +174,8 @@
         },
         "patient": {
           "reference": "Patient/RVH1003"
-        }
+        },
+        "occurrenceDateTime": "2019-08-01T01:00:00+05:30"
       }
     },
     {
