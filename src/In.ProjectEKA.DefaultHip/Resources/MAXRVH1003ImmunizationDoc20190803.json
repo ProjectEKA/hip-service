@@ -1,24 +1,24 @@
 {
   "resourceType": "Bundle",
-  "id": "f4740560-26ca-421c-a244-a7441aa04ace",
+  "id": "01d7b1c5-bc26-4c08-a442-8bd17e301415",
   "meta": {
     "lastUpdated": "2019-08-03T00:00:00.000+05:30"
   },
   "identifier": {
     "system": "https://www.max.in/bundle",
-    "value": "f4740560-26ca-421c-a244-a7441aa04ace"
+    "value": "01d7b1c5-bc26-4c08-a442-8bd17e301415"
   },
   "type": "document",
   "timestamp": "2019-08-03T00:00:00.000+05:30",
   "entry": [
     {
-      "fullUrl": "Composition/2aae538c-62a4-4e5b-86e6-d579eee12f70",
+      "fullUrl": "Composition/0f8a8e1c-b7cc-4851-9cc0-7a14a3c4d8c4",
       "resource": {
         "resourceType": "Composition",
-        "id": "2aae538c-62a4-4e5b-86e6-d579eee12f70",
+        "id": "0f8a8e1c-b7cc-4851-9cc0-7a14a3c4d8c4",
         "identifier": {
           "system": "https://www.max.in/document",
-          "value": "2aae538c-62a4-4e5b-86e6-d579eee12f70"
+          "value": "0f8a8e1c-b7cc-4851-9cc0-7a14a3c4d8c4"
         },
         "status": "final",
         "type": {
@@ -33,10 +33,13 @@
         "subject": {
           "reference": "Patient/RVH1003"
         },
+        "encounter": {
+          "reference": "Encounter/7310fb5e-6451-4fdc-b6ae-28054aa96afa"
+        },
         "date": "2019-08-03T00:00:00+05:30",
         "author": [
           {
-            "reference": "Practitioner/MAX1456"
+            "reference": "Practitioner/MAX180414"
           }
         ],
         "title": "Immunization",
@@ -54,21 +57,67 @@
             },
             "entry": [
               {
-                "reference": "Immunization/7f84c5c2-8505-4ec2-aa80-e47fd8fc43e5"
+                "reference": "Immunization/25c25a61-9e6c-4178-801a-d07557738b84"
               }
             ]
           }
-        ],
-        "attester": [
+        ]
+      }
+    },
+    {
+      "fullUrl": "Practitioner/MAX180414",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "MAX180414",
+        "identifier": [
           {
-            "mode": "official",
-            "time": "2019-01-03T09:10:14Z",
-            "party": {
-              "reference": "Organization/MaxSaket01",
-              "display": "Max Super Speciality Hospital, Saket"
-            }
+            "system": "https://www.mciindia.in/doctor",
+            "value": "MAX180414"
+          }
+        ],
+        "name": [
+          {
+            "text": "Lakshmi G",
+            "prefix": [
+              "Dr"
+            ],
+            "suffix": [
+              "MBBS"
+            ]
           }
         ]
+      }
+    },
+    {
+      "fullUrl": "Patient/RVH1003",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "RVH1003",
+        "name": [
+          {
+            "text": "Hina Patel"
+          }
+        ],
+        "gender": "female"
+      }
+    },
+    {
+      "fullUrl": "Encounter/7310fb5e-6451-4fdc-b6ae-28054aa96afa",
+      "resource": {
+        "resourceType": "Encounter",
+        "id": "7310fb5e-6451-4fdc-b6ae-28054aa96afa",
+        "status": "finished",
+        "class": {
+          "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+          "code": "AMB",
+          "display": "Outpatient visit"
+        },
+        "subject": {
+          "reference": "Patient/RVH1003"
+        },
+        "period": {
+          "start": "2019-08-03T00:00:00+05:30"
+        }
       }
     },
     {
@@ -79,12 +128,6 @@
         "name": "Max Super Speciality Hospital, Saket",
         "alias": [
           "Max"
-        ],
-        "identifier": [
-          {
-            "system": "https://facilitysbx.ndhm.gov.in",
-            "value": "IN0410000183"
-          }
         ],
         "telecom": [
           {
@@ -116,55 +159,46 @@
       }
     },
     {
-      "fullUrl": "Practitioner/MAX1456",
-      "resource": {
-        "resourceType": "Practitioner",
-        "id": "MAX1456",
-        "identifier": [
-          {
-            "system": "https://www.mciindia.in/doctor",
-            "value": "MAX1456"
-          }
-        ],
-        "name": [
-          {
-            "text": "Harsh Dhave",
-            "prefix": [
-              "Dr"
-            ],
-            "suffix": [
-              "MBBS"
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "fullUrl": "Patient/RVH1003",
-      "resource": {
-        "resourceType": "Patient",
-        "id": "RVH1003",
-        "name": [
-          {
-            "text": "Hina Patel"
-          }
-        ],
-        "gender": "female"
-      }
-    },
-    {
-      "fullUrl": "Immunization/7f84c5c2-8505-4ec2-aa80-e47fd8fc43e5",
+      "fullUrl": "Immunization/25c25a61-9e6c-4178-801a-d07557738b84",
       "resource": {
         "resourceType": "Immunization",
-        "id": "7f84c5c2-8505-4ec2-aa80-e47fd8fc43e5",
+        "id": "25c25a61-9e6c-4178-801a-d07557738b84",
         "status": "completed",
         "vaccineCode": {
-          "text": "Influenza - Live Attenuated"
+          "text": "Rotavirus Vaccine"
         },
         "patient": {
           "reference": "Patient/RVH1003"
         },
-        "occurrenceDateTime": "2019-08-03T01:00:00+05:30"
+        "occurrenceDateTime": "2019-08-03T01:00:00+05:30",
+        "manufacturer": {
+          "reference": "Organization/MaxSaket01"
+        },
+        "route": {
+          "coding": [
+            {
+              "system": "https://projecteka.in/sct",
+              "code": "47625008",
+              "display": " Intravenous route"
+            }
+          ]
+        },
+        "reasonCode": [
+          {
+            "coding": [
+              {
+                "system": "https://projecteka.in/sct",
+                "code": "217697000",
+                "display": "Dog Bite"
+              }
+            ]
+          }
+        ],
+        "protocolApplied": [
+          {
+            "doseNumberString": "2nd"
+          }
+        ]
       }
     }
   ]
