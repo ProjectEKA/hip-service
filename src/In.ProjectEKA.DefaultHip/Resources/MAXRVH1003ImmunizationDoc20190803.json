@@ -129,6 +129,12 @@
         "alias": [
           "Max"
         ],
+        "identifier": [
+          {
+            "system": "https://facilitysbx.ndhm.gov.in",
+            "value": "IN0410000183"
+          }
+        ],
         "telecom": [
           {
             "system": "phone",
