@@ -50,7 +50,7 @@ namespace In.ProjectEKA.HipService
                     sender,
                     cert,
                     chain,
-                    sslPolicyErrors) => true
+                    sslPolicyErrors) => true,
                 PooledConnectionLifetime = TimeSpan.FromMinutes(10),
                 PooledConnectionIdleTimeout = TimeSpan.FromMinutes(5),
                 MaxConnectionsPerServer = 50
