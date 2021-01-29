@@ -706,4 +706,12 @@
       <Link>MAXRVH1003ImmunizationDoc20190805.json</Link>
     </Content>
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\diagnosticJSON.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>diagnosticJSON.json</Link>
+    </Content>
+  </ItemGroup>
 </Project>
