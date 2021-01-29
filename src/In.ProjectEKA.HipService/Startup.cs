@@ -51,6 +51,9 @@ namespace In.ProjectEKA.HipService
                     cert,
                     chain,
                     sslPolicyErrors) => true
+                PooledConnectionLifetime = TimeSpan.FromMinutes(10),
+                PooledConnectionIdleTimeout = TimeSpan.FromMinutes(5),
+                MaxConnectionsPerServer = 50
             };
             HttpClient = new HttpClient(clientHandler)
             {
