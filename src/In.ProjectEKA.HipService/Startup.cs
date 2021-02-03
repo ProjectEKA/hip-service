@@ -44,25 +44,20 @@ namespace In.ProjectEKA.HipService
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            // Removing for timebeing
-            // var clientHandler = new HttpClientHandler
-            // {
-            //     ServerCertificateCustomValidationCallback = (
-            //         sender,
-            //         cert,
-            //         chain,
-            //         sslPolicyErrors) => true
-            // };
-            var clientHandler = new SocketsHttpHandler
+            var clientHandler = new HttpClientHandler
             {
-                PooledConnectionLifetime = TimeSpan.FromMinutes(10),
-                PooledConnectionIdleTimeout = TimeSpan.FromMinutes(5),
-                MaxConnectionsPerServer = 10
-            };
+                ServerCertificateCustomValidationCallback = (
+                    sender,
+                    cert,
+                    chain,
+                    sslPolicyErrors) => true
+            };            
             HttpClient = new HttpClient(clientHandler)
             {
                 Timeout = TimeSpan.FromSeconds(Configuration.GetSection("Gateway:timeout").Get<int>())
             };
+            // Create new connection everytime
+            HttpClient.DefaultRequestHeaders.Add("Connection", "close");
             IdentityModelEventSource.ShowPII = true;
         }
 
