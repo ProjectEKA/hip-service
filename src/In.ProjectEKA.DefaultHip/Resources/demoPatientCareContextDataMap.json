@@ -445,8 +445,7 @@
                 "capturedOn": "2019-08-03T12:04:50.818234",
                 "data":  {
                     "prescription" : ["NCP1008PrescriptionDoc20190803.json"],
-                    "immunizationrecord": ["MAXRVH1003ImmunizationDoc20190803.json"],
-                    "diagnosticreport": ["diagnosticJSON.json"]
+                    "immunizationrecord": ["MAXRVH1003ImmunizationDoc20190803.json"]                    
                 }
             },
             {
@@ -454,6 +453,14 @@
                 "data":  {
                     "prescription" : ["NCP1008PrescriptionDoc20190805.json"],
                     "immunizationrecord": ["MAXRVH1003ImmunizationDoc20190805.json"]
+                }
+            }
+        ],
+        "DEBUG_CC":[
+            {
+                "capturedOn": "2021-01-01T15:32:26.605+05:30",
+                "data":{
+                    "diagnosticreport": ["diagnosticJSON.json"]
                 }
             }
         ],
