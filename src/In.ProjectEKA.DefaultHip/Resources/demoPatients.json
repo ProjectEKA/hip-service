@@ -190,6 +190,10 @@
       {
         "referenceNumber": "NCP0010",
         "display": "National Cancer program"
+      },
+      {
+        "referenceNumber": "DEBUG_CC",
+        "display": "Care context to debug"
       }
     ]
   },
