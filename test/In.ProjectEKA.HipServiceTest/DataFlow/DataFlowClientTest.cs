@@ -30,7 +30,7 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow
             var configuration = new GatewayConfiguration
             {
                 Url = gatewayUrl,
-                ClientId = "10000005",
+                ClientId = "IN0410000183",
                 ClientSecret = TestBuilder.RandomString()
             };
             const string transactionId = "transactionId";

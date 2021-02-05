@@ -89,11 +89,11 @@ namespace In.ProjectEKA.HipServiceTest.DataFlow.Builder
 
         internal static DataNotificationRequest DataNotificationRequest(string transactionId)
         {
-            var notifier = new Notifier(Type.HIP, "10000005");
+            var notifier = new Notifier(Type.HIP, "IN0410000183");
             const string consentId = "ConsentId";
             var statusNotification = new StatusNotification(
                 SessionStatus.TRANSFERRED,
-                "10000005",
+                "IN0410000183",
                 new List<StatusResponse>());
             return new DataNotificationRequest(transactionId, DateTime.Now, notifier, statusNotification, consentId, Guid.NewGuid());
         }

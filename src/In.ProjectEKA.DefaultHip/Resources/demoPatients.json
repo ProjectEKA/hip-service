@@ -133,7 +133,7 @@
     ]
   },
   {
-    "phoneNumber": "+91-7550013760",
+    "phoneNumber": "+91-7738080890",
     "identifier": "RVH1012",
     "email": "kabir.singh@pmjay",
     "name": "Kabir Singh",
@@ -148,10 +148,6 @@
       {
         "referenceNumber": "RV-MHD-01.17.3112",
         "display": "Dept of Psychiatry - Episode 1"
-      },
-      {
-        "referenceNumber": "DEBUG_CC",
-        "display": "Care context to debug"
       }
     ]
   },
@@ -232,6 +228,10 @@
       {
         "referenceNumber": "RV-MHD-01.17.3112",
         "display": "Dept of Psychiatry - Episode 1"
+      },
+      {
+        "referenceNumber": "DEBUG_CC",
+        "display": "Care context to debug"
       }
     ]
   },
