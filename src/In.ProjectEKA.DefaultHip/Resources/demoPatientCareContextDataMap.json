@@ -609,6 +609,14 @@
                     "diagnosticreport" : ["MAXLIVNO10DiagnosticReportDoc20190801.json"]
                 }
             }
+        ],
+        "DEBUG_CC":[
+            {
+                "capturedOn": "2021-01-01T15:32:26.605+05:30",
+                "data":{
+                    "diagnosticreport": ["diagnosticJSON.json"]
+                }
+            }
         ]
     },
   "LIVNO11" : {
