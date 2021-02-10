@@ -22,18 +22,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Resources\debugDiagnosticReport.json">
+    <Content Include="Resources\diagnosticReport.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <CopyToPublishDirectory>Always</CopyToPublishDirectory>
-      <Link>debugDiagnosticReport.json</Link>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Resources\debugDischargeSummary.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
-      <Link>debugDischargeSummary.json</Link>
+      <Link>diagnosticReport.json</Link>
     </Content>
   </ItemGroup>
 
