@@ -460,7 +460,8 @@
             {
                 "capturedOn": "2021-01-01T15:32:26.605+05:30",
                 "data":{
-                    "diagnosticreport": ["diagnosticJSON.json"]
+                    "diagnosticreport": ["debugDiagnosticReport.json"],
+                    "dischargesummary": ["debugDischargeSummary.json"]
                 }
             }
         ],
@@ -614,7 +615,10 @@
             {
                 "capturedOn": "2021-01-01T15:32:26.605+05:30",
                 "data":{
-                    "diagnosticreport": ["diagnosticJSON.json"]
+                    "data":{
+                        "diagnosticreport": ["debugDiagnosticReport.json"],
+                        "dischargesummary": ["debugDischargeSummary.json"]
+                    }
                 }
             }
         ]

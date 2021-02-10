@@ -22,10 +22,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Resources\diagnosticReport.json">
+    <Content Include="Resources\debugDiagnosticReport.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <CopyToPublishDirectory>Always</CopyToPublishDirectory>
-      <Link>diagnosticReport.json</Link>
+      <Link>debugDiagnosticReport.json</Link>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\debugDischargeSummary.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>debugDischargeSummary.json</Link>
     </Content>
   </ItemGroup>
 
@@ -708,10 +716,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Resources\diagnosticJSON.json">
+    <Content Include="Resources\debugDiagnosticReport.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <CopyToPublishDirectory>Always</CopyToPublishDirectory>
-      <Link>diagnosticJSON.json</Link>
+      <Link>debugDiagnosticReport.json</Link>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\debugDischargeSummary.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>debugDischargeSummary.json</Link>
     </Content>
   </ItemGroup>
 </Project>
