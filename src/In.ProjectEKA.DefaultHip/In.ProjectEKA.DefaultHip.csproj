@@ -708,6 +708,22 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Resources\MAXRVH1012ImmunizationDoc20190806.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>MAXRVH1012ImmunizationDoc20190806.json</Link>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\MAXRVH1012ImmunizationDoc20190807.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>MAXRVH1012ImmunizationDoc20190807.json</Link>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="Resources\diagnosticJSON.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <CopyToPublishDirectory>Always</CopyToPublishDirectory>
