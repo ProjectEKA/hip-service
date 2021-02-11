@@ -361,6 +361,18 @@
                     "prescription" : ["NCP1008PrescriptionDoc20190805.json"],
                     "immunizationrecord": ["MAXRVH1003ImmunizationDoc20190805.json"]
                 }
+            },
+            {
+                "capturedOn": "2019-08-06T12:04:50.818234",
+                "data":  {
+                    "immunizationrecord": ["MAXRVH1012ImmunizationDoc20190806.json"]
+                }
+            },
+            {
+                "capturedOn": "2019-08-07T12:04:50.818234",
+                "data":  {
+                    "immunizationrecord": ["MAXRVH1012ImmunizationDoc20190807.json"]
+                }
             }
         ],
         "NCP9999" : [

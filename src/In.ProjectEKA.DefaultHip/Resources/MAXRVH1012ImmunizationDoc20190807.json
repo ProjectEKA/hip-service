@@ -1,0 +1,360 @@
+{
+  "resourceType": "Bundle",
+  "id": "b3d2fc3f-a0fa-4800-869f-245985f2a518",
+  "meta": {
+    "lastUpdated": "2019-08-07T00:00:00.000+05:30"
+  },
+  "identifier": {
+    "system": "https://www.max.in/bundle",
+    "value": "b3d2fc3f-a0fa-4800-869f-245985f2a518"
+  },
+  "type": "document",
+  "timestamp": "2019-08-07T00:00:00.000+05:30",
+  "entry": [
+    {
+      "fullUrl": "Composition/8e24b0b7-22b8-4a48-837a-b8ad39ed05e2",
+      "resource": {
+        "resourceType": "Composition",
+        "id": "8e24b0b7-22b8-4a48-837a-b8ad39ed05e2",
+        "identifier": {
+          "system": "https://www.max.in/document",
+          "value": "8e24b0b7-22b8-4a48-837a-b8ad39ed05e2"
+        },
+        "status": "final",
+        "type": {
+          "coding": [
+            {
+              "system": "https://projecteka.in/sct",
+              "code": "41000179103",
+              "display": "Immunization record"
+            }
+          ]
+        },
+        "subject": {
+          "reference": "Patient/RVH1012"
+        },
+        "date": "2019-08-07T00:00:00+05:30",
+        "author": [
+          {
+            "reference": "Practitioner/MAX180414",
+            "display": "Dr Lakshmi G"
+          }
+        ],
+        "title": "Immunization",
+        "section": [
+          {
+            "title": "OPD Immunization",
+            "code": {
+              "coding": [
+                {
+                  "system": "https://projecteka.in/sct",
+                  "code": "41000179103",
+                  "display": "Immunization record"
+                }
+              ]
+            },
+            "entry": [
+              {
+                "reference": "Immunization/1168d6db-0314-42f5-a2f6-794696790dda"
+              },
+              {
+                "reference": "Immunization/0c0c6e98-5eec-4efd-881d-31d59388e4f9"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Practitioner/MAX180414",
+      "resource": {
+        "resourceType": "Practitioner",
+        "id": "MAX180414",
+        "identifier": [
+          {
+            "system": "https://www.mciindia.in/doctor",
+            "value": "MAX180414"
+          }
+        ],
+        "name": [
+          {
+            "text": "Lakshmi G",
+            "prefix": [
+              "Dr"
+            ],
+            "suffix": [
+              "MBBS"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Patient/RVH1012",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "RVH1012",
+        "name": [
+          {
+            "text": "Kabir Singh"
+          }
+        ],
+        "gender": "male"
+      }
+    },
+    {
+      "fullUrl": "Organization/MaxSaket01",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "MaxSaket01",
+        "name": "Max Super Speciality Hospital, Saket",
+        "alias": [
+          "Max"
+        ],
+        "identifier": [
+          {
+            "system": "https://facilitysbx.ndhm.gov.in",
+            "value": "IN0410000183"
+          }
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "(+91) 011-2651-5050"
+          },
+          {
+            "system": "fax",
+            "value": "(+91) 011-2651-5051"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "1, 2, Press Enclave Marg, Saket Institutional Area, Saket"
+            ],
+            "city": "New Delhi",
+            "state": "New Delhi",
+            "postalCode": "110017",
+            "country": "INDIA"
+          }
+        ],
+        "endpoint": [
+          {
+            "reference": "https://www.max.in/hospital-network/max-super-speciality-hospital-saket",
+            "display": "Website"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "DiagnosticReport/77dc4ced-7de9-45da-ba0b-69c75f866af8",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "77dc4ced-7de9-45da-ba0b-69c75f866af8",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "https://projecteka.in/loinc",
+              "code": "718-7",
+              "display": "Hemoglobin [Mass/volume] in Blood"
+            }
+          ]
+        },
+        "resultsInterpreter": [
+          {
+            "reference": "Practitioner/MAX180414"
+          }
+        ],
+        "conclusion": "Refer to Doctor. To be correlated with further study."
+      }
+    },
+    {
+      "fullUrl": "Observation/42a3d99a-bd20-4077-845a-dafecbccf144",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "42a3d99a-bd20-4077-845a-dafecbccf144",
+        "status": "final",
+        "code": {
+          "text": "Temperature"
+        },
+        "valueQuantity": {
+          "value": 99.5,
+          "unit": "C"
+        }
+      }
+    },
+    {
+      "fullUrl": "Immunization/1168d6db-0314-42f5-a2f6-794696790dda",
+      "resource": {
+        "resourceType": "Immunization",
+        "id": "1168d6db-0314-42f5-a2f6-794696790dda",
+        "status": "completed",
+        "vaccineCode": {
+          "text": "Rotavirus Vaccine"
+        },
+        "patient": {
+          "reference": "Patient/RVH1012"
+        },
+        "occurrenceDateTime": "2019-08-07T01:00:00+05:30",
+        "manufacturer": {
+          "reference": "Organization/MaxSaket01"
+        },
+        "route": {
+          "coding": [
+            {
+              "system": "https://projecteka.in/sct",
+              "code": "47625008",
+              "display": " Intravenous route"
+            }
+          ]
+        },
+        "reasonReference": [
+          {
+            "reference": "DiagnosticReport/77dc4ced-7de9-45da-ba0b-69c75f866af8"
+          }
+        ],
+        "reaction": [
+          {
+            "detail": {
+              "reference": "Observation/42a3d99a-bd20-4077-845a-dafecbccf144"
+            }
+          }
+        ],
+        "protocolApplied": [
+          {
+            "doseNumberPositiveInt": 2
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "Organization/MaxSaket01",
+      "resource": {
+        "resourceType": "Organization",
+        "id": "MaxSaket01",
+        "name": "Max Super Speciality Hospital, Saket",
+        "alias": [
+          "Max"
+        ],
+        "telecom": [
+          {
+            "system": "phone",
+            "value": "(+91) 011-2651-5050"
+          },
+          {
+            "system": "fax",
+            "value": "(+91) 011-2651-5051"
+          }
+        ],
+        "address": [
+          {
+            "line": [
+              "1, 2, Press Enclave Marg, Saket Institutional Area, Saket"
+            ],
+            "city": "New Delhi",
+            "state": "New Delhi",
+            "postalCode": "110017",
+            "country": "INDIA"
+          }
+        ],
+        "endpoint": [
+          {
+            "reference": "https://www.max.in/hospital-network/max-super-speciality-hospital-saket",
+            "display": "Website"
+          }
+        ]
+      }
+    },
+    {
+      "fullUrl": "DiagnosticReport/eddbff1e-a282-4381-bc44-d28e550dbc33",
+      "resource": {
+        "resourceType": "DiagnosticReport",
+        "id": "eddbff1e-a282-4381-bc44-d28e550dbc33",
+        "status": "final",
+        "code": {
+          "coding": [
+            {
+              "system": "https://projecteka.in/loinc",
+              "code": "58410-2",
+              "display": "Complete Blood Count"
+            }
+          ],
+          "text": "Complete Blood Count"
+        },
+        "resultsInterpreter": [
+          {
+            "reference": "Practitioner/MAX180414"
+          }
+        ],
+        "conclusion": "Refer to Doctor. To be correlated with further study."
+      }
+    },
+    {
+      "fullUrl": "Observation/9af29982-c6a0-4430-bfee-88fb52e9e560",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "9af29982-c6a0-4430-bfee-88fb52e9e560",
+        "status": "final",
+        "code": {
+          "text": "Temperature"
+        },
+        "valueQuantity": {
+          "value": 99.5,
+          "unit": "C"
+        }
+      }
+    },
+    {
+      "fullUrl": "Immunization/0c0c6e98-5eec-4efd-881d-31d59388e4f9",
+      "resource": {
+        "resourceType": "Immunization",
+        "id": "0c0c6e98-5eec-4efd-881d-31d59388e4f9",
+        "status": "completed",
+        "vaccineCode": {
+          "coding": [
+            {
+              "system": "https://projecteka.in/act",
+              "code": "J07AM01",
+              "display": "Tetanus Toxoid"
+            }
+          ]
+        },
+        "patient": {
+          "reference": "Patient/RVH1012"
+        },
+        "occurrenceDateTime": "2019-08-07T01:00:00+05:30",
+        "manufacturer": {
+          "reference": "Organization/MaxSaket01"
+        },
+        "lotNumber": "5R1UCLO",
+        "route": {
+          "coding": [
+            {
+              "system": "https://projecteka.in/sct",
+              "code": "47625008",
+              "display": " Intravenous route"
+            }
+          ]
+        },
+        "reasonReference": [
+          {
+            "reference": "DiagnosticReport/eddbff1e-a282-4381-bc44-d28e550dbc33"
+          }
+        ],
+        "reaction": [
+          {
+            "detail": {
+              "reference": "Observation/9af29982-c6a0-4430-bfee-88fb52e9e560"
+            }
+          }
+        ],
+        "protocolApplied": [
+          {
+            "doseNumberString": "2nd"
+          }
+        ]
+      }
+    }
+  ]
+}
