@@ -371,7 +371,8 @@
             {
                 "capturedOn": "2019-08-07T12:04:50.818234",
                 "data":  {
-                    "immunizationrecord": ["MAXRVH1012ImmunizationDoc20190807.json"]
+                    "immunizationrecord": ["MAXRVH1012ImmunizationDoc20190807.json"],
+                    "opconsultation" : ["MAXRVH1012OPConsultationDoc20190807.json"]
                 }
             }
         ],
