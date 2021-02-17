@@ -10,8 +10,8 @@ namespace In.ProjectEKA.HipService.Patient.Model
         public string HealthId { get; }
         public Address Address { get; }
         public uint YearOfBirth { get; }
-        public uint DayOfBirth { get; }
-        public uint MonthOfBirth { get; }
+        public uint? DayOfBirth { get; }
+        public uint? MonthOfBirth { get; }
         public List<Identifier> Identifiers { get; }
 
         public UserDemographics(string name,
@@ -19,8 +19,8 @@ namespace In.ProjectEKA.HipService.Patient.Model
             string healthId,
             Address address,
             uint yearOfBirth,
-            uint dayOfBirth,
-            uint monthOfBirth,
+            uint? dayOfBirth,
+            uint? monthOfBirth,
             List<Identifier> identifiers
         )
         {
