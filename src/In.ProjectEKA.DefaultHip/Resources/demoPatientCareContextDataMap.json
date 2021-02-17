@@ -473,7 +473,7 @@
             {
                 "capturedOn": "2021-01-01T15:32:26.605+05:30",
                 "data":{
-                    "diagnosticreport": ["diagnosticJSON.json"]
+                    "opconsultation": ["diagnosticJSON.json"]
                 }
             }
         ],
@@ -627,7 +627,7 @@
             {
                 "capturedOn": "2021-01-01T15:32:26.605+05:30",
                 "data":{
-                    "diagnosticreport": ["diagnosticJSON.json"]
+                    "opconsultation": ["diagnosticJSON.json"]
                 }
             }
         ]
