@@ -477,7 +477,7 @@
             {
                 "capturedOn": "2021-01-01T15:32:26.605+05:30",
                 "data":{
-                    "opconsultation": ["diagnosticJSON.json"]
+                    "opconsultation": ["MAXRVH1003OPConsultationDoc20190801.json"]
                 }
             }
         ],
@@ -631,7 +631,7 @@
             {
                 "capturedOn": "2021-01-01T15:32:26.605+05:30",
                 "data":{
-                    "opconsultation": ["diagnosticJSON.json"]
+                    "opconsultation": ["MAXRVH1003OPConsultationDoc20190801.json"]
                 }
             }
         ]

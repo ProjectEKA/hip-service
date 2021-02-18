@@ -738,4 +738,12 @@
       <Link>diagnosticJSON.json</Link>
     </Content>
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\MAXRVH1003OPConsultationDoc20190101.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>MAXRVH1003OPConsultationDoc20190101.json</Link>
+    </Content>
+  </ItemGroup>
 </Project>
