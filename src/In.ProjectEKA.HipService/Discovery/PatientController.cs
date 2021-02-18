@@ -36,8 +36,8 @@
             [FromHeader(Name = CORRELATION_ID)] string correlationId, 
             [FromBody] DiscoveryRequest request)
         {
-            logger.LogInformation(LogEvents.Discovery, "discovery request received for {Id} with {RequestId}",
-                request.Patient.Id, request.RequestId);
+            logger.LogInformation(LogEvents.Discovery, "discovery request received for {@Patient} with {RequestId}",
+                request.Patient, request.RequestId);
             backgroundJob.Enqueue(() => GetPatientCareContext(request, correlationId));
             return Accepted();
         }
