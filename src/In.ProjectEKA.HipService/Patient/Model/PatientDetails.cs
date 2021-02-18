@@ -6,10 +6,10 @@ namespace In.ProjectEKA.HipService.Patient.Model
         public string Code { get; }
         public UserDemographics UserDemographics { get; }
 
-        public PatientDetails(string code, UserDemographics userDemo)
+        public PatientDetails(string hipCode, UserDemographics userDemographics)
         {
-            Code = code;
-            UserDemographics = userDemo;
+            Code = hipCode;
+            UserDemographics = userDemographics;
         }
     }
 }
