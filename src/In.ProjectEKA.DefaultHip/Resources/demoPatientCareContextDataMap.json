@@ -246,47 +246,51 @@
     "RVH1004" : {
         "NCP10091" : [
             {
-                "capturedOn": "2018-02-02T12:04:50.818234",
+                "capturedOn": "2019-01-01T15:32:26.605+05:30",
                 "data":  {
-                    "observation" : [],
-                    "condition" : [],
-                    "diagnosticreport" : [],
-                    "medicationrequest" : [],
-                    "dischargesummary" : []
+                    "prescription" : ["RVMHD01PrescriptionDocument4.json"]
+                }
+            },
+            {
+                "capturedOn": "2019-08-01T12:04:50.818234",
+                "data":  {
+                    "prescription" : ["NCP1008PrescriptionDoc20190801.json"],
+                    "immunizationrecord": ["MAXRVH1003ImmunizationDoc20190801.json"]
+                }
+            },
+            {
+                "capturedOn": "2019-08-03T12:04:50.818234",
+                "data":  {
+                    "prescription" : ["NCP1008PrescriptionDoc20190803.json"],
+                    "immunizationrecord": ["MAXRVH1003ImmunizationDoc20190803.json"]                    
                 }
             }
         ],
         "NCP10092" : [
             {
-                "capturedOn": "2019-06-01T12:04:50.818234",
+                "capturedOn": "2019-01-02T15:32:26.605+05:30",
                 "data":  {
-                    "observation" : [],
-                    "condition" : [],
-                    "diagnosticreport" : [],
+                    "prescription" : ["NCP1007PrescriptionDocument2.json"],
+                    "diagnosticreport" : ["NCP1007DiagnosticReportDocument.json"],
                     "medicationrequest" : [],
                     "dischargesummary" : []
                 }
             },
             {
-                "capturedOn": "2019-06-02T12:04:50.818234",
+                "capturedOn": "2019-01-03T15:32:26.605+05:30",
                 "data":  {
-                    "observation" : [],
-                    "condition" : [],
-                    "diagnosticreport" : [],
-                    "medicationrequest" : [],
-                    "dischargesummary" : []
+                    "prescription" : ["NCP1007PrescriptionDocument3.json"],
+                    "diagnosticreport" : ["NCP1007DiagnosticReportDocument1.json"]
                 }
-            }
-        ],
-        "NCP10093" : [
+            },
             {
-                "capturedOn": "2018-02-02T12:04:50.818234",
+                "capturedOn": "2019-02-03T15:32:26.605+05:30",
                 "data":  {
                     "observation" : [],
                     "condition" : [],
                     "diagnosticreport" : [],
                     "medicationrequest" : [],
-                    "dischargesummary" : []
+                    "dischargesummary" : ["NCP1007DischargeSummary1.json"]
                 }
             }
         ]
