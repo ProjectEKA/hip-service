@@ -746,4 +746,12 @@
       <Link>MAXRVH1003OPConsultationDoc20190101.json</Link>
     </Content>
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\debug_data.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>debug_data.json</Link>
+    </Content>
+  </ItemGroup>
 </Project>
