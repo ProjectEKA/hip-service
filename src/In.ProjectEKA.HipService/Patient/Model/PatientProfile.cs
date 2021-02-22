@@ -7,11 +7,11 @@ namespace In.ProjectEKA.HipService.Patient.Model
         public string RequestId { get;}
         public DateTime Timestamp { get; }
         public PatientDetails PatientDetails { get; }
-        public PatientProfile(string requestId, DateTime timestamp, PatientDetails patient)
+        public PatientProfile(string requestId, DateTime timestamp, PatientDetails profile)
         {
             RequestId = requestId;
             Timestamp = timestamp;
-            PatientDetails = patient;
+            PatientDetails = profile;
         }
     }
 }
