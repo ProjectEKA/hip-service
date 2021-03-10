@@ -53,7 +53,8 @@ namespace In.ProjectEKA.HipService.Consent
                     notification.Status,
                     notification.ConsentId);
                 await consentRepository.AddAsync(consent);
-                var cmSuffix = consent.ConsentArtefact.patient.id.Substring(
+                var patientId = consent.ConsentArtefact.Patient.Id;
+                var cmSuffix = patientId.Substring(
                     patientId.LastIndexOf("@", StringComparison.Ordinal) + 1);                
                 var gatewayResponse = new GatewayConsentRepresentation(
                     Guid.NewGuid(),
@@ -69,8 +70,9 @@ namespace In.ProjectEKA.HipService.Consent
                 if (notification.Status == ConsentStatus.REVOKED)
                 {
                     var consent = await consentRepository.GetFor(notification.ConsentId);
-                    var cmSuffix = consent.ConsentArtefact.patient.id.Substring(
-                    patientId.LastIndexOf("@", StringComparison.Ordinal) + 1);
+                    var patientId = consent.ConsentArtefact.Patient.Id;
+                    var cmSuffix = patientId.Substring(
+                        patientId.LastIndexOf("@", StringComparison.Ordinal) + 1);                
                     var gatewayResponse = new GatewayConsentRepresentation(
                         Guid.NewGuid(),
                         DateTime.Now.ToUniversalTime(),
