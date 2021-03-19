@@ -1,829 +1,414 @@
 {
-  "resourceType": "Bundle",
-  "id": "a81f2738-6de3-4542-991f-ce1bc1d75fa6",
-  "meta": {
-    "security": [
-      {
-        "system": "http://terminology.hl7.org/CodeSystem/v3-Confidentiality",
-        "code": "V",
-        "display": "very restricted"
-      }
-    ]
+  "resourceType":"Bundle",
+  "id":"d750e9c7-534d-486c-907b-077c9a388735",
+  "meta":{
+     "lastUpdated":"2019-01-01T09:38:59+00:00"
   },
-  "timestamp": "2021-03-02T20:19:14.000000",
-  "identifier": { "value": "a81f2738-6de3-4542-991f-ce1bc1d75fa6" },
-  "type": "document",
-  "entry": [
-    {
-      "fullUrl": "op-consultation/33644",
-      "resource": {
-        "id": 33644,
-        "identifier": { "use": "usual", "type": "MR", "value": "33644" },
-        "meta": null,
-        "status": "final",
-        "type": {
-          "coding": [
-            {
-              "system": "http://snomed.info/sct",
-              "code": "371530004",
-              "display": "Clinical consultation report"
-            }
-          ],
-          "text": "Clinical Consultation report"
-        },
-        "subject": {
-          "reference": "patient/13857",
-          "display": "Test A Pranil (KB-A01-QQQ5200)",
-          "type": "Patient"
-        },
-        "encounter": {
-          "reference": "encounter/33644",
-          "display": "VisitNo: 130693. Appointment for Eye OPD New Consultation - Adult Cash (OUT PATIENT)",
-          "type": "Encounter"
-        },
-        "date": "2021-03-02T18:30:00+00:00",
-        "author": [
-          {
-            "reference": "practitioner/848",
-            "display": "Dr Patrick Adjei",
-            "type": "Practitioner"
-          }
-        ],
-        "title": "Appointment for Eye OPD New Consultation - Adult Cash (OUT PATIENT) (VisitNo: 130693)",
-        "custodian": [
-          {
-            "reference": "Organization",
-            "display": "Plus91",
-            "type": "Organization"
-          }
-        ],
-        "section": [
-          {
-            "code": {
-              "coding": {
-                "system": "http://snomed.info/sct",
-                "code": "422843007",
-                "display": "Chief complaint section"
-              }
-            },
-            "text": "Chief complaint section",
-            "entry": [
+  "timestamp":"2019-01-01T09:38:59+00:00",
+  "identifier":{
+     "value":"d750e9c7-534d-486c-907b-077c9a388735",
+     "system":"https://www.max.in/bundle"
+  },
+  "type":"document",
+  "entry":[
+     {
+        "fullUrl":"Composition/diagnostic-report-12708",
+        "resource":{
+           "id":"12708",
+           "identifier":{
+              "system":"https://www.max.in/document",
+              "value":"12708"
+           },
+           "status":"final",
+           "type":{
+              "coding":[
+                 {
+                    "system":"https://projecteka.in/sct",
+                    "code":"721981007",
+                    "display":"Diagnostic Report"
+                 }
+              ]
+           },
+           "title":"Diagnostic Report for Review Consultation -Adult (SECONDARY CARE) (VisitNo: 111544)",
+           "subject":{
+              "reference":"Patient/575",
+              "display":"MARGARET WELLINGTON (KB-A01-AAA0667)",
+              "type":"Patient"
+           },
+           "encounter":{
+              "reference":"Encounter/12708",
+              "display":"VisitNo: 111544. Appointment for Review Consultation -Adult (SECONDARY CARE)",
+              "type":"Encounter"
+           },
+           "date":"2019-10-22T02:30:00+00:00",
+           "author":[
               {
-                "reference": "condition/chief-complaint|24631",
-                "display": "Chest Pain",
-                "type": "Condition"
+                 "reference":"Practitioner/4",
+                 "display":"Dr Priscilla Naana Vandyck-Sey",
+                 "type":"Practitioner"
               },
               {
-                "reference": "condition/chief-complaint|24632",
-                "display": "Constipation",
-                "type": "Condition"
+                 "reference":"Practitioner/5",
+                 "display":"Dr Henry Odartei Lawson",
+                 "type":"Practitioner"
               }
-            ]
-          },
-          {
-            "code": {
-              "coding": {
-                "system": "http://snomed.info/sct",
-                "code": "425044008",
-                "display": "Physical exam section"
-              }
-            },
-            "text": "Physical exam section",
-            "entry": [
+           ],
+           "attester":[
               {
-                "reference": "observation/observation|220211",
-                "display": "General: Average",
-                "type": "Observation"
+                 "mode":"official",
+                 "time":"2019-01-01T09:38:59+00:00",
+                 "party":{
+                    "reference":"Practitioner/4",
+                    "display":"Dr Priscilla Naana Vandyck-Sey",
+                    "type":"Practitioner"
+                 }
               },
               {
-                "reference": "observation/observation|220212",
-                "display": "General: Present",
-                "type": "Observation"
+                 "mode":"official",
+                 "time":"2019-01-01T09:38:59+00:00",
+                 "party":{
+                    "reference":"Practitioner/5",
+                    "display":"Dr Henry Odartei Lawson",
+                    "type":"Practitioner"
+                 }
+              }
+           ],
+           "section":[
+              {
+                 "title":"# Diagnostic Report",
+                 "code":{
+                    "coding":[
+                       {
+                          "system":"https://projecteka.in/sct",
+                          "code":"721981007",
+                          "display":"Diagnostic Report"
+                       }
+                    ]
+                 },
+                 "entry":[
+                    {
+                       "reference":"DocumentReference/diagnostic-report-12708",
+                       "display":"Diagnostic report for Review Consultation -Adult for visit no: 111544",
+                       "type":"DocumentReference"
+                    },
+                    {
+                       "reference":"DiagnosticReport/12708",
+                       "display":"Diagnostic Report for Review Consultation -Adult (SECONDARY CARE) (VisitNo: 111544)",
+                       "type":"DiagnosticReport"
+                    }
+                 ]
+              }
+           ],
+           "resourceType":"Composition"
+        }
+     },
+     {
+        "fullUrl":"Practitioner/4",
+        "resource":{
+           "resourceType":"Practitioner",
+           "identifier":[
+              {
+                 "system":"https://www.mciindia.in/doctor",
+                 "value":"4"
+              }
+           ],
+           "name":[
+              {
+                 "text":"Dr Priscilla Naana Vandyck-Sey"
+              }
+           ],
+           "id":"4"
+        }
+     },
+     {
+        "fullUrl":"Practitioner/5",
+        "resource":{
+           "resourceType":"Practitioner",
+           "identifier":[
+              {
+                 "system":"https://www.mciindia.in/doctor",
+                 "value":"5"
+              }
+           ],
+           "name":[
+              {
+                 "text":"Dr Henry Odartei Lawson"
+              }
+           ],
+           "id":"5"
+        }
+     },
+     {
+        "fullUrl":"Patient/575",
+        "resource":{
+           "resourceType":"Patient",
+           "gender":"male",
+           "name":[
+              {
+                 "text":"MARGARET WELLINGTON"
+              }
+           ],
+           "id":"575"
+        }
+     },
+     {
+        "fullUrl":"Encounter/12708",
+        "resource":{
+           "resourceType":"Encounter",
+           "class":{
+              "code":"AMB",
+              "display":"Outpatient visit",
+              "system":"http://terminology.hl7.org/CodeSystem/v3-ActCode"
+           },
+           "period":{
+              "end":"2019-10-22T02:50:00+00:00",
+              "start":"2019-10-22T02:30:00+00:00"
+           },
+           "status":"finished",
+           "subject":{
+              "reference":"Patient/575",
+              "type":"Patient"
+           },
+           "id":"12708"
+        }
+     },
+     {
+        "fullUrl":"DocumentReference/diagnostic-report-12708",
+        "resource":{
+           "resourceType":"DocumentReference",
+           "author":[
+              {
+                 "reference":"Practitioner/4",
+                 "type":"Practitioner"
               },
               {
-                "reference": "observation/observation|220213",
-                "display": "General: Present",
-                "type": "Observation"
+                 "reference":"Practitioner/5",
+                 "type":"Practitioner"
+              }
+           ],
+           "content":[
+              {
+                 "attachment":{
+                    "contentType":"application/pdf",
+                    "data":"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rn"
+                 }
+              }
+           ],
+           "status":"current",
+           "type":{
+              "coding":[
+                 {
+                    "code":"70004-7",
+                    "system":"https://projecteka.in/loinc"
+                 }
+              ]
+           },
+           "id":"diagnostic-report-12708"
+        }
+     },
+     {
+        "fullUrl":"DiagnosticReport/12708",
+        "resource":{
+           "resourceType":"DiagnosticReport",
+           "code":{
+              "coding":[
+                 {
+                    "code":"718-7",
+                    "system":"https://projecteka.in/loinc"
+                 }
+              ]
+           },
+           "effectiveDateTime":"2019-01-01T09:38:59+00:00",
+           "issued":"2019-01-01T09:38:59+00:00",
+           "performer":[
+              {
+                 "reference":"Practitioner/4",
+                 "type":"Practitioner"
               },
               {
-                "reference": "observation/observation|220214",
-                "display": "General: Present",
-                "type": "Observation"
+                 "reference":"Practitioner/5",
+                 "type":"Practitioner"
+              }
+           ],
+           "result":[
+              {
+                 "reference":"Observation/observation-65543",
+                 "type":"Observation"
               },
               {
-                "reference": "observation/observation|220215",
-                "display": "General: Pale",
-                "type": "Observation"
-              }
-            ]
-          },
-          {
-            "code": {
-              "coding": [
-                {
-                  "system": "http://snomed.info/sct",
-                  "code": "371530004",
-                  "display": "Clinical consultation report"
-                }
-              ]
-            },
-            "text": "Clinical consultation report",
-            "entry": [
+                 "reference":"Observation/observation-65544",
+                 "type":"Observation"
+              },
               {
-                "reference": "document-reference/appointment-report|33644",
-                "display": "Study report for Eye OPD New Consultation - Adult Cash for visit no: 130693",
-                "type": "DocumentReference"
-              }
-            ]
-          }
-        ],
-        "attester": [
-          {
-            "reference": "practitioner/848",
-            "display": "Dr Patrick Adjei",
-            "type": "Practitioner"
-          }
-        ],
-        "resourceType": "Composition"
-      }
-    },
-    {
-      "fullUrl": "patient/13857",
-      "resource": {
-        "resourceType": "Patient",
-        "active": true,
-        "address": [
-          {
-            "city": "Accra",
-            "country": "Ghana",
-            "line": ["pune,Narhe,"],
-            "state": "Greater Accra Region",
-            "text": "pune,Narhe,, Accra, Greater Accra Region, Ghana",
-            "type": "physical",
-            "use": "home"
-          }
-        ],
-        "contact": [
-          {
-            "name": { "text": "XYZ", "use": "usual" },
-            "relationship": [
+                 "reference":"Observation/observation-65545",
+                 "type":"Observation"
+              },
               {
-                "coding": [
-                  {
-                    "code": "C",
-                    "system": "http://terminology.hl7.org/CodeSystem/v2-0131"
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        "gender": "male",
-        "identifier": [
-          {
-            "assigner": { "display": "Plus91" },
-            "system": "http://localhost/medixcel/",
-            "type": {
-              "coding": [
-                {
-                  "code": "MR",
-                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
-                }
-              ]
-            },
-            "use": "usual",
-            "value": "KB-A01-QQQ5200"
-          }
-        ],
-        "managingOrganization": {
-          "reference": "organization",
-          "type": "Organization"
-        },
-        "name": [
-          {
-            "family": "Pranil",
-            "given": ["A"],
-            "text": "Test A Pranil",
-            "use": "usual"
-          }
-        ],
-        "telecom": [
-          {
-            "system": "email",
-            "use": "home",
-            "value": "dabhibhaskar2@gmail.com"
-          },
-          { "system": "phone", "use": "home", "value": "9145645946" },
-          { "system": "phone", "use": "mobile", "value": "9145645946" }
-        ],
-        "birthDate": "1991-07-24",
-        "id": "13857"
-      }
-    },
-    {
-      "fullUrl": "encounter/33644",
-      "resource": {
-        "resourceType": "Encounter",
-        "account": [
-          { "reference": "patient-account/13857", "type": "Account" }
-        ],
-        "appointment": [
-          { "reference": "appointment/33644", "type": "Appointment" }
-        ],
-        "class": {
-          "code": "AMB",
-          "system": "https://www.hl7.org/fhir/v3/ActCode/cs.html"
-        },
-        "hospitalization": {
-          "admitSource": {
-            "coding": [
+                 "reference":"Observation/observation-65546",
+                 "type":"Observation"
+              },
               {
-                "code": "outp",
-                "system": "http://hl7.org/fhir/ValueSet/encounter-admit-source"
-              }
-            ]
-          }
-        },
-        "identifier": [
-          {
-            "assigner": { "display": "Plus91" },
-            "type": {
-              "coding": [
-                {
-                  "code": "MR",
-                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
-                }
-              ]
-            },
-            "use": "usual",
-            "value": "33644"
-          }
-        ],
-        "length": { "value": 20 },
-        "location": [
-          {
-            "location": {
-              "reference": "clinic-location/1",
-              "type": "Location"
-            },
-            "period": {
-              "end": "2021-03-02T18:50:00+00:00",
-              "start": "2021-03-02T18:30:00+00:00"
-            },
-            "status": "active"
-          }
-        ],
-        "participant": [
-          {
-            "individual": {
-              "reference": "practitioner/848",
-              "type": "Practitioner"
-            },
-            "type": [
+                 "reference":"Observation/observation-65547",
+                 "type":"Observation"
+              },
               {
-                "coding": [
-                  {
-                    "code": "PPRF",
-                    "system": "http://hl7.org/fhir/ValueSet/encounter-participant-type"
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        "period": {
-          "end": "2021-03-02T18:50:00+00:00",
-          "start": "2021-03-02T18:30:00+00:00"
-        },
-        "priority": {
-          "coding": [
-            {
-              "code": "CSR",
-              "system": "http://terminology.hl7.org/CodeSystem/v3-ActPriority"
-            }
-          ]
-        },
-        "reasonReference": [
-          { "reference": "procedure/33644", "type": "Procedure" }
-        ],
-        "serviceProvider": {
-          "reference": "rganization",
-          "type": "Organization"
-        },
-        "status": "finished",
-        "subject": { "reference": "patient/13857", "type": "Patient" },
-        "id": "33644"
-      }
-    },
-    {
-      "fullUrl": "practitioner/848",
-      "resource": {
-        "resourceType": "Practitioner",
-        "active": true,
-        "gender": "male",
-        "identifier": [
-          {
-            "assigner": { "display": "Plus91" },
-            "type": {
-              "coding": [
-                {
-                  "code": "MR",
-                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
-                }
-              ]
-            },
-            "use": "usual",
-            "value": "848"
-          }
-        ],
-        "name": [
-          { "family": "Adjei", "text": "Dr Patrick Adjei", "use": "usual" }
-        ],
-        "telecom": [
-          {
-            "system": "email",
-            "use": "home",
-            "value": "bhaskar.dabhi@plus91.in"
-          },
-          { "system": "phone", "use": "home", "value": "85474587" },
-          { "system": "phone", "use": "mobile", "value": "85474587" }
-        ],
-        "id": "848"
-      }
-    },
-    {
-      "fullUrl": "practitioner/848",
-      "resource": {
-        "resourceType": "Practitioner",
-        "active": true,
-        "gender": "male",
-        "identifier": [
-          {
-            "assigner": { "display": "Plus91" },
-            "type": {
-              "coding": [
-                {
-                  "code": "MR",
-                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
-                }
-              ]
-            },
-            "use": "usual",
-            "value": "848"
-          }
-        ],
-        "name": [
-          { "family": "Adjei", "text": "Dr Patrick Adjei", "use": "usual" }
-        ],
-        "telecom": [
-          {
-            "system": "email",
-            "use": "home",
-            "value": "bhaskar.dabhi@plus91.in"
-          },
-          { "system": "phone", "use": "home", "value": "85474587" },
-          { "system": "phone", "use": "mobile", "value": "85474587" }
-        ],
-        "id": "848"
-      }
-    },
-    {
-      "fullUrl": "Organization",
-      "resource": {
-        "resourceType": "Organization",
-        "active": true,
-        "address": [
-          {
-            "line": ["Plus91"],
-            "text": "Plus91",
-            "type": "physical",
-            "use": "work"
-          }
-        ],
-        "identifier": [
-          {
-            "system": "http://localhost/medixcel/",
-            "type": {
-              "coding": [
-                {
-                  "code": "PRN",
-                  "display": "Provider number",
-                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
-                }
-              ]
-            },
-            "value": "Plus91"
-          }
-        ],
-        "name": "Plus91",
-        "telecom": [
-          {
-            "system": "url",
-            "use": "work",
-            "value": "http://localhost/medixcel/"
-          }
-        ],
-        "id": "Organization"
-      }
-    },
-    {
-      "fullUrl": "condition/chief-complaint|24631",
-      "resource": {
-        "resourceType": "Condition",
-        "asserter": { "reference": "practitioner/848", "type": "Practitioner" },
-        "code": {
-          "coding": [
-            { "display": "Chest Pain", "system": "http://snomed.info/sct" }
-          ],
-          "text": "Chest Pain"
-        },
-        "encounter": { "reference": "encounter/33644", "type": "Encounter" },
-        "identifier": [
-          {
-            "assigner": { "display": "Plus91" },
-            "type": {
-              "coding": [
-                {
-                  "code": "MR",
-                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
-                }
-              ]
-            },
-            "use": "usual",
-            "value": "chief-complaint-24631"
-          }
-        ],
-        "note": [{ "text": "Chest Pain" }],
-        "recordedDate": "2021-03-02T18:34:09+00:00",
-        "recorder": { "reference": "practitioner/848", "type": "Practitioner" },
-        "subject": { "reference": "patient/13857", "type": "Patient" }
-      }
-    },
-    {
-      "fullUrl": "condition/chief-complaint|24632",
-      "resource": {
-        "resourceType": "Condition",
-        "asserter": { "reference": "practitioner/848", "type": "Practitioner" },
-        "code": {
-          "coding": [
-            { "display": "Constipation", "system": "http://snomed.info/sct" }
-          ],
-          "text": "Constipation"
-        },
-        "encounter": { "reference": "encounter/33644", "type": "Encounter" },
-        "identifier": [
-          {
-            "assigner": { "display": "Plus91" },
-            "type": {
-              "coding": [
-                {
-                  "code": "MR",
-                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
-                }
-              ]
-            },
-            "use": "usual",
-            "value": "chief-complaint-24632"
-          }
-        ],
-        "note": [{ "text": "Constipation" }],
-        "recordedDate": "2021-03-02T18:34:09+00:00",
-        "recorder": { "reference": "practitioner/848", "type": "Practitioner" },
-        "subject": { "reference": "patient/13857", "type": "Patient" }
-      }
-    },
-    {
-      "fullUrl": "observation/observation|220211",
-      "resource": {
-        "resourceType": "Observation",
-        "basedOn": [
-          { "reference": "service-request/", "type": "ServiceRequest" }
-        ],
-        "category": [
-          {
-            "coding": [
+                 "reference":"Observation/observation-65548",
+                 "type":"Observation"
+              },
               {
-                "code": "exam",
-                "display": "Observations",
-                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
-              }
-            ]
-          }
-        ],
-        "code": {
-          "coding": [
-            {
-              "display": "General",
-              "system": "http://hl7.org/fhir/ValueSet/observation-codes"
-            }
-          ],
-          "text": "General: Average"
-        },
-        "encounter": { "reference": "encounter/", "type": "Encounter" },
-        "identifier": [
-          {
-            "assigner": { "display": "Plus91" },
-            "type": {
-              "coding": [
-                {
-                  "code": "MR",
-                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
-                }
-              ]
-            },
-            "use": "usual",
-            "value": "observation|220211"
-          }
-        ],
-        "partOf": [{ "reference": "procedure/", "type": "Procedure" }],
-        "performer": [{ "reference": "practitioner/", "type": "Practitioner" }],
-        "status": "final",
-        "subject": { "reference": "patient/13857", "type": "Patient" },
-        "valueQuantity": { "value": 0 },
-        "valueString": "Average"
-      }
-    },
-    {
-      "fullUrl": "observation/observation|220212",
-      "resource": {
-        "resourceType": "Observation",
-        "basedOn": [
-          { "reference": "service-request/", "type": "ServiceRequest" }
-        ],
-        "category": [
-          {
-            "coding": [
+                 "reference":"Observation/observation-65549",
+                 "type":"Observation"
+              },
               {
-                "code": "exam",
-                "display": "Observations",
-                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
-              }
-            ]
-          }
-        ],
-        "code": {
-          "coding": [
-            {
-              "display": "General",
-              "system": "http://hl7.org/fhir/ValueSet/observation-codes"
-            }
-          ],
-          "text": "General: Present"
-        },
-        "encounter": { "reference": "encounter/", "type": "Encounter" },
-        "identifier": [
-          {
-            "assigner": { "display": "Plus91" },
-            "type": {
-              "coding": [
-                {
-                  "code": "MR",
-                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
-                }
-              ]
-            },
-            "use": "usual",
-            "value": "observation|220212"
-          }
-        ],
-        "partOf": [{ "reference": "procedure/", "type": "Procedure" }],
-        "performer": [{ "reference": "practitioner/", "type": "Practitioner" }],
-        "status": "final",
-        "subject": { "reference": "patient/13857", "type": "Patient" },
-        "valueQuantity": { "value": 0 },
-        "valueString": "Present"
-      }
-    },
-    {
-      "fullUrl": "observation/observation|220213",
-      "resource": {
-        "resourceType": "Observation",
-        "basedOn": [
-          { "reference": "service-request/", "type": "ServiceRequest" }
-        ],
-        "category": [
-          {
-            "coding": [
+                 "reference":"Observation/observation-65550",
+                 "type":"Observation"
+              },
               {
-                "code": "exam",
-                "display": "Observations",
-                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
-              }
-            ]
-          }
-        ],
-        "code": {
-          "coding": [
-            {
-              "display": "General",
-              "system": "http://hl7.org/fhir/ValueSet/observation-codes"
-            }
-          ],
-          "text": "General: Present"
-        },
-        "encounter": { "reference": "encounter/", "type": "Encounter" },
-        "identifier": [
-          {
-            "assigner": { "display": "Plus91" },
-            "type": {
-              "coding": [
-                {
-                  "code": "MR",
-                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
-                }
-              ]
-            },
-            "use": "usual",
-            "value": "observation|220213"
-          }
-        ],
-        "partOf": [{ "reference": "procedure/", "type": "Procedure" }],
-        "performer": [{ "reference": "practitioner/", "type": "Practitioner" }],
-        "status": "final",
-        "subject": { "reference": "patient/13857", "type": "Patient" },
-        "valueQuantity": { "value": 0 },
-        "valueString": "Present"
-      }
-    },
-    {
-      "fullUrl": "observation/observation|220214",
-      "resource": {
-        "resourceType": "Observation",
-        "basedOn": [
-          { "reference": "service-request/", "type": "ServiceRequest" }
-        ],
-        "category": [
-          {
-            "coding": [
+                 "reference":"Observation/observation-65551",
+                 "type":"Observation"
+              },
               {
-                "code": "exam",
-                "display": "Observations",
-                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
+                 "reference":"Observation/observation-65552",
+                 "type":"Observation"
               }
-            ]
-          }
-        ],
-        "code": {
-          "coding": [
-            {
-              "display": "General",
-              "system": "http://hl7.org/fhir/ValueSet/observation-codes"
-            }
-          ],
-          "text": "General: Present"
-        },
-        "encounter": { "reference": "encounter/", "type": "Encounter" },
-        "identifier": [
-          {
-            "assigner": { "display": "Plus91" },
-            "type": {
-              "coding": [
-                {
-                  "code": "MR",
-                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
-                }
-              ]
-            },
-            "use": "usual",
-            "value": "observation|220214"
-          }
-        ],
-        "partOf": [{ "reference": "procedure/", "type": "Procedure" }],
-        "performer": [{ "reference": "practitioner/", "type": "Practitioner" }],
-        "status": "final",
-        "subject": { "reference": "patient/13857", "type": "Patient" },
-        "valueQuantity": { "value": 0 },
-        "valueString": "Present"
-      }
-    },
-    {
-      "fullUrl": "observation/observation|220215",
-      "resource": {
-        "resourceType": "Observation",
-        "basedOn": [
-          { "reference": "service-request/", "type": "ServiceRequest" }
-        ],
-        "category": [
-          {
-            "coding": [
+           ],
+           "resultsInterpreter":[
               {
-                "code": "exam",
-                "display": "Observations",
-                "system": "http://terminology.hl7.org/CodeSystem/observation-category"
-              }
-            ]
-          }
-        ],
-        "code": {
-          "coding": [
-            {
-              "display": "General",
-              "system": "http://hl7.org/fhir/ValueSet/observation-codes"
-            }
-          ],
-          "text": "General: Pale"
-        },
-        "encounter": { "reference": "encounter/", "type": "Encounter" },
-        "identifier": [
-          {
-            "assigner": { "display": "Plus91" },
-            "type": {
-              "coding": [
-                {
-                  "code": "MR",
-                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
-                }
-              ]
-            },
-            "use": "usual",
-            "value": "observation|220215"
-          }
-        ],
-        "partOf": [{ "reference": "procedure/", "type": "Procedure" }],
-        "performer": [{ "reference": "practitioner/", "type": "Practitioner" }],
-        "status": "final",
-        "subject": { "reference": "patient/13857", "type": "Patient" },
-        "valueQuantity": { "value": 0 },
-        "valueString": "Pale"
-      }
-    },
-    {
-      "fullUrl": "document-reference/appointment-report|33644",
-      "resource": {
-        "resourceType": "DocumentReference",
-        "authenticator": {
-          "reference": "practitioner/848",
-          "type": "Practitioner"
-        },
-        "author": [{ "reference": "practitioner/848", "type": "Practitioner" }],
-        "content": [
-          {
-            "attachment": {
-              "contentType": "application/pdf",
-              "creation": "2021-03-02T20:19:14+00:00",
-              "data": "JVBERi0xLjMNCiXi48/TDQoNCjEgMCBvYmoNCjw8DQovVHlwZSAvQ2F0YWxvZw0KL091dGxpbmVz\r\nIDIgMCBSDQovUGFnZXMgMyAwIFINCj4+DQplbmRvYmoNCg0KMiAwIG9iag0KPDwNCi9UeXBlIC9P\r\ndXRsaW5lcw0KL0NvdW50IDANCj4+DQplbmRvYmoNCg0KMyAwIG9iag0KPDwNCi9UeXBlIC9QYWdl\r\ncw0KL0NvdW50IDINCi9LaWRzIFsgNCAwIFIgNiAwIFIgXSANCj4+DQplbmRvYmoNCg0KNCAwIG9i\r\nag0KPDwNCi9UeXBlIC9QYWdlDQovUGFyZW50IDMgMCBSDQovUmVzb3VyY2VzIDw8DQovRm9udCA8\r\nPA0KL0YxIDkgMCBSIA0KPj4NCi9Qcm9jU2V0IDggMCBSDQo+Pg0KL01lZGlhQm94IFswIDAgNjEy\r\nLjAwMDAgNzkyLjAwMDBdDQovQ29udGVudHMgNSAwIFINCj4+DQplbmRvYmoNCg0KNSAwIG9iag0K\r\nPDwgL0xlbmd0aCAxMDc0ID4+DQpzdHJlYW0NCjIgSg0KQlQNCjAgMCAwIHJnDQovRjEgMDAyNyBU\r\nZg0KNTcuMzc1MCA3MjIuMjgwMCBUZA0KKCBBIFNpbXBsZSBQREYgRmlsZSApIFRqDQpFVA0KQlQN\r\nCi9GMSAwMDEwIFRmDQo2OS4yNTAwIDY4OC42MDgwIFRkDQooIFRoaXMgaXMgYSBzbWFsbCBkZW1v\r\nbnN0cmF0aW9uIC5wZGYgZmlsZSAtICkgVGoNCkVUDQpCVA0KL0YxIDAwMTAgVGYNCjY5LjI1MDAg\r\nNjY0LjcwNDAgVGQNCigganVzdCBmb3IgdXNlIGluIHRoZSBWaXJ0dWFsIE1lY2hhbmljcyB0dXRv\r\ncmlhbHMuIE1vcmUgdGV4dC4gQW5kIG1vcmUgKSBUag0KRVQNCkJUDQovRjEgMDAxMCBUZg0KNjku\r\nMjUwMCA2NTIuNzUyMCBUZA0KKCB0ZXh0LiBBbmQgbW9yZSB0ZXh0LiBBbmQgbW9yZSB0ZXh0LiBB\r\nbmQgbW9yZSB0ZXh0LiApIFRqDQpFVA0KQlQNCi9GMSAwMDEwIFRmDQo2OS4yNTAwIDYyOC44NDgw\r\nIFRkDQooIEFuZCBtb3JlIHRleHQuIEFuZCBtb3JlIHRleHQuIEFuZCBtb3JlIHRleHQuIEFuZCBt\r\nb3JlIHRleHQuIEFuZCBtb3JlICkgVGoNCkVUDQpCVA0KL0YxIDAwMTAgVGYNCjY5LjI1MDAgNjE2\r\nLjg5NjAgVGQNCiggdGV4dC4gQW5kIG1vcmUgdGV4dC4gQm9yaW5nLCB6enp6ei4gQW5kIG1vcmUg\r\ndGV4dC4gQW5kIG1vcmUgdGV4dC4gQW5kICkgVGoNCkVUDQpCVA0KL0YxIDAwMTAgVGYNCjY5LjI1\r\nMDAgNjA0Ljk0NDAgVGQNCiggbW9yZSB0ZXh0LiBBbmQgbW9yZSB0ZXh0LiBBbmQgbW9yZSB0ZXh0\r\nLiBBbmQgbW9yZSB0ZXh0LiBBbmQgbW9yZSB0ZXh0LiApIFRqDQpFVA0KQlQNCi9GMSAwMDEwIFRm\r\nDQo2OS4yNTAwIDU5Mi45OTIwIFRkDQooIEFuZCBtb3JlIHRleHQuIEFuZCBtb3JlIHRleHQuICkg\r\nVGoNCkVUDQpCVA0KL0YxIDAwMTAgVGYNCjY5LjI1MDAgNTY5LjA4ODAgVGQNCiggQW5kIG1vcmUg\r\ndGV4dC4gQW5kIG1vcmUgdGV4dC4gQW5kIG1vcmUgdGV4dC4gQW5kIG1vcmUgdGV4dC4gQW5kIG1v\r\ncmUgKSBUag0KRVQNCkJUDQovRjEgMDAxMCBUZg0KNjkuMjUwMCA1NTcuMTM2MCBUZA0KKCB0ZXh0\r\nLiBBbmQgbW9yZSB0ZXh0LiBBbmQgbW9yZSB0ZXh0LiBFdmVuIG1vcmUuIENvbnRpbnVlZCBvbiBw\r\nYWdlIDIgLi4uKSBUag0KRVQNCmVuZHN0cmVhbQ0KZW5kb2JqDQoNCjYgMCBvYmoNCjw8DQovVHlw\r\nZSAvUGFnZQ0KL1BhcmVudCAzIDAgUg0KL1Jlc291cmNlcyA8PA0KL0ZvbnQgPDwNCi9GMSA5IDAg\r\nUiANCj4+DQovUHJvY1NldCA4IDAgUg0KPj4NCi9NZWRpYUJveCBbMCAwIDYxMi4wMDAwIDc5Mi4w\r\nMDAwXQ0KL0NvbnRlbnRzIDcgMCBSDQo+Pg0KZW5kb2JqDQoNCjcgMCBvYmoNCjw8IC9MZW5ndGgg\r\nNjc2ID4+DQpzdHJlYW0NCjIgSg0KQlQNCjAgMCAwIHJnDQovRjEgMDAyNyBUZg0KNTcuMzc1MCA3\r\nMjIuMjgwMCBUZA0KKCBTaW1wbGUgUERGIEZpbGUgMiApIFRqDQpFVA0KQlQNCi9GMSAwMDEwIFRm\r\nDQo2OS4yNTAwIDY4OC42MDgwIFRkDQooIC4uLmNvbnRpbnVlZCBmcm9tIHBhZ2UgMS4gWWV0IG1v\r\ncmUgdGV4dC4gQW5kIG1vcmUgdGV4dC4gQW5kIG1vcmUgdGV4dC4gKSBUag0KRVQNCkJUDQovRjEg\r\nMDAxMCBUZg0KNjkuMjUwMCA2NzYuNjU2MCBUZA0KKCBBbmQgbW9yZSB0ZXh0LiBBbmQgbW9yZSB0\r\nZXh0LiBBbmQgbW9yZSB0ZXh0LiBBbmQgbW9yZSB0ZXh0LiBBbmQgbW9yZSApIFRqDQpFVA0KQlQN\r\nCi9GMSAwMDEwIFRmDQo2OS4yNTAwIDY2NC43MDQwIFRkDQooIHRleHQuIE9oLCBob3cgYm9yaW5n\r\nIHR5cGluZyB0aGlzIHN0dWZmLiBCdXQgbm90IGFzIGJvcmluZyBhcyB3YXRjaGluZyApIFRqDQpF\r\nVA0KQlQNCi9GMSAwMDEwIFRmDQo2OS4yNTAwIDY1Mi43NTIwIFRkDQooIHBhaW50IGRyeS4gQW5k\r\nIG1vcmUgdGV4dC4gQW5kIG1vcmUgdGV4dC4gQW5kIG1vcmUgdGV4dC4gQW5kIG1vcmUgdGV4dC4g\r\nKSBUag0KRVQNCkJUDQovRjEgMDAxMCBUZg0KNjkuMjUwMCA2NDAuODAwMCBUZA0KKCBCb3Jpbmcu\r\nICBNb3JlLCBhIGxpdHRsZSBtb3JlIHRleHQuIFRoZSBlbmQsIGFuZCBqdXN0IGFzIHdlbGwuICkg\r\nVGoNCkVUDQplbmRzdHJlYW0NCmVuZG9iag0KDQo4IDAgb2JqDQpbL1BERiAvVGV4dF0NCmVuZG9i\r\nag0KDQo5IDAgb2JqDQo8PA0KL1R5cGUgL0ZvbnQNCi9TdWJ0eXBlIC9UeXBlMQ0KL05hbWUgL0Yx\r\nDQovQmFzZUZvbnQgL0hlbHZldGljYQ0KL0VuY29kaW5nIC9XaW5BbnNpRW5jb2RpbmcNCj4+DQpl\r\nbmRvYmoNCg0KMTAgMCBvYmoNCjw8DQovQ3JlYXRvciAoUmF2ZSBcKGh0dHA6Ly93d3cubmV2cm9u\r\nYS5jb20vcmF2ZVwpKQ0KL1Byb2R1Y2VyIChOZXZyb25hIERlc2lnbnMpDQovQ3JlYXRpb25EYXRl\r\nIChEOjIwMDYwMzAxMDcyODI2KQ0KPj4NCmVuZG9iag0KDQp4cmVmDQowIDExDQowMDAwMDAwMDAw\r\nIDY1NTM1IGYNCjAwMDAwMDAwMTkgMDAwMDAgbg0KMDAwMDAwMDA5MyAwMDAwMCBuDQowMDAwMDAw\r\nMTQ3IDAwMDAwIG4NCjAwMDAwMDAyMjIgMDAwMDAgbg0KMDAwMDAwMDM5MCAwMDAwMCBuDQowMDAw\r\nMDAxNTIyIDAwMDAwIG4NCjAwMDAwMDE2OTAgMDAwMDAgbg0KMDAwMDAwMjQyMyAwMDAwMCBuDQow\r\nMDAwMDAyNDU2IDAwMDAwIG4NCjAwMDAwMDI1NzQgMDAwMDAgbg0KDQp0cmFpbGVyDQo8PA0KL1Np\r\nemUgMTENCi9Sb290IDEgMCBSDQovSW5mbyAxMCAwIFINCj4+DQoNCnN0YXJ0eHJlZg0KMjcxNA0K\r\nJSVFT0YNCg==\r\n",
-              "language": "en"
-            }
-          }
-        ],
-        "context": {
-          "encounter": [
-            { "reference": "encounter/33644", "type": "Encounter" }
-          ],
-          "period": {
-            "end": "2021-03-02T18:50:00+00:00",
-            "start": "2021-03-02T18:30:00+00:00"
-          },
-          "sourcePatientInfo": {
-            "reference": "patient/13857",
-            "type": "Patient"
-          }
-        },
-        "custodian": { "reference": "rganization", "type": "Organization" },
-        "date": "2021-03-02T20:19:14+00:00",
-        "description": "Study report for Eye OPD New Consultation - Adult Cash for visit no: 130693",
-        "docStatus": "preliminary",
-        "identifier": [
-          {
-            "assigner": { "display": "Plus91" },
-            "type": {
-              "coding": [
-                {
-                  "code": "MR",
-                  "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
-                }
-              ]
-            },
-            "use": "usual",
-            "value": ":33644"
-          }
-        ],
-        "masterIdentifier": {
-          "assigner": { "display": "Plus91" },
-          "type": {
-            "coding": [
+                 "reference":"Practitioner/4",
+                 "type":"Practitioner"
+              },
               {
-                "code": "MR",
-                "system": "http://terminology.hl7.org/CodeSystem/v2-0203"
+                 "reference":"Practitioner/5",
+                 "type":"Practitioner"
               }
-            ]
-          },
-          "use": "usual",
-          "value": "appointment-report|33644"
-        },
-        "status": "current",
-        "subject": { "reference": "patient/13857", "type": "Patient" },
-        "type": {
-          "coding": [
-            {
-              "code": "47045-0",
-              "system": "http://hl7.org/fhir/ValueSet/c80-doc-typecodes"
-            }
-          ],
-          "text": "Study report"
-        },
-        "id": "appointment-report|33644"
-      }
-    }
+           ],
+           "status":"final",
+           "subject":{
+              "reference":"Patient/575",
+              "type":"Patient"
+           },
+           "id":"12708"
+        }
+     },
+     {
+        "fullUrl":"Observation/observation-65543",
+        "resource":{
+           "resourceType":"Observation",
+           "id":"observation-65543",
+           "code":{
+              "text":"General"
+           },
+           "status":"final",
+           "valueString":"Well Built"
+        }
+     },
+     {
+        "fullUrl":"Observation/observation-65544",
+        "resource":{
+           "resourceType":"Observation",
+           "id":"observation-65544",
+           "code":{
+              "text":"General"
+           },
+           "status":"final",
+           "valueString":"Well Nourished"
+        }
+     },
+     {
+        "fullUrl":"Observation/observation-65545",
+        "resource":{
+           "resourceType":"Observation",
+           "id":"observation-65545",
+           "code":{
+              "text":"General"
+           },
+           "status":"final",
+           "valueString":"Absent"
+        }
+     },
+     {
+        "fullUrl":"Observation/observation-65546",
+        "resource":{
+           "resourceType":"Observation",
+           "id":"observation-65546",
+           "code":{
+              "text":"General"
+           },
+           "status":"final",
+           "valueString":"Absent"
+        }
+     },
+     {
+        "fullUrl":"Observation/observation-65547",
+        "resource":{
+           "resourceType":"Observation",
+           "id":"observation-65547",
+           "code":{
+              "text":"General"
+           },
+           "status":"final",
+           "valueString":"Absent"
+        }
+     },
+     {
+        "fullUrl":"Observation/observation-65548",
+        "resource":{
+           "resourceType":"Observation",
+           "id":"observation-65548",
+           "code":{
+              "text":"General"
+           },
+           "status":"final",
+           "valueString":"Normal"
+        }
+     },
+     {
+        "fullUrl":"Observation/observation-65549",
+        "resource":{
+           "resourceType":"Observation",
+           "id":"observation-65549",
+           "code":{
+              "text":"General"
+           },
+           "status":"final",
+           "valueString":"Absent"
+        }
+     },
+     {
+        "fullUrl":"Observation/observation-65550",
+        "resource":{
+           "resourceType":"Observation",
+           "id":"observation-65550",
+           "code":{
+              "text":"General"
+           },
+           "status":"final",
+           "valueString":"Absent"
+        }
+     },
+     {
+        "fullUrl":"Observation/observation-65551",
+        "resource":{
+           "resourceType":"Observation",
+           "id":"observation-65551",
+           "code":{
+              "text":"General"
+           },
+           "status":"final",
+           "valueString":"Absent"
+        }
+     },
+     {
+        "fullUrl":"Observation/observation-65552",
+        "resource":{
+           "resourceType":"Observation",
+           "id":"observation-65552",
+           "code":{
+              "text":"General"
+           },
+           "status":"final",
+           "valueString":"Oriented"
+        }
+     }
   ]
 }
