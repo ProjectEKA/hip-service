@@ -186,6 +186,60 @@
                 }
               ]
             }
+          ],
+          "attester": [
+            {
+              "mode": "official",
+              "time": "2019-01-04T09:10:14Z",
+              "party": {
+                "reference": "Organization/MaxSaket01",
+                "display": "Max Super Speciality Hospital, Saket"
+              }
+            }
+          ]
+        }
+      },
+      {
+        "fullUrl": "Organization/MaxSaket01",
+        "resource": {
+          "resourceType": "Organization",
+          "id": "MaxSaket01",
+          "name": "Max Super Speciality Hospital, Saket",
+          "alias": [
+            "Max"
+          ],
+          "identifier": [
+            {
+              "system": "https://facilitysbx.ndhm.gov.in",
+              "value": "IN0410000183"
+            }
+          ],
+          "telecom": [
+            {
+              "system": "phone",
+              "value": "(+91) 011-2651-5050"
+            },
+            {
+              "system": "fax",
+              "value": "(+91) 011-2651-5051"
+            }
+          ],
+          "address": [
+            {
+              "line": [
+                "1, 2, Press Enclave Marg, Saket Institutional Area, Saket"
+              ],
+              "city": "New Delhi",
+              "state": "New Delhi",
+              "postalCode": "110017",
+              "country": "INDIA"
+            }
+          ],
+          "endpoint": [
+            {
+              "reference": "https://www.max.in/hospital-network/max-super-speciality-hospital-saket",
+              "display": "Website"
+            }
           ]
         }
       },
