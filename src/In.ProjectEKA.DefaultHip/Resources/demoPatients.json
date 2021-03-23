@@ -222,17 +222,9 @@
     "yearOfBirth": 1996,
 "careContexts": [
       {
-        "referenceNumber": "NCP9999",
-        "display": "National Cancer program"
-      },
-      {
-        "referenceNumber": "RV-MHD-01.17.3112",
-        "display": "Dept of Psychiatry - Episode 1"
-      },
-      {
-        "referenceNumber": "DEBUG_CC",
-        "display": "Care context to debug"
-      }
+        "referenceNumber": "099-OPD-01",
+        "display": "OPD Visit"
+      }      
     ]
   },
   {
