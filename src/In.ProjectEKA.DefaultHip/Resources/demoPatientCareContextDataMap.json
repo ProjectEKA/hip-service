@@ -448,7 +448,9 @@
             {
                 "capturedOn": "2019-01-01T15:32:26.605+05:30",
                 "data":  {
-                    "prescription" : ["RVMHD01PrescriptionDocument4.json"]
+                    "prescription" : ["RVMHD01PrescriptionDocument4.json"],
+                    "opconsultation": ["MAXRVH1003OPConsultationDoc20190101.json"],
+                    "diagnosticreport" : ["MAXNCP1702DiagnosticReportDoc20190101.json"]
                 }
             },
             {
@@ -476,8 +478,7 @@
         "DEBUG_CC":[
             {
                 "capturedOn": "2021-01-01T15:32:26.605+05:30",
-                "data":{
-                    "opconsultation": ["MAXRVH1003OPConsultationDoc20190101.json"],
+                "data":{                    
                     "diagnosticreport": ["debug_data.json"]
                 }
             }
