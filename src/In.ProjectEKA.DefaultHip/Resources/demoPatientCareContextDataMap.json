@@ -500,6 +500,12 @@
                     "prescription" : ["NCP1008PrescriptionDoc20190805.json"],
                     "immunizationrecord": ["MAXRVH1003ImmunizationDoc20190805.json"]
                 }
+            },
+            {
+                "capturedOn": "2019-08-01T00:05:30.818234",
+                "data":  {
+                    "healthdocumentrecord": ["MAXLIVNO99HealthDocumentRecordDoc20190801.json"]
+                }
             }
         ],
         "DEBUG_CC":[
