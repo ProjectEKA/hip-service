@@ -506,6 +506,12 @@
                 "data":  {
                     "healthdocumentrecord": ["MAXLIVNO99HealthDocumentRecordDoc20190801.json"]
                 }
+            },
+            {
+                "capturedOn": "2019-08-01T00:05:30.818234",
+                "data":  {
+                    "healthdocumentrecord": ["MAXLIVNO99WellnessRecordDoc20190801.json"]
+                }
             }
         ],
         "DEBUG_CC":[

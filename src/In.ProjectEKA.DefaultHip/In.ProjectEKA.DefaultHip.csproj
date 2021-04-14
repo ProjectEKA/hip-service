@@ -756,6 +756,22 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Resources\MAXLIVNO99HealthDocumentRecordDoc20190801.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>MAXLIVNO99HealthDocumentRecordDoc20190801.json</Link>
+    </Content>
+  </ItemGroup>
+
+    <ItemGroup>
+    <Content Include="Resources\MAXLIVNO99WellnessRecordDoc20190801.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>MAXLIVNO99WellnessRecordDoc20190801.json</Link>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="Resources\debug_data.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <CopyToPublishDirectory>Always</CopyToPublishDirectory>
