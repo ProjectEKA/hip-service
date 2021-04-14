@@ -747,6 +747,14 @@
     </Content>
   </ItemGroup>
 
+    <ItemGroup>
+    <Content Include="Resources\MAXLIVNO99HealthDocumentRecordDoc20190801.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+      <Link>MAXLIVNO99HealthDocumentRecordDoc20190801.json</Link>
+    </Content>
+  </ItemGroup>
+
   <ItemGroup>
     <Content Include="Resources\MAXLIVNO99HealthDocumentRecordDoc20190801.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
