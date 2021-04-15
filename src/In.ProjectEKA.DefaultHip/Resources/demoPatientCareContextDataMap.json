@@ -510,7 +510,7 @@
             {
                 "capturedOn": "2019-08-01T00:05:30.818234",
                 "data":  {
-                    "wellnessRecord": ["MAXLIVNO99WellnessRecordDoc20190801.json"]
+                    "healthdocumentrecord": ["MAXLIVNO99WellnessRecordDoc20190801.json"]
                 }
             }
         ],
